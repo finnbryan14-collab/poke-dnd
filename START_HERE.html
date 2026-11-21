@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poké × D&amp;D — Start here</title>
+<style>
+:root{--bg:#0f1117;--bg2:#171a23;--bg3:#1f2330;--bdr:#2c3242;--tx:#eef0f6;--tx2:#b4bacb;--tx3:#7f879b;--acc:#ff5a4f;--gold:#ffce4d;--grn:#3ddf93}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:26px;margin:0 0 4px}
+h2{font-size:18px;margin:30px 0 10px;padding-top:14px;border-top:1px solid var(--bdr)}
+h3{font-size:14px;margin:18px 0 6px;color:var(--gold);text-transform:uppercase;letter-spacing:.6px}
+p{margin:8px 0}
+.sub{color:var(--tx2);margin-bottom:18px}
+.box{background:var(--bg2);border:1px solid var(--bdr);border-left:4px solid var(--acc);border-radius:10px;padding:12px 14px;margin:14px 0}
+code,.f{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;padding:1px 6px}
+b{color:#fff}
+ol,ul{padding-left:22px;margin:8px 0}
+li{margin:5px 0}
+.files li{list-style:none;margin-left:-22px;padding:8px 10px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;margin-bottom:6px}
+.files .f{display:inline-block;margin-bottom:3px}
+.try{list-style:none;padding-left:0}
+.try li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--bg3)}
+.try input{margin-top:5px;width:16px;height:16px;accent-color:var(--grn);flex:none}
+.try label{cursor:pointer}
+.ex{color:var(--tx2);font-style:italic}
+.tip{color:var(--tx3);font-size:13.5px}
+</style>
+</head>
+<body>
+<main>
+<h1>Poké × D&amp;D — your test run</h1>
+<p class="sub">Finn built these tools for our game: a dashboard for the DM, a live 3D board everyone shares, and character sheets for the players. This is a test run. Poke around, try things, and tell Finn what's confusing, broken or missing. Nothing you do here can break anything.</p>
+
+<div class="box"><b>Before you start:</b> unzip the folder first: right-click the zip → <b>Extract All</b>, then open the files from the new folder. (Opened from inside the zip, the 🗺 Board button can't find the board: that was the "file cannot be accessed" error.) Keep all the files together. Use a laptop or desktop with <b>Chrome or Edge</b>. You need internet: the board and live sync are online.</div>
+
+<h2>What's in the folder</h2>
+<ul class="files">
+<li><span class="f">poke_dnd_dm_dashboard.html</span><br>Your control panel: the campaign, every player's sheet live, encounters, dice and messages.</li>
+<li><span class="f">poke_dnd_board.html</span><br>The shared 3D map. You open it from the dashboard's <b>🗺 Board</b> button.</li>
+<li><span class="f">poke_dnd_character_sheet.html</span><br>The players' app. Send it to your players.</li>
+<li><span class="f">BOARD_GUIDE.md</span><br>The full manual for the board. It opens in Notepad.</li>
+</ul>
+
+<h2>1. Set up (about 5 minutes, once)</h2>
+<ol>
+<li>Double-click <span class="f">poke_dnd_dm_dashboard.html</span>. It opens in your browser.</li>
+<li>Click <b>Create a New Campaign</b>. This is meant to be <b>one campaign for the whole game</b>, not one per session: scenes, models and characters all stay in it. If you'd rather keep test stuff separate, make a test campaign now and the real one later.</li>
+<li>Click <b>✉ Copy invite</b> at the top and send it to the group (or just Finn for the test). Each player opens their sheet, taps <b>No campaign</b>, pastes the ID with their name, and taps <b>Join &amp; Sync</b>. Their character shows up on your dashboard.</li>
+<li>Click <b>🗺 Board</b>. The board opens in a new tab; keep it open while you play.</li>
+</ol>
+
+<h2>2. Things to try (about 30 minutes)</h2>
+<p class="tip">Tick them off as you go (the ticks aren't saved anywhere). Skip anything you don't care about.</p>
+
+<h3>Build a scene</h3>
+<ul class="try">
+<li><input type="checkbox" id="c1"><label for="c1">In the board's side panel, click <b>＋ New scene</b>, pick a <b>Ground</b>, then <b>▶ Show to players</b>.</label></li>
+<li><input type="checkbox" id="c2"><label for="c2">Click <b>🌲 Build scenery</b>, open <b>✨ Describe a scene</b>, and type something like <span class="ex">"a forest clearing at dusk with three wild Pidgey and a campfire"</span>. Click <b>✨ Build it</b>. 🎲 gives another version, and <b>↶ Undo</b> (or Ctrl+Z) takes it back.</label></li>
+<li><input type="checkbox" id="c3"><label for="c3">Try a town: <span class="ex">"a medieval market town with a Pokémon Center"</span>, or a room: <span class="ex">"a tavern at night with a bard and three rowdy bandits"</span>.</label></li>
+<li><input type="checkbox" id="c4"><label for="c4">Place things by hand from the scenery palette (trees, buildings, furniture…). Click one to move, turn, recolour or resize it. <b>Fill a block</b> fills a dragged rectangle with buildings.</label></li>
+<li><input type="checkbox" id="c5"><label for="c5">Click <b>Tilt</b> at the bottom (or press T) to swoop down into 3D. Right-drag to orbit, scroll to zoom.</label></li>
+</ul>
+
+<h3>Characters and Pokémon</h3>
+<ul class="try">
+<li><input type="checkbox" id="c6"><label for="c6">In <b>♟ Tokens</b>, type a Pokémon's name like <span class="ex">Gengar</span> and click <b>＋ Add token</b>. Its card standee shows its official art and types by itself.</label></li>
+<li><input type="checkbox" id="c7"><label for="c7">Add a person (<span class="ex">Bandit</span>), select it and use <b>✨ Describe its look</b> (<span class="ex">"a hooded bandit with a dagger"</span>) or <b>🧍 Design one</b>: the design becomes the card's picture. Or upload any picture as its <b>Portrait</b>.</label></li>
+<li><input type="checkbox" id="c7b"><label for="c7b">Characters are picture standees now. If you ever want 3D models back, tick <b>🧊 3D models for characters</b> under ♟ Tokens.</label></li>
+<li><input type="checkbox" id="c8"><label for="c8">On a token's card, try the pose buttons, the size, <b>👁 Visible</b> (click it to hide the token from players), and <b>📝 DM notes</b>.</label></li>
+</ul>
+
+<h3>Run a fight</h3>
+<ul class="try">
+<li><input type="checkbox" id="c9a"><label for="c9a">On the dashboard, open <b>⚔ Encounter</b>. Under <b>📊 Pokémon stats</b> type a Pokémon and a level (<span class="ex">Zubat, 3</span>) and click <b>Make</b>: you get its six scores and Max HP from your formula. Change any number (a boss!), then <b>+ Add to fight</b> or <b>💾 Save</b> it for later. 📊 on a foe's row edits it mid-fight.</label></li>
+<li><input type="checkbox" id="c9"><label for="c9">Click <b>▶ Start</b>. The players type or roll their initiative in Battle Mode on their sheet and it fills in here. <b>🎲 Roll missing</b> rolls for anyone who hasn't; you can type over any number.</label></li>
+<li><input type="checkbox" id="c10"><label for="c10">On the board, <b>＋ Encounter foes</b> puts those foes on the map. The board shows the turn order, glows under whoever's up, and shows HP rings.</label></li>
+<li><input type="checkbox" id="c11"><label for="c11">A player sends damage from Battle Mode (<b>💥 Damage</b>: pick the foe, type the amount). It comes off that foe's HP by itself and shows in the roll feed. You can still change HP with the buttons. Then <b>⏭ Next turn</b>.</label></li>
+</ul>
+
+<h3>Areas, map shapes and fog</h3>
+<ul class="try">
+<li><input type="checkbox" id="c12a"><label for="c12a">Press <b>Measure</b>, then pick <b>🔺 Cone</b>, <b>➖ Line</b>, <b>⬛ Cube</b>, <b>⚪ Sphere</b>, <b>🛢 Cylinder</b> or <b>✴ Emanation</b> in the bar above it, and drag from where the spell starts. Everyone sees it and the squares it covers.</label></li>
+<li><input type="checkbox" id="c12b"><label for="c12b">In <b>✎ This scene → ▦ Map shape</b>, click <b>＋ Add squares</b> and drag a thin rectangle off the edge of the map: a hallway. <b>− Remove squares</b> cuts squares out.</label></li>
+<li><input type="checkbox" id="c12"><label for="c12">In <b>✎ This scene</b>, tick <b>Hide unexplored areas from players</b>, then paint with the <b>Reveal brush</b>. Foes in the fog stay hidden from players.</label></li>
+</ul>
+
+<h3>With a player (Finn can do this with you)</h3>
+<ul class="try">
+<li><input type="checkbox" id="c13"><label for="c13">Click <b>＋ Party</b> to put the players' tokens on the map. The player drags their own token and sees the distance in feet.</label></li>
+<li><input type="checkbox" id="c14"><label for="c14">On the sheet, <b>PP is now Energy</b>: the player types their max Energy in the box after the slash (Moves tab). Using a move spends it.</label></li>
+</ul>
+
+<h3>Optional extras</h3>
+<ul class="try">
+<li><input type="checkbox" id="c16"><label for="c16">If the board feels slow, turn on <b>🐢 Low graphics</b> in the side panel (it only changes your computer).</label></li>
+</ul>
+
+<h2>3. Tell Finn</h2>
+<ul>
+<li>What did you want to make or do, but couldn't?</li>
+<li>What was confusing or hard to find?</li>
+<li>Anything broken or slow? Say what you clicked and what happened.</li>
+<li>What would you actually use in a real session, and what wouldn't you?</li>
+</ul>
+
+<h2>Good to know</h2>
+<ul>
+<li>Everything saves by itself. Close the tabs and reopen the dashboard later: it remembers your campaign.</li>
+<li>It's all free. The <b>Ask Claude instead</b> buttons are optional extras; the built-in ✨ designer needs nothing.</li>
+<li>Players can only move their own tokens and companions. You can move everything.</li>
+<li>The world is medieval fantasy, and the creatures are Pokémon. Ask the designer for "wolves" and you'll get Poochyena.</li>
+</ul>
+</main>
+</body>
+</html>

@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#7c3aed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Poké×D&D DM">
+<title>Pokémon × D&D — DM Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --acc:#c084fc;--acc-bg:rgba(192,132,252,.14);--acc-bdr:rgba(192,132,252,.34);
+  --bg:#080a12;--bg2:#0f1320;--bg3:#161c2e;--bg4:#1f2840;--bg5:#2a3550;
+  --bdr:#202d48;--bdr2:#33456a;
+  --tx:#e7edf8;--tx2:#8a9bbb;--tx3:#4a5d82;
+  --grn:#3ddf93;--grn-bg:rgba(61,223,147,.12);--grn-bdr:rgba(61,223,147,.28);
+  --red:#ff5d5d;--red-bg:rgba(255,93,93,.12);--red-bdr:rgba(255,93,93,.28);
+  --gold:#ffce4d;--gold-bg:rgba(255,206,77,.12);--gold-bdr:rgba(255,206,77,.3);
+  --r:9px;--rl:14px;
+  --font-display:'Fredoka','Inter',system-ui,sans-serif;
+  --shadow:0 2px 6px rgba(0,0,0,.4);--shadow-lg:0 14px 40px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;
+  background-image:
+    radial-gradient(1100px 560px at 82% -8%, color-mix(in srgb,var(--acc) 12%,transparent), transparent 60%),
+    radial-gradient(900px 480px at -8% 6%, color-mix(in srgb,var(--acc) 6%,transparent), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.02) 0 1px, transparent 1px);
+  background-size:auto,auto,22px 22px;background-attachment:fixed}
+input,select,button,textarea{font-family:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:6px;border:2px solid var(--bg2)}
+::selection{background:color-mix(in srgb,var(--acc) 40%,transparent)}
+
+.topbar{position:sticky;top:0;z-index:100;height:56px;background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 9%,var(--bg2)),var(--bg2));border-bottom:1px solid color-mix(in srgb,var(--acc) 22%,var(--bdr));display:flex;align-items:center;gap:12px;padding:0 20px;box-shadow:0 4px 22px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.65}
+.logo{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);line-height:1.7;flex-shrink:0;text-shadow:0 0 10px color-mix(in srgb,var(--gold) 55%,transparent),2px 2px 0 rgba(0,0,0,.55)}
+.topbar-sep{width:1px;height:28px;background:var(--bdr2);flex-shrink:0;opacity:.6}
+.topbar-title{font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:.2px}
+.conn-badge{display:flex;align-items:center;gap:5px;font-size:10px;padding:3px 10px;border-radius:20px;font-weight:600;flex-shrink:0}
+.conn-badge.live{background:var(--grn-bg);border:1px solid var(--grn-bdr);color:var(--grn)}
+.conn-badge.offline{background:var(--bg4);border:1px solid var(--bdr);color:var(--tx2)}
+.conn-badge.error{background:var(--red-bg);border:1px solid var(--red-bdr);color:var(--red)}
+.conn-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.refresh-btn{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx2);font-size:11px;font-weight:600;padding:5px 12px;cursor:pointer;transition:all .2s}
+.refresh-btn:hover{border-color:var(--acc-bdr);color:var(--acc)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{display:inline-block;animation:spin .7s linear infinite}
+
+/* SETUP */
+.setup{display:flex;align-items:flex-start;justify-content:center;min-height:calc(100vh - 52px);padding:30px 20px;gap:24px;flex-wrap:wrap}
+.setup-card{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--rl);padding:28px;width:100%;max-width:420px}
+.setup-card h2{font-size:16px;font-weight:800;margin-bottom:4px}
+.setup-card p{font-size:12px;color:var(--tx2);line-height:1.7;margin-bottom:18px}
+details.adv{margin-top:16px;font-size:12px;color:var(--tx2)}details.adv>summary{cursor:pointer;color:var(--tx3);font-size:11px;margin-bottom:10px}
+.lbl{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--tx2);margin-bottom:5px}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:13px;padding:9px 11px;outline:none;transition:border-color .2s;margin-bottom:12px}
+.inp:focus{border-color:var(--acc)}
+.inp::placeholder{color:var(--tx3)}
+.inp.mono{font-family:monospace;font-weight:600}
+.btn{width:100%;border:none;border-radius:var(--r);font-size:13px;font-weight:700;padding:11px;cursor:pointer;transition:opacity .2s}
+.btn:hover{opacity:.88}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-acc{background:var(--acc);color:#000}
+.btn-grn{background:var(--grn);color:#000}
+.err-msg{font-size:11px;color:var(--red);margin-top:8px;min-height:16px}
+
+/* INSTRUCTIONS CARD */
+.instr-card{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--rl);padding:28px;width:100%;max-width:560px}
+.instr-card h2{font-size:16px;font-weight:800;margin-bottom:14px}
+.step{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.step:last-child{margin-bottom:0}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--acc-bg);border:1px solid var(--acc-bdr);color:var(--acc);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-body{flex:1;min-width:0}.code-block{overflow-x:auto}
+.step-title{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.step-desc{font-size:12px;color:var(--tx2);line-height:1.7}
+.code-block{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 14px;margin-top:8px;font-family:monospace;font-size:11px;color:var(--tx);line-height:1.8;white-space:pre-wrap;position:relative}
+.copy-code-btn{position:absolute;top:8px;right:8px;background:var(--bg4);border:1px solid var(--bdr);border-radius:5px;color:var(--tx2);font-size:10px;padding:3px 8px;cursor:pointer;transition:all .2s}
+.copy-code-btn:hover{border-color:var(--acc-bdr);color:var(--acc)}
+.warning-box{background:var(--gold-bg);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:10px 12px;font-size:11px;color:var(--gold);line-height:1.6;margin-top:8px}
+
+/* DASHBOARD */
+.dash{display:none;padding:18px 20px 60px}
+.dash-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.campaign-id-badge{font-family:monospace;font-size:12px;background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;padding:3px 10px;color:var(--tx)}
+.copy-btn{background:none;border:1px solid var(--bdr);border-radius:5px;color:var(--tx2);font-size:10px;padding:2px 8px;cursor:pointer;transition:all .2s}
+.copy-btn:hover{border-color:var(--acc-bdr);color:var(--acc)}
+.disco-btn{background:var(--red-bg);border:1px solid var(--red-bdr);border-radius:var(--r);color:var(--red);font-size:11px;font-weight:600;padding:4px 12px;cursor:pointer;margin-left:auto}
+.last-upd{font-size:10px;color:var(--tx3)}
+.countdown-lbl{font-size:10px;color:var(--tx3)}
+.dm-global{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--rl);padding:14px;margin-bottom:14px}
+.dm-global-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--tx2);margin-bottom:8px}
+.dm-global-inp{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:12px;padding:9px 11px;outline:none;resize:vertical;min-height:72px;line-height:1.6;transition:border-color .2s}
+.dm-global-inp:focus{border-color:var(--acc)}
+
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.player-card{background:linear-gradient(180deg,var(--bg2),color-mix(in srgb,var(--bg2) 86%,#000));border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;transition:border-color .2s,box-shadow .18s,transform .12s;cursor:pointer;box-shadow:var(--shadow)}
+.player-card:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.5)}
+.player-card.open{border-color:var(--acc-bdr);box-shadow:0 0 0 1px var(--acc-bdr),0 10px 28px rgba(0,0,0,.5)}
+.pc-head{padding:14px 16px;position:relative}
+.pc-name-row{display:flex;align-items:center;gap:7px;margin-bottom:10px;flex-wrap:wrap}
+.pc-charname{font-family:var(--font-display);font-size:17px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-player{font-size:9px;color:var(--tx2)}
+.type-chip{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:20px;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.25)}
+.lvl-badge{font-family:var(--font-display);font-size:11px;font-weight:700;background:var(--bg4);border:1px solid var(--bdr2);border-radius:6px;padding:2px 8px;color:var(--tx2);flex-shrink:0}
+.stale-tag{font-size:9px;background:var(--gold-bg);border:1px solid var(--gold-bdr);border-radius:5px;padding:2px 6px;color:var(--gold);flex-shrink:0}
+.vital-row{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+.vital-line{display:flex;align-items:center;gap:7px}
+.vital-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--tx2);min-width:20px}
+.vital-nums{font-size:11px;font-weight:700;min-width:64px;text-align:right;flex-shrink:0}
+.vital-track{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.vital-fill{height:100%;border-radius:3px;transition:width .4s,background .4s}
+.stat-row{display:flex;gap:5px;flex-wrap:wrap}
+.stat-pill{background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;padding:3px 7px;font-size:10px;color:var(--tx2)}
+.stat-pill strong{color:var(--tx)}
+.stat-pill em{color:var(--acc);font-style:normal;font-size:9px}
+.moves-preview{border-top:1px solid var(--bdr);padding:9px 15px}
+.moves-preview-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--tx2);margin-bottom:5px}
+.move-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin:2px 3px 2px 0}
+.pc-detail{display:none;border-top:1px solid var(--bdr);padding:13px 15px}
+.player-card.open .pc-detail{display:block}
+.detail-sec{margin-bottom:12px}
+.detail-sec:last-child{margin-bottom:0}
+.detail-sec-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tx2);margin-bottom:7px}
+.detail-tbl{width:100%;border-collapse:collapse}
+.detail-tbl td{padding:4px 0;font-size:11px;border-bottom:1px solid var(--bdr)}
+.detail-tbl tr:last-child td{border-bottom:none}
+.dt-key{color:var(--tx2);padding-right:12px;min-width:100px;font-weight:500}
+.dt-val{color:var(--tx)}
+.dm-coins{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.dm-coin{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12px;color:var(--tx);background:var(--bg4);border:1px solid var(--bdr);border-radius:20px;padding:2px 9px 2px 3px}
+.dm-coin i{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--c) 55%);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 70%,#000)}
+.dm-coin small{font-size:9px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.dm-comp{border:1px solid var(--bdr);border-left:4px solid var(--c);border-radius:7px;padding:6px 8px;margin-bottom:5px;background:var(--bg3)}
+.dm-comp-top{display:flex;gap:7px;align-items:baseline;font-size:10.5px;color:var(--tx3);flex-wrap:wrap}
+.dm-comp-top b{font-size:12px;color:var(--tx)}.dm-comp-hp{margin-left:auto;font-weight:700;color:var(--tx2)}
+.dm-comp-bar{height:5px;border-radius:3px;background:var(--bg);margin-top:5px;overflow:hidden}.dm-comp-bar i{display:block;height:100%;background:var(--c)}
+.abil-chip{display:inline-block;background:var(--bg4);border:1px solid var(--bdr);border-radius:5px;font-size:10px;color:var(--tx2);padding:2px 7px;margin:2px 3px 2px 0}
+.abil-buff{color:var(--acc);font-weight:700}
+.dm-note-area{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:11px;padding:7px 9px;outline:none;resize:vertical;min-height:52px;line-height:1.5;transition:border-color .2s;margin-top:8px}
+.dm-note-area:focus{border-color:var(--acc)}
+.sync-ts{font-size:9px;color:var(--tx3);margin-top:6px}
+.empty-dash{text-align:center;padding:60px 20px;color:var(--tx3)}
+.empty-icon{font-size:36px;display:block;margin-bottom:10px}
+.loading{text-align:center;padding:60px 20px;color:var(--tx3);font-size:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader{display:inline-block;width:24px;height:24px;border:2px solid var(--bdr);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px}
+@media(max-width:600px){.player-grid{grid-template-columns:1fr}.setup{flex-direction:column}}
+
+/* ─── DM TOOLBAR ─────────────────────────────────── */
+.dm-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.view-toggle{display:flex;gap:3px;border:1px solid var(--bdr);border-radius:999px;overflow:hidden;padding:3px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+.vt-btn{background:none;border:none;border-radius:999px;color:var(--tx2);font-size:12px;font-weight:800;padding:7px 16px;cursor:pointer;transition:all .15s}
+.vt-btn.on{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 85%,#fff),var(--acc));color:#0a0612;box-shadow:0 3px 12px var(--acc-bg),inset 0 1px 0 rgba(255,255,255,.4)}
+.vt-btn:not(.on):hover{background:var(--bg3);color:var(--tx)}
+.toolbar-spacer{flex:1}
+.tool-btn{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx2);font-size:12px;font-weight:600;padding:7px 13px;cursor:pointer;transition:all .15s}
+.tool-btn:hover{border-color:var(--acc-bdr);color:var(--acc)}
+.tool-btn.active{background:var(--acc-bg);border-color:var(--acc-bdr);color:var(--acc)}
+
+/* ─── SLIDE PANELS (dice + initiative) ───────────── */
+.slide-panel{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--rl);padding:14px;margin-bottom:12px}
+.panel-head{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+/* Dice roller */
+.dice-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.dice-btn{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:13px;font-weight:700;padding:8px 14px;cursor:pointer;transition:all .15s;min-width:48px}
+.dice-btn:hover{background:var(--acc);color:#000;border-color:var(--acc)}
+.dice-custom{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.dice-inp{width:50px;background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;color:var(--tx);font-size:13px;font-weight:600;text-align:center;padding:5px;outline:none}
+.dice-inp:focus{border-color:var(--acc)}
+.dice-roll-btn{background:var(--acc);border:none;border-radius:var(--r);color:#000;font-size:12px;font-weight:700;padding:6px 16px;cursor:pointer}
+.dice-roll-btn:hover{opacity:.85}
+.adv-label{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--tx2);cursor:pointer}
+.adv-label input{accent-color:var(--acc);cursor:pointer}
+.dice-result{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:14px;text-align:center;font-size:14px;color:var(--tx2);margin-bottom:10px;min-height:50px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.dice-result .big-roll{font-family:var(--font-display);font-size:34px;font-weight:700;color:var(--acc);line-height:1;text-shadow:0 0 18px var(--acc-bg)}
+.dice-result .roll-detail{font-size:11px;color:var(--tx3)}
+.dice-result .crit{color:var(--grn)}
+.dice-result .fumble{color:var(--red)}
+.dice-log{display:flex;flex-direction:column;gap:3px;max-height:120px;overflow-y:auto}
+.dice-log-entry{font-size:11px;color:var(--tx3);padding:3px 8px;border-bottom:1px solid var(--bdr)}
+.dice-log-entry:last-child{border-bottom:none}
+.dice-log-entry b{color:var(--tx2)}
+
+/* Initiative tracker */
+.init-head-btns{display:flex;gap:6px;flex-wrap:wrap}
+.init-mini-btn{background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;color:var(--tx2);font-size:11px;font-weight:600;padding:4px 9px;cursor:pointer;transition:all .15s}
+.init-mini-btn:hover{border-color:var(--acc-bdr);color:var(--acc)}
+.init-round{font-size:11px;color:var(--tx2);font-weight:600;margin-bottom:10px}
+.init-round span{color:var(--acc);font-weight:800}
+.init-list{display:flex;flex-direction:column;gap:5px}
+.init-empty{font-size:11px;color:var(--tx3);text-align:center;padding:16px;line-height:1.6}
+.init-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:8px 12px;transition:all .15s}
+.init-row.active-turn{border-color:var(--acc);background:var(--acc-bg);box-shadow:0 0 0 1px var(--acc-bdr)}
+.init-init{font-size:18px;font-weight:800;color:var(--acc);min-width:30px;text-align:center}
+.init-init-inp{width:40px;background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;color:var(--tx);font-size:14px;font-weight:700;text-align:center;padding:2px;outline:none}
+.init-name{flex:1;font-size:13px;font-weight:600;color:var(--tx)}
+.init-name-inp{flex:1;background:var(--bg4);border:1px solid var(--bdr);border-radius:4px;color:var(--tx);font-size:13px;padding:3px 7px;outline:none}
+.init-hp{font-size:11px;color:var(--tx2);min-width:60px;text-align:right}
+.init-tag{font-size:9px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:8px}
+.init-tag.pc{background:var(--acc-bg);color:var(--acc)}
+.init-tag.npc{background:rgba(224,82,82,.12);color:var(--red)}
+.init-del{background:none;border:none;color:var(--tx3);font-size:14px;cursor:pointer;padding:0 4px;transition:color .15s}
+.init-del:hover{color:var(--red)}
+
+/* ─── CARD HEADER BUTTONS (remove/hide) ──────────── */
+.pc-actions{display:flex;gap:4px;flex-shrink:0}
+.pc-action-btn{background:var(--bg4);border:1px solid var(--bdr);border-radius:5px;color:var(--tx3);font-size:11px;padding:3px 7px;cursor:pointer;transition:all .15s;line-height:1.3}
+.pc-action-btn:hover{border-color:var(--acc-bdr);color:var(--acc)}
+.pc-action-btn.danger:hover{border-color:var(--red-bdr);color:var(--red);background:var(--red-bg)}
+
+/* ─── COMBAT VIEW (compact rows) ─────────────────── */
+.combat-view{display:flex;flex-direction:column;gap:6px}
+.cv-header{display:grid;grid-template-columns:1.5fr 90px 50px 50px 1fr auto;gap:10px;padding:6px 14px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3)}
+.cv-row{display:grid;grid-template-columns:1.5fr 90px 50px 50px 1fr auto;gap:10px;align-items:center;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:9px 14px;transition:border-color .15s}
+.cv-row:hover{border-color:var(--bdr2)}
+.cv-name{font-size:13px;font-weight:700;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.cv-hp-cell{display:flex;align-items:center;gap:6px}
+.cv-hp-track{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.cv-hp-fill{height:100%;border-radius:3px}
+.cv-hp-num{font-size:11px;font-weight:700;min-width:48px;text-align:right}
+.cv-ac{font-size:14px;font-weight:800;color:var(--tx);text-align:center}
+.cv-stat{font-size:12px;font-weight:600;color:var(--tx2);text-align:center}
+.cv-cond-inp{background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;color:var(--tx);font-size:11px;padding:4px 8px;outline:none;width:100%}
+.cv-cond-inp:focus{border-color:var(--acc)}
+.cv-type-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+@media(max-width:700px){
+  .cv-header{display:none}
+  .cv-row{grid-template-columns:1fr;gap:6px}
+  .cv-row>*{justify-self:start!important}
+}
+
+
+/* ─── DM MANAGE BUTTON + PANEL ───────────────────── */
+.pc-manage-btn{background:var(--bg4);border:1px solid var(--bdr);border-radius:5px;color:var(--tx2);font-size:11px;font-weight:600;padding:4px 10px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.pc-manage-btn:hover{border-color:var(--acc-bdr);color:var(--acc);background:var(--acc-bg)}
+.manage-panel{background:var(--bg3);border:1px solid var(--acc-bdr);border-radius:var(--r);padding:12px;margin-top:4px}
+.manage-grid{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.manage-field{display:flex;flex-direction:column;gap:4px}
+.manage-field label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--tx2)}
+.manage-hp-row{display:flex;align-items:center;gap:5px}
+.manage-inp{background:var(--bg4);border:1px solid var(--bdr);border-radius:5px;color:var(--tx);font-size:13px;font-weight:600;padding:5px 8px;outline:none;width:64px;transition:border-color .15s}
+.manage-inp:focus{border-color:var(--acc)}
+.manage-hp-quick{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.hpq-btn{border:1px solid var(--bdr);border-radius:5px;font-size:11px;font-weight:700;padding:5px 9px;cursor:pointer;transition:all .15s;background:var(--bg4)}
+.hpq-btn.dmg{color:var(--red)}
+.hpq-btn.dmg:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.hpq-btn.heal{color:var(--grn)}
+.hpq-btn.heal:hover{background:var(--grn);color:#000;border-color:var(--grn)}
+.manage-save-btn{background:var(--acc);border:none;border-radius:5px;color:#000;font-size:11px;font-weight:700;padding:5px 12px;cursor:pointer;margin-left:auto}
+.manage-save-btn:hover{opacity:.85}
+.manage-divider{height:1px;background:var(--bdr);margin:10px 0}
+.manage-row{display:flex;gap:6px;align-items:center;margin-bottom:10px}
+.manage-actions{display:flex;gap:6px;flex-wrap:wrap}
+.manage-mini-btn{background:var(--bg4);border:1px solid var(--bdr);border-radius:5px;color:var(--tx2);font-size:11px;font-weight:600;padding:5px 11px;cursor:pointer;transition:all .15s}
+.manage-mini-btn:hover{border-color:var(--acc-bdr);color:var(--acc)}
+.manage-mini-btn.danger{color:var(--red)}
+.manage-mini-btn.danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
+
+.cv-hp-adj{border:1px solid var(--bdr);border-radius:4px;font-size:13px;font-weight:700;line-height:1;padding:2px 7px;cursor:pointer;background:var(--bg4);flex-shrink:0;transition:all .15s}
+.cv-hp-adj.dmg{color:var(--red)}
+.cv-hp-adj.dmg:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.cv-hp-adj.heal{color:var(--grn)}
+.cv-hp-adj.heal:hover{background:var(--grn);color:#000;border-color:var(--grn)}
+
+/* ─── BACKSTORY + NOTECARDS (synced from sheet) ──── */
+.dm-backstory{font-size:11px;color:var(--tx2);line-height:1.65;background:var(--bg3);border:1px solid var(--bdr);border-left:3px solid var(--acc);border-radius:var(--r);padding:9px 12px;white-space:pre-wrap;max-height:160px;overflow:auto}
+.dm-nc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px}
+.dm-nc{background:#f6f1e3;border-radius:5px;padding:8px 10px 10px;box-shadow:0 3px 9px rgba(0,0,0,.4);transform:rotate(-.5deg);transition:transform .12s,box-shadow .12s;
+  background-image:repeating-linear-gradient(#f6f1e3,#f6f1e3 17px,#d8cdb0 17px,#d8cdb0 18px)}
+.dm-nc:nth-child(even){transform:rotate(.6deg)}
+.dm-nc:hover{transform:rotate(0) translateY(-2px);box-shadow:0 7px 16px rgba(0,0,0,.5)}
+.dm-nc-title{font-size:12px;font-weight:800;color:#2a2620;line-height:18px;margin-bottom:2px}
+.dm-nc-body{font-size:10.5px;color:#3a352c;line-height:18px;white-space:pre-wrap}
+.dm-nc.nc-amber{border-top:3px solid #e3a93b}
+.dm-nc.nc-blue{border-top:3px solid #5b9bd5}
+.dm-nc.nc-green{border-top:3px solid #7aa83f}
+.dm-nc.nc-pink{border-top:3px solid #d678a0}
+.dm-nc.nc-plain{border-top:3px solid #cfc8b6}
+
+/* display-font polish on key numbers/titles */
+.setup-card h2,.instr-card h2{font-family:var(--font-display);font-weight:700}
+.init-init{font-family:var(--font-display)}
+.cv-ac{font-family:var(--font-display)}
+.detail-sec-lbl,.dm-global-lbl,.moves-preview-lbl{font-family:var(--font-display);letter-spacing:.6px}
+
+/* ─── PLAYER CARDS AS MINI TCG CARDS ─────────────── */
+.player-card{--t:var(--acc);position:relative;overflow:hidden;border:2px solid color-mix(in srgb,var(--t) 65%,var(--bdr));border-radius:16px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--t) 14%,var(--bg2)),var(--bg2) 30%,color-mix(in srgb,var(--bg2) 90%,#000));
+  box-shadow:0 12px 26px rgba(0,0,0,.5),inset 0 2px 0 rgba(255,255,255,.16);transition:transform .15s,box-shadow .2s,border-color .2s}
+.player-card::after{content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;z-index:6;mix-blend-mode:color-dodge;opacity:0;transition:opacity .25s;
+  background:repeating-linear-gradient(115deg,transparent 0 6%,rgba(255,255,255,.4) 8%,rgba(120,220,255,.3) 10%,rgba(255,120,220,.26) 12%,transparent 16%),linear-gradient(115deg,transparent 32%,rgba(255,255,255,.45) 50%,transparent 68%);
+  background-size:300% 300%,250% 250%;background-position:30% 40%,80% 50%}
+.player-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--t) 80%,#fff)}
+.player-card:hover::after{opacity:.34}
+.player-card.open{box-shadow:0 0 0 1px var(--t),0 14px 34px color-mix(in srgb,var(--t) 22%,transparent)}
+.pc-head{position:relative;z-index:2;background:linear-gradient(180deg,color-mix(in srgb,var(--t) 20%,transparent),transparent 70%);border-radius:14px 14px 0 0}
+.pc-charname{font-family:var(--font-display);font-size:18px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.pc-name-row .type-chip{background:linear-gradient(180deg,color-mix(in srgb,var(--t) 92%,#fff),var(--t))!important;box-shadow:0 2px 6px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.3)}
+.lvl-badge{font-family:var(--font-display);font-weight:700}
+/* player portrait (their board token's art): small gold-framed TCG art window; initials on a type glow when there's none */
+.pc-art{position:relative;flex:none;width:42px;height:42px;border:2px solid #d9b23a;border-radius:5px;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 38% 32%,color-mix(in srgb,var(--t) 50%,#fff),color-mix(in srgb,var(--t) 62%,#000) 80%);box-shadow:0 0 0 1px #7a5c10,0 3px 8px rgba(0,0,0,.45);
+  font-family:var(--font-display);font-size:15px;font-weight:700;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.45)}
+.pc-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pc-art.big{width:132px;height:132px;border-width:4px;border-radius:7px;font-size:42px;margin:0 auto 12px;box-shadow:0 0 0 1px #7a5c10,inset 0 0 0 1px rgba(0,0,0,.45),0 6px 14px rgba(0,0,0,.45)}
+.vital-track,.cv-hp-track{height:7px;border-radius:5px;box-shadow:inset 0 1px 2px rgba(0,0,0,.5)}
+.vital-nums{font-family:var(--font-display)}
+.moves-preview,.pc-detail{position:relative;z-index:2}
+.move-tag{border-radius:6px;font-family:var(--font-display);font-weight:600}
+.stat-pill{border-radius:6px}
+.stat-pill strong{font-family:var(--font-display)}
+
+/* ═══ POKÉDEX DEVICE SHELL (DM) ═══ */
+:root{--screen:#0e1320;--pdk:color-mix(in srgb,var(--acc) 55%,#150f24);--pdlt:color-mix(in srgb,var(--acc) 80%,#fff)}
+body{background:var(--screen)}
+.topbar{height:auto;min-height:64px;display:flex;align-items:center;gap:14px;padding:9px 20px;
+  background:linear-gradient(180deg,var(--pdlt),var(--acc) 52%,var(--pdk));border-bottom:5px solid var(--pdk);
+  box-shadow:0 5px 0 rgba(0,0,0,.22),0 12px 26px rgba(0,0,0,.5);backdrop-filter:none}
+.topbar::after{display:none}
+.pdex-lens{width:42px;height:42px;border-radius:50%;flex-shrink:0;background:radial-gradient(circle at 34% 30%,#cdeeff 0 5px,#4aa3e0 24%,#1c6fb5 62%,#0d3f73);border:3px solid #fff;box-shadow:0 0 0 3px var(--pdk),0 3px 7px rgba(0,0,0,.5),inset 0 2px 5px rgba(255,255,255,.5)}
+.pdex-leds{display:flex;gap:6px;flex-shrink:0}
+.pdex-leds .led{width:12px;height:12px;border-radius:50%;border:2px solid rgba(0,0,0,.25)}
+.led.r{background:radial-gradient(circle at 35% 30%,#ffb3b3,#e53e3e);box-shadow:0 0 7px #ff5d5d}
+.led.y{background:radial-gradient(circle at 35% 30%,#fff0a8,#f6c700);box-shadow:0 0 7px #ffd84d}
+.led.g{background:radial-gradient(circle at 35% 30%,#b3ffd1,#22c55e);box-shadow:0 0 7px #3ddf93}
+.brand-plate{background:rgba(0,0,0,.34);border:2px solid rgba(0,0,0,.22);border-radius:12px;padding:5px 13px;flex-shrink:0;box-shadow:inset 0 1px 4px rgba(0,0,0,.55)}
+.logo{font-family:var(--font-display);font-weight:700;font-size:20px;line-height:.92;color:#FFCB05;display:flex;flex-direction:column;text-shadow:1.5px 1.5px 0 #2A5CAA,-1px -1px 0 #2A5CAA,1px -1px 0 #2A5CAA,-1px 1px 0 #2A5CAA,0 3px 5px rgba(0,0,0,.5)}
+.logo-sub{font-size:9px;letter-spacing:2px;color:#fff;text-shadow:1px 1px 0 #2A5CAA}
+.topbar-title{font-family:var(--font-display);font-weight:700;font-size:18px;color:#fff;text-shadow:0 1px 0 var(--pdk),0 2px 5px rgba(0,0,0,.45)}
+.conn-badge{background:rgba(0,0,0,.28)!important;border:2px solid rgba(255,255,255,.4)!important;color:#fff!important}
+.conn-badge .conn-dot{background:#cbd5e1}
+.conn-badge.live .conn-dot{background:#3ddf93;box-shadow:0 0 7px #3ddf93}
+.conn-badge.error .conn-dot{background:#ff5d5d;box-shadow:0 0 7px #ff5d5d}
+.countdown-lbl{color:rgba(255,255,255,.82)}
+.refresh-btn{background:rgba(0,0,0,.28);border:2px solid rgba(255,255,255,.35);color:#fff}
+.refresh-btn:hover{background:rgba(0,0,0,.45);color:#fff;border-color:#fff}
+.dash{max-width:1240px;margin:18px auto;padding:22px 22px 70px;background:var(--screen);border:4px solid var(--pdk);border-radius:16px;
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,.5),inset 0 6px 34px rgba(0,0,0,.55),0 14px 30px rgba(0,0,0,.45);position:relative;overflow:hidden}
+.dash::before{content:"";position:absolute;width:360px;height:360px;right:-100px;top:-120px;border-radius:50%;pointer-events:none;opacity:.06;z-index:0;
+  background:radial-gradient(circle at 50% 50%,transparent 0 54px,var(--acc) 54px 66px,transparent 66px),linear-gradient(180deg,var(--acc) 0 49%,#fff 49% 51%,#222 51%)}
+.dash>*{position:relative;z-index:1}
+@media(max-width:768px){.topbar{min-height:0;padding:8px 12px}.brand-plate{padding:4px 10px}.logo{font-size:17px}.pdex-lens{width:34px;height:34px}.dash{padding:16px 14px 60px;border-width:3px}}
+
+/* scene panel sections */
+.scene-sec{font-family:var(--font-display);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--acc);margin:14px 0 7px;padding-top:12px;border-top:1px solid var(--bdr)}
+.scene-sec:first-of-type{border-top:none;padding-top:0;margin-top:6px}
+
+/* player-reported status conditions (#4) */
+.pc-conds{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;position:relative;z-index:2}
+.pc-cond{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--red-bg);border:1px solid var(--red-bdr);color:var(--red)}
+
+/* ═══ BRIGHT & VIBRANT POKÉDEX (DM) ═══ */
+body{background:
+  radial-gradient(1100px 560px at 82% -8%, color-mix(in srgb,var(--acc) 30%,transparent), transparent 58%),
+  radial-gradient(900px 520px at -8% 4%, color-mix(in srgb,var(--acc) 18%,transparent), transparent 55%),
+  linear-gradient(180deg, color-mix(in srgb,var(--acc) 15%,#0c1018), #0a0e16 60%);background-attachment:fixed}
+.topbar{overflow:hidden}
+.topbar::before{content:"";position:absolute;left:0;right:0;top:0;height:52%;pointer-events:none;z-index:0;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.05) 70%,transparent)}
+.topbar>*{position:relative;z-index:1}
+.dash{background:
+  radial-gradient(135% 80% at 50% -10%, color-mix(in srgb,var(--acc) 34%,#1a2236) 0%, color-mix(in srgb,var(--acc) 14%,#10162a) 52%, color-mix(in srgb,var(--acc) 9%,#0c1018) 100%);
+  border:4px solid color-mix(in srgb,var(--acc) 68%,#150f24);
+  box-shadow:inset 0 0 70px color-mix(in srgb,var(--acc) 18%,transparent),inset 0 0 0 3px rgba(0,0,0,.4),0 14px 32px rgba(0,0,0,.5)}
+.slide-panel,.dm-global{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 15%,#161d2e),color-mix(in srgb,var(--acc) 7%,#11172690));border:1px solid color-mix(in srgb,var(--acc) 28%,var(--bdr))}
+.panel-head{color:color-mix(in srgb,var(--acc) 55%,#fff)}
+.dice-result,.init-row,.dice-inp,.manage-inp{background:color-mix(in srgb,var(--acc) 10%,var(--bg3))}
+
+/* per-type neutral base + screen glass (parity with the player sheet) */
+:root{--ink:#0b0b11;--ink2:#15151f}
+body{background:
+  radial-gradient(950px 500px at 82% -6%, color-mix(in srgb,var(--acc) 40%,transparent), transparent 55%),
+  linear-gradient(180deg, color-mix(in srgb,var(--acc) 24%,var(--ink)) 0%, color-mix(in srgb,var(--acc) 14%,var(--ink)) 100%) fixed}
+.dash{min-height:80vh;background:
+  radial-gradient(135% 70% at 50% -8%, color-mix(in srgb,var(--acc) 30%,var(--ink2)) 0%, color-mix(in srgb,var(--acc) 15%,var(--ink)) 50%, color-mix(in srgb,var(--acc) 9%,var(--ink)) 100%);
+  border:4px solid color-mix(in srgb,var(--acc) 68%,#000);
+  box-shadow:inset 0 0 90px color-mix(in srgb,var(--acc) 20%,transparent),inset 0 2px 0 color-mix(in srgb,var(--acc) 42%,transparent),inset 0 0 0 3px rgba(0,0,0,.32),0 18px 46px rgba(0,0,0,.55);position:relative}
+.dash::after{content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;z-index:0;
+  background:radial-gradient(130% 50% at 50% -22%, rgba(255,255,255,.10), transparent 60%),radial-gradient(150% 95% at 50% 128%, rgba(0,0,0,.5), transparent 52%)}
+.dash>*{position:relative;z-index:1}
+.slide-panel,.dm-global{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 16%,var(--ink2)),color-mix(in srgb,var(--acc) 8%,var(--ink)));border:1px solid color-mix(in srgb,var(--acc) 28%,var(--bdr))}
+
+/* party-watch overview */
+.party-watch{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:14px}
+.pw-cell{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 14%,var(--ink2)),var(--ink));border:1px solid var(--bdr2);border-radius:11px;padding:9px 11px}
+.pw-cell.low{border-color:var(--gold-bdr)}
+.pw-cell.downed{border-color:var(--red-bdr);background:linear-gradient(180deg,var(--red-bg),var(--ink));animation:pwPulse 1.2s ease-in-out infinite}
+@keyframes pwPulse{50%{box-shadow:0 0 16px rgba(255,93,93,.45)}}
+.pw-top{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.pw-name{font-family:var(--font-display);font-weight:700;font-size:13px;color:#fff;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pw-alert{font-size:8px;font-weight:800;letter-spacing:.5px;background:var(--red);color:#fff;padding:2px 6px;border-radius:10px}
+.pw-alert.low{background:var(--gold);color:#1a1205}
+.pw-cnd{font-size:9px;color:var(--red);font-weight:700}
+.pw-track{height:7px;background:#06060a;border-radius:5px;overflow:hidden}
+.pw-fill{height:100%;border-radius:5px;transition:width .3s}
+.pw-hp{font-family:var(--font-display);font-size:11px;color:var(--tx2);margin-top:4px;text-align:right}
+@media(max-width:680px){.dash{padding:14px 11px 60px;border-width:3px}.player-grid{grid-template-columns:1fr}.dm-toolbar{gap:6px}.tool-btn,.vt-btn{padding:8px 12px;font-size:12px}}
+
+/* ── living ambience + roll popup (ported from the player sheet) ── */
+.ambience{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;border-radius:inherit}
+.mote{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--acc) 60%,transparent);box-shadow:0 0 8px var(--acc);opacity:0}
+.m-drift{animation:moteDrift ease-in-out infinite}
+@keyframes moteDrift{0%{transform:translate(0,0);opacity:0}25%{opacity:.5}50%{transform:translate(22px,-26px);opacity:.5}80%{opacity:.3}100%{transform:translate(-12px,-54px);opacity:0}}
+.rollpop{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .2s}
+.rollpop.show{opacity:1;pointer-events:auto;background:rgba(0,0,0,.5)}
+.rp-card{position:relative;background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 24%,#11131c),#0b0d14);border:2px solid color-mix(in srgb,var(--acc) 60%,#000);border-radius:18px;padding:22px 30px;min-width:230px;text-align:center;box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 40%,transparent),0 24px 60px rgba(0,0,0,.6),0 0 56px color-mix(in srgb,var(--acc) 32%,transparent);transform:scale(.8);opacity:0;animation:rpIn .35s cubic-bezier(.2,1.3,.4,1) forwards}
+@keyframes rpIn{to{transform:scale(1);opacity:1}}
+.rp-x{position:absolute;top:7px;right:11px;background:none;border:none;color:var(--tx3);font-size:16px;cursor:pointer}
+.rp-die{font-size:34px;line-height:1}
+.rp-die.tumble{animation:rpTumble .6s ease-out}
+@keyframes rpTumble{0%{transform:rotate(0) scale(.5)}60%{transform:rotate(380deg) scale(1.25)}100%{transform:rotate(360deg) scale(1)}}
+.rp-name{font-family:var(--font-display);font-weight:700;font-size:14px;color:var(--tx2);margin:4px 0 2px;text-transform:uppercase;letter-spacing:.5px}
+.rp-total{font-family:var(--font-display);font-weight:700;font-size:52px;line-height:1;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.rp-total.crit{color:#ffe066}.rp-total.fumble{color:var(--red)}
+.rp-pp{font-size:12px;color:var(--tx3);margin-top:8px}
+.rp-flag{margin-top:10px;font-family:var(--font-display);font-weight:700;font-size:14px}
+.rp-flag.crit{color:#ffe066;text-shadow:0 0 12px rgba(255,206,77,.85);animation:critPulse .6s ease-in-out infinite alternate}
+@keyframes critPulse{to{transform:scale(1.07)}}
+.rp-flag.fumble{color:var(--red)}
+.rollpop.crit .rp-card{border-color:#ffce4d;box-shadow:0 0 0 2px rgba(255,206,77,.6),0 24px 60px rgba(0,0,0,.6),0 0 72px rgba(255,206,77,.5)}
+body.reduce-motion .ambience{display:none}
+body.reduce-motion .rp-card,body.reduce-motion .rp-die.tumble,body.reduce-motion .rp-flag.crit{animation:none}
+
+/* ── ENCOUNTER rows ── */
+.enc-row{display:flex;align-items:center;gap:9px;background:color-mix(in srgb,var(--acc) 8%,var(--ink2));border:1px solid var(--bdr);border-radius:10px;padding:8px 10px;margin-bottom:6px;transition:all .15s}
+.enc-row.active-turn{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 20%,var(--ink2));box-shadow:0 0 0 1px var(--acc-bdr),0 0 16px var(--acc-bg)}
+.enc-row.downed{opacity:.6;border-color:var(--red-bdr)}
+.enc-init{width:42px;flex-shrink:0;background:var(--bg4);border:1px solid var(--bdr2);border-radius:7px;color:#fff;font-family:var(--font-display);font-weight:700;font-size:16px;text-align:center;padding:6px 2px;outline:none}
+.enc-main{flex:1;min-width:0}
+.enc-top{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.enc-name{font-family:var(--font-display);font-weight:700;font-size:14px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.enc-name-inp{flex:1;min-width:60px;background:var(--bg4);border:1px solid var(--bdr2);border-radius:6px;color:#fff;font-family:var(--font-display);font-weight:700;font-size:13px;padding:3px 7px;outline:none}
+.enc-types{display:flex;gap:3px}
+.enc-tdot{width:11px;height:11px;border-radius:50%;box-shadow:inset 0 1px 1px rgba(255,255,255,.5)}
+.enc-down{font-size:8px;font-weight:800;background:var(--red);color:#fff;padding:2px 6px;border-radius:10px}
+.enc-hp{display:flex;align-items:center;gap:7px}
+.enc-hp-bar{flex:1;height:7px;background:#06060a;border-radius:5px;overflow:hidden}
+.enc-hp-fill{height:100%;border-radius:5px;transition:width .3s}
+.enc-hp-n{font-family:var(--font-display);font-size:11px;color:var(--tx2);min-width:50px;text-align:right}
+.enc-nohp{font-size:10px;color:var(--tx3);font-style:italic}
+.enc-conds{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.enc-cond{font-size:9px;font-weight:700;background:var(--red-bg);border:1px solid var(--red-bdr);color:var(--red);padding:1px 7px;border-radius:10px}
+.enc-acts{display:flex;align-items:center;gap:3px;flex-shrink:0;flex-wrap:wrap;max-width:152px;justify-content:flex-end}
+.enc-hb{border:1px solid var(--bdr2);border-radius:6px;font-size:11px;font-weight:700;padding:5px 7px;cursor:pointer;background:var(--bg4);line-height:1}
+.enc-hb.dmg{color:var(--red)}.enc-hb.dmg:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.enc-hb.heal{color:var(--grn)}.enc-hb.heal:hover{background:var(--grn);color:#06080d;border-color:var(--grn)}
+.enc-foe{background:none;border:1px solid var(--bdr2);border-radius:6px;font-size:12px;padding:4px 6px;cursor:pointer}
+.enc-foe:hover{border-color:var(--acc);background:var(--acc-bg)}
+@media(max-width:600px){.enc-row{flex-wrap:wrap}.enc-acts{max-width:none;width:100%;justify-content:flex-start;margin-top:5px}}
+
+/* encounter view header + quick-add */
+.enc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.enc-head-title{font-family:var(--font-display);font-weight:700;font-size:16px;color:#fff}
+.enc-head-title span{font-size:10px;color:var(--tx3);font-weight:400}
+.enc-quickadd{display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:color-mix(in srgb,var(--acc) 10%,var(--ink2));border:1px solid var(--bdr2);border-radius:10px;padding:9px 12px;margin-bottom:12px}
+.enc-sb{margin-top:-2px}.sb-lvl{font-size:11px;color:var(--tx2);font-weight:700;display:flex;align-items:center;gap:5px}
+.sb-card{background:color-mix(in srgb,var(--acc) 7%,var(--ink2));border:1px solid var(--bdr2);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.sb-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}.sb-top b{font-size:15px}.sb-top span{font-size:11px;color:var(--tx2)}
+.sb-stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.sb-st{background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:5px;text-align:center}.sb-st label{display:block;font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--tx2)}
+.sb-st input{width:100%;background:transparent;border:0;color:var(--tx);font-size:17px;font-weight:800;text-align:center;outline:none}.sb-st i{font-style:normal;font-size:11px;color:var(--tx2)}
+.sb-hp{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--tx2)}.sb-hp input{width:70px}
+.sb-btns{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.sb-note{font-size:10.5px;color:var(--tx3);margin-top:6px}
+.enc-st{font-size:10px;color:var(--tx2);letter-spacing:.3px;margin-top:2px}
+@media(max-width:600px){.sb-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.enc-qa-lbl{font-family:var(--font-display);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--acc)}
+.enc-next{background:var(--acc)!important;color:#0a0612!important;border-color:var(--acc)!important;font-weight:700}
+
+/* encounter HP float */
+.enc-row{position:relative}
+.enc-float{position:absolute;left:54px;top:-2px;font-family:var(--font-display);font-weight:700;font-size:20px;pointer-events:none;z-index:5;text-shadow:0 2px 5px rgba(0,0,0,.6);animation:encFloat 1s ease-out forwards}
+.enc-float.dmg{color:#ff5d5d}.enc-float.heal{color:#3ddf93}
+@keyframes encFloat{0%{opacity:0;transform:translateY(4px) scale(.7)}25%{opacity:1;transform:translateY(-4px) scale(1.1)}100%{opacity:0;transform:translateY(-30px) scale(1)}}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="pdex-lens" aria-hidden="true"></div>
+  <div class="pdex-leds" aria-hidden="true"><span class="led r"></span><span class="led y"></span><span class="led g"></span></div>
+  <div class="brand-plate"><span class="logo">PKM<span class="logo-sub">×D&D</span></span></div>
+  <span class="topbar-title">DM Dashboard</span>
+  <div class="conn-badge offline" id="connBadge"><div class="conn-dot"></div><span id="connTxt">Offline</span></div>
+  <span class="countdown-lbl" id="countdownLbl"></span>
+  <button class="refresh-btn" id="boardBtn" onclick="openBoard()" style="display:none" title="Open the live board (scenes, map, tokens)">🗺 Board</button>
+  <button class="refresh-btn" id="refreshBtn" onclick="doRefresh()" style="display:none">⟳ Refresh</button>
+</nav>
+
+<!-- SETUP SCREEN -->
+<div class="setup" id="setupScreen">
+
+  <!-- Left: connect form -->
+  <div class="setup-card">
+    <h2>Connect to Campaign</h2>
+    <p>First time? Click <strong>Create a New Campaign</strong>. Already have one? Paste its ID and click <strong>Connect</strong>.</p>
+
+    <label class="lbl">Campaign ID</label>
+    <input class="inp mono" id="campaignInp" placeholder="e.g. a3f9c2b1e8d047f6">
+
+    <label class="lbl">Your name (DM)</label>
+    <input class="inp" id="dmNameInp" placeholder="e.g. Coach, DM">
+
+    <button class="btn btn-acc" id="connectBtn" onclick="connect()">Connect</button>
+    <div style="text-align:center;margin:10px 0;font-size:11px;color:var(--tx3)">— or —</div>
+    <button class="btn" id="createBtn" onclick="dmCreateCampaign()" style="background:var(--bg3);color:var(--tx)">Create a New Campaign</button>
+    <div class="err-msg" id="errMsg"></div>
+    <!-- the sync servers are already filled in with the group's database, so they're tucked away -->
+    <details class="adv"><summary>Advanced: sync server</summary>
+    <label class="lbl">Live sync server — Firebase URL (recommended)</label>
+    <input class="inp mono" id="fbInp" placeholder="https://your-project-default-rtdb.firebaseio.com" autocomplete="off">
+    <label class="lbl">Old relay URL (only used if Firebase is blank)</label>
+    <input class="inp mono" id="relayInp" value="https://script.google.com/macros/s/AKfycbwEJuRhKwxWMfOEATrSOuruI5-4cF3MTg9o3c9fecOHz8vqzfJ0q4Ml76xy7hdxUO68AQ/exec" placeholder="https://script.google.com/macros/s/…/exec">
+    </details>
+  </div>
+
+  <!-- Right: setup instructions -->
+  <div class="instr-card">
+    <h2>🎲 How it works</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Create one campaign for the whole game</div>
+      <div class="step-desc">Click <strong>Create a New Campaign</strong> once. Every session uses the same campaign, so characters, maps and models carry over.</div></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Send the ID to your players</div>
+      <div class="step-desc">Click <strong>Copy invite</strong> at the top of your dashboard and paste it in the group chat. Each player opens their sheet, taps <strong>No campaign</strong>, pastes the ID with their name and taps <strong>Join &amp; Sync</strong>. Their character appears here live.</div></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Build the map and play</div>
+      <div class="step-desc"><strong>🗺 Board</strong> opens the live 3D board: build scenes by hand or describe them in words, then show them to the players. <strong>⚔ Encounter</strong> runs initiative and foes, and <strong>🎬 Scene</strong> sets weather and sends messages to every sheet.</div></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Next time</div>
+      <div class="step-desc">This dashboard remembers your campaign and connects by itself. Everything is saved in the group's database, so nothing needs setting up.</div></div></div>
+    <details class="adv"><summary>Old Google Script relay setup (not needed: the group uses Firebase)</summary>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Open Google Apps Script</div>
+        <div class="step-desc">Go to <a href="https://script.google.com" target="_blank" style="color:var(--acc)">script.google.com</a> and sign in with any Google account. Click <strong>New project</strong>.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Paste the backend code</div>
+        <div class="step-desc">Delete everything in the editor and paste this code:</div>
+        <div class="code-block" id="scriptCode">const PROPS = PropertiesService.getScriptProperties();
+
+function doGet(e) {
+  const id = e.parameter.id;
+  if (!id) return respond({error:'Missing id'});
+  const raw = PROPS.getProperty('campaign_'+id);
+  return respond(raw ? JSON.parse(raw) : {});
+}
+
+function doPost(e) {
+  try {
+    const b = JSON.parse(e.postData.contents);
+    if (!b.id) {
+      const id = Utilities.getUuid().replace(/-/g,'').slice(0,16);
+      PROPS.setProperty('campaign_'+id, JSON.stringify({}));
+      return respond({id});
+    }
+    const raw = PROPS.getProperty('campaign_'+b.id);
+    const c = raw ? JSON.parse(raw) : {};
+    c[b.playerKey] = {...b.data, _updated: Date.now()};
+    PROPS.setProperty('campaign_'+b.id, JSON.stringify(c));
+    return respond({ok:true});
+  } catch(err) { return respond({error:err.message}); }
+}
+
+function doOptions(e) { return respond({}); }
+
+function respond(data) {
+  const o = ContentService.createTextOutput(JSON.stringify(data));
+  o.setMimeType(ContentService.MimeType.JSON);
+  return o;
+}</div>
+        <button class="copy-code-btn" onclick="copyCode()">Copy</button>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Deploy as a Web App</div>
+        <div class="step-desc">Click <strong>Deploy → New deployment</strong>. Set type to <strong>Web app</strong>. Under "Who has access" choose <strong>Anyone</strong>. Click Deploy. Copy the URL that appears — it looks like <code style="font-size:10px;background:var(--bg3);padding:1px 5px;border-radius:3px">https://script.google.com/macros/s/ABC…/exec</code></div>
+        <div class="warning-box">⚠ You must set access to "Anyone" (not "Anyone with Google Account") for the character sheets to sync without requiring login.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Paste the URL here + in every player sheet</div>
+        <div class="step-desc">Paste the relay URL into the box on the left and into every player's sheet (the "No Campaign" button → relay URL field). Then one player creates a campaign, gets an ID, and everyone else joins with that ID.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">That's it — permanent from here</div>
+        <div class="step-desc">The relay URL and campaign ID never change. Everyone just opens their HTML file and it syncs automatically. No server, no subscription, no expiry.</div>
+      </div>
+    </div>
+    </details>
+  </div>
+</div>
+
+<!-- DASHBOARD SCREEN -->
+<div class="dash" id="dashScreen">
+  <div id="ambience" class="ambience" aria-hidden="true"></div>
+  <div class="dash-hdr">
+    <span style="font-size:11px;color:var(--tx2)">Campaign:</span>
+    <span class="campaign-id-badge" id="dispCampaignId">—</span>
+    <button class="copy-btn" onclick="copyId()" title="Copies the ID only">Copy ID</button>
+    <button class="copy-btn" id="inviteBtn" onclick="copyInvite()" title="Copies a message for the group chat: the campaign ID and how to join">✉ Copy invite</button>
+    <span class="last-upd" id="lastUpd"></span>
+    <button class="disco-btn" onclick="disconnect()">Disconnect</button>
+  </div>
+
+  <!-- DM TOOLBAR -->
+  <div class="dm-toolbar">
+    <div class="view-toggle">
+      <button class="vt-btn on" id="vtCards" onclick="setView('cards')">Cards</button>
+      <button class="vt-btn" id="vtCombat" onclick="setView('encounter')">⚔ Encounter</button>
+    </div>
+    <div class="toolbar-spacer"></div>
+    <button class="tool-btn" id="diceToggle" onclick="togglePanel('dicePanel')">🎲 Dice</button>
+    <button class="tool-btn" id="feedToggle" onclick="togglePanel('feedPanel')">📜 Roll Feed</button>
+    <button class="tool-btn" id="envToggle" onclick="togglePanel('envPanel')">🎬 Scene</button>
+    <button class="tool-btn" id="showHiddenBtn" onclick="toggleShowHidden()" style="display:none">Show hidden (0)</button>
+  </div>
+
+  <!-- SCENE PANEL — weather/terrain (#5) + broadcast (#1) + foe (#3) -->
+  <div class="slide-panel" id="envPanel" style="display:none">
+    <div class="panel-head">🎬 Scene <span style="font-size:10px;color:var(--tx3);font-weight:400">— everything here is pushed live to every player's sheet</span></div>
+
+    <div class="scene-sec">Weather &amp; Terrain</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+      <div class="manage-field"><label>Weather</label>
+        <select class="manage-inp" id="envWeather" style="width:140px">
+          <option value="">— none —</option><option>Rain</option><option>Snow</option><option>Sand</option><option>Harsh Sun</option><option>Partly Cloudy</option>
+        </select></div>
+      <div class="manage-field"><label>Terrain</label>
+        <select class="manage-inp" id="envTerrain" style="width:140px">
+          <option value="">— none —</option><option>Electric</option><option>Misty</option><option>Grassy</option><option>Psychic</option>
+        </select></div>
+      <button class="dice-roll-btn" onclick="setEnv()">Set</button>
+      <button class="init-mini-btn" onclick="clearEnv()">Clear</button>
+    </div>
+    <div id="envCurrent" style="font-size:11px;color:var(--tx2);margin-top:8px"></div>
+
+    <div class="scene-sec">📣 Broadcast to party</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input class="manage-inp" id="bcastInp" placeholder="e.g. A wild Gyarados appears!" style="flex:1;min-width:180px" onkeydown="if(event.key==='Enter')sendBroadcast()">
+      <button class="dice-roll-btn" onclick="sendBroadcast()">Send</button>
+      <button class="init-mini-btn" onclick="clearBroadcast()">Clear</button>
+    </div>
+    <div id="bcastCurrent" style="font-size:11px;color:var(--tx2);margin-top:8px"></div>
+
+    <div class="scene-sec">⚔ Current foe <span style="font-weight:400;color:var(--tx3)">— flags super-effective moves on players' cards</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+      <div class="manage-field"><label>Type 1</label><select class="manage-inp" id="foeT1" style="width:130px"></select></div>
+      <div class="manage-field"><label>Type 2</label><select class="manage-inp" id="foeT2" style="width:130px"></select></div>
+      <button class="dice-roll-btn" onclick="setFoe()">Set foe</button>
+      <button class="init-mini-btn" onclick="clearFoe()">Clear</button>
+    </div>
+    <div id="foeCurrent" style="font-size:11px;color:var(--tx2);margin-top:8px"></div>
+  </div>
+
+  <!-- SHARED ROLL FEED (#3) -->
+  <div class="slide-panel" id="feedPanel" style="display:none">
+    <div class="panel-head">📜 Party Roll Feed <span style="font-size:10px;color:var(--tx3);font-weight:400">— players' in-app rolls appear here</span></div>
+    <div class="dice-log" id="rollFeed" style="max-height:220px"><div class="init-empty">No rolls yet. When a player taps 🎲 Roll on a move, it shows up here.</div></div>
+  </div>
+
+  <!-- DICE ROLLER PANEL -->
+  <div class="slide-panel" id="dicePanel" style="display:none">
+    <div class="panel-head">🎲 Dice Roller</div>
+    <div class="dice-btns">
+      <button class="dice-btn" onclick="rollDie(20)">d20</button>
+      <button class="dice-btn" onclick="rollDie(12)">d12</button>
+      <button class="dice-btn" onclick="rollDie(10)">d10</button>
+      <button class="dice-btn" onclick="rollDie(8)">d8</button>
+      <button class="dice-btn" onclick="rollDie(6)">d6</button>
+      <button class="dice-btn" onclick="rollDie(4)">d4</button>
+      <button class="dice-btn" onclick="rollDie(100)">d100</button>
+    </div>
+    <div class="dice-custom">
+      <input type="number" id="diceCount" value="1" min="1" max="20" class="dice-inp" title="Number of dice">
+      <span style="color:var(--tx3)">d</span>
+      <input type="number" id="diceSides" value="20" min="2" max="100" class="dice-inp" title="Sides">
+      <span style="color:var(--tx3)">+</span>
+      <input type="number" id="diceMod" value="0" class="dice-inp" title="Modifier">
+      <button class="dice-roll-btn" onclick="rollCustom()">Roll</button>
+      <label class="adv-label"><input type="checkbox" id="diceAdv"> adv</label>
+      <label class="adv-label"><input type="checkbox" id="diceDis"> dis</label>
+    </div>
+    <div class="dice-result" id="diceResult">Roll a die to begin…</div>
+    <div class="dice-log" id="diceLog"></div>
+  </div>
+
+  <div class="dm-global">
+    <div class="dm-global-lbl">DM Session Notes (saved locally, not synced to players)</div>
+    <textarea class="dm-global-inp" id="dmGlobalNotes" placeholder="Encounter notes, plot hooks, loot…"></textarea>
+  </div>
+
+  <!-- CARDS VIEW -->
+  <div class="player-grid" id="playerGrid">
+    <div class="loading"><div class="loader"></div><br>Loading…</div>
+  </div>
+
+  <!-- ENCOUNTER VIEW — folds in Combat View + Party Watch -->
+  <div id="encounterView" style="display:none">
+    <div class="enc-head">
+      <div class="enc-head-title">⚔ Encounter <span>— order, HP &amp; turn sync live to every player</span></div>
+      <div class="init-head-btns">
+        <button class="init-mini-btn" onclick="rollInitForAll()" title="Add the players. They type or roll their initiative on their sheet.">▶ Start</button>
+        <button class="init-mini-btn" onclick="rollMissingInit()" title="Roll d20 + DEX for everyone who hasn't got an initiative yet">🎲 Roll missing</button>
+        <button class="init-mini-btn" onclick="addInitRow()" title="Add a blank custom combatant">+ Custom</button>
+        <button class="init-mini-btn enc-next" onclick="nextTurn()" title="Advance to next turn">⏭ Next turn</button>
+        <button class="init-mini-btn" onclick="resetInit()" title="End the encounter">■ End</button>
+      </div>
+    </div>
+    <div class="enc-quickadd">
+      <span class="enc-qa-lbl">Quick-add foe</span>
+      <select class="manage-inp" id="monsterPreset" style="min-width:180px"></select>
+      <button class="dice-roll-btn" onclick="addMonster()">+ Add to fight</button>
+      <span class="init-round" style="margin-left:auto">Round <span id="initRound">1</span></span>
+    </div>
+    <div class="enc-quickadd enc-sb">
+      <span class="enc-qa-lbl">📊 Pokémon stats</span>
+      <input class="manage-inp" id="sbName" list="sbNames" placeholder="Pokémon name" style="width:170px" onkeydown="if(event.key==='Enter')sbMake()"><datalist id="sbNames"></datalist>
+      <label class="sb-lvl">Lv <input class="manage-inp" id="sbLvl" type="number" min="1" max="100" value="1" style="width:58px" onkeydown="if(event.key==='Enter')sbMake()"></label>
+      <button class="dice-roll-btn" onclick="sbMake()">Make</button>
+      <select class="manage-inp" id="sbSaved" style="width:auto;max-width:200px" onchange="sbLoad(this.value);this.value=''"><option value="">Saved stat blocks…</option></select>
+    </div>
+    <div id="sbOut"></div>
+    <div class="init-list" id="initList">
+      <div class="init-empty">Tap <b>▶ Start</b> to add your players, then add foes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ROLL RESULT POPUP -->
+<div id="rollPop" class="rollpop" onclick="if(event.target===this)this.classList.remove('show')"></div>
+
+<script>
+const RELAY_STORAGE_KEY = 'pokeDnD_DM_relay';
+const DM_SK = 'pokeDnD_DM_v2';
+const TYPE_COLORS={Fire:'#FF6B35',Water:'#4A90D9',Ice:'#74CEC0',Grass:'#7AC74C',Electric:'#F7D02C',Bug:'#A6B91A',Fighting:'#C22E28',Psychic:'#F95587',Dark:'#705746',Ghost:'#735797',Poison:'#A33EA1',Rock:'#B6A136',Ground:'#E2BF65',Steel:'#B7B7CE',Dragon:'#6F35FC',Flying:'#A98FF3',Fairy:'#D685AD',Normal:'#A8A878'};
+const STAT_ABBR=['STR','DEX','CON','INT','WIS','CHA'];
+const PP_MAX={1:10,2:13,3:16,4:21,5:24,6:27,7:30,8:35,9:38,10:41,11:44,12:49,13:52,14:55,15:58,16:63,17:66,18:69,19:72,20:75};
+
+const DEFAULT_RELAY='https://script.google.com/macros/s/AKfycbwEJuRhKwxWMfOEATrSOuruI5-4cF3MTg9o3c9fecOHz8vqzfJ0q4Ml76xy7hdxUO68AQ/exec';
+let relayUrl=DEFAULT_RELAY, campaignId='', dmName='', dmNotes={}, lastData={};
+let refreshTimer=null, countdownTimer=null, countdown=30;
+let hiddenPlayers={}, conditions={}, currentView='cards';
+let initiative=[], initRound=1, initTurnIdx=0, diceHistory=[], showHidden=false;
+
+// ── SYNC ADAPTER ──────────────────────────────────────
+// Firebase Realtime Database (live updates, each player stored separately) when a database
+// URL is set; otherwise the original Apps Script relay. Both hand back the SAME shape:
+//   { <playerKey>: {...sheet}, _env, _msg, _foe, _battle, _log:[…] }
+// Firebase is reached with plain fetch()/EventSource, so there's still no library to load.
+const DEFAULT_FB = 'https://pokednd-15583-default-rtdb.firebaseio.com';   // the group's Firebase database (see FIREBASE_SETUP.md)
+const FB_KEY = 'pokeDnD_fbUrl';
+let FB_URL = (localStorage.getItem(FB_KEY) || DEFAULT_FB).trim().replace(/\/+$/,'');
+function setFirebaseUrl(u){FB_URL=(u||'').trim().replace(/\/+$/,'');try{FB_URL?localStorage.setItem(FB_KEY,FB_URL):localStorage.removeItem(FB_KEY);}catch(e){}}
+function fbSetAt(root,path,val){
+  const parts=String(path).split('/').filter(Boolean);if(!parts.length)return val;
+  root=(root&&typeof root==='object')?root:{};let o=root;
+  for(let i=0;i<parts.length-1;i++){if(!o[parts[i]]||typeof o[parts[i]]!=='object')o[parts[i]]={};o=o[parts[i]];}
+  const k=parts[parts.length-1];if(val===null)delete o[k];else o[k]=val;return root;
+}
+const Sync={
+  fb(){return !!FB_URL;},
+  ready(){return !!(FB_URL||relayUrl);},
+  key(pk){return String(pk).replace(/[.#$\[\]\/]/g,'_');},      // Firebase keys can't hold . # $ [ ] /
+  _u(p,q){return FB_URL+'/campaigns/'+p+'.json'+(q?'?'+q:'');},
+  async _fb(method,p,body,q){const r=await fetch(this._u(p,q),{method,headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
+    if(!r.ok)throw new Error('Firebase '+r.status+(r.status===401||r.status===403?' — check the database rules':''));return r.json();},
+  async _gas(body){const r=await fetch(relayUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)});
+    if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(j.error)throw new Error(j.error);return j;},
+  shape(c){c=c||{};const out=Object.assign({},c.players||{}),m=c.meta||{};
+    Object.keys(m).forEach(k=>{if(k!=='created'&&m[k]!=null)out['_'+k]=m[k];});   // env, msg, foe, init, battle…
+    if(c.log)out._log=Object.values(c.log).sort((a,b)=>(a.t||0)-(b.t||0)).slice(-50);
+    if(c.board)out._board=c.board;return out;},
+  async get(id){if(this.fb())return this.shape(await this._fb('GET',id));
+    const r=await fetch(relayUrl+'?id='+encodeURIComponent(id));if(!r.ok)throw new Error('HTTP '+r.status);return r.json();},
+  async create(){
+    if(this.fb()){const a=new Uint8Array(8);crypto.getRandomValues(a);const id=[...a].map(x=>x.toString(16).padStart(2,'0')).join('');
+      await this._fb('PUT',id+'/meta/created',{'.sv':'timestamp'});return id;}
+    const j=await this._gas({id:null});if(!j.id)throw new Error('No campaign ID returned');return j.id;},
+  savePlayer(id,pk,data){return this.fb()?this._fb('PUT',id+'/players/'+this.key(pk),Object.assign({},data,{_updated:{'.sv':'timestamp'}})):this._gas({id,playerKey:pk,data});},
+  patchPlayer(id,pk,f){return this.fb()?this._fb('PATCH',id+'/players/'+this.key(pk),Object.assign({},f,{_updated:{'.sv':'timestamp'}})):this._gas({id,playerKey:pk,action:'patch',fields:f});},
+  removePlayer(id,pk){return this.fb()?this._fb('DELETE',id+'/players/'+this.key(pk)):this._gas({id,playerKey:pk,action:'remove'});},
+  async renamePlayer(id,pk,nk){if(!this.fb())return this._gas({id,playerKey:pk,newKey:nk,action:'rename'});
+    const d=await this._fb('GET',id+'/players/'+this.key(pk));if(d)await this._fb('PUT',id+'/players/'+this.key(nk),d);return this._fb('DELETE',id+'/players/'+this.key(pk));},
+  setMeta(id,key,val){if(this.fb())return this._fb('PUT',id+'/meta/'+key,val);
+    return key==='env'?this._gas({id,action:'env',env:val||{}}):this._gas({id,action:'meta',key,value:val});},
+  pushLog(id,entry){return this.fb()?this._fb('POST',id+'/log',entry):this._gas({id,action:'log',entry});},
+  boardFx(id,key,val){return this.fb()?this._fb('PUT',id+'/board/fx/'+key,val):Promise.resolve();},   // a pose for the live board (Firebase only)
+  pushMeta(id,key,entry){return this.fb()?this._fb('POST',id+'/meta/'+key,entry):Promise.reject(new Error('needs the live (Firebase) server'));},   // players' combat entries, e.g. meta/dmg (Firebase only)
+  delMeta(id,key){return this.fb()?this._fb('DELETE',id+'/meta/'+key):Promise.resolve();},
+  // Pictures & models uploaded for the live board live at /assets/{campaign}/{assetId}, outside the campaign branch so the
+  // live stream never carries them: {name,kind,n,bytes,t} + parts/0..n-1 (~0.9 MB pieces of one data URL), the board's format. Firebase only.
+  _a(p){return FB_URL+'/assets/'+p+'.json';},
+  async asset(id,aid){const r=await fetch(this._a(id+'/'+aid));if(!r.ok)throw new Error('Firebase '+r.status);const a=await r.json();
+    if(!a||!a.parts)throw new Error('missing file');return (Array.isArray(a.parts)?a.parts:Object.keys(a.parts).sort((m,n)=>m-n).map(k=>a.parts[k])).join('');},
+  async putAsset(id,data,name,kind){const aid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),N=900000,n=Math.ceil(data.length/N),bytes=Math.round(data.length*.75),
+      put=(p,v)=>fetch(this._a(id+'/'+aid+p),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(v)}).then(r=>{if(!r.ok)throw new Error('Firebase '+r.status);});
+    await put('',{name,kind,n,bytes,t:{'.sv':'timestamp'}});
+    for(let i=0;i<n;i++)await put('/parts/'+i,data.slice(i*N,(i+1)*N));
+    await this._fb('PUT',id+'/board/library/'+aid,{name,kind,bytes,t:{'.sv':'timestamp'}});return aid;},   // shows in the board's "Files in this campaign"
+  setLook(id,pk,v){return this._fb('PATCH',id+'/board/looks/'+this.key(pk),v);},   // how a player's board token looks: {img, model, scale}; null clears one
+  // Firebase keeps every roll unless trimmed, so the DM keeps only the newest ones (push IDs sort by time).
+  async trimLog(id,keep){if(!this.fb())return;keep=keep||50;
+    const ks=Object.keys((await this._fb('GET',id+'/log',undefined,'shallow=true'))||{}).sort();if(ks.length<=keep+20)return;
+    const del={};ks.slice(0,ks.length-keep).forEach(k=>{del[k]=null;});return this._fb('PATCH',id+'/log',del);},
+  // Live updates. Firebase streams each change the moment it happens; the relay is polled.
+  // pollMs may be a number or a function (so the poll can speed up during a battle).
+  subscribe(id,onData,pollMs){
+    if(this.fb()){
+      let tree=null,t=null;const es=new EventSource(this._u(id));
+      const fire=()=>{clearTimeout(t);t=setTimeout(()=>onData(this.shape(tree)),40);};
+      const boardOnly=p=>/^\/board(\/|$)/.test(p)&&!/^\/board\/looks(\/|$)/.test(p);   // the live board streams token drags; this app doesn't need to re-render for them (a new portrait under looks/ it does)
+      es.addEventListener('put',e=>{const m=JSON.parse(e.data);tree=fbSetAt(tree,m.path,m.data);if(!boardOnly(m.path))fire();});
+      es.addEventListener('cancel',()=>{es.close();console.warn('Firebase refused the live connection — check the database rules (FIREBASE_SETUP.md).');});
+      es.addEventListener('patch',e=>{const m=JSON.parse(e.data);Object.keys(m.data||{}).forEach(k=>{tree=fbSetAt(tree,(m.path==='/'?'':m.path)+'/'+k,m.data[k]);});if(!boardOnly(m.path))fire();});
+      return ()=>es.close();
+    }
+    let timer=null,live=true;
+    (async function loop(){try{onData(await Sync.get(id));}catch(e){}if(live)timer=setTimeout(loop,typeof pollMs==='function'?pollMs():(pollMs||30000));})();
+    return ()=>{live=false;clearTimeout(timer);};
+  }
+};
+
+function dm_save(){
+  try{localStorage.setItem(DM_SK,JSON.stringify({
+    relayUrl,campaignId,dmName,dmNotes,
+    hiddenPlayers,conditions,initiative,initRound,initTurnIdx,encEid,statBlocks,
+    globalNotes:document.getElementById('dmGlobalNotes')?.value||''
+  }));}catch(e){}
+}
+function dm_load(){
+  try{
+    const r=localStorage.getItem(DM_SK);
+    if(!r)return;
+    const v=JSON.parse(r);
+    relayUrl=v.relayUrl||DEFAULT_RELAY; campaignId=v.campaignId||'';
+    dmName=v.dmName||''; dmNotes=v.dmNotes||{};
+    hiddenPlayers=v.hiddenPlayers||{}; conditions=v.conditions||{};
+    initiative=v.initiative||[]; initRound=v.initRound||1; initTurnIdx=v.initTurnIdx||0; encEid=v.encEid||(Array.isArray(v.initiative)&&v.initiative.length?Date.now():0);   // an encounter saved before the update still takes players' rolls statBlocks=Array.isArray(v.statBlocks)?v.statBlocks:[];
+    initActive=Array.isArray(initiative)&&initiative.length>0;
+    if(v.globalNotes)setTimeout(()=>{const el=document.getElementById('dmGlobalNotes');if(el)el.value=v.globalNotes;},50);
+    if(v.relayUrl){const el=document.getElementById('relayInp');if(el)el.value=v.relayUrl;}
+  }catch(e){}
+}
+
+// ── CONNECT ───────────────────────────────────────────
+async function connect(){
+  const relay=(document.getElementById('relayInp')?.value||'').trim();
+  const id=(document.getElementById('campaignInp')?.value||'').trim();
+  const nm=(document.getElementById('dmNameInp')?.value||'').trim()||'DM';
+  const err=document.getElementById('errMsg');
+  const btn=document.getElementById('connectBtn');
+  err.textContent='';
+  setFirebaseUrl(document.getElementById('fbInp')?.value||'');
+  if(!Sync.fb()){
+    if(!relay){err.textContent='Enter your Firebase URL (or the old relay URL).';return;}
+    if(!relay.startsWith('https://')){err.textContent='URL must start with https://';return;}
+  }
+  if(!id){err.textContent='Enter a campaign ID.';return;}
+  btn.disabled=true; btn.textContent='Connecting…';
+  try{
+    if(relay)relayUrl=relay;
+    const data=await Sync.get(id);
+    if(data&&data.error)throw new Error(data.error);
+    campaignId=id; dmName=nm;
+    dm_save(); showDash(data);
+  }catch(e){
+    err.textContent=e.message;
+    btn.disabled=false; btn.textContent='Connect';
+  }
+}
+
+async function dmCreateCampaign(){
+  const relay=(document.getElementById('relayInp')?.value||'').trim()||DEFAULT_RELAY;
+  const nm=(document.getElementById('dmNameInp')?.value||'').trim()||'DM';
+  const err=document.getElementById('errMsg');
+  const btn=document.getElementById('createBtn');
+  err.textContent='';
+  btn.disabled=true; btn.textContent='Creating…';
+  try{
+    setFirebaseUrl(document.getElementById('fbInp')?.value||''); relayUrl=relay;
+    const j={id:await Sync.create()};
+    relayUrl=relay; campaignId=j.id; dmName=nm;
+    dm_save();
+    // Show the new ID prominently, then connect
+    err.style.color='var(--grn)';
+    err.textContent='✓ Campaign created! ID: '+j.id+' — share this with your players.';
+    document.getElementById('campaignInp').value=j.id;
+    setTimeout(()=>{ connect(); }, 1500);
+  }catch(e){
+    err.style.color='var(--red)';
+    err.textContent='Could not create: '+e.message;
+    btn.disabled=false; btn.textContent='Create a New Campaign';
+  }
+}
+
+// The live board is its own page; open it as the DM for this campaign.
+function openBoard(){
+  if(!Sync.fb()){alert('The live board needs the Firebase sync server — set it up first (see FIREBASE_SETUP.md), then reconnect.');return;}
+  window.open('poke_dnd_board.html?c='+encodeURIComponent(campaignId)+'&dm=1&fb='+encodeURIComponent(FB_URL),'pokeBoardDM');
+}
+
+function disconnect(){
+  if(!confirm('Disconnect? DM notes are saved locally.'))return;
+  clearInterval(refreshTimer); clearInterval(countdownTimer);
+  if(_dmUnsub){_dmUnsub();_dmUnsub=null;}
+  campaignId=''; dm_save();
+  document.getElementById('dashScreen').style.display='none';
+  document.getElementById('setupScreen').style.display='flex';
+  document.getElementById('refreshBtn').style.display='none';
+  document.getElementById('boardBtn').style.display='none';
+  setConnBadge('offline','Offline');
+  document.getElementById('countdownLbl').textContent='';
+  const btn=document.getElementById('connectBtn');
+  btn.disabled=false; btn.textContent='Connect';
+}
+
+function showDash(data){
+  lastData=data;
+  document.getElementById('setupScreen').style.display='none';
+  document.getElementById('dashScreen').style.display='block';
+  document.getElementById('dispCampaignId').textContent=campaignId;
+  document.getElementById('refreshBtn').style.display='block';
+  document.getElementById('boardBtn').style.display='block';
+  setConnBadge('live','Live');
+  renderPlayers(data);
+  populateFoeTypes(); renderRollFeed(); renderEnvControls(); renderSceneState();
+  renderDMAmbience();    // living background on the screen
+  populateMonsters();    // quick-add foe presets
+  renderInit();          // restore the encounter
+  updateHiddenBtn();     // restore hidden-players button
+  startAutoRefresh();
+}
+
+// ── WEATHER / TERRAIN (#5) ───────────────────────────
+function setEnv(){
+  const w=document.getElementById('envWeather').value, t=document.getElementById('envTerrain').value;
+  Sync.setMeta(campaignId,'env',{weather:w,terrain:t,t:Date.now()})
+    .then(()=>{lastData._env={weather:w,terrain:t};renderEnvControls();}).catch(()=>{});
+}
+function clearEnv(){document.getElementById('envWeather').value='';document.getElementById('envTerrain').value='';setEnv();}
+function renderEnvControls(){
+  const env=lastData._env||{}, cur=document.getElementById('envCurrent'), eb=document.getElementById('envToggle');
+  if(cur){
+    if(env.weather||env.terrain){cur.innerHTML='Active: '+[env.weather?'☁ '+env.weather:'',env.terrain?'▦ '+env.terrain:''].filter(Boolean).join(' · ');eb&&eb.classList.add('active');}
+    else{cur.textContent='No weather or terrain set.';eb&&eb.classList.remove('active');}
+  }
+  const w=document.getElementById('envWeather'),t=document.getElementById('envTerrain');
+  if(w&&document.activeElement!==w)w.value=env.weather||'';
+  if(t&&document.activeElement!==t)t.value=env.terrain||'';
+}
+// ── SHARED ROLL FEED (#3) ────────────────────────────
+function renderRollFeed(){
+  const el=document.getElementById('rollFeed');if(!el)return;
+  const log=Array.isArray(lastData._log)?lastData._log.slice().reverse():[];
+  const ft=document.getElementById('feedToggle');
+  if(ft)ft.textContent=log.length?'📜 Roll Feed ('+log.length+')':'📜 Roll Feed';
+  if(!log.length){el.innerHTML='<div class="init-empty">No rolls yet. When a player taps 🎲 Roll on a move, it shows up here.</div>';return;}
+  el.innerHTML=log.map(e=>'<div class="dice-log-entry"><b>'+x(e.who)+'</b> '+x(e.text)+' <span style="opacity:.5">'+new Date(e.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>').join('');
+}
+
+// ── REFRESH ───────────────────────────────────────────
+// One place that redraws everything from a fresh campaign snapshot (pull or live push).
+function applyCampaignData(data){
+  if(!data||data.error)return;
+  lastData=data; renderPlayers(data); renderRollFeed(); renderEnvControls(); renderSceneState();
+  const ch=applyRolls(data._rolls)|applyDmg(data._dmg);   // players' initiative + damage entries
+  if(currentView==='encounter') renderInit();else if(ch)pushBattle();
+  if(ch)dm_save();
+  document.getElementById('lastUpd').textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  setConnBadge('live','Live');
+}
+async function doRefresh(){
+  const btn=document.getElementById('refreshBtn');
+  btn.innerHTML='<span class="spinning">⟳</span> Refreshing';
+  btn.disabled=true;
+  try{
+    const data=await Sync.get(campaignId);
+    if(data&&data.error)throw new Error(data.error);
+    applyCampaignData(data);
+    countdown=initActive?5:30;
+  }catch(e){
+    setConnBadge('error','Error: '+e.message.slice(0,40));
+  }finally{
+    btn.innerHTML='⟳ Refresh'; btn.disabled=false;
+  }
+}
+
+let _dmUnsub=null;
+function startAutoRefresh(){
+  clearTimeout(refreshTimer); clearInterval(refreshTimer); clearInterval(countdownTimer);
+  if(_dmUnsub){_dmUnsub();_dmUnsub=null;}
+  if(Sync.fb()){   // Firebase pushes every change instantly — no polling needed
+    _dmUnsub=Sync.subscribe(campaignId,applyCampaignData);
+    const trim=()=>Sync.trimLog(campaignId).catch(()=>{});trim();refreshTimer=setInterval(trim,5*60000);   // keep the roll log small
+    document.getElementById('countdownLbl').textContent='⚡ Live';
+    return;
+  }
+  doRefresh();
+  (function loop(){ refreshTimer=setTimeout(()=>doRefresh().finally(loop), initActive?5000:30000); })();
+  countdown=initActive?5:30;
+  countdownTimer=setInterval(()=>{
+    countdown--; if(countdown<=0)countdown=initActive?5:30;
+    document.getElementById('countdownLbl').textContent= initActive ? '⚔ Live battle sync' : ('Auto-refresh in '+countdown+'s');
+  },1000);
+}
+
+function setConnBadge(state,txt){
+  const b=document.getElementById('connBadge');
+  b.className='conn-badge '+state;
+  document.getElementById('connTxt').textContent=txt;
+}
+
+// ── RENDER ────────────────────────────────────────────
+function renderPlayers(data){
+  const grid=document.getElementById('playerGrid');
+  updateHiddenBtn();
+  const players=Object.entries(data).filter(([k])=>!k.startsWith('_')&&(showHidden||!hiddenPlayers[k]));
+  if(!players.length){
+    grid.innerHTML='<div class="empty-dash"><span class="empty-icon">👥</span>No players yet.<br><span style="font-size:12px;color:var(--tx3)">Share the campaign ID so players can connect.</span></div>';
+    return;
+  }
+  const openCards=new Set();
+  grid.querySelectorAll('.player-card.open').forEach(c=>openCards.add(c.dataset.player));
+  grid.innerHTML='';
+  players.sort((a,b)=>(a[1].charName||a[0]).localeCompare(b[1].charName||b[0]));
+  players.forEach(([k,c])=>grid.appendChild(buildCard(k,c,openCards.has(k))));
+}
+function renderPartyWatch(data){
+  const el=document.getElementById('partyWatch');if(!el)return;
+  const players=Object.entries(data).filter(([k,c])=>!k.startsWith('_')&&!hiddenPlayers[k]&&c&&c.charName!==undefined);
+  if(players.length<2){el.style.display='none';el.innerHTML='';return;}
+  el.style.display='grid';
+  el.innerHTML=players.map(([k,c])=>{
+    const cur=parseInt(c.hpCur)||0,max=parseInt(c.hpMax)||0,pct=max?Math.max(0,Math.min(100,cur/max*100)):0;
+    const downed=max&&cur<=0, low=max&&pct<=25&&!downed;
+    const col=downed?'var(--red)':low?'var(--gold)':'var(--grn)';
+    const conds=(Array.isArray(c.conditions)&&c.conditions.length)?c.conditions.length:0;
+    return '<div class="pw-cell'+(downed?' downed':low?' low':'')+'"><div class="pw-top"><span class="pw-name">'+x(c.charName||k)+'</span>'
+      +(downed?'<span class="pw-alert">DOWN</span>':low?'<span class="pw-alert low">LOW</span>':'')
+      +(conds?'<span class="pw-cnd">'+conds+'⚠</span>':'')+'</div>'
+      +'<div class="pw-track"><div class="pw-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'
+      +'<div class="pw-hp">'+cur+' / '+(max||'?')+'</div></div>';
+  }).join('');
+}
+
+// ── PORTRAITS ── a player's picture is their board token's art: board/looks/<key>.img → an uploaded asset (or a link).
+// Each picture is downloaded once and kept as a short blob: link, so live updates never fetch or re-copy it.
+const portraitCache=new Map();   // asset id → blob: link ('' while loading, or if it failed)
+function portraitOf(pk){
+  const ref=((((lastData._board||{}).looks||{})[pk])||{}).img;if(!ref)return '';
+  if(/^https?:\/\//i.test(ref))return ref;
+  if(!portraitCache.has(ref)){portraitCache.set(ref,'');
+    Sync.asset(campaignId,ref).then(src=>{const [h,b]=src.split(','),bin=atob(b),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+      portraitCache.set(ref,URL.createObjectURL(new Blob([u],{type:(h.match(/^data:([^;,]+)/)||[])[1]||'image/png'})));
+      const g=document.getElementById('playerGrid');if(g&&!g.contains(document.activeElement))renderPlayers(lastData);   // (if the DM is typing in a card, the next update shows it)
+    }).catch(e=>console.warn('Couldn’t load a portrait:',e));}
+  return portraitCache.get(ref);
+}
+function portraitHTML(pk,c,big){
+  const pic=portraitOf(pk),nm=String(c.charName||pk).trim();
+  return `<div class="pc-art${big?' big':''}">${pic?`<img src="${x(pic)}" alt="">`:x(nm.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase())}</div>`;
+}
+
+function buildCard(pk,c,isOpen){
+  const types=[c.type1,c.type2].filter(Boolean);
+  const hpCur=parseInt(c.hpCur)||0, hpMax=parseInt(c.hpMax)||0;
+  const hpPct=hpMax?Math.max(0,Math.min(100,hpCur/hpMax*100)):0;
+  const hpColor=hpPct>50?'var(--grn)':hpPct>25?'var(--gold)':'var(--red)';
+  const ppMax=PP_MAX[parseInt(c.level)||1]||10;
+  // each Energy pool's max, typed in on the player's sheet (0 = not yet); very old sheets didn't send it
+  const ppMax1=c.ppMax1!=null?parseInt(c.ppMax1)||0:ppMax, ppMax2=c.ppMax2!=null?parseInt(c.ppMax2)||0:ppMax;
+  const ppCur=parseInt(c.ppCur)||0, pp2Cur=parseInt(c.pp2Cur)||0;
+  const staleMin=c._updated?Math.floor((Date.now()-c._updated)/60000):null;
+  const isStale=staleMin!==null&&staleMin>15;
+  const equipped=(c.moves||[]).filter(m=>m.equipped!==false).slice(0,8);
+  const note=dmNotes[pk]||'';
+
+  const card=document.createElement('div');
+  card.className='player-card'+(isOpen?' open':'');
+  card.dataset.player=pk;
+  card.style.setProperty('--t', TYPE_COLORS[c.type1]||'#c084fc');
+  card.addEventListener('click',e=>{if(e.target.closest('.dm-note-area'))return;card.classList.toggle('open');});
+
+  // HEAD
+  card.innerHTML=`
+  <div class="pc-head">
+    <div class="pc-name-row">
+      ${portraitHTML(pk,c)}
+      <div>
+        <div class="pc-charname">${x(c.charName||pk)}</div>
+        ${c.player&&c.player!==c.charName?`<div class="pc-player">Player: ${x(c.player)}</div>`:''}
+      </div>
+      ${types.map(t=>`<div class="type-chip" style="background:${TYPE_COLORS[t]||'#666'}">${t}</div>`).join('')}
+      <div class="lvl-badge">Lv ${c.level||1}</div>
+      ${isStale?`<div class="stale-tag">${staleMin}m ago</div>`:''}
+      <div class="pc-actions">
+        <button class="pc-manage-btn" data-act="manage" data-pk="${x(pk)}" title="Edit / remove this player">⚙ Manage</button>
+      </div>
+    </div>
+    <div class="vital-row">
+      <div class="vital-line">
+        <div class="vital-lbl">HP</div>
+        <div class="vital-nums" style="color:${hpColor}">${hpCur}/${hpMax||'?'}</div>
+        <div class="vital-track"><div class="vital-fill" style="width:${hpPct}%;background:${hpColor}"></div></div>
+      </div>
+      ${c.type1?`<div class="vital-line">
+        <div class="vital-lbl" style="color:${TYPE_COLORS[c.type1]||'var(--acc)'}">${c.type1.slice(0,4)}</div>
+        <div class="vital-nums">${ppCur}/${ppMax1||'—'}</div>
+        <div class="vital-track"><div class="vital-fill" style="width:${ppMax1?Math.max(0,Math.min(100,ppCur/ppMax1*100)):0}%;background:${TYPE_COLORS[c.type1]||'var(--acc)'}"></div></div>
+      </div>`:''}
+      ${c.type2?`<div class="vital-line">
+        <div class="vital-lbl" style="color:${TYPE_COLORS[c.type2]||'var(--acc)'}">${c.type2.slice(0,4)}</div>
+        <div class="vital-nums">${pp2Cur}/${ppMax2||'—'}</div>
+        <div class="vital-track"><div class="vital-fill" style="width:${ppMax2?Math.max(0,Math.min(100,pp2Cur/ppMax2*100)):0}%;background:${TYPE_COLORS[c.type2]||'var(--acc)'}"></div></div>
+      </div>`:''}
+    </div>
+    <div class="stat-row">
+      ${STAT_ABBR.map(ab=>{const s=c.stats?.[ab]||10;const m=Math.floor((s-10)/2);return`<div class="stat-pill">${ab} <strong>${s}</strong> <em>${m>=0?'+'+m:m}</em></div>`;}).join('')}
+    </div>
+    ${(Array.isArray(c.conditions)&&c.conditions.length)?`<div class="pc-conds">${c.conditions.map(n=>`<span class="pc-cond">${x(n)}</span>`).join('')}</div>`:''}
+  </div>
+  ${equipped.length?`<div class="moves-preview">
+    <div class="moves-preview-lbl">Equipped (${equipped.length}${(c.moves||[]).length>equipped.length?' of '+(c.moves||[]).length:''})</div>
+    ${equipped.map(m=>{const tc=TYPE_COLORS[m.type]||'#888';return`<span class="move-tag" style="background:${tc}25;color:${tc};border:1px solid ${tc}45">${x(m.n)}${m.c!=null?` <span style="opacity:.55;font-size:9px">${m.c} E</span>`:''}</span>`;}).join('')}
+  </div>`:''}
+  <div class="pc-detail">
+    ${buildDetail(pk,c,note)}
+  </div>`;
+
+  // Bind DM note
+  const noteArea=card.querySelector('.dm-note-area');
+  if(noteArea){
+    noteArea.addEventListener('input',function(){
+      dmNotes[this.dataset.pk]=this.value; dm_save();
+    });
+  }
+  // Bind the Manage button — expands the card to show DM controls
+  card.querySelectorAll('.pc-manage-btn').forEach(btn=>{
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      card.classList.add('open');
+      // scroll the manage panel into view
+      setTimeout(()=>{ card.querySelector('.manage-panel')?.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 60);
+    });
+  });
+  // Bind all management panel controls
+  card.querySelectorAll('.manage-mini-btn,.manage-save-btn,.hpq-btn').forEach(btn=>{
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      const pk=this.dataset.pk, act=this.dataset.act;
+      if(act==='hide') hidePlayer(pk);
+      else if(act==='remove') removePlayer(pk, this.dataset.name);
+      else if(act==='rename') doRename(pk);
+      else if(act==='savehp') applyHPAC(pk);
+      else if(this.dataset.amt!==undefined) quickHP(pk, parseInt(this.dataset.amt));
+    });
+  });
+  return card;
+}
+
+function buildDetail(pk,c,note){
+  const allMoves=c.moves||[];
+  const abils=c.abilities||[];
+  let html='';
+  if(portraitOf(pk))html+=portraitHTML(pk,c,true);   // the bigger portrait, when the player has one
+  // Character info
+  const infoRows=[
+    c.style&&['Style',c.style],
+    c.sub1&&['Subclass 1',c.sub1],
+    c.sub2&&['Subclass 2',c.sub2],
+    c.sub3&&['Subclass 3',c.sub3],
+    c.background&&['Background',c.background],
+    c.alignment&&['Alignment',c.alignment],
+    (c.ac||c.speed)&&['AC / Speed',(c.ac||10)+' / '+(c.speed||30)+'ft'],
+    c.personality&&['Personality',c.personality.slice(0,140)+(c.personality.length>140?'…':'')],
+  ].filter(Boolean);
+  if(infoRows.length){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">Character</div><table class="detail-tbl">
+      ${infoRows.map(([k,v])=>`<tr><td class="dt-key">${k}</td><td class="dt-val">${x(String(v))}</td></tr>`).join('')}
+    </table></div>`;
+  }
+  // All moves
+  if(allMoves.length){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">All Moves (${allMoves.length})</div><div>
+      ${allMoves.map(m=>{const tc=TYPE_COLORS[m.type]||'#888';const eq=m.equipped!==false;return`<span class="move-tag" style="background:${tc}${eq?'25':'12'};color:${tc};border:1px solid ${tc}${eq?'45':'20'};opacity:${eq?1:.5}">${x(m.n)} <span style="opacity:.5;font-size:9px">Lv${m.l||'?'}</span></span>`;}).join('')}
+    </div></div>`;
+  }
+  // Abilities
+  if(abils.length){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">Abilities (${abils.length})</div><div>
+      ${abils.map(a=>`<div class="abil-chip">${x(a.n)}${a.b&&a.b!=='null'?` <span class="abil-buff">${x(a.b)}</span>`:''}</div>`).join('')}
+    </div></div>`;
+  }
+  // Bag: Gimmi coins + items (from the sheet's Bag tab)
+  const bagItems=Array.isArray(c.items)?c.items:[],money=c.money||{};
+  if(bagItems.length||money.gimmis||money.ghouls||money.ghold){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">Bag</div>
+      <div class="dm-coins">${[['gimmis','Gimmis','#c98a4b'],['ghouls','Ghouls','#a58fe0'],['ghold','Ghold','#f4c542']].map(([k,n,col])=>`<span class="dm-coin" style="--c:${col}"><i></i>${parseInt(money[k])||0} <small>${n}</small></span>`).join('')}</div>
+      <div>${bagItems.map(it=>`<span class="abil-chip"${(parseInt(it.q)||0)?'':' style="opacity:.45"'} title="${x(it.d||'')}">${x(it.n)} <b>×${parseInt(it.q)||0}</b></span>`).join('')}</div></div>`;
+  }
+  // Team: the player's Pokémon companions
+  const comps=Array.isArray(c.companions)?c.companions:[];
+  if(comps.length){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">Team (${comps.length})</div>${comps.map(cp=>{
+      const mx=parseInt(cp.hpMax)||0,cu=parseInt(cp.hpCur)||0,pc=mx?Math.max(0,Math.min(100,cu/mx*100)):0,col=TYPE_COLORS[cp.type1]||'#888';
+      const sub=[cp.species,cp.lvl?'Lv '+cp.lvl:'',[cp.type1,cp.type2].filter(Boolean).join('/')].filter(Boolean).join(' · ');
+      return `<div class="dm-comp" style="--c:${col}"><div class="dm-comp-top"><b>${x(cp.name||cp.species||'Companion')}</b><span>${x(sub)}</span><span class="dm-comp-hp">${cu}/${mx}${cp.out?'':' · in ball'}</span></div><div class="dm-comp-bar"><i style="width:${pc}%"></i></div></div>`;}).join('')}</div>`;
+  }
+  // Player notes
+  if(c.notes||c.inventory){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">Player Notes</div><table class="detail-tbl">
+      ${c.notes?`<tr><td class="dt-key">Notes</td><td class="dt-val" style="font-size:10px;line-height:1.5">${x(c.notes.slice(0,200)+(c.notes.length>200?'…':''))}</td></tr>`:''}
+      ${c.inventory?`<tr><td class="dt-key">Inventory</td><td class="dt-val" style="font-size:10px;line-height:1.5">${x(c.inventory.slice(0,200)+(c.inventory.length>200?'…':''))}</td></tr>`:''}
+    </table></div>`;
+  }
+  // Backstory (synced from the sheet)
+  if(c.backstory&&String(c.backstory).trim()){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">Backstory</div>
+      <div class="dm-backstory">${x(c.backstory)}</div></div>`;
+  }
+  // Notecards — the player's index-card board
+  if(Array.isArray(c.notecards)&&c.notecards.length){
+    html+=`<div class="detail-sec"><div class="detail-sec-lbl">Notecards (${c.notecards.length})</div>
+      <div class="dm-nc-grid">
+      ${c.notecards.map(n=>`<div class="dm-nc nc-${x(n.color||'plain')}">
+          ${n.title?`<div class="dm-nc-title">${x(n.title)}</div>`:''}
+          ${n.body?`<div class="dm-nc-body">${x(n.body)}</div>`:''}
+        </div>`).join('')}
+      </div></div>`;
+  }
+  // DM MANAGEMENT PANEL — edit HP, name, AC; rename; hide; remove
+  const hpCur2=c.hpCur||'', hpMax2=c.hpMax||'', ac2=c.ac||10;
+  html+=`<div class="detail-sec manage-panel">
+    <div class="detail-sec-lbl">⚙ DM Controls — edit this character</div>
+    <div class="manage-grid">
+      <div class="manage-field">
+        <label>HP</label>
+        <div class="manage-hp-row">
+          <input class="manage-inp" type="number" id="mhp-${cssEsc(pk)}" value="${hpCur2}" placeholder="cur">
+          <span style="color:var(--tx3)">/</span>
+          <input class="manage-inp" type="number" id="mhpmax-${cssEsc(pk)}" value="${hpMax2}" placeholder="max">
+        </div>
+      </div>
+      <div class="manage-field">
+        <label>AC</label>
+        <input class="manage-inp" type="number" id="mac-${cssEsc(pk)}" value="${ac2}" style="width:60px">
+      </div>
+    </div>
+    <div class="manage-hp-quick">
+      <button class="hpq-btn dmg" data-pk="${x(pk)}" data-amt="-1">−1</button>
+      <button class="hpq-btn dmg" data-pk="${x(pk)}" data-amt="-5">−5</button>
+      <button class="hpq-btn dmg" data-pk="${x(pk)}" data-amt="-10">−10</button>
+      <button class="hpq-btn heal" data-pk="${x(pk)}" data-amt="5">+5</button>
+      <button class="hpq-btn heal" data-pk="${x(pk)}" data-amt="10">+10</button>
+      <button class="manage-save-btn" data-pk="${x(pk)}" data-act="savehp">Apply HP / AC</button>
+    </div>
+    <div class="manage-divider"></div>
+    <div class="manage-row">
+      <input class="manage-inp" id="mrename-${cssEsc(pk)}" value="${x(c.charName||pk)}" placeholder="Character name" style="flex:1">
+      <button class="manage-mini-btn" data-pk="${x(pk)}" data-act="rename">Rename</button>
+    </div>
+    <div class="manage-actions">
+      <button class="manage-mini-btn" data-pk="${x(pk)}" data-act="hide">⊘ Hide from board</button>
+      <button class="manage-mini-btn danger" data-pk="${x(pk)}" data-name="${x(c.charName||pk)}" data-act="remove">🗑 Remove permanently</button>
+    </div>
+  </div>`;
+
+  // DM note
+  html+=`<div class="detail-sec"><div class="detail-sec-lbl">DM Notes (private)</div>
+    <textarea class="dm-note-area" data-pk="${x(pk)}" placeholder="Conditions, initiative, secret info…">${x(note)}</textarea>
+  </div>`;
+  html+=`<div class="sync-ts">Last sync: ${c._updated?new Date(c._updated).toLocaleString():'unknown'}</div>`;
+  return html;
+}
+
+function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function copyText(txt,btn){   // clipboard, with the old copy command as a fallback (some browsers block the clipboard on file:// pages)
+  const done=()=>{if(!btn)return;const t=btn.textContent;btn.textContent='Copied!';setTimeout(()=>btn.textContent=t,1500);};
+  const old=()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){prompt('Copy this:',txt);}ta.remove();};
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).then(done,old);else old();}
+function copyId(){copyText(campaignId,document.querySelector('.copy-btn'));}
+function copyInvite(){   // a message for the group chat; when the apps are hosted online it also links straight to the sheet with the ID filled in
+  const web=/^https?:$/.test(location.protocol)?location.href.replace(/[?#].*$/,'').replace(/[^/]*$/,'')+'poke_dnd_character_sheet.html#join='+campaignId:'';
+  const txt='Join our Poké × D&D campaign!\n'+(web?'Open your sheet here: '+web+'\n':'')+
+    'On your character sheet, tap "No campaign", paste this campaign ID with your name, then tap Join & Sync:\n'+campaignId;
+  copyText(txt,document.getElementById('inviteBtn'));}
+function copyCode(){
+  const code=document.getElementById('scriptCode')?.textContent||'';
+  navigator.clipboard?.writeText(code).then(()=>{
+    const b=document.querySelector('.copy-code-btn');
+    if(b){b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',1500);}
+  });
+}
+
+// Global notes auto-save
+let _gt;
+document.getElementById('dmGlobalNotes').addEventListener('input',function(){clearTimeout(_gt);_gt=setTimeout(()=>dm_save(),800);});
+
+// ═══════════════════════════════════════════════════════
+//  DM TOOLS: views, dice, initiative, remove/hide players
+// ═══════════════════════════════════════════════════════
+
+// ── VIEW SWITCHING ────────────────────────────────────
+function setView(v){
+  currentView=v;
+  document.getElementById('vtCards').classList.toggle('on', v==='cards');
+  document.getElementById('vtCombat').classList.toggle('on', v==='encounter');
+  document.getElementById('playerGrid').style.display = v==='cards'?'grid':'none';
+  document.getElementById('encounterView').style.display = v==='encounter'?'block':'none';
+  if(v==='encounter') renderInit();
+}
+
+function togglePanel(id){
+  const el=document.getElementById(id);
+  const isOpen = el.style.display!=='none';
+  el.style.display = isOpen?'none':'block';
+  // toggle button active state
+  const btnId = id==='dicePanel'?'diceToggle':'initToggle';
+  document.getElementById(btnId)?.classList.toggle('active', !isOpen);
+}
+
+// ── DICE ROLLER ───────────────────────────────────────
+function rollDie(sides){
+  const r=Math.floor(Math.random()*sides)+1;
+  showDiceResult(`d${sides}`, [r], 0, r, sides);
+}
+function rollCustom(){
+  const count=Math.max(1,Math.min(20,parseInt(document.getElementById('diceCount').value)||1));
+  const sides=Math.max(2,Math.min(100,parseInt(document.getElementById('diceSides').value)||20));
+  const mod=parseInt(document.getElementById('diceMod').value)||0;
+  const adv=document.getElementById('diceAdv').checked;
+  const dis=document.getElementById('diceDis').checked;
+
+  if((adv||dis) && sides===20){
+    const a=Math.floor(Math.random()*20)+1;
+    const b=Math.floor(Math.random()*20)+1;
+    const chosen=adv?Math.max(a,b):Math.min(a,b);
+    const total=chosen+mod;
+    const label=`d20${mod?(mod>0?'+'+mod:mod):''} ${adv?'(adv)':'(dis)'}`;
+    showDiceResult(label, [a,b], mod, total, 20, chosen);
+    return;
+  }
+  const rolls=[];
+  for(let i=0;i<count;i++) rolls.push(Math.floor(Math.random()*sides)+1);
+  const sum=rolls.reduce((a,b)=>a+b,0)+mod;
+  const label=`${count}d${sides}${mod?(mod>0?'+'+mod:mod):''}`;
+  showDiceResult(label, rolls, mod, sum, sides);
+}
+function showDiceResult(label, rolls, mod, total, sides, chosen){
+  const el=document.getElementById('diceResult');
+  let cls='';
+  // crit/fumble only meaningful for single d20
+  if(sides===20 && rolls.length===1){
+    if(rolls[0]===20) cls='crit';
+    else if(rolls[0]===1) cls='fumble';
+  }
+  let detail='';
+  if(chosen!==undefined){
+    detail=`rolled ${rolls[0]} & ${rolls[1]} → kept ${chosen}${mod?(mod>0?' +'+mod:' '+mod):''}`;
+  } else if(rolls.length>1 || mod){
+    detail=`${rolls.join(' + ')}${mod?(mod>0?' + '+mod:' - '+Math.abs(mod)):''}`;
+  }
+  el.innerHTML=`<div class="big-roll ${cls}">${total}</div>`+
+    (detail?`<div class="roll-detail">${label}: ${detail}</div>`:`<div class="roll-detail">${label}</div>`)+
+    (cls==='crit'?'<div class="roll-detail crit">★ Critical!</div>':'')+
+    (cls==='fumble'?'<div class="roll-detail fumble">✗ Natural 1</div>':'');
+  // log
+  diceHistory.unshift({label, total, time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
+  if(diceHistory.length>10) diceHistory.pop();
+  const log=document.getElementById('diceLog');
+  log.innerHTML=diceHistory.map(h=>`<div class="dice-log-entry"><b>${h.total}</b> · ${h.label} · ${h.time}</div>`).join('');
+  dmRollPop(label, total, detail, cls);
+}
+function dmRollPop(label,total,detail,cls){
+  const el=document.getElementById('rollPop');if(!el)return;
+  const rm=document.body.classList.contains('reduce-motion');
+  el.className='rollpop show'+(cls==='crit'?' crit':'')+(cls==='fumble'?' fumble':'');
+  el.innerHTML='<div class="rp-card">'
+    +'<button class="rp-x" aria-label="Close" onclick="document.getElementById(\'rollPop\').classList.remove(\'show\')">✕</button>'
+    +'<div class="rp-die'+(rm?'':' tumble')+'">🎲</div>'
+    +'<div class="rp-name">'+label+'</div>'
+    +'<div class="rp-total'+(cls?' '+cls:'')+'">'+total+'</div>'
+    +(detail?'<div class="rp-pp">'+detail+'</div>':'')
+    +(cls==='crit'?'<div class="rp-flag crit">★ CRITICAL ★</div>':cls==='fumble'?'<div class="rp-flag fumble">Natural 1</div>':'')
+    +'</div>';
+  clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),cls==='crit'?3600:2600);
+}
+/* purple ambience for the DM screen */
+function renderDMAmbience(){
+  const el=document.getElementById('ambience');if(!el)return;
+  if(document.body.classList.contains('reduce-motion')){el.innerHTML='';return;}
+  let h='';for(let k=0;k<14;k++){const left=Math.random()*100,top=Math.random()*100,dur=(7+Math.random()*8).toFixed(1),delay=(-Math.random()*12).toFixed(1),sz=(3+Math.random()*4).toFixed(1);
+    h+='<i class="mote m-drift" style="left:'+left.toFixed(1)+'%;top:'+top.toFixed(1)+'%;width:'+sz+'px;height:'+sz+'px;animation-duration:'+dur+'s;animation-delay:'+delay+'s"></i>';}
+  el.innerHTML=h;
+}
+
+// ── ENCOUNTER (shared, DM-driven battle tracker) ─────
+let initActive=false,encEid=0;   // encEid: which encounter this is, so a player's initiative roll lands in the right one
+function sortInit(){const cur=initiative[initTurnIdx],v=r=>(r.init==null||r.init==='')?-999:+r.init;initiative.sort((a,b)=>v(b)-v(a));if(cur)initTurnIdx=Math.max(0,initiative.indexOf(cur));}   // blanks (waiting for a roll) go last; the turn stays with whoever had it
+function combHP(r){if(r.type==='pc'){const c=lastData[r.playerKey]||{};return {cur:parseInt(c.hpCur)||0,max:parseInt(c.hpMax)||0};}return {cur:parseInt(r.hp)||0,max:parseInt(r.hpMax)||0};}
+function combConds(r){if(r.type==='pc'){const c=lastData[r.playerKey]||{};return Array.isArray(c.conditions)?c.conditions:[];}return Array.isArray(r.conditions)?r.conditions:[];}
+// ▶ Start adds the players without an initiative: each one types or rolls theirs on their sheet (meta/rolls), and it fills in
+// here by itself (applyRolls). 🎲 Roll missing rolls d20 + DEX for anyone still blank. The DM can type over any number.
+function rollInitForAll(){
+  const players=Object.entries(lastData).filter(([k])=>!k.startsWith('_')&&!hiddenPlayers[k]);
+  initiative=initiative.filter(r=>r.type==='npc');
+  encEid=Date.now();
+  players.forEach(([pk,c])=>{initiative.push({name:c.charName||pk,type:'pc',init:null,playerKey:pk,types:[c.type1,c.type2].filter(Boolean)});});
+  sortInit();initTurnIdx=0;initRound=1;initActive=true;
+  renderInit();dm_save();startAutoRefresh();
+}
+function rollMissingInit(){
+  initiative.forEach(r=>{if(r.init!=null&&r.init!=='')return;const dex=r.type==='pc'?((lastData[r.playerKey]||{}).stats||{}).DEX:(r.sb&&r.sb.st&&r.sb.st.DEX);
+    r.init=Math.floor(Math.random()*20)+1+Math.floor(((parseInt(dex)||10)-10)/2);});
+  sortInit();renderInit();dm_save();
+}
+function applyRolls(rolls){   // players' own initiative (meta/rolls/<player>)
+  if(!rolls||!encEid)return false;let ch=false;
+  for(const pk in rolls){const v=rolls[pk];if(!v||v.eid!==encEid)continue;const r=initiative.find(x=>x.type==='pc'&&x.playerKey===pk);if(!r||r.rollT===v.t)continue;
+    r.rollT=v.t;r.init=parseInt(v.v)||0;ch=true;}
+  if(ch)sortInit();return ch;
+}
+const DMG_DONE=new Set();
+function applyDmg(list){   // damage players entered on their sheet (meta/dmg): off the foe's HP, then the entry is cleared
+  let ch=false;
+  for(const k in (list||{})){if(DMG_DONE.has(k))continue;DMG_DONE.add(k);const e=list[k]||{},amt=parseInt(e.amt)||0,tn=String(e.target||'').toLowerCase();
+    const rows=initiative.map((r,i)=>({r,i})).filter(o=>o.r.type==='npc'&&(o.r.name||'').toLowerCase()===tn),o=rows.find(o=>(parseInt(o.r.hp)||0)>0)||rows[0];
+    if(o&&amt>0){o.r.hp=Math.max(0,(parseInt(o.r.hp)||0)-amt);ch=true;setTimeout(()=>encFloat(o.i,-amt),60);}
+    Sync.delMeta(campaignId,'dmg/'+k).catch(()=>{});}
+  return ch;
+}
+
+function addInitRow(){initiative.push({name:'Monster',type:'npc',init:10,hp:20,hpMax:20,types:[],conditions:[]});sortInit();initActive=true;renderInit();dm_save();}
+function removeInitRow(i){initiative.splice(i,1);if(initTurnIdx>=initiative.length)initTurnIdx=0;renderInit();dm_save();}
+function nextTurn(){
+  if(!initiative.length)return;
+  const n=initiative.length;
+  const allDown=initiative.every(r=>{const h=combHP(r);return h.max&&h.cur<=0;});
+  let g=0;
+  do{ initTurnIdx++; if(initTurnIdx>=n){initTurnIdx=0;initRound++;} g++; }
+  while(!allDown && g<=n && (function(){const h=combHP(initiative[initTurnIdx]);return h.max&&h.cur<=0;})());
+  document.getElementById('initRound').textContent=initRound;
+  renderInit();dm_save();
+}
+function resetInit(){if(!confirm('End the encounter and clear it?'))return;initiative=[];initRound=1;initTurnIdx=0;initActive=false;encEid=0;renderInit();dm_save();startAutoRefresh();}
+function combHPAdj(i,delta){const r=initiative[i];if(!r)return;if(r.type==='pc'){quickHP(r.playerKey,delta);}else{r.hp=Math.max(0,(parseInt(r.hp)||0)+delta);dm_save();}renderInit();encFloat(i,delta);}
+function encFloat(i,delta){
+  delta=parseInt(delta)||0;if(!delta)return;
+  if(document.body.classList.contains('reduce-motion'))return;
+  const row=document.querySelector('.enc-row[data-i="'+i+'"]');if(!row)return;
+  const f=document.createElement('div');f.className='enc-float '+(delta<0?'dmg':'heal');f.textContent=(delta>0?'+':'')+delta;
+  row.appendChild(f);setTimeout(()=>f.remove(),1000);
+}
+function npcSetFoe(i){const r=initiative[i];if(!r)return;const types=(r.types||[]).slice(0,2);postMeta('foe',{types:types,t:Date.now()}).then(()=>{lastData._foe={types:types};renderSceneState();});}
+function renderInit(){
+  document.getElementById('initRound').textContent=initRound;
+  const list=document.getElementById('initList');
+  if(!initiative.length){list.innerHTML='<div class="init-empty">Tap <b>▶ Start</b> to add your players: each one types or rolls their initiative on their sheet, and it shows up here. Then add foes. The order, HP and turn sync live to every player.</div>';pushBattle();return;}
+  list.innerHTML=initiative.map((r,i)=>{
+    const hp=combHP(r),pct=hp.max?Math.max(0,Math.min(100,hp.cur/hp.max*100)):0;
+    const col=pct>50?'var(--grn)':pct>25?'var(--gold)':'var(--red)',down=hp.max&&hp.cur<=0;
+    const conds=combConds(r);
+    return '<div class="enc-row'+(i===initTurnIdx?' active-turn':'')+(down?' downed':'')+'" data-i="'+i+'">'
+      +'<input class="enc-init" type="number" value="'+(r.init==null?'':r.init)+'" placeholder="?" data-i="'+i+'" data-f="init" title="'+(r.init==null?'Waiting for the player to roll (or type it here)':'Initiative')+'">'
+      +'<div class="enc-main"><div class="enc-top">'
+        +(r.type==='npc'?'<input class="enc-name-inp" value="'+x(r.name)+'" data-i="'+i+'" data-f="name">':'<span class="enc-name">'+x(r.name)+'</span>')
+        +'<span class="init-tag '+r.type+'">'+r.type.toUpperCase()+'</span>'
+        +((r.types&&r.types.length)?'<span class="enc-types">'+r.types.map(t=>'<i class="enc-tdot" style="background:'+(TYPE_COLORS[t]||'#888')+'" title="'+t+'"></i>').join('')+'</span>':'')
+        +(down?'<span class="enc-down">DOWN</span>':'')+'</div>'
+        +(hp.max?'<div class="enc-hp"><div class="enc-hp-bar"><div class="enc-hp-fill" style="width:'+pct+'%;background:'+col+'"></div></div><span class="enc-hp-n">'+hp.cur+'/'+hp.max+'</span></div>':'<div class="enc-nohp">no HP set</div>')
+        +(conds.length?'<div class="enc-conds">'+conds.map(c=>'<span class="enc-cond">'+x(c)+'</span>').join('')+'</div>':'')
+        +(r.sb&&r.sb.st?'<div class="enc-st">Lv '+(r.sb.lvl||1)+' · '+STAT_ABBR.map(k=>k+' '+r.sb.st[k]).join(' · ')+'</div>':'')
+      +'</div>'
+      +'<div class="enc-acts">'
+        +'<button class="enc-hb dmg" data-i="'+i+'" data-d="-5">−5</button><button class="enc-hb dmg" data-i="'+i+'" data-d="-1">−1</button>'
+        +'<button class="enc-hb heal" data-i="'+i+'" data-d="1">+1</button><button class="enc-hb heal" data-i="'+i+'" data-d="5">+5</button>'
+        +(r.type==='npc'?'<button class="enc-foe" data-i="'+i+'" title="Set this enemy as the effectiveness foe">🎯</button><button class="enc-foe enc-sbb" data-i="'+i+'" title="Its stats (edit for a boss)">📊</button>':'')
+        +'<button class="init-del" data-i="'+i+'" title="Remove">✕</button></div></div>';
+  }).join('');
+  list.querySelectorAll('.enc-init,.enc-name-inp').forEach(inp=>inp.addEventListener('change',function(){const i=+this.dataset.i,f=this.dataset.f;if(f==='init'){initiative[i].init=this.value===''?null:parseInt(this.value)||0;sortInit();renderInit();}else initiative[i].name=this.value;dm_save();}));
+  list.querySelectorAll('.enc-hb').forEach(b=>b.addEventListener('click',function(){combHPAdj(+this.dataset.i,parseInt(this.dataset.d));}));
+  list.querySelectorAll('.enc-foe:not(.enc-sbb)').forEach(b=>b.addEventListener('click',function(){npcSetFoe(+this.dataset.i);}));
+  list.querySelectorAll('.enc-sbb').forEach(b=>b.addEventListener('click',function(){sbFromRow(+this.dataset.i);}));
+  list.querySelectorAll('.init-del').forEach(b=>b.addEventListener('click',function(){removeInitRow(+this.dataset.i);}));
+  pushBattle();
+}
+function pushBattle(){
+  const out=initiative.map(r=>{const hp=combHP(r);return {name:r.name,kind:r.type,init:r.init,hp:hp.cur,hpMax:hp.max,types:r.types||[],conditions:combConds(r),pk:r.playerKey||''};});
+  const payload={active:initActive&&initiative.length>0,round:initRound,turn:initTurnIdx,eid:encEid,list:out};
+  const s=JSON.stringify(payload);if(s===_lastInit)return;_lastInit=s;
+  lastData._battle=payload; postMeta('battle',payload);
+}
+
+// ── POKÉMON STAT BLOCKS (the DM's formula) ──
+// Base stats of every Pokémon (from Pokémon Showdown's public Pokédex): Name|dex number|HP|Atk|Def|SpA|SpD|Spe|types
+const POKE_BASE="Bulbasaur|1|45|49|49|65|65|45|Grass/Poison;Ivysaur|2|60|62|63|80|80|60|Grass/Poison;Venusaur|3|80|82|83|100|100|80|Grass/Poison;Venusaur-Mega|3|80|100|123|122|120|80|Grass/Poison;Charmander|4|39|52|43|60|50|65|Fire;Charmeleon|5|58|64|58|80|65|80|Fire;Charizard|6|78|84|78|109|85|100|Fire/Flying;Charizard-Mega-X|6|78|130|111|130|85|100|Fire/Dragon;Charizard-Mega-Y|6|78|104|78|159|115|100|Fire/Flying;Squirtle|7|44|48|65|50|64|43|Water;Wartortle|8|59|63|80|65|80|58|Water;Blastoise|9|79|83|100|85|105|78|Water;Blastoise-Mega|9|79|103|120|135|115|78|Water;Caterpie|10|45|30|35|20|20|45|Bug;Metapod|11|50|20|55|25|25|30|Bug;Butterfree|12|60|45|50|90|80|70|Bug/Flying;Weedle|13|40|35|30|20|20|50|Bug/Poison;Kakuna|14|45|25|50|25|25|35|Bug/Poison;Beedrill|15|65|90|40|45|80|75|Bug/Poison;Beedrill-Mega|15|65|150|40|15|80|145|Bug/Poison;Pidgey|16|40|45|40|35|35|56|Normal/Flying;Pidgeotto|17|63|60|55|50|50|71|Normal/Flying;Pidgeot|18|83|80|75|70|70|101|Normal/Flying;Pidgeot-Mega|18|83|80|80|135|80|121|Normal/Flying;Rattata|19|30|56|35|25|35|72|Normal;Rattata-Alola|19|30|56|35|25|35|72|Dark/Normal;Raticate|20|55|81|60|50|70|97|Normal;Raticate-Alola|20|75|71|70|40|80|77|Dark/Normal;Spearow|21|40|60|30|31|31|70|Normal/Flying;Fearow|22|65|90|65|61|61|100|Normal/Flying;Ekans|23|35|60|44|40|54|55|Poison;Arbok|24|60|95|69|65|79|80|Poison;Pikachu|25|35|55|40|50|50|90|Electric;Raichu|26|60|90|55|90|80|110|Electric;Raichu-Alola|26|60|85|50|95|85|110|Electric/Psychic;Raichu-Mega-X|26|60|135|95|90|95|110|Electric;Raichu-Mega-Y|26|60|100|55|160|80|130|Electric;Sandshrew|27|50|75|85|20|30|40|Ground;Sandshrew-Alola|27|50|75|90|10|35|40|Ice/Steel;Sandslash|28|75|100|110|45|55|65|Ground;Sandslash-Alola|28|75|100|120|25|65|65|Ice/Steel;Nidoran-F|29|55|47|52|40|40|41|Poison;Nidorina|30|70|62|67|55|55|56|Poison;Nidoqueen|31|90|92|87|75|85|76|Poison/Ground;Nidoran-M|32|46|57|40|40|40|50|Poison;Nidorino|33|61|72|57|55|55|65|Poison;Nidoking|34|81|102|77|85|75|85|Poison/Ground;Clefairy|35|70|45|48|60|65|35|Fairy;Clefable|36|95|70|73|95|90|60|Fairy;Clefable-Mega|36|95|80|93|135|110|70|Fairy/Flying;Vulpix|37|38|41|40|50|65|65|Fire;Vulpix-Alola|37|38|41|40|50|65|65|Ice;Ninetales|38|73|76|75|81|100|100|Fire;Ninetales-Alola|38|73|67|75|81|100|109|Ice/Fairy;Jigglypuff|39|115|45|20|45|25|20|Normal/Fairy;Wigglytuff|40|140|70|45|85|50|45|Normal/Fairy;Zubat|41|40|45|35|30|40|55|Poison/Flying;Golbat|42|75|80|70|65|75|90|Poison/Flying;Oddish|43|45|50|55|75|65|30|Grass/Poison;Gloom|44|60|65|70|85|75|40|Grass/Poison;Vileplume|45|75|80|85|110|90|50|Grass/Poison;Paras|46|35|70|55|45|55|25|Bug/Grass;Parasect|47|60|95|80|60|80|30|Bug/Grass;Venonat|48|60|55|50|40|55|45|Bug/Poison;Venomoth|49|70|65|60|90|75|90|Bug/Poison;Diglett|50|10|55|25|35|45|95|Ground;Diglett-Alola|50|10|55|30|35|45|90|Ground/Steel;Dugtrio|51|35|100|50|50|70|120|Ground;Dugtrio-Alola|51|35|100|60|50|70|110|Ground/Steel;Meowth|52|40|45|35|40|40|90|Normal;Meowth-Alola|52|40|35|35|50|40|90|Dark;Meowth-Galar|52|50|65|55|40|40|40|Steel;Persian|53|65|70|60|65|65|115|Normal;Persian-Alola|53|65|60|60|75|65|115|Dark;Psyduck|54|50|52|48|65|50|55|Water;Golduck|55|80|82|78|95|80|85|Water;Mankey|56|40|80|35|35|45|70|Fighting;Primeape|57|65|105|60|60|70|95|Fighting;Growlithe|58|55|70|45|70|50|60|Fire;Growlithe-Hisui|58|60|75|45|65|50|55|Fire/Rock;Arcanine|59|90|110|80|100|80|95|Fire;Arcanine-Hisui|59|95|115|80|95|80|90|Fire/Rock;Poliwag|60|40|50|40|40|40|90|Water;Poliwhirl|61|65|65|65|50|50|90|Water;Poliwrath|62|90|95|95|70|90|70|Water/Fighting;Abra|63|25|20|15|105|55|90|Psychic;Kadabra|64|40|35|30|120|70|105|Psychic;Alakazam|65|55|50|45|135|95|120|Psychic;Alakazam-Mega|65|55|50|65|175|105|150|Psychic;Machop|66|70|80|50|35|35|35|Fighting;Machoke|67|80|100|70|50|60|45|Fighting;Machamp|68|90|130|80|65|85|55|Fighting;Bellsprout|69|50|75|35|70|30|40|Grass/Poison;Weepinbell|70|65|90|50|85|45|55|Grass/Poison;Victreebel|71|80|105|65|100|70|70|Grass/Poison;Victreebel-Mega|71|80|125|85|135|95|70|Grass/Poison;Tentacool|72|40|40|35|50|100|70|Water/Poison;Tentacruel|73|80|70|65|80|120|100|Water/Poison;Geodude|74|40|80|100|30|30|20|Rock/Ground;Geodude-Alola|74|40|80|100|30|30|20|Rock/Electric;Graveler|75|55|95|115|45|45|35|Rock/Ground;Graveler-Alola|75|55|95|115|45|45|35|Rock/Electric;Golem|76|80|120|130|55|65|45|Rock/Ground;Golem-Alola|76|80|120|130|55|65|45|Rock/Electric;Ponyta|77|50|85|55|65|65|90|Fire;Ponyta-Galar|77|50|85|55|65|65|90|Psychic;Rapidash|78|65|100|70|80|80|105|Fire;Rapidash-Galar|78|65|100|70|80|80|105|Psychic/Fairy;Slowpoke|79|90|65|65|40|40|15|Water/Psychic;Slowpoke-Galar|79|90|65|65|40|40|15|Psychic;Slowbro|80|95|75|110|100|80|30|Water/Psychic;Slowbro-Galar|80|95|100|95|100|70|30|Poison/Psychic;Slowbro-Mega|80|95|75|180|130|80|30|Water/Psychic;Magnemite|81|25|35|70|95|55|45|Electric/Steel;Magneton|82|50|60|95|120|70|70|Electric/Steel;Farfetch’d|83|52|90|55|58|62|60|Normal/Flying;Farfetch’d-Galar|83|52|95|55|58|62|55|Fighting;Doduo|84|35|85|45|35|35|75|Normal/Flying;Dodrio|85|60|110|70|60|60|110|Normal/Flying;Seel|86|65|45|55|45|70|45|Water;Dewgong|87|90|70|80|70|95|70|Water/Ice;Grimer|88|80|80|50|40|50|25|Poison;Grimer-Alola|88|80|80|50|40|50|25|Poison/Dark;Muk|89|105|105|75|65|100|50|Poison;Muk-Alola|89|105|105|75|65|100|50|Poison/Dark;Shellder|90|30|65|100|45|25|40|Water;Cloyster|91|50|95|180|85|45|70|Water/Ice;Gastly|92|30|35|30|100|35|80|Ghost/Poison;Haunter|93|45|50|45|115|55|95|Ghost/Poison;Gengar|94|60|65|60|130|75|110|Ghost/Poison;Gengar-Mega|94|60|65|80|170|95|130|Ghost/Poison;Onix|95|35|45|160|30|45|70|Rock/Ground;Drowzee|96|60|48|45|43|90|42|Psychic;Hypno|97|85|73|70|73|115|67|Psychic;Krabby|98|30|105|90|25|25|50|Water;Kingler|99|55|130|115|50|50|75|Water;Voltorb|100|40|30|50|55|55|100|Electric;Voltorb-Hisui|100|40|30|50|55|55|100|Electric/Grass;Electrode|101|60|50|70|80|80|150|Electric;Electrode-Hisui|101|60|50|70|80|80|150|Electric/Grass;Exeggcute|102|60|40|80|60|45|40|Grass/Psychic;Exeggutor|103|95|95|85|125|75|55|Grass/Psychic;Exeggutor-Alola|103|95|105|85|125|75|45|Grass/Dragon;Cubone|104|50|50|95|40|50|35|Ground;Marowak|105|60|80|110|50|80|45|Ground;Marowak-Alola|105|60|80|110|50|80|45|Fire/Ghost;Hitmonlee|106|50|120|53|35|110|87|Fighting;Hitmonchan|107|50|105|79|35|110|76|Fighting;Lickitung|108|90|55|75|60|75|30|Normal;Koffing|109|40|65|95|60|45|35|Poison;Weezing|110|65|90|120|85|70|60|Poison;Weezing-Galar|110|65|90|120|85|70|60|Poison/Fairy;Rhyhorn|111|80|85|95|30|30|25|Ground/Rock;Rhydon|112|105|130|120|45|45|40|Ground/Rock;Chansey|113|250|5|5|35|105|50|Normal;Tangela|114|65|55|115|100|40|60|Grass;Kangaskhan|115|105|95|80|40|80|90|Normal;Kangaskhan-Mega|115|105|125|100|60|100|100|Normal;Horsea|116|30|40|70|70|25|60|Water;Seadra|117|55|65|95|95|45|85|Water;Goldeen|118|45|67|60|35|50|63|Water;Seaking|119|80|92|65|65|80|68|Water;Staryu|120|30|45|55|70|55|85|Water;Starmie|121|60|75|85|100|85|115|Water/Psychic;Starmie-Mega|121|60|100|105|130|105|120|Water/Psychic;Mr. Mime|122|40|45|65|100|120|90|Psychic/Fairy;Mr. Mime-Galar|122|50|65|65|90|90|100|Ice/Psychic;Scyther|123|70|110|80|55|80|105|Bug/Flying;Jynx|124|65|50|35|115|95|95|Ice/Psychic;Electabuzz|125|65|83|57|95|85|105|Electric;Magmar|126|65|95|57|100|85|93|Fire;Pinsir|127|65|125|100|55|70|85|Bug;Pinsir-Mega|127|65|155|120|65|90|105|Bug/Flying;Tauros|128|75|100|95|40|70|110|Normal;Tauros-Paldea-Aqua|128|75|110|105|30|70|100|Fighting/Water;Tauros-Paldea-Blaze|128|75|110|105|30|70|100|Fighting/Fire;Tauros-Paldea-Combat|128|75|110|105|30|70|100|Fighting;Magikarp|129|20|10|55|15|20|80|Water;Gyarados|130|95|125|79|60|100|81|Water/Flying;Gyarados-Mega|130|95|155|109|70|130|81|Water/Dark;Lapras|131|130|85|80|85|95|60|Water/Ice;Ditto|132|48|48|48|48|48|48|Normal;Eevee|133|55|55|50|45|65|55|Normal;Vaporeon|134|130|65|60|110|95|65|Water;Jolteon|135|65|65|60|110|95|130|Electric;Flareon|136|65|130|60|95|110|65|Fire;Porygon|137|65|60|70|85|75|40|Normal;Omanyte|138|35|40|100|90|55|35|Rock/Water;Omastar|139|70|60|125|115|70|55|Rock/Water;Kabuto|140|30|80|90|55|45|55|Rock/Water;Kabutops|141|60|115|105|65|70|80|Rock/Water;Aerodactyl|142|80|105|65|60|75|130|Rock/Flying;Aerodactyl-Mega|142|80|135|85|70|95|150|Rock/Flying;Snorlax|143|160|110|65|65|110|30|Normal;Articuno|144|90|85|100|95|125|85|Ice/Flying;Articuno-Galar|144|90|85|85|125|100|95|Psychic/Flying;Zapdos|145|90|90|85|125|90|100|Electric/Flying;Zapdos-Galar|145|90|125|90|85|90|100|Fighting/Flying;Moltres|146|90|100|90|125|85|90|Fire/Flying;Moltres-Galar|146|90|85|90|100|125|90|Dark/Flying;Dratini|147|41|64|45|50|50|50|Dragon;Dragonair|148|61|84|65|70|70|70|Dragon;Dragonite|149|91|134|95|100|100|80|Dragon/Flying;Dragonite-Mega|149|91|124|115|145|125|100|Dragon/Flying;Mewtwo|150|106|110|90|154|90|130|Psychic;Mewtwo-Mega-X|150|106|190|100|154|100|130|Psychic/Fighting;Mewtwo-Mega-Y|150|106|150|70|194|120|140|Psychic;Mew|151|100|100|100|100|100|100|Psychic;Chikorita|152|45|49|65|49|65|45|Grass;Bayleef|153|60|62|80|63|80|60|Grass;Meganium|154|80|82|100|83|100|80|Grass;Meganium-Mega|154|80|92|115|143|115|80|Grass/Fairy;Cyndaquil|155|39|52|43|60|50|65|Fire;Quilava|156|58|64|58|80|65|80|Fire;Typhlosion|157|78|84|78|109|85|100|Fire;Typhlosion-Hisui|157|73|84|78|119|85|95|Fire/Ghost;Totodile|158|50|65|64|44|48|43|Water;Croconaw|159|65|80|80|59|63|58|Water;Feraligatr|160|85|105|100|79|83|78|Water;Feraligatr-Mega|160|85|160|125|89|93|78|Water/Dragon;Sentret|161|35|46|34|35|45|20|Normal;Furret|162|85|76|64|45|55|90|Normal;Hoothoot|163|60|30|30|36|56|50|Normal/Flying;Noctowl|164|100|50|50|86|96|70|Normal/Flying;Ledyba|165|40|20|30|40|80|55|Bug/Flying;Ledian|166|55|35|50|55|110|85|Bug/Flying;Spinarak|167|40|60|40|40|40|30|Bug/Poison;Ariados|168|70|90|70|60|70|40|Bug/Poison;Crobat|169|85|90|80|70|80|130|Poison/Flying;Chinchou|170|75|38|38|56|56|67|Water/Electric;Lanturn|171|125|58|58|76|76|67|Water/Electric;Pichu|172|20|40|15|35|35|60|Electric;Cleffa|173|50|25|28|45|55|15|Fairy;Igglybuff|174|90|30|15|40|20|15|Normal/Fairy;Togepi|175|35|20|65|40|65|20|Fairy;Togetic|176|55|40|85|80|105|40|Fairy/Flying;Natu|177|40|50|45|70|45|70|Psychic/Flying;Xatu|178|65|75|70|95|70|95|Psychic/Flying;Mareep|179|55|40|40|65|45|35|Electric;Flaaffy|180|70|55|55|80|60|45|Electric;Ampharos|181|90|75|85|115|90|55|Electric;Ampharos-Mega|181|90|95|105|165|110|45|Electric/Dragon;Bellossom|182|75|80|95|90|100|50|Grass;Marill|183|70|20|50|20|50|40|Water/Fairy;Azumarill|184|100|50|80|60|80|50|Water/Fairy;Sudowoodo|185|70|100|115|30|65|30|Rock;Politoed|186|90|75|75|90|100|70|Water;Hoppip|187|35|35|40|35|55|50|Grass/Flying;Skiploom|188|55|45|50|45|65|80|Grass/Flying;Jumpluff|189|75|55|70|55|95|110|Grass/Flying;Aipom|190|55|70|55|40|55|85|Normal;Sunkern|191|30|30|30|30|30|30|Grass;Sunflora|192|75|75|55|105|85|30|Grass;Yanma|193|65|65|45|75|45|95|Bug/Flying;Wooper|194|55|45|45|25|25|15|Water/Ground;Wooper-Paldea|194|55|45|45|25|25|15|Poison/Ground;Quagsire|195|95|85|85|65|65|35|Water/Ground;Espeon|196|65|65|60|130|95|110|Psychic;Umbreon|197|95|65|110|60|130|65|Dark;Murkrow|198|60|85|42|85|42|91|Dark/Flying;Slowking|199|95|75|80|100|110|30|Water/Psychic;Slowking-Galar|199|95|65|80|110|110|30|Poison/Psychic;Misdreavus|200|60|60|60|85|85|85|Ghost;Unown|201|48|72|48|72|48|48|Psychic;Wobbuffet|202|190|33|58|33|58|33|Psychic;Girafarig|203|70|80|65|90|65|85|Normal/Psychic;Pineco|204|50|65|90|35|35|15|Bug;Forretress|205|75|90|140|60|60|40|Bug/Steel;Dunsparce|206|100|70|70|65|65|45|Normal;Gligar|207|65|75|105|35|65|85|Ground/Flying;Steelix|208|75|85|200|55|65|30|Steel/Ground;Steelix-Mega|208|75|125|230|55|95|30|Steel/Ground;Snubbull|209|60|80|50|40|40|30|Fairy;Granbull|210|90|120|75|60|60|45|Fairy;Qwilfish|211|65|95|85|55|55|85|Water/Poison;Qwilfish-Hisui|211|65|95|85|55|55|85|Dark/Poison;Scizor|212|70|130|100|55|80|65|Bug/Steel;Scizor-Mega|212|70|150|140|65|100|75|Bug/Steel;Shuckle|213|20|10|230|10|230|5|Bug/Rock;Heracross|214|80|125|75|40|95|85|Bug/Fighting;Heracross-Mega|214|80|185|115|40|105|75|Bug/Fighting;Sneasel|215|55|95|55|35|75|115|Dark/Ice;Sneasel-Hisui|215|55|95|55|35|75|115|Fighting/Poison;Teddiursa|216|60|80|50|50|50|40|Normal;Ursaring|217|90|130|75|75|75|55|Normal;Slugma|218|40|40|40|70|40|20|Fire;Magcargo|219|60|50|120|90|80|30|Fire/Rock;Swinub|220|50|50|40|30|30|50|Ice/Ground;Piloswine|221|100|100|80|60|60|50|Ice/Ground;Corsola|222|65|55|95|65|95|35|Water/Rock;Corsola-Galar|222|60|55|100|65|100|30|Ghost;Remoraid|223|35|65|35|65|35|65|Water;Octillery|224|75|105|75|105|75|45|Water;Delibird|225|45|55|45|65|45|75|Ice/Flying;Mantine|226|85|40|70|80|140|70|Water/Flying;Skarmory|227|65|80|140|40|70|70|Steel/Flying;Skarmory-Mega|227|65|140|110|40|100|110|Steel/Flying;Houndour|228|45|60|30|80|50|65|Dark/Fire;Houndoom|229|75|90|50|110|80|95|Dark/Fire;Houndoom-Mega|229|75|90|90|140|90|115|Dark/Fire;Kingdra|230|75|95|95|95|95|85|Water/Dragon;Phanpy|231|90|60|60|40|40|40|Ground;Donphan|232|90|120|120|60|60|50|Ground;Porygon2|233|85|80|90|105|95|60|Normal;Stantler|234|73|95|62|85|65|85|Normal;Smeargle|235|55|20|35|20|45|75|Normal;Tyrogue|236|35|35|35|35|35|35|Fighting;Hitmontop|237|50|95|95|35|110|70|Fighting;Smoochum|238|45|30|15|85|65|65|Ice/Psychic;Elekid|239|45|63|37|65|55|95|Electric;Magby|240|45|75|37|70|55|83|Fire;Miltank|241|95|80|105|40|70|100|Normal;Blissey|242|255|10|10|75|135|55|Normal;Raikou|243|90|85|75|115|100|115|Electric;Entei|244|115|115|85|90|75|100|Fire;Suicune|245|100|75|115|90|115|85|Water;Larvitar|246|50|64|50|45|50|41|Rock/Ground;Pupitar|247|70|84|70|65|70|51|Rock/Ground;Tyranitar|248|100|134|110|95|100|61|Rock/Dark;Tyranitar-Mega|248|100|164|150|95|120|71|Rock/Dark;Lugia|249|106|90|130|90|154|110|Psychic/Flying;Ho-Oh|250|106|130|90|110|154|90|Fire/Flying;Celebi|251|100|100|100|100|100|100|Psychic/Grass;Treecko|252|40|45|35|65|55|70|Grass;Grovyle|253|50|65|45|85|65|95|Grass;Sceptile|254|70|85|65|105|85|120|Grass;Sceptile-Mega|254|70|110|75|145|85|145|Grass/Dragon;Torchic|255|45|60|40|70|50|45|Fire;Combusken|256|60|85|60|85|60|55|Fire/Fighting;Blaziken|257|80|120|70|110|70|80|Fire/Fighting;Blaziken-Mega|257|80|160|80|130|80|100|Fire/Fighting;Mudkip|258|50|70|50|50|50|40|Water;Marshtomp|259|70|85|70|60|70|50|Water/Ground;Swampert|260|100|110|90|85|90|60|Water/Ground;Swampert-Mega|260|100|150|110|95|110|70|Water/Ground;Poochyena|261|35|55|35|30|30|35|Dark;Mightyena|262|70|90|70|60|60|70|Dark;Zigzagoon|263|38|30|41|30|41|60|Normal;Zigzagoon-Galar|263|38|30|41|30|41|60|Dark/Normal;Linoone|264|78|70|61|50|61|100|Normal;Linoone-Galar|264|78|70|61|50|61|100|Dark/Normal;Wurmple|265|45|45|35|20|30|20|Bug;Silcoon|266|50|35|55|25|25|15|Bug;Beautifly|267|60|70|50|100|50|65|Bug/Flying;Cascoon|268|50|35|55|25|25|15|Bug;Dustox|269|60|50|70|50|90|65|Bug/Poison;Lotad|270|40|30|30|40|50|30|Water/Grass;Lombre|271|60|50|50|60|70|50|Water/Grass;Ludicolo|272|80|70|70|90|100|70|Water/Grass;Seedot|273|40|40|50|30|30|30|Grass;Nuzleaf|274|70|70|40|60|40|60|Grass/Dark;Shiftry|275|90|100|60|90|60|80|Grass/Dark;Taillow|276|40|55|30|30|30|85|Normal/Flying;Swellow|277|60|85|60|75|50|125|Normal/Flying;Wingull|278|40|30|30|55|30|85|Water/Flying;Pelipper|279|60|50|100|95|70|65|Water/Flying;Ralts|280|28|25|25|45|35|40|Psychic/Fairy;Kirlia|281|38|35|35|65|55|50|Psychic/Fairy;Gardevoir|282|68|65|65|125|115|80|Psychic/Fairy;Gardevoir-Mega|282|68|85|65|165|135|100|Psychic/Fairy;Surskit|283|40|30|32|50|52|65|Bug/Water;Masquerain|284|70|60|62|100|82|80|Bug/Flying;Shroomish|285|60|40|60|40|60|35|Grass;Breloom|286|60|130|80|60|60|70|Grass/Fighting;Slakoth|287|60|60|60|35|35|30|Normal;Vigoroth|288|80|80|80|55|55|90|Normal;Slaking|289|150|160|100|95|65|100|Normal;Nincada|290|31|45|90|30|30|40|Bug/Ground;Ninjask|291|61|90|45|50|50|160|Bug/Flying;Shedinja|292|1|90|45|30|30|40|Bug/Ghost;Whismur|293|64|51|23|51|23|28|Normal;Loudred|294|84|71|43|71|43|48|Normal;Exploud|295|104|91|63|91|73|68|Normal;Makuhita|296|72|60|30|20|30|25|Fighting;Hariyama|297|144|120|60|40|60|50|Fighting;Azurill|298|50|20|40|20|40|20|Normal/Fairy;Nosepass|299|30|45|135|45|90|30|Rock;Skitty|300|50|45|45|35|35|50|Normal;Delcatty|301|70|65|65|55|55|90|Normal;Sableye|302|50|75|75|65|65|50|Dark/Ghost;Sableye-Mega|302|50|85|125|85|115|20|Dark/Ghost;Mawile|303|50|85|85|55|55|50|Steel/Fairy;Mawile-Mega|303|50|105|125|55|95|50|Steel/Fairy;Aron|304|50|70|100|40|40|30|Steel/Rock;Lairon|305|60|90|140|50|50|40|Steel/Rock;Aggron|306|70|110|180|60|60|50|Steel/Rock;Aggron-Mega|306|70|140|230|60|80|50|Steel;Meditite|307|30|40|55|40|55|60|Fighting/Psychic;Medicham|308|60|60|75|60|75|80|Fighting/Psychic;Medicham-Mega|308|60|100|85|80|85|100|Fighting/Psychic;Electrike|309|40|45|40|65|40|65|Electric;Manectric|310|70|75|60|105|60|105|Electric;Manectric-Mega|310|70|75|80|135|80|135|Electric;Plusle|311|60|50|40|85|75|95|Electric;Minun|312|60|40|50|75|85|95|Electric;Volbeat|313|65|73|75|47|85|85|Bug;Illumise|314|65|47|75|73|85|85|Bug;Roselia|315|50|60|45|100|80|65|Grass/Poison;Gulpin|316|70|43|53|43|53|40|Poison;Swalot|317|100|73|83|73|83|55|Poison;Carvanha|318|45|90|20|65|20|65|Water/Dark;Sharpedo|319|70|120|40|95|40|95|Water/Dark;Sharpedo-Mega|319|70|140|70|110|65|105|Water/Dark;Wailmer|320|130|70|35|70|35|60|Water;Wailord|321|170|90|45|90|45|60|Water;Numel|322|60|60|40|65|45|35|Fire/Ground;Camerupt|323|70|100|70|105|75|40|Fire/Ground;Camerupt-Mega|323|70|120|100|145|105|20|Fire/Ground;Torkoal|324|70|85|140|85|70|20|Fire;Spoink|325|60|25|35|70|80|60|Psychic;Grumpig|326|80|45|65|90|110|80|Psychic;Spinda|327|60|60|60|60|60|60|Normal;Trapinch|328|45|100|45|45|45|10|Ground;Vibrava|329|50|70|50|50|50|70|Ground/Dragon;Flygon|330|80|100|80|80|80|100|Ground/Dragon;Cacnea|331|50|85|40|85|40|35|Grass;Cacturne|332|70|115|60|115|60|55|Grass/Dark;Swablu|333|45|40|60|40|75|50|Normal/Flying;Altaria|334|75|70|90|70|105|80|Dragon/Flying;Altaria-Mega|334|75|110|110|110|105|80|Dragon/Fairy;Zangoose|335|73|115|60|60|60|90|Normal;Seviper|336|73|100|60|100|60|65|Poison;Lunatone|337|90|55|65|95|85|70|Rock/Psychic;Solrock|338|90|95|85|55|65|70|Rock/Psychic;Barboach|339|50|48|43|46|41|60|Water/Ground;Whiscash|340|110|78|73|76|71|60|Water/Ground;Corphish|341|43|80|65|50|35|35|Water;Crawdaunt|342|63|120|85|90|55|55|Water/Dark;Baltoy|343|40|40|55|40|70|55|Ground/Psychic;Claydol|344|60|70|105|70|120|75|Ground/Psychic;Lileep|345|66|41|77|61|87|23|Rock/Grass;Cradily|346|86|81|97|81|107|43|Rock/Grass;Anorith|347|45|95|50|40|50|75|Rock/Bug;Armaldo|348|75|125|100|70|80|45|Rock/Bug;Feebas|349|20|15|20|10|55|80|Water;Milotic|350|95|60|79|100|125|81|Water;Castform|351|70|70|70|70|70|70|Normal;Castform-Rainy|351|70|70|70|70|70|70|Water;Castform-Snowy|351|70|70|70|70|70|70|Ice;Castform-Sunny|351|70|70|70|70|70|70|Fire;Kecleon|352|60|90|70|60|120|40|Normal;Shuppet|353|44|75|35|63|33|45|Ghost;Banette|354|64|115|65|83|63|65|Ghost;Banette-Mega|354|64|165|75|93|83|75|Ghost;Duskull|355|20|40|90|30|90|25|Ghost;Dusclops|356|40|70|130|60|130|25|Ghost;Tropius|357|99|68|83|72|87|51|Grass/Flying;Chimecho|358|75|50|80|95|90|65|Psychic;Chimecho-Mega|358|75|50|110|135|120|65|Psychic/Steel;Absol|359|65|130|60|75|60|75|Dark;Absol-Mega|359|65|150|60|115|60|115|Dark;Absol-Mega-Z|359|65|154|60|75|60|151|Dark/Ghost;Wynaut|360|95|23|48|23|48|23|Psychic;Snorunt|361|50|50|50|50|50|50|Ice;Glalie|362|80|80|80|80|80|80|Ice;Glalie-Mega|362|80|120|80|120|80|100|Ice;Spheal|363|70|40|50|55|50|25|Ice/Water;Sealeo|364|90|60|70|75|70|45|Ice/Water;Walrein|365|110|80|90|95|90|65|Ice/Water;Clamperl|366|35|64|85|74|55|32|Water;Huntail|367|55|104|105|94|75|52|Water;Gorebyss|368|55|84|105|114|75|52|Water;Relicanth|369|100|90|130|45|65|55|Water/Rock;Luvdisc|370|43|30|55|40|65|97|Water;Bagon|371|45|75|60|40|30|50|Dragon;Shelgon|372|65|95|100|60|50|50|Dragon;Salamence|373|95|135|80|110|80|100|Dragon/Flying;Salamence-Mega|373|95|145|130|120|90|120|Dragon/Flying;Beldum|374|40|55|80|35|60|30|Steel/Psychic;Metang|375|60|75|100|55|80|50|Steel/Psychic;Metagross|376|80|135|130|95|90|70|Steel/Psychic;Metagross-Mega|376|80|145|150|105|110|110|Steel/Psychic;Regirock|377|80|100|200|50|100|50|Rock;Regice|378|80|50|100|100|200|50|Ice;Registeel|379|80|75|150|75|150|50|Steel;Latias|380|80|80|90|110|130|110|Dragon/Psychic;Latias-Mega|380|80|100|120|140|150|110|Dragon/Psychic;Latios|381|80|90|80|130|110|110|Dragon/Psychic;Latios-Mega|381|80|130|100|160|120|110|Dragon/Psychic;Kyogre|382|100|100|90|150|140|90|Water;Kyogre-Primal|382|100|150|90|180|160|90|Water;Groudon|383|100|150|140|100|90|90|Ground;Groudon-Primal|383|100|180|160|150|90|90|Ground/Fire;Rayquaza|384|105|150|90|150|90|95|Dragon/Flying;Rayquaza-Mega|384|105|180|100|180|100|115|Dragon/Flying;Jirachi|385|100|100|100|100|100|100|Steel/Psychic;Deoxys|386|50|150|50|150|50|150|Psychic;Deoxys-Attack|386|50|180|20|180|20|150|Psychic;Deoxys-Defense|386|50|70|160|70|160|90|Psychic;Deoxys-Speed|386|50|95|90|95|90|180|Psychic;Turtwig|387|55|68|64|45|55|31|Grass;Grotle|388|75|89|85|55|65|36|Grass;Torterra|389|95|109|105|75|85|56|Grass/Ground;Chimchar|390|44|58|44|58|44|61|Fire;Monferno|391|64|78|52|78|52|81|Fire/Fighting;Infernape|392|76|104|71|104|71|108|Fire/Fighting;Piplup|393|53|51|53|61|56|40|Water;Prinplup|394|64|66|68|81|76|50|Water;Empoleon|395|84|86|88|111|101|60|Water/Steel;Starly|396|40|55|30|30|30|60|Normal/Flying;Staravia|397|55|75|50|40|40|80|Normal/Flying;Staraptor|398|85|120|70|50|60|100|Normal/Flying;Staraptor-Mega|398|85|140|100|60|90|110|Fighting/Flying;Bidoof|399|59|45|40|35|40|31|Normal;Bibarel|400|79|85|60|55|60|71|Normal/Water;Kricketot|401|37|25|41|25|41|25|Bug;Kricketune|402|77|85|51|55|51|65|Bug;Shinx|403|45|65|34|40|34|45|Electric;Luxio|404|60|85|49|60|49|60|Electric;Luxray|405|80|120|79|95|79|70|Electric;Budew|406|40|30|35|50|70|55|Grass/Poison;Roserade|407|60|70|65|125|105|90|Grass/Poison;Cranidos|408|67|125|40|30|30|58|Rock;Rampardos|409|97|165|60|65|50|58|Rock;Shieldon|410|30|42|118|42|88|30|Rock/Steel;Bastiodon|411|60|52|168|47|138|30|Rock/Steel;Burmy|412|40|29|45|29|45|36|Bug;Wormadam|413|60|59|85|79|105|36|Bug/Grass;Wormadam-Sandy|413|60|79|105|59|85|36|Bug/Ground;Wormadam-Trash|413|60|69|95|69|95|36|Bug/Steel;Mothim|414|70|94|50|94|50|66|Bug/Flying;Combee|415|30|30|42|30|42|70|Bug/Flying;Vespiquen|416|70|80|102|80|102|40|Bug/Flying;Pachirisu|417|60|45|70|45|90|95|Electric;Buizel|418|55|65|35|60|30|85|Water;Floatzel|419|85|105|55|85|50|115|Water;Cherubi|420|45|35|45|62|53|35|Grass;Cherrim|421|70|60|70|87|78|85|Grass;Shellos|422|76|48|48|57|62|34|Water;Gastrodon|423|111|83|68|92|82|39|Water/Ground;Ambipom|424|75|100|66|60|66|115|Normal;Drifloon|425|90|50|34|60|44|70|Ghost/Flying;Drifblim|426|150|80|44|90|54|80|Ghost/Flying;Buneary|427|55|66|44|44|56|85|Normal;Lopunny|428|65|76|84|54|96|105|Normal;Lopunny-Mega|428|65|136|94|54|96|135|Normal/Fighting;Mismagius|429|60|60|60|105|105|105|Ghost;Honchkrow|430|100|125|52|105|52|71|Dark/Flying;Glameow|431|49|55|42|42|37|85|Normal;Purugly|432|71|82|64|64|59|112|Normal;Chingling|433|45|30|50|65|50|45|Psychic;Stunky|434|63|63|47|41|41|74|Poison/Dark;Skuntank|435|103|93|67|71|61|84|Poison/Dark;Bronzor|436|57|24|86|24|86|23|Steel/Psychic;Bronzong|437|67|89|116|79|116|33|Steel/Psychic;Bonsly|438|50|80|95|10|45|10|Rock;Mime Jr.|439|20|25|45|70|90|60|Psychic/Fairy;Happiny|440|100|5|5|15|65|30|Normal;Chatot|441|76|65|45|92|42|91|Normal/Flying;Spiritomb|442|50|92|108|92|108|35|Ghost/Dark;Gible|443|58|70|45|40|45|42|Dragon/Ground;Gabite|444|68|90|65|50|55|82|Dragon/Ground;Garchomp|445|108|130|95|80|85|102|Dragon/Ground;Garchomp-Mega|445|108|170|115|120|95|92|Dragon/Ground;Garchomp-Mega-Z|445|108|130|85|141|85|151|Dragon;Munchlax|446|135|85|40|40|85|5|Normal;Riolu|447|40|70|40|35|40|60|Fighting;Lucario|448|70|110|70|115|70|90|Fighting/Steel;Lucario-Mega|448|70|145|88|140|70|112|Fighting/Steel;Lucario-Mega-Z|448|70|100|70|164|70|151|Fighting/Steel;Hippopotas|449|68|72|78|38|42|32|Ground;Hippowdon|450|108|112|118|68|72|47|Ground;Skorupi|451|40|50|90|30|55|65|Poison/Bug;Drapion|452|70|90|110|60|75|95|Poison/Dark;Croagunk|453|48|61|40|61|40|50|Poison/Fighting;Toxicroak|454|83|106|65|86|65|85|Poison/Fighting;Carnivine|455|74|100|72|90|72|46|Grass;Finneon|456|49|49|56|49|61|66|Water;Lumineon|457|69|69|76|69|86|91|Water;Mantyke|458|45|20|50|60|120|50|Water/Flying;Snover|459|60|62|50|62|60|40|Grass/Ice;Abomasnow|460|90|92|75|92|85|60|Grass/Ice;Abomasnow-Mega|460|90|132|105|132|105|30|Grass/Ice;Weavile|461|70|120|65|45|85|125|Dark/Ice;Magnezone|462|70|70|115|130|90|60|Electric/Steel;Lickilicky|463|110|85|95|80|95|50|Normal;Rhyperior|464|115|140|130|55|55|40|Ground/Rock;Tangrowth|465|100|100|125|110|50|50|Grass;Electivire|466|75|123|67|95|85|95|Electric;Magmortar|467|75|95|67|125|95|83|Fire;Togekiss|468|85|50|95|120|115|80|Fairy/Flying;Yanmega|469|86|76|86|116|56|95|Bug/Flying;Leafeon|470|65|110|130|60|65|95|Grass;Glaceon|471|65|60|110|130|95|65|Ice;Gliscor|472|75|95|125|45|75|95|Ground/Flying;Mamoswine|473|110|130|80|70|60|80|Ice/Ground;Porygon-Z|474|85|80|70|135|75|90|Normal;Gallade|475|68|125|65|65|115|80|Psychic/Fighting;Gallade-Mega|475|68|165|95|65|115|110|Psychic/Fighting;Probopass|476|60|55|145|75|150|40|Rock/Steel;Dusknoir|477|45|100|135|65|135|45|Ghost;Froslass|478|70|80|70|80|70|110|Ice/Ghost;Froslass-Mega|478|70|80|70|140|100|120|Ice/Ghost;Rotom|479|50|50|77|95|77|91|Electric/Ghost;Rotom-Fan|479|50|65|107|105|107|86|Electric/Flying;Rotom-Frost|479|50|65|107|105|107|86|Electric/Ice;Rotom-Heat|479|50|65|107|105|107|86|Electric/Fire;Rotom-Mow|479|50|65|107|105|107|86|Electric/Grass;Rotom-Wash|479|50|65|107|105|107|86|Electric/Water;Uxie|480|75|75|130|75|130|95|Psychic;Mesprit|481|80|105|105|105|105|80|Psychic;Azelf|482|75|125|70|125|70|115|Psychic;Dialga|483|100|120|120|150|100|90|Steel/Dragon;Dialga-Origin|483|100|100|120|150|120|90|Steel/Dragon;Palkia|484|90|120|100|150|120|100|Water/Dragon;Palkia-Origin|484|90|100|100|150|120|120|Water/Dragon;Heatran|485|91|90|106|130|106|77|Fire/Steel;Heatran-Mega|485|91|120|106|175|141|67|Fire/Steel;Regigigas|486|110|160|110|80|110|100|Normal;Giratina|487|150|100|120|100|120|90|Ghost/Dragon;Giratina-Origin|487|150|120|100|120|100|90|Ghost/Dragon;Cresselia|488|120|70|110|75|120|85|Psychic;Phione|489|80|80|80|80|80|80|Water;Manaphy|490|100|100|100|100|100|100|Water;Darkrai|491|70|90|90|135|90|125|Dark;Darkrai-Mega|491|70|120|130|165|130|85|Dark;Shaymin|492|100|100|100|100|100|100|Grass;Shaymin-Sky|492|100|103|75|120|75|127|Grass/Flying;Arceus|493|120|120|120|120|120|120|Normal;Arceus-Bug|493|120|120|120|120|120|120|Bug;Arceus-Dark|493|120|120|120|120|120|120|Dark;Arceus-Dragon|493|120|120|120|120|120|120|Dragon;Arceus-Electric|493|120|120|120|120|120|120|Electric;Arceus-Fairy|493|120|120|120|120|120|120|Fairy;Arceus-Fighting|493|120|120|120|120|120|120|Fighting;Arceus-Fire|493|120|120|120|120|120|120|Fire;Arceus-Flying|493|120|120|120|120|120|120|Flying;Arceus-Ghost|493|120|120|120|120|120|120|Ghost;Arceus-Grass|493|120|120|120|120|120|120|Grass;Arceus-Ground|493|120|120|120|120|120|120|Ground;Arceus-Ice|493|120|120|120|120|120|120|Ice;Arceus-Poison|493|120|120|120|120|120|120|Poison;Arceus-Psychic|493|120|120|120|120|120|120|Psychic;Arceus-Rock|493|120|120|120|120|120|120|Rock;Arceus-Steel|493|120|120|120|120|120|120|Steel;Arceus-Water|493|120|120|120|120|120|120|Water;Victini|494|100|100|100|100|100|100|Psychic/Fire;Snivy|495|45|45|55|45|55|63|Grass;Servine|496|60|60|75|60|75|83|Grass;Serperior|497|75|75|95|75|95|113|Grass;Tepig|498|65|63|45|45|45|45|Fire;Pignite|499|90|93|55|70|55|55|Fire/Fighting;Emboar|500|110|123|65|100|65|65|Fire/Fighting;Emboar-Mega|500|110|148|75|110|110|75|Fire/Fighting;Oshawott|501|55|55|45|63|45|45|Water;Dewott|502|75|75|60|83|60|60|Water;Samurott|503|95|100|85|108|70|70|Water;Samurott-Hisui|503|90|108|80|100|65|85|Water/Dark;Patrat|504|45|55|39|35|39|42|Normal;Watchog|505|60|85|69|60|69|77|Normal;Lillipup|506|45|60|45|25|45|55|Normal;Herdier|507|65|80|65|35|65|60|Normal;Stoutland|508|85|110|90|45|90|80|Normal;Purrloin|509|41|50|37|50|37|66|Dark;Liepard|510|64|88|50|88|50|106|Dark;Pansage|511|50|53|48|53|48|64|Grass;Simisage|512|75|98|63|98|63|101|Grass;Pansear|513|50|53|48|53|48|64|Fire;Simisear|514|75|98|63|98|63|101|Fire;Panpour|515|50|53|48|53|48|64|Water;Simipour|516|75|98|63|98|63|101|Water;Munna|517|76|25|45|67|55|24|Psychic;Musharna|518|116|55|85|107|95|29|Psychic;Pidove|519|50|55|50|36|30|43|Normal/Flying;Tranquill|520|62|77|62|50|42|65|Normal/Flying;Unfezant|521|80|115|80|65|55|93|Normal/Flying;Blitzle|522|45|60|32|50|32|76|Electric;Zebstrika|523|75|100|63|80|63|116|Electric;Roggenrola|524|55|75|85|25|25|15|Rock;Boldore|525|70|105|105|50|40|20|Rock;Gigalith|526|85|135|130|60|80|25|Rock;Woobat|527|65|45|43|55|43|72|Psychic/Flying;Swoobat|528|67|57|55|77|55|114|Psychic/Flying;Drilbur|529|60|85|40|30|45|68|Ground;Excadrill|530|110|135|60|50|65|88|Ground/Steel;Excadrill-Mega|530|110|165|100|65|65|103|Ground/Steel;Audino|531|103|60|86|60|86|50|Normal;Audino-Mega|531|103|60|126|80|126|50|Normal/Fairy;Timburr|532|75|80|55|25|35|35|Fighting;Gurdurr|533|85|105|85|40|50|40|Fighting;Conkeldurr|534|105|140|95|55|65|45|Fighting;Tympole|535|50|50|40|50|40|64|Water;Palpitoad|536|75|65|55|65|55|69|Water/Ground;Seismitoad|537|105|95|75|85|75|74|Water/Ground;Throh|538|120|100|85|30|85|45|Fighting;Sawk|539|75|125|75|30|75|85|Fighting;Sewaddle|540|45|53|70|40|60|42|Bug/Grass;Swadloon|541|55|63|90|50|80|42|Bug/Grass;Leavanny|542|75|103|80|70|80|92|Bug/Grass;Venipede|543|30|45|59|30|39|57|Bug/Poison;Whirlipede|544|40|55|99|40|79|47|Bug/Poison;Scolipede|545|60|100|89|55|69|112|Bug/Poison;Scolipede-Mega|545|60|140|149|75|99|62|Bug/Poison;Cottonee|546|40|27|60|37|50|66|Grass/Fairy;Whimsicott|547|60|67|85|77|75|116|Grass/Fairy;Petilil|548|45|35|50|70|50|30|Grass;Lilligant|549|70|60|75|110|75|90|Grass;Lilligant-Hisui|549|70|105|75|50|75|105|Grass/Fighting;Basculin|550|70|92|65|80|55|98|Water;Sandile|551|50|72|35|35|35|65|Ground/Dark;Krokorok|552|60|82|45|45|45|74|Ground/Dark;Krookodile|553|95|117|80|65|70|92|Ground/Dark;Darumaka|554|70|90|45|15|45|50|Fire;Darumaka-Galar|554|70|90|45|15|45|50|Ice;Darmanitan|555|105|140|55|30|55|95|Fire;Darmanitan-Galar|555|105|140|55|30|55|95|Ice;Darmanitan-Galar-Zen|555|105|160|55|30|55|135|Ice/Fire;Darmanitan-Zen|555|105|30|105|140|105|55|Fire/Psychic;Maractus|556|75|86|67|106|67|60|Grass;Dwebble|557|50|65|85|35|35|55|Bug/Rock;Crustle|558|70|105|125|65|75|45|Bug/Rock;Scraggy|559|50|75|70|35|70|48|Dark/Fighting;Scrafty|560|65|90|115|45|115|58|Dark/Fighting;Scrafty-Mega|560|65|130|135|55|135|68|Dark/Fighting;Sigilyph|561|72|58|80|103|80|97|Psychic/Flying;Yamask|562|38|30|85|55|65|30|Ghost;Yamask-Galar|562|38|55|85|30|65|30|Ground/Ghost;Cofagrigus|563|58|50|145|95|105|30|Ghost;Tirtouga|564|54|78|103|53|45|22|Water/Rock;Carracosta|565|74|108|133|83|65|32|Water/Rock;Archen|566|55|112|45|74|45|70|Rock/Flying;Archeops|567|75|140|65|112|65|110|Rock/Flying;Trubbish|568|50|50|62|40|62|65|Poison;Garbodor|569|80|95|82|60|82|75|Poison;Zorua|570|40|65|40|80|40|65|Dark;Zorua-Hisui|570|35|60|40|85|40|70|Normal/Ghost;Zoroark|571|60|105|60|120|60|105|Dark;Zoroark-Hisui|571|55|100|60|125|60|110|Normal/Ghost;Minccino|572|55|50|40|40|40|75|Normal;Cinccino|573|75|95|60|65|60|115|Normal;Gothita|574|45|30|50|55|65|45|Psychic;Gothorita|575|60|45|70|75|85|55|Psychic;Gothitelle|576|70|55|95|95|110|65|Psychic;Solosis|577|45|30|40|105|50|20|Psychic;Duosion|578|65|40|50|125|60|30|Psychic;Reuniclus|579|110|65|75|125|85|30|Psychic;Ducklett|580|62|44|50|44|50|55|Water/Flying;Swanna|581|75|87|63|87|63|98|Water/Flying;Vanillite|582|36|50|50|65|60|44|Ice;Vanillish|583|51|65|65|80|75|59|Ice;Vanilluxe|584|71|95|85|110|95|79|Ice;Deerling|585|60|60|50|40|50|75|Normal/Grass;Sawsbuck|586|80|100|70|60|70|95|Normal/Grass;Emolga|587|55|75|60|75|60|103|Electric/Flying;Karrablast|588|50|75|45|40|45|60|Bug;Escavalier|589|70|135|105|60|105|20|Bug/Steel;Foongus|590|69|55|45|55|55|15|Grass/Poison;Amoonguss|591|114|85|70|85|80|30|Grass/Poison;Frillish|592|55|40|50|65|85|40|Water/Ghost;Jellicent|593|100|60|70|85|105|60|Water/Ghost;Alomomola|594|165|75|80|40|45|65|Water;Joltik|595|50|47|50|57|50|65|Bug/Electric;Galvantula|596|70|77|60|97|60|108|Bug/Electric;Ferroseed|597|44|50|91|24|86|10|Grass/Steel;Ferrothorn|598|74|94|131|54|116|20|Grass/Steel;Klink|599|40|55|70|45|60|30|Steel;Klang|600|60|80|95|70|85|50|Steel;Klinklang|601|60|100|115|70|85|90|Steel;Tynamo|602|35|55|40|45|40|60|Electric;Eelektrik|603|65|85|70|75|70|40|Electric;Eelektross|604|85|115|80|105|80|50|Electric;Eelektross-Mega|604|85|145|80|135|90|80|Electric;Elgyem|605|55|55|55|85|55|30|Psychic;Beheeyem|606|75|75|75|125|95|40|Psychic;Litwick|607|50|30|55|65|55|20|Ghost/Fire;Lampent|608|60|40|60|95|60|55|Ghost/Fire;Chandelure|609|60|55|90|145|90|80|Ghost/Fire;Chandelure-Mega|609|60|75|110|175|110|90|Ghost/Fire;Axew|610|46|87|60|30|40|57|Dragon;Fraxure|611|66|117|70|40|50|67|Dragon;Haxorus|612|76|147|90|60|70|97|Dragon;Cubchoo|613|55|70|40|60|40|40|Ice;Beartic|614|95|130|80|70|80|50|Ice;Cryogonal|615|80|50|50|95|135|105|Ice;Shelmet|616|50|40|85|40|65|25|Bug;Accelgor|617|80|70|40|100|60|145|Bug;Stunfisk|618|109|66|84|81|99|32|Ground/Electric;Stunfisk-Galar|618|109|81|99|66|84|32|Ground/Steel;Mienfoo|619|45|85|50|55|50|65|Fighting;Mienshao|620|65|125|60|95|60|105|Fighting;Druddigon|621|77|120|90|60|90|48|Dragon;Golett|622|59|74|50|35|50|35|Ground/Ghost;Golurk|623|89|124|80|55|80|55|Ground/Ghost;Golurk-Mega|623|89|159|105|70|105|55|Ground/Ghost;Pawniard|624|45|85|70|40|40|60|Dark/Steel;Bisharp|625|65|125|100|60|70|70|Dark/Steel;Bouffalant|626|95|110|95|40|95|55|Normal;Rufflet|627|70|83|50|37|50|60|Normal/Flying;Braviary|628|100|123|75|57|75|80|Normal/Flying;Braviary-Hisui|628|110|83|70|112|70|65|Psychic/Flying;Vullaby|629|70|55|75|45|65|60|Dark/Flying;Mandibuzz|630|110|65|105|55|95|80|Dark/Flying;Heatmor|631|85|97|66|105|66|65|Fire;Durant|632|58|109|112|48|48|109|Bug/Steel;Deino|633|52|65|50|45|50|38|Dark/Dragon;Zweilous|634|72|85|70|65|70|58|Dark/Dragon;Hydreigon|635|92|105|90|125|90|98|Dark/Dragon;Larvesta|636|55|85|55|50|55|60|Bug/Fire;Volcarona|637|85|60|65|135|105|100|Bug/Fire;Cobalion|638|91|90|129|90|72|108|Steel/Fighting;Terrakion|639|91|129|90|72|90|108|Rock/Fighting;Virizion|640|91|90|72|90|129|108|Grass/Fighting;Tornadus|641|79|115|70|125|80|111|Flying;Tornadus-Therian|641|79|100|80|110|90|121|Flying;Thundurus|642|79|115|70|125|80|111|Electric/Flying;Thundurus-Therian|642|79|105|70|145|80|101|Electric/Flying;Reshiram|643|100|120|100|150|120|90|Dragon/Fire;Zekrom|644|100|150|120|120|100|90|Dragon/Electric;Landorus|645|89|125|90|115|80|101|Ground/Flying;Landorus-Therian|645|89|145|90|105|80|91|Ground/Flying;Kyurem|646|125|130|90|130|90|95|Dragon/Ice;Kyurem-Black|646|125|170|100|120|90|95|Dragon/Ice;Kyurem-White|646|125|120|90|170|100|95|Dragon/Ice;Keldeo|647|91|72|90|129|90|108|Water/Fighting;Meloetta|648|100|77|77|128|128|90|Normal/Psychic;Meloetta-Pirouette|648|100|128|90|77|77|128|Normal/Fighting;Genesect|649|71|120|95|120|95|99|Bug/Steel;Chespin|650|56|61|65|48|45|38|Grass;Quilladin|651|61|78|95|56|58|57|Grass;Chesnaught|652|88|107|122|74|75|64|Grass/Fighting;Chesnaught-Mega|652|88|137|172|74|115|44|Grass/Fighting;Fennekin|653|40|45|40|62|60|60|Fire;Braixen|654|59|59|58|90|70|73|Fire;Delphox|655|75|69|72|114|100|104|Fire/Psychic;Delphox-Mega|655|75|69|72|159|125|134|Fire/Psychic;Froakie|656|41|56|40|62|44|71|Water;Frogadier|657|54|63|52|83|56|97|Water;Greninja|658|72|95|67|103|71|122|Water/Dark;Greninja-Ash|658|72|145|67|153|71|132|Water/Dark;Greninja-Mega|658|72|125|77|133|81|142|Water/Dark;Bunnelby|659|38|36|38|32|36|57|Normal;Diggersby|660|85|56|77|50|77|78|Normal/Ground;Fletchling|661|45|50|43|40|38|62|Normal/Flying;Fletchinder|662|62|73|55|56|52|84|Fire/Flying;Talonflame|663|78|81|71|74|69|126|Fire/Flying;Scatterbug|664|38|35|40|27|25|35|Bug;Spewpa|665|45|22|60|27|30|29|Bug;Vivillon|666|80|52|50|90|50|89|Bug/Flying;Litleo|667|62|50|58|73|54|72|Fire/Normal;Pyroar|668|86|68|72|109|66|106|Fire/Normal;Pyroar-Mega|668|86|88|92|129|86|126|Fire/Normal;Flabébé|669|44|38|39|61|79|42|Fairy;Floette|670|54|45|47|75|98|52|Fairy;Floette-Eternal|670|74|65|67|125|128|92|Fairy;Floette-Mega|670|74|85|87|155|148|102|Fairy;Florges|671|78|65|68|112|154|75|Fairy;Skiddo|672|66|65|48|62|57|52|Grass;Gogoat|673|123|100|62|97|81|68|Grass;Pancham|674|67|82|62|46|48|43|Fighting;Pangoro|675|95|124|78|69|71|58|Fighting/Dark;Furfrou|676|75|80|60|65|90|102|Normal;Espurr|677|62|48|54|63|60|68|Psychic;Meowstic|678|74|48|76|83|81|104|Psychic;Meowstic-M-Mega|678|74|48|76|143|101|124|Psychic;Honedge|679|45|80|100|35|37|28|Steel/Ghost;Doublade|680|59|110|150|45|49|35|Steel/Ghost;Aegislash|681|60|50|140|50|140|60|Steel/Ghost;Aegislash-Blade|681|60|140|50|140|50|60|Steel/Ghost;Spritzee|682|78|52|60|63|65|23|Fairy;Aromatisse|683|101|72|72|99|89|29|Fairy;Swirlix|684|62|48|66|59|57|49|Fairy;Slurpuff|685|82|80|86|85|75|72|Fairy;Inkay|686|53|54|53|37|46|45|Dark/Psychic;Malamar|687|86|92|88|68|75|73|Dark/Psychic;Malamar-Mega|687|86|102|88|98|120|88|Dark/Psychic;Binacle|688|42|52|67|39|56|50|Rock/Water;Barbaracle|689|72|105|115|54|86|68|Rock/Water;Barbaracle-Mega|689|72|140|130|64|106|88|Rock/Fighting;Skrelp|690|50|60|60|60|60|30|Poison/Water;Dragalge|691|65|75|90|97|123|44|Poison/Dragon;Dragalge-Mega|691|65|85|105|132|163|44|Poison/Dragon;Clauncher|692|50|53|62|58|63|44|Water;Clawitzer|693|71|73|88|120|89|59|Water;Helioptile|694|44|38|33|61|43|70|Electric/Normal;Heliolisk|695|62|55|52|109|94|109|Electric/Normal;Tyrunt|696|58|89|77|45|45|48|Rock/Dragon;Tyrantrum|697|82|121|119|69|59|71|Rock/Dragon;Amaura|698|77|59|50|67|63|46|Rock/Ice;Aurorus|699|123|77|72|99|92|58|Rock/Ice;Sylveon|700|95|65|65|110|130|60|Fairy;Hawlucha|701|78|92|75|74|63|118|Fighting/Flying;Hawlucha-Mega|701|78|137|100|74|93|118|Fighting/Flying;Dedenne|702|67|58|57|81|67|101|Electric/Fairy;Carbink|703|50|50|150|50|150|50|Rock/Fairy;Goomy|704|45|50|35|55|75|40|Dragon;Sliggoo|705|68|75|53|83|113|60|Dragon;Sliggoo-Hisui|705|58|75|83|83|113|40|Steel/Dragon;Goodra|706|90|100|70|110|150|80|Dragon;Goodra-Hisui|706|80|100|100|110|150|60|Steel/Dragon;Klefki|707|57|80|91|80|87|75|Steel/Fairy;Phantump|708|43|70|48|50|60|38|Ghost/Grass;Trevenant|709|85|110|76|65|82|56|Ghost/Grass;Pumpkaboo|710|49|66|70|44|55|51|Ghost/Grass;Pumpkaboo-Large|710|54|66|70|44|55|46|Ghost/Grass;Pumpkaboo-Small|710|44|66|70|44|55|56|Ghost/Grass;Pumpkaboo-Super|710|59|66|70|44|55|41|Ghost/Grass;Gourgeist|711|65|90|122|58|75|84|Ghost/Grass;Gourgeist-Large|711|75|95|122|58|75|69|Ghost/Grass;Gourgeist-Small|711|55|85|122|58|75|99|Ghost/Grass;Gourgeist-Super|711|85|100|122|58|75|54|Ghost/Grass;Bergmite|712|55|69|85|32|35|28|Ice;Avalugg|713|95|117|184|44|46|28|Ice;Avalugg-Hisui|713|95|127|184|34|36|38|Ice/Rock;Noibat|714|40|30|35|45|40|55|Flying/Dragon;Noivern|715|85|70|80|97|80|123|Flying/Dragon;Xerneas|716|126|131|95|131|98|99|Fairy;Yveltal|717|126|131|95|131|98|99|Dark/Flying;Zygarde|718|108|100|121|81|95|95|Dragon/Ground;Zygarde-10%|718|54|100|71|61|85|115|Dragon/Ground;Zygarde-Complete|718|216|100|121|91|95|85|Dragon/Ground;Zygarde-Mega|718|216|70|91|216|85|100|Dragon/Ground;Diancie|719|50|100|150|100|150|50|Rock/Fairy;Diancie-Mega|719|50|160|110|160|110|110|Rock/Fairy;Hoopa|720|80|110|60|150|130|70|Psychic/Ghost;Hoopa-Unbound|720|80|160|60|170|130|80|Psychic/Dark;Volcanion|721|80|110|120|130|90|70|Fire/Water;Rowlet|722|68|55|55|50|50|42|Grass/Flying;Dartrix|723|78|75|75|70|70|52|Grass/Flying;Decidueye|724|78|107|75|100|100|70|Grass/Ghost;Decidueye-Hisui|724|88|112|80|95|95|60|Grass/Fighting;Litten|725|45|65|40|60|40|70|Fire;Torracat|726|65|85|50|80|50|90|Fire;Incineroar|727|95|115|90|80|90|60|Fire/Dark;Popplio|728|50|54|54|66|56|40|Water;Brionne|729|60|69|69|91|81|50|Water;Primarina|730|80|74|74|126|116|60|Water/Fairy;Pikipek|731|35|75|30|30|30|65|Normal/Flying;Trumbeak|732|55|85|50|40|50|75|Normal/Flying;Toucannon|733|80|120|75|75|75|60|Normal/Flying;Yungoos|734|48|70|30|30|30|45|Normal;Gumshoos|735|88|110|60|55|60|45|Normal;Grubbin|736|47|62|45|55|45|46|Bug;Charjabug|737|57|82|95|55|75|36|Bug/Electric;Vikavolt|738|77|70|90|145|75|43|Bug/Electric;Crabrawler|739|47|82|57|42|47|63|Fighting;Crabominable|740|97|132|77|62|67|43|Fighting/Ice;Crabominable-Mega|740|97|157|122|62|107|33|Fighting/Ice;Oricorio|741|75|70|70|98|70|93|Fire/Flying;Oricorio-Pa'u|741|75|70|70|98|70|93|Psychic/Flying;Oricorio-Pom-Pom|741|75|70|70|98|70|93|Electric/Flying;Oricorio-Sensu|741|75|70|70|98|70|93|Ghost/Flying;Cutiefly|742|40|45|40|55|40|84|Bug/Fairy;Ribombee|743|60|55|60|95|70|124|Bug/Fairy;Rockruff|744|45|65|40|30|40|60|Rock;Lycanroc|745|75|115|65|55|65|112|Rock;Lycanroc-Dusk|745|75|117|65|55|65|110|Rock;Lycanroc-Midnight|745|85|115|75|55|75|82|Rock;Wishiwashi|746|45|20|20|25|25|40|Water;Wishiwashi-School|746|45|140|130|140|135|30|Water;Mareanie|747|50|53|62|43|52|45|Poison/Water;Toxapex|748|50|63|152|53|142|35|Poison/Water;Mudbray|749|70|100|70|45|55|45|Ground;Mudsdale|750|100|125|100|55|85|35|Ground;Dewpider|751|38|40|52|40|72|27|Water/Bug;Araquanid|752|68|70|92|50|132|42|Water/Bug;Fomantis|753|40|55|35|50|35|35|Grass;Lurantis|754|70|105|90|80|90|45|Grass;Morelull|755|40|35|55|65|75|15|Grass/Fairy;Shiinotic|756|60|45|80|90|100|30|Grass/Fairy;Salandit|757|48|44|40|71|40|77|Poison/Fire;Salazzle|758|68|64|60|111|60|117|Poison/Fire;Stufful|759|70|75|50|45|50|50|Normal/Fighting;Bewear|760|120|125|80|55|60|60|Normal/Fighting;Bounsweet|761|42|30|38|30|38|32|Grass;Steenee|762|52|40|48|40|48|62|Grass;Tsareena|763|72|120|98|50|98|72|Grass;Comfey|764|51|52|90|82|110|100|Fairy;Oranguru|765|90|60|80|90|110|60|Normal/Psychic;Passimian|766|100|120|90|40|60|80|Fighting;Wimpod|767|25|35|40|20|30|80|Bug/Water;Golisopod|768|75|125|140|60|90|40|Bug/Water;Golisopod-Mega|768|75|150|175|70|120|40|Bug/Steel;Sandygast|769|55|55|80|70|45|15|Ghost/Ground;Palossand|770|85|75|110|100|75|35|Ghost/Ground;Pyukumuku|771|55|60|130|30|130|5|Water;Type: Null|772|95|95|95|95|95|59|Normal;Silvally|773|95|95|95|95|95|95|Normal;Silvally-Bug|773|95|95|95|95|95|95|Bug;Silvally-Dark|773|95|95|95|95|95|95|Dark;Silvally-Dragon|773|95|95|95|95|95|95|Dragon;Silvally-Electric|773|95|95|95|95|95|95|Electric;Silvally-Fairy|773|95|95|95|95|95|95|Fairy;Silvally-Fighting|773|95|95|95|95|95|95|Fighting;Silvally-Fire|773|95|95|95|95|95|95|Fire;Silvally-Flying|773|95|95|95|95|95|95|Flying;Silvally-Ghost|773|95|95|95|95|95|95|Ghost;Silvally-Grass|773|95|95|95|95|95|95|Grass;Silvally-Ground|773|95|95|95|95|95|95|Ground;Silvally-Ice|773|95|95|95|95|95|95|Ice;Silvally-Poison|773|95|95|95|95|95|95|Poison;Silvally-Psychic|773|95|95|95|95|95|95|Psychic;Silvally-Rock|773|95|95|95|95|95|95|Rock;Silvally-Steel|773|95|95|95|95|95|95|Steel;Silvally-Water|773|95|95|95|95|95|95|Water;Minior|774|60|100|60|100|60|120|Rock/Flying;Minior-Meteor|774|60|60|100|60|100|60|Rock/Flying;Komala|775|65|115|65|75|95|65|Normal;Turtonator|776|60|78|135|91|85|36|Fire/Dragon;Togedemaru|777|65|98|63|40|73|96|Electric/Steel;Mimikyu|778|55|90|80|50|105|96|Ghost/Fairy;Bruxish|779|68|105|70|70|70|92|Water/Psychic;Drampa|780|78|60|85|135|91|36|Normal/Dragon;Drampa-Mega|780|78|85|110|160|116|36|Normal/Dragon;Dhelmise|781|70|131|100|86|90|40|Ghost/Grass;Jangmo-o|782|45|55|65|45|45|45|Dragon;Hakamo-o|783|55|75|90|65|70|65|Dragon/Fighting;Kommo-o|784|75|110|125|100|105|85|Dragon/Fighting;Tapu Koko|785|70|115|85|95|75|130|Electric/Fairy;Tapu Lele|786|70|85|75|130|115|95|Psychic/Fairy;Tapu Bulu|787|70|130|115|85|95|75|Grass/Fairy;Tapu Fini|788|70|75|115|95|130|85|Water/Fairy;Cosmog|789|43|29|31|29|31|37|Psychic;Cosmoem|790|43|29|131|29|131|37|Psychic;Solgaleo|791|137|137|107|113|89|97|Psychic/Steel;Lunala|792|137|113|89|137|107|97|Psychic/Ghost;Nihilego|793|109|53|47|127|131|103|Rock/Poison;Buzzwole|794|107|139|139|53|53|79|Bug/Fighting;Pheromosa|795|71|137|37|137|37|151|Bug/Fighting;Xurkitree|796|83|89|71|173|71|83|Electric;Celesteela|797|97|101|103|107|101|61|Steel/Flying;Kartana|798|59|181|131|59|31|109|Grass/Steel;Guzzlord|799|223|101|53|97|53|43|Dark/Dragon;Necrozma|800|97|107|101|127|89|79|Psychic;Necrozma-Dawn-Wings|800|97|113|109|157|127|77|Psychic/Ghost;Necrozma-Dusk-Mane|800|97|157|127|113|109|77|Psychic/Steel;Necrozma-Ultra|800|97|167|97|167|97|129|Psychic/Dragon;Magearna|801|80|95|115|130|115|65|Steel/Fairy;Magearna-Mega|801|80|125|115|170|115|95|Steel/Fairy;Marshadow|802|90|125|80|90|90|125|Fighting/Ghost;Poipole|803|67|73|67|73|67|73|Poison;Naganadel|804|73|73|73|127|73|121|Poison/Dragon;Stakataka|805|61|131|211|53|101|13|Rock/Steel;Blacephalon|806|53|127|53|151|79|107|Fire/Ghost;Zeraora|807|88|112|75|102|80|143|Electric;Zeraora-Mega|807|88|157|75|147|80|153|Electric;Meltan|808|46|65|65|55|35|34|Steel;Melmetal|809|135|143|143|80|65|34|Steel;Grookey|810|50|65|50|40|40|65|Grass;Thwackey|811|70|85|70|55|60|80|Grass;Rillaboom|812|100|125|90|60|70|85|Grass;Scorbunny|813|50|71|40|40|40|69|Fire;Raboot|814|65|86|60|55|60|94|Fire;Cinderace|815|80|116|75|65|75|119|Fire;Sobble|816|50|40|40|70|40|70|Water;Drizzile|817|65|60|55|95|55|90|Water;Inteleon|818|70|85|65|125|65|120|Water;Skwovet|819|70|55|55|35|35|25|Normal;Greedent|820|120|95|95|55|75|20|Normal;Rookidee|821|38|47|35|33|35|57|Flying;Corvisquire|822|68|67|55|43|55|77|Flying;Corviknight|823|98|87|105|53|85|67|Flying/Steel;Blipbug|824|25|20|20|25|45|45|Bug;Dottler|825|50|35|80|50|90|30|Bug/Psychic;Orbeetle|826|60|45|110|80|120|90|Bug/Psychic;Nickit|827|40|28|28|47|52|50|Dark;Thievul|828|70|58|58|87|92|90|Dark;Gossifleur|829|40|40|60|40|60|10|Grass;Eldegoss|830|60|50|90|80|120|60|Grass;Wooloo|831|42|40|55|40|45|48|Normal;Dubwool|832|72|80|100|60|90|88|Normal;Chewtle|833|50|64|50|38|38|44|Water;Drednaw|834|90|115|90|48|68|74|Water/Rock;Yamper|835|59|45|50|40|50|26|Electric;Boltund|836|69|90|60|90|60|121|Electric;Rolycoly|837|30|40|50|40|50|30|Rock;Carkol|838|80|60|90|60|70|50|Rock/Fire;Coalossal|839|110|80|120|80|90|30|Rock/Fire;Applin|840|40|40|80|40|40|20|Grass/Dragon;Flapple|841|70|110|80|95|60|70|Grass/Dragon;Appletun|842|110|85|80|100|80|30|Grass/Dragon;Silicobra|843|52|57|75|35|50|46|Ground;Sandaconda|844|72|107|125|65|70|71|Ground;Cramorant|845|70|85|55|85|95|85|Flying/Water;Arrokuda|846|41|63|40|40|30|66|Water;Barraskewda|847|61|123|60|60|50|136|Water;Toxel|848|40|38|35|54|35|40|Electric/Poison;Toxtricity|849|75|98|70|114|70|75|Electric/Poison;Sizzlipede|850|50|65|45|50|50|45|Fire/Bug;Centiskorch|851|100|115|65|90|90|65|Fire/Bug;Clobbopus|852|50|68|60|50|50|32|Fighting;Grapploct|853|80|118|90|70|80|42|Fighting;Sinistea|854|40|45|45|74|54|50|Ghost;Polteageist|855|60|65|65|134|114|70|Ghost;Hatenna|856|42|30|45|56|53|39|Psychic;Hattrem|857|57|40|65|86|73|49|Psychic;Hatterene|858|57|90|95|136|103|29|Psychic/Fairy;Impidimp|859|45|45|30|55|40|50|Dark/Fairy;Morgrem|860|65|60|45|75|55|70|Dark/Fairy;Grimmsnarl|861|95|120|65|95|75|60|Dark/Fairy;Obstagoon|862|93|90|101|60|81|95|Dark/Normal;Perrserker|863|70|110|100|50|60|50|Steel;Cursola|864|60|95|50|145|130|30|Ghost;Sirfetch’d|865|62|135|95|68|82|65|Fighting;Mr. Rime|866|80|85|75|110|100|70|Ice/Psychic;Runerigus|867|58|95|145|50|105|30|Ground/Ghost;Milcery|868|45|40|40|50|61|34|Fairy;Alcremie|869|65|60|75|110|121|64|Fairy;Falinks|870|65|100|100|70|60|75|Fighting;Falinks-Mega|870|65|135|135|70|65|100|Fighting;Pincurchin|871|48|101|95|91|85|15|Electric;Snom|872|30|25|35|45|30|20|Ice/Bug;Frosmoth|873|70|65|60|125|90|65|Ice/Bug;Stonjourner|874|100|125|135|20|20|70|Rock;Eiscue|875|75|80|110|65|90|50|Ice;Eiscue-Noice|875|75|80|70|65|50|130|Ice;Indeedee|876|60|65|55|105|95|95|Psychic/Normal;Indeedee-F|876|70|55|65|95|105|85|Psychic/Normal;Morpeko|877|58|95|58|70|58|97|Electric/Dark;Cufant|878|72|80|49|40|49|40|Steel;Copperajah|879|122|130|69|80|69|30|Steel;Dracozolt|880|90|100|90|80|70|75|Electric/Dragon;Arctozolt|881|90|100|90|90|80|55|Electric/Ice;Dracovish|882|90|90|100|70|80|75|Water/Dragon;Arctovish|883|90|90|100|80|90|55|Water/Ice;Duraludon|884|70|95|115|120|50|85|Steel/Dragon;Dreepy|885|28|60|30|40|30|82|Dragon/Ghost;Drakloak|886|68|80|50|60|50|102|Dragon/Ghost;Dragapult|887|88|120|75|100|75|142|Dragon/Ghost;Zacian|888|92|120|115|80|115|138|Fairy;Zacian-Crowned|888|92|150|115|80|115|148|Fairy/Steel;Zamazenta|889|92|120|115|80|115|138|Fighting;Zamazenta-Crowned|889|92|120|140|80|140|128|Fighting/Steel;Eternatus|890|140|85|95|145|95|130|Poison/Dragon;Eternatus-Eternamax|890|255|115|250|125|250|130|Poison/Dragon;Kubfu|891|60|90|60|53|50|72|Fighting;Urshifu|892|100|130|100|63|60|97|Fighting/Dark;Urshifu-Rapid-Strike|892|100|130|100|63|60|97|Fighting/Water;Zarude|893|105|120|105|70|95|105|Dark/Grass;Regieleki|894|80|100|50|100|50|200|Electric;Regidrago|895|200|100|50|100|50|80|Dragon;Glastrier|896|100|145|130|65|110|30|Ice;Spectrier|897|100|65|60|145|80|130|Ghost;Calyrex|898|100|80|80|80|80|80|Psychic/Grass;Calyrex-Ice|898|100|165|150|85|130|50|Psychic/Ice;Calyrex-Shadow|898|100|85|80|165|100|150|Psychic/Ghost;Wyrdeer|899|103|105|72|105|75|65|Normal/Psychic;Kleavor|900|70|135|95|45|70|85|Bug/Rock;Ursaluna|901|130|140|105|45|80|50|Ground/Normal;Ursaluna-Bloodmoon|901|113|70|120|135|65|52|Ground/Normal;Basculegion|902|120|112|65|80|75|78|Water/Ghost;Basculegion-F|902|120|92|65|100|75|78|Water/Ghost;Sneasler|903|80|130|60|40|80|120|Fighting/Poison;Overqwil|904|85|115|95|65|65|85|Dark/Poison;Enamorus|905|74|115|70|135|80|106|Fairy/Flying;Enamorus-Therian|905|74|115|110|135|100|46|Fairy/Flying;Sprigatito|906|40|61|54|45|45|65|Grass;Floragato|907|61|80|63|60|63|83|Grass;Meowscarada|908|76|110|70|81|70|123|Grass/Dark;Fuecoco|909|67|45|59|63|40|36|Fire;Crocalor|910|81|55|78|90|58|49|Fire;Skeledirge|911|104|75|100|110|75|66|Fire/Ghost;Quaxly|912|55|65|45|50|45|50|Water;Quaxwell|913|70|85|65|65|60|65|Water;Quaquaval|914|85|120|80|85|75|85|Water/Fighting;Lechonk|915|54|45|40|35|45|35|Normal;Oinkologne|916|110|100|75|59|80|65|Normal;Oinkologne-F|916|115|90|70|59|90|65|Normal;Tarountula|917|35|41|45|29|40|20|Bug;Spidops|918|60|79|92|52|86|35|Bug;Nymble|919|33|46|40|21|25|45|Bug;Lokix|920|71|102|78|52|55|92|Bug/Dark;Pawmi|921|45|50|20|40|25|60|Electric;Pawmo|922|60|75|40|50|40|85|Electric/Fighting;Pawmot|923|70|115|70|70|60|105|Electric/Fighting;Tandemaus|924|50|50|45|40|45|75|Normal;Maushold|925|74|75|70|65|75|111|Normal;Fidough|926|37|55|70|30|55|65|Fairy;Dachsbun|927|57|80|115|50|80|95|Fairy;Smoliv|928|41|35|45|58|51|30|Grass/Normal;Dolliv|929|52|53|60|78|78|33|Grass/Normal;Arboliva|930|78|69|90|125|109|39|Grass/Normal;Squawkabilly|931|82|96|51|45|51|92|Normal/Flying;Nacli|932|55|55|75|35|35|25|Rock;Naclstack|933|60|60|100|35|65|35|Rock;Garganacl|934|100|100|130|45|90|35|Rock;Charcadet|935|40|50|40|50|40|35|Fire;Armarouge|936|85|60|100|125|80|75|Fire/Psychic;Ceruledge|937|75|125|80|60|100|85|Fire/Ghost;Tadbulb|938|61|31|41|59|35|45|Electric;Bellibolt|939|109|64|91|103|83|45|Electric;Wattrel|940|40|40|35|55|40|70|Electric/Flying;Kilowattrel|941|70|70|60|105|60|125|Electric/Flying;Maschiff|942|60|78|60|40|51|51|Dark;Mabosstiff|943|80|120|90|60|70|85|Dark;Shroodle|944|40|65|35|40|35|75|Poison/Normal;Grafaiai|945|63|95|65|80|72|110|Poison/Normal;Bramblin|946|40|65|30|45|35|60|Grass/Ghost;Brambleghast|947|55|115|70|80|70|90|Grass/Ghost;Toedscool|948|40|40|35|50|100|70|Ground/Grass;Toedscruel|949|80|70|65|80|120|100|Ground/Grass;Klawf|950|70|100|115|35|55|75|Rock;Capsakid|951|50|62|40|62|40|50|Grass;Scovillain|952|65|108|65|108|65|75|Grass/Fire;Scovillain-Mega|952|65|138|85|138|85|75|Grass/Fire;Rellor|953|41|50|60|31|58|30|Bug;Rabsca|954|75|50|85|115|100|45|Bug/Psychic;Flittle|955|30|35|30|55|30|75|Psychic;Espathra|956|95|60|60|101|60|105|Psychic;Tinkatink|957|50|45|45|35|64|58|Fairy/Steel;Tinkatuff|958|65|55|55|45|82|78|Fairy/Steel;Tinkaton|959|85|75|77|70|105|94|Fairy/Steel;Wiglett|960|10|55|25|35|25|95|Water;Wugtrio|961|35|100|50|50|70|120|Water;Bombirdier|962|70|103|85|60|85|82|Flying/Dark;Finizen|963|70|45|40|45|40|75|Water;Palafin|964|100|70|72|53|62|100|Water;Palafin-Hero|964|100|160|97|106|87|100|Water;Varoom|965|45|70|63|30|45|47|Steel/Poison;Revavroom|966|80|119|90|54|67|90|Steel/Poison;Cyclizar|967|70|95|65|85|65|121|Dragon/Normal;Orthworm|968|70|85|145|60|55|65|Steel;Glimmet|969|48|35|42|105|60|60|Rock/Poison;Glimmora|970|83|55|90|130|81|86|Rock/Poison;Glimmora-Mega|970|83|90|105|150|96|101|Rock/Poison;Greavard|971|50|61|60|30|55|34|Ghost;Houndstone|972|72|101|100|50|97|68|Ghost;Flamigo|973|82|115|74|75|64|90|Flying/Fighting;Cetoddle|974|108|68|45|30|40|43|Ice;Cetitan|975|170|113|65|45|55|73|Ice;Veluza|976|90|102|73|78|65|70|Water/Psychic;Dondozo|977|150|100|115|65|65|35|Water;Tatsugiri|978|68|50|60|120|95|82|Dragon/Water;Tatsugiri-Curly-Mega|978|68|65|90|135|125|92|Dragon/Water;Annihilape|979|110|115|80|50|90|90|Fighting/Ghost;Clodsire|980|130|75|60|45|100|20|Poison/Ground;Farigiraf|981|120|90|70|110|70|60|Normal/Psychic;Dudunsparce|982|125|100|80|85|75|55|Normal;Kingambit|983|100|135|120|60|85|50|Dark/Steel;Great Tusk|984|115|131|131|53|53|87|Ground/Fighting;Scream Tail|985|115|65|99|65|115|111|Fairy/Psychic;Brute Bonnet|986|111|127|99|79|99|55|Grass/Dark;Flutter Mane|987|55|55|55|135|135|135|Ghost/Fairy;Slither Wing|988|85|135|79|85|105|81|Bug/Fighting;Sandy Shocks|989|85|81|97|121|85|101|Electric/Ground;Iron Treads|990|90|112|120|72|70|106|Ground/Steel;Iron Bundle|991|56|80|114|124|60|136|Ice/Water;Iron Hands|992|154|140|108|50|68|50|Fighting/Electric;Iron Jugulis|993|94|80|86|122|80|108|Dark/Flying;Iron Moth|994|80|70|60|140|110|110|Fire/Poison;Iron Thorns|995|100|134|110|70|84|72|Rock/Electric;Frigibax|996|65|75|45|35|45|55|Dragon/Ice;Arctibax|997|90|95|66|45|65|62|Dragon/Ice;Baxcalibur|998|115|145|92|75|86|87|Dragon/Ice;Baxcalibur-Mega|998|115|175|117|105|101|87|Dragon/Ice;Gimmighoul|999|45|30|70|75|70|10|Ghost;Gimmighoul-Roaming|999|45|30|25|75|45|80|Ghost;Gholdengo|1000|87|60|95|133|91|84|Steel/Ghost;Wo-Chien|1001|85|85|100|95|135|70|Dark/Grass;Chien-Pao|1002|80|120|80|90|65|135|Dark/Ice;Ting-Lu|1003|155|110|125|55|80|45|Dark/Ground;Chi-Yu|1004|55|80|80|135|120|100|Dark/Fire;Roaring Moon|1005|105|139|71|55|101|119|Dragon/Dark;Iron Valiant|1006|74|130|90|120|60|116|Fairy/Fighting;Koraidon|1007|100|135|115|85|100|135|Fighting/Dragon;Miraidon|1008|100|85|100|135|115|135|Electric/Dragon;Walking Wake|1009|99|83|91|125|83|109|Water/Dragon;Iron Leaves|1010|90|130|88|70|108|104|Grass/Psychic;Dipplin|1011|80|80|110|95|80|40|Grass/Dragon;Poltchageist|1012|40|45|45|74|54|50|Grass/Ghost;Sinistcha|1013|71|60|106|121|80|70|Grass/Ghost;Okidogi|1014|88|128|115|58|86|80|Poison/Fighting;Munkidori|1015|88|75|66|130|90|106|Poison/Psychic;Fezandipiti|1016|88|91|82|70|125|99|Poison/Fairy;Ogerpon|1017|80|120|84|60|96|110|Grass;Ogerpon-Cornerstone|1017|80|120|84|60|96|110|Grass/Rock;Ogerpon-Hearthflame|1017|80|120|84|60|96|110|Grass/Fire;Ogerpon-Wellspring|1017|80|120|84|60|96|110|Grass/Water;Archaludon|1018|90|105|130|125|65|85|Steel/Dragon;Hydrapple|1019|106|80|110|120|80|44|Grass/Dragon;Gouging Fire|1020|105|115|121|65|93|91|Fire/Dragon;Raging Bolt|1021|125|73|91|137|89|75|Electric/Dragon;Iron Boulder|1022|90|120|80|68|108|124|Rock/Psychic;Iron Crown|1023|90|72|100|122|108|98|Steel/Psychic;Terapagos|1024|90|65|85|65|85|60|Normal;Terapagos-Stellar|1024|160|105|110|130|110|85|Normal;Terapagos-Terastal|1024|95|95|110|105|110|85|Normal;Pecharunt|1025|88|88|160|88|88|88|Poison/Ghost";
+let POKE_IDX=null;
+const pnorm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+function pokeIdx(){if(POKE_IDX)return POKE_IDX;POKE_IDX={};
+  POKE_BASE.split(';').forEach(l=>{const a=l.split('|');if(a.length<9)return;const e={n:a[0],num:+a[1],hp:+a[2],atk:+a[3],def:+a[4],spa:+a[5],spd:+a[6],spe:+a[7],types:a[8]?a[8].split('/'):[]};POKE_IDX[pnorm(a[0])]=e;});
+  return POKE_IDX;}
+function pokeFind(name){const I=pokeIdx();let k=pnorm(name);if(I[k])return I[k];
+  const m=String(name).toLowerCase().match(/^(alolan|galarian|hisuian|paldean|mega)\s+(.+)$/);   // "Alolan Raichu" → Raichu-Alola
+  if(m){const f={alolan:'alola',galarian:'galar',hisuian:'hisui',paldean:'paldea',mega:'mega'}[m[1]];k=pnorm(m[2])+f;if(I[k])return I[k];}
+  return null;}
+// Formula: STR = Atk/5, CON = Def/5, DEX = Spe/5, WIS = SpA/5, INT = SpD/5 (all rounded down), CHA = average of those five (rounded down).
+function sbScores(b){const f=v=>Math.floor(v/5),o={STR:f(b.atk),DEX:f(b.spe),CON:f(b.def),INT:f(b.spd),WIS:f(b.spa)};o.CHA=Math.floor((o.STR+o.DEX+o.CON+o.INT+o.WIS)/5);return o;}
+// HP die from base HP: 1-50 d4, 51-75 d6, 76-100 d8, 101-125 d10, 126+ d12.
+function sbDie(hp){return hp<=50?4:hp<=75?6:hp<=100?8:hp<=125?10:12;}
+// Max HP: level 1 = the die's max + DEX mod (only if positive); each later level rolls the die (1s rerolled) + DEX mod.
+// A level always adds at least 1 (the D&D rule), even with a big negative DEX mod.
+function sbRollHP(die,dex,lvl){const m=Math.floor(((parseInt(dex)||10)-10)/2);let t=die+Math.max(0,m);
+  for(let l=2;l<=lvl;l++){let r;do{r=Math.floor(Math.random()*die)+1;}while(r===1);t+=Math.max(1,r+m);}return t;}
+let SB=null,statBlocks=[];   // SB: the block being made/edited ({n,lvl,types,base,st,die,hp,row}); statBlocks: saved ones (DM's browser)
+function sbList(){const d=document.getElementById('sbNames');if(d&&!d.options.length)d.innerHTML=Object.values(pokeIdx()).map(e=>'<option value="'+x(e.n)+'">').join('');
+  const s=document.getElementById('sbSaved');if(s)s.innerHTML='<option value="">Saved stat blocks…</option>'+statBlocks.map((b,i)=>'<option value="'+i+'">'+x(b.n)+' · Lv '+b.lvl+' · '+b.hp+' HP</option>').join('');}
+function sbMake(){
+  const name=(document.getElementById('sbName').value||'').trim(),lvl=Math.max(1,parseInt(document.getElementById('sbLvl').value)||1),e=pokeFind(name);
+  if(!e){document.getElementById('sbOut').innerHTML='<div class="sb-card">No Pokémon called “'+x(name)+'”. Pick one from the list as you type.</div>';return;}
+  const st=sbScores(e),die=sbDie(e.hp);SB={n:e.n,lvl,types:e.types,base:{hp:e.hp,atk:e.atk,def:e.def,spa:e.spa,spd:e.spd,spe:e.spe},st,die,hp:sbRollHP(die,st.DEX,lvl),row:-1};renderSB();}
+function sbFromRow(i){const r=initiative[i];if(!r)return;const b=r.sb||{},e=pokeFind(r.name.replace(/\s+\d+$/,''));
+  const st=b.st||(e?sbScores(e):{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10});
+  SB={n:r.name,lvl:b.lvl||1,types:(r.types||[]).slice(),base:b.base||(e?{hp:e.hp,atk:e.atk,def:e.def,spa:e.spa,spd:e.spd,spe:e.spe}:null),st:Object.assign({},st),die:b.die||(e?sbDie(e.hp):8),hp:parseInt(r.hpMax)||0,row:i};
+  renderSB();document.getElementById('sbOut').scrollIntoView({block:'nearest',behavior:'smooth'});}
+function sbLoad(i){const b=statBlocks[+i];if(!b)return;SB=Object.assign({},JSON.parse(JSON.stringify(b)),{row:-1});renderSB();}
+function renderSB(){
+  const el=document.getElementById('sbOut');if(!el)return;if(!SB){el.innerHTML='';return;}const md=v=>{const m=Math.floor(((parseInt(v)||10)-10)/2);return (m>=0?'+':'')+m;};
+  el.innerHTML='<div class="sb-card"><div class="sb-top"><b>'+x(SB.n)+'</b><span>Lv '+SB.lvl+(SB.types.length?' · '+SB.types.join(' / '):'')+'</span>'
+    +(SB.base?'<span>Base HP '+SB.base.hp+' · Atk '+SB.base.atk+' · Def '+SB.base.def+' · SpA '+SB.base.spa+' · SpD '+SB.base.spd+' · Spe '+SB.base.spe+'</span>':'')+'</div>'
+    +'<div class="sb-stats">'+STAT_ABBR.map(k=>'<div class="sb-st"><label>'+k+'</label><input type="number" value="'+SB.st[k]+'" onchange="SB.st.'+k+'=parseInt(this.value)||0;renderSB()"><i>'+md(SB.st[k])+'</i></div>').join('')+'</div>'
+    +'<div class="sb-hp">HP die <b>d'+SB.die+'</b> · Max HP <input class="manage-inp" type="number" value="'+SB.hp+'" onchange="SB.hp=Math.max(1,parseInt(this.value)||1);renderSB()">'
+    +'<button class="init-mini-btn" onclick="SB.hp=sbRollHP(SB.die,SB.st.DEX,SB.lvl);renderSB()">🎲 Re-roll HP</button></div>'
+    +'<div class="sb-btns">'+(SB.row>=0&&initiative[SB.row]?'<button class="dice-roll-btn" onclick="sbApplyRow()">✓ Update '+x(initiative[SB.row].name)+'</button>':'<button class="dice-roll-btn" onclick="sbAdd()">+ Add to fight</button>')
+    +'<button class="init-mini-btn" onclick="sbSave()">💾 Save</button><button class="init-mini-btn" onclick="SB=null;renderSB()">✕ Close</button></div>'
+    +'<div class="sb-note">Every number can be changed (for a boss, say). Moves are up to you.</div></div>';}
+function sbAdd(){if(!SB)return;let name=SB.n,k=2;while(initiative.some(r=>r.name===name))name=SB.n+' '+(k++);
+  initiative.push({name,type:'npc',init:Math.floor(Math.random()*20)+1+Math.floor((SB.st.DEX-10)/2),hp:SB.hp,hpMax:SB.hp,types:SB.types.slice(0,2),conditions:[],sb:{lvl:SB.lvl,st:Object.assign({},SB.st),die:SB.die,base:SB.base}});
+  sortInit();initActive=true;renderInit();dm_save();}
+function sbApplyRow(){const r=initiative[SB.row];if(!r)return;const old=parseInt(r.hpMax)||0;r.sb={lvl:SB.lvl,st:Object.assign({},SB.st),die:SB.die,base:SB.base};
+  r.hpMax=SB.hp;r.hp=Math.max(0,Math.min(SB.hp,(parseInt(r.hp)||0)+(SB.hp-old)));SB=null;renderSB();renderInit();dm_save();}
+function sbSave(){if(!SB)return;const b={n:SB.n,lvl:SB.lvl,types:SB.types,base:SB.base,st:Object.assign({},SB.st),die:SB.die,hp:SB.hp};
+  const i=statBlocks.findIndex(o=>o.n===b.n&&o.lvl===b.lvl);if(i>=0)statBlocks[i]=b;else statBlocks.push(b);dm_save();sbList();}
+// ── MONSTER QUICK-ADD presets ──
+const MONSTERS=[
+  {n:'Rattata',hp:12,types:['Normal'],ib:3},{n:'Pidgey',hp:14,types:['Normal','Flying'],ib:3},
+  {n:'Zubat',hp:16,types:['Poison','Flying'],ib:3},{n:'Gastly',hp:18,types:['Ghost','Poison'],ib:4},
+  {n:'Machop',hp:22,types:['Fighting'],ib:1},{n:'Growlithe',hp:24,types:['Fire'],ib:2},
+  {n:'Geodude',hp:24,types:['Rock','Ground'],ib:-1},{n:'Voltorb',hp:20,types:['Electric'],ib:2},
+  {n:'Onix',hp:40,types:['Rock','Ground'],ib:1},{n:'Arcanine',hp:55,types:['Fire'],ib:3},
+  {n:'Gyarados',hp:60,types:['Water','Flying'],ib:2},{n:'Dragonite',hp:75,types:['Dragon','Flying'],ib:2},
+  {n:'Snorlax',hp:80,types:['Normal'],ib:-1},{n:'Rocket Grunt',hp:20,types:['Dark'],ib:1},
+  {n:'Gym Leader',hp:90,types:['Rock'],ib:2},{n:'Legendary Boss',hp:130,types:['Psychic'],ib:5},
+];
+function populateMonsters(){sbList();const s=document.getElementById('monsterPreset');if(!s||s.options.length)return;s.innerHTML=MONSTERS.map((m,i)=>'<option value="'+i+'">'+m.n+' · '+m.hp+' HP · '+m.types.join('/')+'</option>').join('');}
+function addMonster(){
+  const s=document.getElementById('monsterPreset');const m=MONSTERS[parseInt(s&&s.value)||0];if(!m)return;
+  const init=Math.floor(Math.random()*20)+1+(m.ib||0);
+  let name=m.n,k=2;while(initiative.some(r=>r.name===name)){name=m.n+' '+(k++);}
+  initiative.push({name:name,type:'npc',init:init,hp:m.hp,hpMax:m.hp,types:m.types.slice(),conditions:[]});
+  sortInit();initActive=true;renderInit();dm_save();
+}
+
+
+// ── DM SCENE: broadcast (#1), foe (#3), initiative sync (#2) via meta ──
+let _lastInit='';
+function postMeta(key,value){
+  if(!campaignId)return Promise.resolve();
+  return Sync.setMeta(campaignId,key,value).catch(()=>{});
+}
+function pushInit(){
+  const payload={list:initiative,round:initRound,turn:initTurnIdx};
+  const s=JSON.stringify(payload);if(s===_lastInit)return;_lastInit=s;
+  lastData._init=payload; postMeta('init',payload);
+}
+function sendBroadcast(){
+  const inp=document.getElementById('bcastInp');const txt=(inp.value||'').trim();if(!txt)return;
+  const v={text:txt,by:dmName||'DM',t:Date.now()};
+  postMeta('msg',v).then(()=>{lastData._msg=v;renderSceneState();});inp.value='';
+}
+function clearBroadcast(){postMeta('msg',null).then(()=>{lastData._msg=null;renderSceneState();});}
+function setFoe(){
+  const types=[document.getElementById('foeT1').value,document.getElementById('foeT2').value].filter(Boolean);
+  const v={types:types,t:Date.now()};
+  postMeta('foe',v).then(()=>{lastData._foe=v;renderSceneState();});
+}
+function clearFoe(){document.getElementById('foeT1').value='';document.getElementById('foeT2').value='';postMeta('foe',null).then(()=>{lastData._foe=null;renderSceneState();});}
+function renderSceneState(){
+  const msg=lastData._msg, foe=lastData._foe;
+  const mc=document.getElementById('bcastCurrent');if(mc)mc.textContent=(msg&&msg.text)?('Showing: "'+msg.text+'"'):'No active broadcast.';
+  const fc=document.getElementById('foeCurrent');if(fc)fc.textContent=(foe&&foe.types&&foe.types.length)?('Foe: '+foe.types.join(' / ')):'No foe set.';
+  const f1=document.getElementById('foeT1'),f2=document.getElementById('foeT2');
+  if(foe&&foe.types){if(f1&&document.activeElement!==f1)f1.value=foe.types[0]||'';if(f2&&document.activeElement!==f2)f2.value=foe.types[1]||'';}
+  const eb=document.getElementById('envToggle');
+  if(eb)eb.classList.toggle('active',!!((lastData._env&&(lastData._env.weather||lastData._env.terrain))||(msg&&msg.text)||(foe&&foe.types&&foe.types.length)));
+}
+function populateFoeTypes(){
+  ['foeT1','foeT2'].forEach(id=>{const s=document.getElementById(id);if(!s||s.options.length>1)return;
+    s.innerHTML='<option value="">—</option>'+Object.keys(TYPE_COLORS).map(t=>'<option>'+t+'</option>').join('');});
+}
+
+// ── REMOVE / HIDE PLAYERS ─────────────────────────────
+// ── DM EDIT FUNCTIONS (patch/rename via backend) ──────
+async function patchFields(pk, fields){
+  try{
+    await Sync.patchPlayer(campaignId, pk, fields);
+    // update local copy immediately
+    if(lastData[pk]) Object.assign(lastData[pk], fields);
+    renderPlayers(lastData);
+    if(currentView==='encounter') renderInit();
+    return true;
+  }catch(e){
+    alert('Edit failed: '+e.message+'\n\nMake sure your Apps Script is updated to the latest version (with the patch handler).');
+    return false;
+  }
+}
+function applyHPAC(pk){
+  const hp=document.getElementById('mhp-'+cssEsc(pk))?.value;
+  const hpMax=document.getElementById('mhpmax-'+cssEsc(pk))?.value;
+  const ac=document.getElementById('mac-'+cssEsc(pk))?.value;
+  const fields={};
+  if(hp!==undefined&&hp!=='') fields.hpCur=hp;
+  if(hpMax!==undefined&&hpMax!=='') fields.hpMax=hpMax;
+  if(ac!==undefined&&ac!=='') fields.ac=parseInt(ac)||10;
+  patchFields(pk, fields);
+}
+let _hpPending={};
+function quickHP(pk, delta){
+  // Use the pending value if we have one (handles rapid clicks), else current data
+  const base = _hpPending[pk]!==undefined ? _hpPending[pk] : (parseInt(lastData[pk]?.hpCur)||0);
+  const newHp=Math.max(0, base+delta);
+  _hpPending[pk]=newHp;
+  // reflect immediately in any visible inputs/displays
+  const inp=document.getElementById('mhp-'+cssEsc(pk));
+  if(inp) inp.value=newHp;
+  // also update lastData locally so the combat view number updates on next render
+  if(lastData[pk]) lastData[pk].hpCur=String(newHp);
+  // update the combat-view number live without a full refresh
+  renderCombatNumbersFor(pk, newHp);
+  patchFields(pk, {hpCur:String(newHp)}).then(()=>{ delete _hpPending[pk]; });
+}
+function renderCombatNumbersFor(pk, hp){
+  // update the HP number + bar in combat view for this player without full re-render
+  document.querySelectorAll('.cv-row').forEach(row=>{
+    const adj=row.querySelector('.cv-hp-adj');
+    if(adj && adj.dataset.pk===pk){
+      const max=parseInt(lastData[pk]?.hpMax)||1;
+      const pct=Math.max(0,Math.min(100,hp/max*100));
+      const color=pct>50?'var(--grn)':pct>25?'var(--gold)':'var(--red)';
+      const num=row.querySelector('.cv-hp-num');
+      const fill=row.querySelector('.cv-hp-fill');
+      if(num){ num.textContent=hp+'/'+(max||'?'); num.style.color=color; }
+      if(fill){ fill.style.width=pct+'%'; fill.style.background=color; }
+    }
+  });
+}
+async function doRename(pk){
+  const newName=document.getElementById('mrename-'+cssEsc(pk))?.value?.trim();
+  if(!newName){ alert('Enter a name.'); return; }
+  // This only changes the displayed character name (charName), not the player key.
+  patchFields(pk, {charName:newName});
+}
+// helper: escape a player key for use in a CSS id selector
+function cssEsc(s){ return String(s).replace(/[^a-zA-Z0-9_-]/g,'_'); }
+
+async function removePlayer(pk, charName){
+  if(!confirm(`Permanently remove "${charName||pk}" from the campaign?\n\nThis deletes their data from the shared backend. If that player's sheet is still open and syncing, they may reappear on their next save.`)) return;
+  try{
+    await Sync.removePlayer(campaignId, pk);
+    // remove locally too
+    delete lastData[pk];
+    delete dmNotes[pk];
+    delete conditions[pk];
+    initiative=initiative.filter(row=>row.playerKey!==pk);
+    dm_save();
+    renderPlayers(lastData);
+    if(currentView==='encounter') renderInit();
+  }catch(e){
+    alert('Could not remove player: '+e.message+'\n\nMake sure your Apps Script has the updated code with the remove handler.');
+  }
+}
+function hidePlayer(pk){
+  hiddenPlayers[pk]=true;
+  dm_save();
+  renderPlayers(lastData);
+  if(currentView==='encounter') renderInit();
+  updateHiddenBtn();
+}
+function unhideAll(){
+  hiddenPlayers={};
+  dm_save();
+  renderPlayers(lastData);
+  if(currentView==='encounter') renderInit();
+  updateHiddenBtn();
+}
+function toggleShowHidden(){
+  showHidden=!showHidden;
+  renderPlayers(lastData);
+  updateHiddenBtn();
+}
+function updateHiddenBtn(){
+  const n=Object.keys(hiddenPlayers).length;
+  const btn=document.getElementById('showHiddenBtn');
+  if(!btn) return;
+  btn.style.display = n>0 ? 'block':'none';
+  btn.textContent = showHidden ? `Hiding ${n} ✓` : `Show hidden (${n})`;
+  btn.classList.toggle('active', showHidden);
+}
+
+// ── COMBAT VIEW ───────────────────────────────────────
+function renderCombatView(data){
+  const cv=document.getElementById('combatView');
+  if(!cv) return;
+  const players=Object.entries(data||{}).filter(([k])=>!k.startsWith('_')&&(showHidden||!hiddenPlayers[k]));
+  if(!players.length){
+    cv.innerHTML='<div class="empty-dash" style="padding:40px"><span class="empty-icon">⚔</span>No players to show.</div>';
+    return;
+  }
+  let html=`<div class="cv-header"><div>Character</div><div>HP</div><div>AC</div><div>Init</div><div>Conditions</div><div></div></div>`;
+  players.sort((a,b)=>(a[1].charName||a[0]).localeCompare(b[1].charName||b[0]));
+  players.forEach(([pk,c])=>{
+    const hpCur=parseInt(c.hpCur)||0, hpMax=parseInt(c.hpMax)||0;
+    const hpPct=hpMax?Math.max(0,Math.min(100,hpCur/hpMax*100)):0;
+    const hpColor=hpPct>50?'var(--grn)':hpPct>25?'var(--gold)':'var(--red)';
+    const dexMod=Math.floor(((c.stats?.DEX||10)-10)/2);
+    const tc=TYPE_COLORS[c.type1]||'#888';
+    const cond=conditions[pk]||'';
+    html+=`<div class="cv-row">
+      <div class="cv-name"><span class="cv-type-dot" style="background:${tc}"></span>${x(c.charName||pk)}</div>
+      <div class="cv-hp-cell">
+        <button class="cv-hp-adj dmg" data-pk="${x(pk)}" data-amt="-5" title="-5 HP">−</button>
+        <div class="cv-hp-track"><div class="cv-hp-fill" style="width:${hpPct}%;background:${hpColor}"></div></div>
+        <span class="cv-hp-num" style="color:${hpColor}">${hpCur}/${hpMax||'?'}</span>
+        <button class="cv-hp-adj heal" data-pk="${x(pk)}" data-amt="5" title="+5 HP">+</button>
+      </div>
+      <div class="cv-ac">${c.ac||10}</div>
+      <div class="cv-stat">${dexMod>=0?'+'+dexMod:dexMod}</div>
+      <div><input class="cv-cond-inp" data-pk="${x(pk)}" value="${x(cond)}" placeholder="none"></div>
+      <div class="pc-actions">
+        <button class="pc-action-btn" onclick="hidePlayer('${x(pk)}')" title="Hide">⊘</button>
+        <button class="pc-action-btn danger" onclick="removePlayer('${x(pk)}','${x(c.charName||pk)}')" title="Remove">🗑</button>
+      </div>
+    </div>`;
+  });
+  cv.innerHTML=html;
+  cv.querySelectorAll('.cv-cond-inp').forEach(inp=>{
+    inp.addEventListener('input',function(){ conditions[this.dataset.pk]=this.value; dm_save(); });
+  });
+  cv.querySelectorAll('.cv-hp-adj').forEach(btn=>{
+    btn.addEventListener('click',function(e){ e.stopPropagation(); quickHP(this.dataset.pk, parseInt(this.dataset.amt)); });
+  });
+}
+
+// INIT
+function registerPWA(){
+  try{
+    const icon="data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='#fff' stroke='#111' stroke-width='5'/><path d='M3 50a47 47 0 0194 0z' fill='#7c3aed'/><rect x='3' y='45' width='94' height='10' fill='#111'/><circle cx='50' cy='50' r='15' fill='#fff' stroke='#111' stroke-width='6'/></svg>");
+    const al=document.createElement('link');al.rel='apple-touch-icon';al.href=icon;document.head.appendChild(al);
+    const mani={name:'Poké×D&D — DM',short_name:'DM Dashboard',display:'standalone',start_url:'.',background_color:'#0b0b11',theme_color:'#7c3aed',icons:[{src:icon,sizes:'any',type:'image/svg+xml'}]};
+    const link=document.createElement('link');link.rel='manifest';link.href=URL.createObjectURL(new Blob([JSON.stringify(mani)],{type:'application/manifest+json'}));document.head.appendChild(link);
+  }catch(e){}
+}
+registerPWA();
+dm_load();
+{const fi=document.getElementById('fbInp');if(fi)fi.value=FB_URL||'';}
+if(Sync.ready()&&campaignId){
+  document.getElementById('campaignInp').value=campaignId;
+  document.getElementById('dmNameInp').value=dmName||'DM';
+  connect();
+}
+// Opened straight from inside the zip? Windows unpacks only that one file, so the 🗺 Board button can't find the board.
+function zipWarn(){if(!/\.zip[\/]/i.test(decodeURIComponent(location.href)))return;const d=document.createElement('div');
+  d.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99999;background:#ffce4d;color:#1a1a1a;font:600 14px/1.4 system-ui,sans-serif;padding:10px 16px;text-align:center';
+  d.textContent='You opened this from inside the zip. Close it, right-click the zip → Extract All, and open the file from the new folder. Otherwise the 🗺 Board button can’t find the board.';
+  document.body.appendChild(d);}
+window.addEventListener('DOMContentLoaded',zipWarn);
+</script>
+</body>
+</html>
