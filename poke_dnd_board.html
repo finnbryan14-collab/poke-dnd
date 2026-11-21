@@ -383,8 +383,8 @@ let tree=null, es=null;                    // tree = this campaign's whole datab
 function connect(){
   if(es)es.close();setStatus('wait');
   es=new EventSource(FB+'/campaigns/'+CID+'.json');
-  es.addEventListener('put',e=>{const m=JSON.parse(e.data);tree=fbSetAt(tree,m.path,m.data);pending.forEach(applyLocal);setStatus('live');queue();});
-  es.addEventListener('patch',e=>{const m=JSON.parse(e.data);Object.keys(m.data||{}).forEach(k=>{tree=fbSetAt(tree,(m.path==='/'?'':m.path)+'/'+k,m.data[k]);});pending.forEach(applyLocal);queue();});
+  es.addEventListener('put',e=>{const m=JSON.parse(e.data);tree=fbSetAt(tree,m.path,m.data);pending.forEach(applyLocal);setStatus('live');if(!/^\/dm(\/|$)/.test(m.path))queue();});   // /dm = the DM's dashboard notes, nothing to draw
+  es.addEventListener('patch',e=>{const m=JSON.parse(e.data);Object.keys(m.data||{}).forEach(k=>{tree=fbSetAt(tree,(m.path==='/'?'':m.path)+'/'+k,m.data[k]);});pending.forEach(applyLocal);if(!/^\/dm(\/|$)/.test(m.path))queue();});
   es.addEventListener('cancel',()=>{setStatus('off');toast('Firebase refused the connection — check the database rules (FIREBASE_SETUP.md).',7000);es.close();});
   es.onerror=()=>setStatus('wait');
 }

@@ -788,7 +788,7 @@ const Sync={
   shape(c){c=c||{};const out=Object.assign({},c.players||{}),m=c.meta||{};
     Object.keys(m).forEach(k=>{if(k!=='created'&&m[k]!=null)out['_'+k]=m[k];});   // env, msg, foe, init, battle…
     if(c.log)out._log=Object.values(c.log).sort((a,b)=>(a.t||0)-(b.t||0)).slice(-50);
-    if(c.board)out._board=c.board;return out;},
+    if(c.board)out._board=c.board;if(c.dm)out._dm=c.dm;return out;},   // _dm: the DM's dashboard data (notes, stat blocks, the encounter)
   async get(id){if(this.fb())return this.shape(await this._fb('GET',id));
     const r=await fetch(relayUrl+'?id='+encodeURIComponent(id));if(!r.ok)throw new Error('HTTP '+r.status);return r.json();},
   async create(){
@@ -804,6 +804,7 @@ const Sync={
     return key==='env'?this._gas({id,action:'env',env:val||{}}):this._gas({id,action:'meta',key,value:val});},
   pushLog(id,entry){return this.fb()?this._fb('POST',id+'/log',entry):this._gas({id,action:'log',entry});},
   boardFx(id,key,val){return this.fb()?this._fb('PUT',id+'/board/fx/'+key,val):Promise.resolve();},   // a pose for the live board (Firebase only)
+  setDm(id,val){return this.fb()?this._fb('PUT',id+'/dm',val):Promise.resolve();},   // the DM's dashboard data, so it follows the DM to any computer (Firebase only)
   pushMeta(id,key,entry){return this.fb()?this._fb('POST',id+'/meta/'+key,entry):Promise.reject(new Error('needs the live (Firebase) server'));},   // players' combat entries, e.g. meta/dmg (Firebase only)
   delMeta(id,key){return this.fb()?this._fb('DELETE',id+'/meta/'+key):Promise.resolve();},
   // Pictures & models uploaded for the live board live at /assets/{campaign}/{assetId}, outside the campaign branch so the
@@ -827,7 +828,7 @@ const Sync={
     if(this.fb()){
       let tree=null,t=null;const es=new EventSource(this._u(id));
       const fire=()=>{clearTimeout(t);t=setTimeout(()=>onData(this.shape(tree)),40);};
-      const boardOnly=p=>/^\/board(\/|$)/.test(p)&&!/^\/board\/looks(\/|$)/.test(p);   // the live board streams token drags; this app doesn't need to re-render for them (a new portrait under looks/ it does)
+      const boardOnly=p=>(/^\/board(\/|$)/.test(p)&&!/^\/board\/looks(\/|$)/.test(p))||(this.skipDm&&/^\/dm(\/|$)/.test(p));   // …and the sheet skips the DM's notes (skipDm)   // the live board streams token drags; this app doesn't need to re-render for them (a new portrait under looks/ it does)
       es.addEventListener('put',e=>{const m=JSON.parse(e.data);tree=fbSetAt(tree,m.path,m.data);if(!boardOnly(m.path))fire();});
       es.addEventListener('cancel',()=>{es.close();console.warn('Firebase refused the live connection — check the database rules (FIREBASE_SETUP.md).');});
       es.addEventListener('patch',e=>{const m=JSON.parse(e.data);Object.keys(m.data||{}).forEach(k=>{tree=fbSetAt(tree,(m.path==='/'?'':m.path)+'/'+k,m.data[k]);});if(!boardOnly(m.path))fire();});
@@ -839,12 +840,36 @@ const Sync={
   }
 };
 
-function dm_save(){
+// The DM's dashboard data (notes, stat blocks, hidden players, the encounter with its foes' stats) is kept in this browser
+// AND in the campaign at /campaigns/{id}/dm, so it follows the DM to another computer. dmT = when it last changed here;
+// the newer copy wins (adoptDm). dm_save(false) only stores locally (e.g. after connecting), without counting as a change.
+let dmT=0,_dmPushT=null;
+const DM_DEV=(()=>{try{let d=localStorage.getItem('pokeDnD_DM_dev');if(!d){d=Math.random().toString(36).slice(2,10);localStorage.setItem('pokeDnD_DM_dev',d);}return d;}catch(e){return 'dev';}})();   // which computer saved it
+const toArr=v=>Array.isArray(v)?v:(v&&typeof v==='object'?Object.keys(v).sort((a,b)=>a-b).map(k=>v[k]):[]);   // Firebase may hand arrays back as {0:…,1:…}
+function dmPayload(){return {notes:dmNotes,gnotes:document.getElementById('dmGlobalNotes')?.value||'',blocks:statBlocks,hidden:hiddenPlayers,conds:conditions,
+  enc:{list:initiative,round:initRound,turn:initTurnIdx,eid:encEid,active:initActive},t:dmT,dev:DM_DEV};}
+function dm_save(push){
+  if(push!==false)dmT=Date.now();
   try{localStorage.setItem(DM_SK,JSON.stringify({
     relayUrl,campaignId,dmName,dmNotes,
-    hiddenPlayers,conditions,initiative,initRound,initTurnIdx,encEid,statBlocks,
+    hiddenPlayers,conditions,initiative,initRound,initTurnIdx,encEid,statBlocks,dmT,
     globalNotes:document.getElementById('dmGlobalNotes')?.value||''
   }));}catch(e){}
+  if(push!==false&&campaignId&&Sync.fb()){clearTimeout(_dmPushT);_dmPushT=setTimeout(()=>Sync.setDm(campaignId,dmPayload()).catch(()=>{}),700);}
+}
+function adoptDm(d){   // a newer copy saved on another computer: take it
+  if(!d||typeof d!=='object'||d.dev===DM_DEV||!(d.t>dmT))return false;
+  dmNotes=d.notes||{};statBlocks=toArr(d.blocks);hiddenPlayers=d.hidden||{};conditions=d.conds||{};
+  const e=d.enc||{};initiative=toArr(e.list).map(r=>Object.assign({},r,{types:toArr(r.types),conditions:toArr(r.conditions)}));
+  initRound=e.round||1;initTurnIdx=e.turn||0;encEid=e.eid||0;initActive=!!e.active&&initiative.length>0;
+  const g=document.getElementById('dmGlobalNotes');if(g&&document.activeElement!==g)g.value=d.gnotes||'';
+  dmT=d.t;dm_save(false);return true;
+}
+const dmHasData=()=>!!(Object.keys(dmNotes).length||statBlocks.length||initiative.length||(document.getElementById('dmGlobalNotes')?.value||'').trim());
+function battleToInit(bt){   // no encounter here but one is running (e.g. a dashboard that never saved to the campaign): pick it up instead of ending it
+  if(initiative.length||!bt||!bt.active||!toArr(bt.list).length)return false;
+  initiative=toArr(bt.list).map(r=>({name:r.name,type:r.kind==='pc'?'pc':'npc',init:r.init,hp:r.hp,hpMax:r.hpMax,types:toArr(r.types),conditions:toArr(r.conditions),playerKey:r.pk||undefined}));
+  initRound=bt.round||1;initTurnIdx=bt.turn||0;encEid=bt.eid||Date.now();initActive=true;return true;
 }
 function dm_load(){
   try{
@@ -854,7 +879,9 @@ function dm_load(){
     relayUrl=v.relayUrl||DEFAULT_RELAY; campaignId=v.campaignId||'';
     dmName=v.dmName||''; dmNotes=v.dmNotes||{};
     hiddenPlayers=v.hiddenPlayers||{}; conditions=v.conditions||{};
-    initiative=v.initiative||[]; initRound=v.initRound||1; initTurnIdx=v.initTurnIdx||0; encEid=v.encEid||(Array.isArray(v.initiative)&&v.initiative.length?Date.now():0);   // an encounter saved before the update still takes players' rolls statBlocks=Array.isArray(v.statBlocks)?v.statBlocks:[];
+    dmT=v.dmT||0;
+    initiative=v.initiative||[]; initRound=v.initRound||1; initTurnIdx=v.initTurnIdx||0; statBlocks=Array.isArray(v.statBlocks)?v.statBlocks:[];
+    encEid=v.encEid||(Array.isArray(v.initiative)&&v.initiative.length?Date.now():0);   // an encounter saved before the update still takes players' rolls
     initActive=Array.isArray(initiative)&&initiative.length>0;
     if(v.globalNotes)setTimeout(()=>{const el=document.getElementById('dmGlobalNotes');if(el)el.value=v.globalNotes;},50);
     if(v.relayUrl){const el=document.getElementById('relayInp');if(el)el.value=v.relayUrl;}
@@ -880,8 +907,16 @@ async function connect(){
     if(relay)relayUrl=relay;
     const data=await Sync.get(id);
     if(data&&data.error)throw new Error(data.error);
+    if(campaignId&&campaignId!==id){dmNotes={};hiddenPlayers={};conditions={};initiative=[];initRound=1;initTurnIdx=0;encEid=0;initActive=false;dmT=0;   // a different campaign: don't carry this one's fight or notes over
+      const g=document.getElementById('dmGlobalNotes');if(g)g.value='';}
     campaignId=id; dmName=nm;
-    dm_save(); showDash(data);
+    const mine={notes:Object.assign({},dmNotes),blocks:statBlocks.slice(),g:(document.getElementById('dmGlobalNotes')?.value||'').trim()};
+    if(adoptDm(data._dm)){   // what the DM saved on another computer, before anything here is saved; keep notes and stat blocks only this computer had
+      let extra=false;for(const k in mine.notes)if(!(k in dmNotes)){dmNotes[k]=mine.notes[k];extra=true;}
+      for(const bl of mine.blocks)if(!statBlocks.some(o=>o.n===bl.n&&o.lvl===bl.lvl)){statBlocks.push(bl);extra=true;}
+      const g=document.getElementById('dmGlobalNotes');if(mine.g&&g&&!g.value.includes(mine.g)){g.value=(g.value?g.value+'\n\n':'')+mine.g;extra=true;}
+      if(extra)setTimeout(()=>dm_save(),0);}
+    dm_save(false); showDash(data);
   }catch(e){
     err.textContent=e.message;
     btn.disabled=false; btn.textContent='Connect';
@@ -945,6 +980,8 @@ function showDash(data){
   populateFoeTypes(); renderRollFeed(); renderEnvControls(); renderSceneState();
   renderDMAmbience();    // living background on the screen
   populateMonsters();    // quick-add foe presets
+  const picked=battleToInit(data._battle);   // never end a running fight just because this computer didn't know about it
+  if((!data._dm&&dmHasData())||picked)dm_save();   // first time on this campaign: put the DM's data in it (an empty dashboard saves nothing)
   renderInit();          // restore the encounter
   updateHiddenBtn();     // restore hidden-players button
   startAutoRefresh();
@@ -981,6 +1018,8 @@ function renderRollFeed(){
 // One place that redraws everything from a fresh campaign snapshot (pull or live push).
 function applyCampaignData(data){
   if(!data||data.error)return;
+  const got=adoptDm(data._dm);   // the DM changed something on another computer
+  if(got){sbList();updateHiddenBtn();}
   lastData=data; renderPlayers(data); renderRollFeed(); renderEnvControls(); renderSceneState();
   const ch=applyRolls(data._rolls)|applyDmg(data._dmg);   // players' initiative + damage entries
   if(currentView==='encounter') renderInit();else if(ch)pushBattle();

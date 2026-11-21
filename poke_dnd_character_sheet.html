@@ -1896,7 +1896,7 @@ const Sync={
   shape(c){c=c||{};const out=Object.assign({},c.players||{}),m=c.meta||{};
     Object.keys(m).forEach(k=>{if(k!=='created'&&m[k]!=null)out['_'+k]=m[k];});   // env, msg, foe, init, battle…
     if(c.log)out._log=Object.values(c.log).sort((a,b)=>(a.t||0)-(b.t||0)).slice(-50);
-    if(c.board)out._board=c.board;return out;},
+    if(c.board)out._board=c.board;if(c.dm)out._dm=c.dm;return out;},   // _dm: the DM's dashboard data (notes, stat blocks, the encounter)
   async get(id){if(this.fb())return this.shape(await this._fb('GET',id));
     const r=await fetch(RELAY_URL+'?id='+encodeURIComponent(id));if(!r.ok)throw new Error('HTTP '+r.status);return r.json();},
   async create(){
@@ -1912,6 +1912,7 @@ const Sync={
     return key==='env'?this._gas({id,action:'env',env:val||{}}):this._gas({id,action:'meta',key,value:val});},
   pushLog(id,entry){return this.fb()?this._fb('POST',id+'/log',entry):this._gas({id,action:'log',entry});},
   boardFx(id,key,val){return this.fb()?this._fb('PUT',id+'/board/fx/'+key,val):Promise.resolve();},   // a pose for the live board (Firebase only)
+  setDm(id,val){return this.fb()?this._fb('PUT',id+'/dm',val):Promise.resolve();},   // the DM's dashboard data, so it follows the DM to any computer (Firebase only)
   pushMeta(id,key,entry){return this.fb()?this._fb('POST',id+'/meta/'+key,entry):Promise.reject(new Error('needs the live (Firebase) server'));},   // players' combat entries, e.g. meta/dmg (Firebase only)
   delMeta(id,key){return this.fb()?this._fb('DELETE',id+'/meta/'+key):Promise.resolve();},
   // Pictures & models uploaded for the live board live at /assets/{campaign}/{assetId}, outside the campaign branch so the
@@ -1935,7 +1936,7 @@ const Sync={
     if(this.fb()){
       let tree=null,t=null;const es=new EventSource(this._u(id));
       const fire=()=>{clearTimeout(t);t=setTimeout(()=>onData(this.shape(tree)),40);};
-      const boardOnly=p=>/^\/board(\/|$)/.test(p)&&!/^\/board\/looks(\/|$)/.test(p);   // the live board streams token drags; this app doesn't need to re-render for them (a new portrait under looks/ it does)
+      const boardOnly=p=>(/^\/board(\/|$)/.test(p)&&!/^\/board\/looks(\/|$)/.test(p))||(this.skipDm&&/^\/dm(\/|$)/.test(p));   // …and the sheet skips the DM's notes (skipDm)   // the live board streams token drags; this app doesn't need to re-render for them (a new portrait under looks/ it does)
       es.addEventListener('put',e=>{const m=JSON.parse(e.data);tree=fbSetAt(tree,m.path,m.data);if(!boardOnly(m.path))fire();});
       es.addEventListener('cancel',()=>{es.close();console.warn('Firebase refused the live connection — check the database rules (FIREBASE_SETUP.md).');});
       es.addEventListener('patch',e=>{const m=JSON.parse(e.data);Object.keys(m.data||{}).forEach(k=>{tree=fbSetAt(tree,(m.path==='/'?'':m.path)+'/'+k,m.data[k]);});if(!boardOnly(m.path))fire();});
@@ -3698,6 +3699,7 @@ let _envTimer=null, FOE=null, _foeKey='', _battleActive=false, _myPushedHp='', E
 let _unsub=null;
 // Live campaign state: Firebase pushes changes instantly; the old relay polls (faster mid-battle).
 function startEnvPoll(){
+  Sync.skipDm=true;
   if(_unsub){_unsub();_unsub=null;}
   if(!S.campaignId||!Sync.ready())return;
   _unsub=Sync.subscribe(S.campaignId,applyCampaign,()=>_battleActive?3500:30000);
