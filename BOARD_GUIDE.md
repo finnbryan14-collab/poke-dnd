@@ -408,11 +408,14 @@ condition icons (🔥 Burned, ⚡ Paralyzed…). Downed characters tip over. Wit
 (players' default), the camera glides to whoever is up.
 
 **Initiative and damage come from the players.** When the DM clicks **▶ Start** on the dashboard, each
-player's Battle Mode (on their sheet) asks for their initiative: type the roll you made at the table, or
-click 🎲 to roll d20 + DEX. It drops into the DM's order by itself (**🎲 Roll missing** covers anyone who
+player is asked for their initiative, both in Battle Mode on their sheet and by a **🎲 Roll initiative** button in
+the board's top bar: type the roll you made at the table, or roll d20 + DEX. It drops into the DM's order by itself (**🎲 Roll missing** covers anyone who
 doesn't). In a fight, Battle Mode also has **💥 Damage**: pick the foe you hit, type the damage (a move
 you rolled fills it in) and **Send**. It comes off that foe's HP on the dashboard and the board, and the
 roll feed shows it. The DM can still type over any number.
+
+**Turns from the board.** The DM's top bar has **⏭ Next turn**; on your turn, yours has **✓ End my turn**. Both move
+the encounter on (the DM's dashboard has to be open somewhere, since it runs the fight).
 
 ## Ready-made models from the internet
 

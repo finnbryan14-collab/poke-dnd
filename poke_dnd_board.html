@@ -55,6 +55,8 @@ button{cursor:pointer;border:none;background:none}
 .ic-r{font:700 11px var(--font-display);color:#fff;background:rgba(0,0,0,.35);padding:4px 9px;border-radius:10px;white-space:nowrap}
 .ic{font:600 11px var(--font-display);color:#fff;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.35);padding:3px 9px;border-radius:10px;white-space:nowrap}
 .ic.on{background:#fff;color:#1a1300;border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 0 12px rgba(255,206,77,.8)}
+.ic-act{font:700 11px var(--font-display);color:#1a1300;background:var(--gold);border:0;padding:4px 10px;border-radius:10px;white-space:nowrap;cursor:pointer}
+.ic-act:hover{filter:brightness(1.1)}.ic-act.roll{background:#fff}
 .ic.me{border-color:#fff}.ic.down{opacity:.45;text-decoration:line-through}
 .tb{display:flex;gap:6px;flex-shrink:0}
 .tb-btn{height:34px;min-width:34px;padding:0 10px;border-radius:17px;background:rgba(0,0,0,.28);border:2px solid rgba(255,255,255,.32);color:#fff;
@@ -418,14 +420,14 @@ function tokenInfo(t){
   const p=t.kind==='pc'&&t.pk?players()[fbKey(t.pk)]:null;
   const types=p?[p.type1,p.type2].filter(Boolean):(Array.isArray(t.types)&&t.types.length?t.types:(((t.kind==='npc'&&dexEntry(t.name))||{}).types||[]));
   const name=p?(p.charName||t.name||t.pk):(t.name||'?');
-  let hp=null,hpMax=null,conds=[];
+  let hp=null,hpMax=null,conds=[],fspd=0;
   if(p){hp=parseInt(p.hpCur);hpMax=parseInt(p.hpMax);conds=Array.isArray(p.conditions)?p.conditions:[];}
   else{
     const e=battle()&&battle().list.find(r=>(r.name||'').toLowerCase()===name.toLowerCase());
-    if(e){hp=parseInt(e.hp);hpMax=parseInt(e.hpMax);conds=Array.isArray(e.conditions)?e.conditions:[];}
+    if(e){hp=parseInt(e.hp);hpMax=parseInt(e.hpMax);conds=Array.isArray(e.conditions)?e.conditions:[];fspd=parseInt(e.spd)||0;}
   }
   return {name:String(name),types,color:TYPE_COLORS[types[0]]||t.color||'#9aa3b5',
-    hp:isNaN(hp)?null:hp,hpMax:(isNaN(hpMax)||!hpMax)?null:hpMax,conds,speed:p?(parseInt(p.speed)||30):null};
+    hp:isNaN(hp)?null:hp,hpMax:(isNaN(hpMax)||!hpMax)?null:hpMax,conds,speed:p?(parseInt(p.speed)||30):(fspd||null)};
 }
 function isTurnOf(t,info){const a=activeTurn();if(!a)return false;if(t.kind==='pc'&&t.pk&&a.pk)return fbKey(a.pk)===fbKey(t.pk);return (a.name||'').toLowerCase()===info.name.toLowerCase();}
 const canMove=t=>IS_DM||(t&&(t.kind==='pc'||t.kind==='comp')&&t.pk&&fbKey(t.pk)===ME);   // your character + your companions
@@ -1159,9 +1161,28 @@ function renderTop(){
   if(!bt){if(el.innerHTML)el.innerHTML='';return;}
   const myName=(myInfo().name||'').toLowerCase();
   const h='<span class="ic-r">⚔ Round '+(bt.round||1)+'</span>'+bt.list.map((r,i)=>{const down=r.hpMax&&r.hp<=0,me=(r.pk&&fbKey(r.pk)===ME)||(r.name||'').toLowerCase()===myName;
-    return '<button class="ic'+(i===(bt.turn||0)?' on':'')+(me?' me':'')+(down?' down':'')+'" data-i="'+i+'">'+(r.init!=null?r.init+' · ':'')+esc(r.name||'?')+'</button>';}).join('');
+    return '<button class="ic'+(i===(bt.turn||0)?' on':'')+(me?' me':'')+(down?' down':'')+'" data-i="'+i+'">'+(r.init!=null?r.init+' · ':'')+esc(r.name||'?')+'</button>';}).join('')
+    +turnBtnsHTML(bt);
   if(el.innerHTML!==h)el.innerHTML=h;
 }
+// The encounter is run from the DM's dashboard; these buttons send it requests (meta/next, meta/rolls/<me>) that it applies.
+function myRow(bt){const n=(myInfo().name||'').toLowerCase();return IS_DM?null:(bt.list||[]).find(r=>(r.pk&&fbKey(r.pk)===ME)||(r.kind==='pc'&&(r.name||'').toLowerCase()===n))||null;}
+function turnBtnsHTML(bt){
+  const cur=(bt.list||[])[bt.turn||0],mine=myRow(bt);let h='';
+  if(mine&&(mine.init==null||mine.init===''))h+='<button class="ic-act roll" data-turn="roll" title="Send your initiative to the DM">🎲 Roll initiative</button>';
+  if(IS_DM)h+='<button class="ic-act" data-turn="next" title="Move to the next turn">⏭ Next turn</button>';
+  else if(cur&&mine&&cur===mine)h+='<button class="ic-act" data-turn="end" title="End your turn">✓ End my turn</button>';
+  return h;}
+function turnAction(kind){
+  const bt=battle();if(!bt)return;const me=myInfo();
+  if(kind==='roll'){const P=players()[ME]||{},dm=Math.floor(((parseInt((P.stats||{}).DEX)||10)-10)/2);
+    const a=prompt('Your initiative roll? Leave it empty and press OK to roll d20 '+(dm>=0?'+':'')+dm+'.','');if(a===null)return;
+    const r=Math.floor(Math.random()*20)+1,v=a.trim()===''?r+dm:parseInt(a);if(isNaN(v)){toast('That isn’t a number.');return;}
+    write('meta/rolls/'+ME,{v,eid:bt.eid||0,n:me.name,t:Date.now()});
+    fb('POST','campaigns/'+CID+'/log',{who:me.name,text:'🎲 Initiative '+v+(a.trim()===''?' (d20 '+r+(dm>=0?'+':'')+dm+')':''),t:Date.now()}).catch(()=>{});
+    toast('Initiative '+v+' sent to the DM.');return;}
+  write('meta/next',{k:(bt.round||1)+'|'+(bt.turn||0),pk:IS_DM?null:ME,dm:IS_DM||null,by:me.name,t:Date.now()});
+  toast(IS_DM?'Next turn…':'Turn ended.');}
 function renderEmpty(sd){
   const el=$('#empty');if(sd){el.style.display='none';return;}
   el.style.display='flex';
@@ -1448,7 +1469,7 @@ function act(a,d){
   const a={adAi:'adAi',bAi:'bWord',tkAi:'tkAi',bInD:'bInNew'}[e.target.id];if(e.key==='Enter'&&a){e.preventDefault();act(a,{});}}));
 $('#card').addEventListener('toggle',e=>{if(e.target.id==='tkAnim')animOpen=e.target.open;},true);
 $('#panel').addEventListener('toggle',e=>{if(e.target.id==='scAiBox')aiSceneOpen=e.target.open;if(e.target.id==='scAsk')aiAskOpen=e.target.open;},true);   // keep them open across redraws
-$('#init').addEventListener('click',e=>{const b=e.target.closest('.ic');const bt=battle();if(!b||!bt)return;const tk=findTokenFor(bt.list[+b.dataset.i]);if(tk){select(tk.id);focusOn(tk.pos.x,tk.pos.y);}});
+$('#init').addEventListener('click',e=>{const t=e.target.closest('[data-turn]');if(t){turnAction(t.dataset.turn);return;}const b=e.target.closest('.ic');const bt=battle();if(!b||!bt)return;const tk=findTokenFor(bt.list[+b.dataset.i]);if(tk){select(tk.id);focusOn(tk.pos.x,tk.pos.y);}});
 document.querySelectorAll('.dk[data-tool]').forEach(b=>b.addEventListener('click',()=>setTool(b.dataset.tool)));
 $('#bTilt').addEventListener('click',()=>setTilt(!tiltOn));
 $('#bFit').addEventListener('click',()=>fitView());
@@ -2146,7 +2167,7 @@ function makeProp(p,pid){
   if(p.t==='bld')o.userData.bld={b:p.b,seed,shut:g};   // buildings swap to a cut-away version when the roof opens (setRoof)
   const b=new THREE.Box3().setFromObject(o);o.userData.ctr=b.isEmpty()?new THREE.Vector3():b.getCenter(new THREE.Vector3());
   o.userData.rad=b.isEmpty()?.5:Math.max(.45,Math.hypot(b.max.x-b.min.x,b.max.z-b.min.z)/2);
-  o.userData.flick=[];o.traverse(m=>{if(m.userData.flick){m.userData.k=m.scale.y;o.userData.flick.push(m);}});
+  o.userData.flick=[];o.traverse(m=>{if(m!==o&&m.userData.flick===true){m.userData.k=m.scale.y;o.userData.flick.push(m);}});   // only the flames (the prop's own list mustn't count: that made every prop bounce)
   return o;
 }
 const GHOSTM=new Map();

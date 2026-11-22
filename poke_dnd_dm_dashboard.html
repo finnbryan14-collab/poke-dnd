@@ -461,7 +461,7 @@ body.reduce-motion .rp-card,body.reduce-motion .rp-die.tumble,body.reduce-motion
 .enc-quickadd{display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:color-mix(in srgb,var(--acc) 10%,var(--ink2));border:1px solid var(--bdr2);border-radius:10px;padding:9px 12px;margin-bottom:12px}
 .enc-sb{margin-top:-2px}.sb-lvl{font-size:11px;color:var(--tx2);font-weight:700;display:flex;align-items:center;gap:5px}
 .sb-card{background:color-mix(in srgb,var(--acc) 7%,var(--ink2));border:1px solid var(--bdr2);border-radius:10px;padding:10px 12px;margin-bottom:10px}
-.sb-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}.sb-top b{font-size:15px}.sb-top span{font-size:11px;color:var(--tx2)}
+.sb-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}.sb-name{width:220px!important;font-size:14px!important}.sb-top b{font-size:15px}.sb-top span{font-size:11px;color:var(--tx2)}
 .sb-stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 .sb-st{background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:5px;text-align:center}.sb-st label{display:block;font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--tx2)}
 .sb-st input{width:100%;background:transparent;border:0;color:var(--tx);font-size:17px;font-weight:800;text-align:center;outline:none}.sb-st i{font-style:normal;font-size:11px;color:var(--tx2)}
@@ -720,7 +720,7 @@ function respond(data) {
       <div class="init-head-btns">
         <button class="init-mini-btn" onclick="rollInitForAll()" title="Add the players. They type or roll their initiative on their sheet.">▶ Start</button>
         <button class="init-mini-btn" onclick="rollMissingInit()" title="Roll d20 + DEX for everyone who hasn't got an initiative yet">🎲 Roll missing</button>
-        <button class="init-mini-btn" onclick="addInitRow()" title="Add a blank custom combatant">+ Custom</button>
+        <button class="init-mini-btn" onclick="addInitRow()" title="A blank stat block: name any NPC and set its numbers">+ Custom</button>
         <button class="init-mini-btn enc-next" onclick="nextTurn()" title="Advance to next turn">⏭ Next turn</button>
         <button class="init-mini-btn" onclick="resetInit()" title="End the encounter">■ End</button>
       </div>
@@ -1021,7 +1021,7 @@ function applyCampaignData(data){
   const got=adoptDm(data._dm);   // the DM changed something on another computer
   if(got){sbList();updateHiddenBtn();}
   lastData=data; renderPlayers(data); renderRollFeed(); renderEnvControls(); renderSceneState();
-  const ch=applyRolls(data._rolls)|applyDmg(data._dmg);   // players' initiative + damage entries
+  const ch=applyRolls(data._rolls)|applyDmg(data._dmg)|applyNext(data._next);   // players' initiative + damage, Next turn from the board
   if(currentView==='encounter') renderInit();else if(ch)pushBattle();
   if(ch)dm_save();
   document.getElementById('lastUpd').textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
@@ -1069,8 +1069,13 @@ function setConnBadge(state,txt){
 }
 
 // ── RENDER ────────────────────────────────────────────
+let _playersLater=null;
 function renderPlayers(data){
   const grid=document.getElementById('playerGrid');
+  const a=document.activeElement;   // the DM is typing in a card (HP, AC, a note): redraw once they leave the box, so nothing they typed is lost
+  if(a&&grid.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){_playersLater=data;
+    if(!a._later){a._later=1;a.addEventListener('blur',()=>{a._later=0;setTimeout(()=>{if(_playersLater){const d=_playersLater;_playersLater=null;renderPlayers(d);}},0);},{once:true});}return;}
+  _playersLater=null;
   updateHiddenBtn();
   const players=Object.entries(data).filter(([k])=>!k.startsWith('_')&&(showHidden||!hiddenPlayers[k]));
   if(!players.length){
@@ -1137,7 +1142,7 @@ function buildCard(pk,c,isOpen){
   card.className='player-card'+(isOpen?' open':'');
   card.dataset.player=pk;
   card.style.setProperty('--t', TYPE_COLORS[c.type1]||'#c084fc');
-  card.addEventListener('click',e=>{if(e.target.closest('.dm-note-area'))return;card.classList.toggle('open');});
+  card.addEventListener('click',e=>{if(e.target.closest('.dm-note-area,input,select,textarea,button,label,a,.manage-panel'))return;card.classList.toggle('open');});   // clicking a box or button inside mustn't fold the card
 
   // HEAD
   card.innerHTML=`
@@ -1478,6 +1483,13 @@ function applyRolls(rolls){   // players' own initiative (meta/rolls/<player>)
     r.rollT=v.t;r.init=parseInt(v.v)||0;ch=true;}
   if(ch)sortInit();return ch;
 }
+let NEXT_T=0;
+function applyNext(n){   // the board's ⏭ Next turn (DM) or ✓ End my turn (the player whose turn it is): only for the turn they saw
+  if(!n||!n.t||n.t===NEXT_T)return false;NEXT_T=n.t;Sync.delMeta(campaignId,'next').catch(()=>{});
+  const cur=initiative[initTurnIdx];if(!initActive||!cur||n.k!==initRound+'|'+initTurnIdx)return false;
+  if(!(n.dm||(cur.type==='pc'&&cur.playerKey===n.pk)))return false;
+  nextTurn();return true;
+}
 const DMG_DONE=new Set();
 function applyDmg(list){   // damage players entered on their sheet (meta/dmg): off the foe's HP, then the entry is cleared
   let ch=false;
@@ -1488,7 +1500,7 @@ function applyDmg(list){   // damage players entered on their sheet (meta/dmg): 
   return ch;
 }
 
-function addInitRow(){initiative.push({name:'Monster',type:'npc',init:10,hp:20,hpMax:20,types:[],conditions:[]});sortInit();initActive=true;renderInit();dm_save();}
+function addInitRow(){sbBlank();document.getElementById('sbOut').scrollIntoView({block:'nearest',behavior:'smooth'});}   // + Custom: a blank stat block to name and fill in
 function removeInitRow(i){initiative.splice(i,1);if(initTurnIdx>=initiative.length)initTurnIdx=0;renderInit();dm_save();}
 function nextTurn(){
   if(!initiative.length)return;
@@ -1527,7 +1539,7 @@ function renderInit(){
         +(down?'<span class="enc-down">DOWN</span>':'')+'</div>'
         +(hp.max?'<div class="enc-hp"><div class="enc-hp-bar"><div class="enc-hp-fill" style="width:'+pct+'%;background:'+col+'"></div></div><span class="enc-hp-n">'+hp.cur+'/'+hp.max+'</span></div>':'<div class="enc-nohp">no HP set</div>')
         +(conds.length?'<div class="enc-conds">'+conds.map(c=>'<span class="enc-cond">'+x(c)+'</span>').join('')+'</div>':'')
-        +(r.sb&&r.sb.st?'<div class="enc-st">Lv '+(r.sb.lvl||1)+' · '+STAT_ABBR.map(k=>k+' '+r.sb.st[k]).join(' · ')+'</div>':'')
+        +(r.sb&&r.sb.st?'<div class="enc-st">Lv '+(r.sb.lvl||1)+(r.sb.ac!=null?' · AC '+r.sb.ac:'')+(r.sb.spd?' · '+r.sb.spd+' ft':'')+' · '+STAT_ABBR.map(k=>k+' '+r.sb.st[k]).join(' · ')+'</div>':'')
       +'</div>'
       +'<div class="enc-acts">'
         +'<button class="enc-hb dmg" data-i="'+i+'" data-d="-5">−5</button><button class="enc-hb dmg" data-i="'+i+'" data-d="-1">−1</button>'
@@ -1543,7 +1555,7 @@ function renderInit(){
   pushBattle();
 }
 function pushBattle(){
-  const out=initiative.map(r=>{const hp=combHP(r);return {name:r.name,kind:r.type,init:r.init,hp:hp.cur,hpMax:hp.max,types:r.types||[],conditions:combConds(r),pk:r.playerKey||''};});
+  const out=initiative.map(r=>{const hp=combHP(r);return {name:r.name,kind:r.type,init:r.init,hp:hp.cur,hpMax:hp.max,types:r.types||[],conditions:combConds(r),pk:r.playerKey||'',ac:r.sb&&r.sb.ac,spd:r.sb&&r.sb.spd};});   // ac/spd: the board shows a foe's movement
   const payload={active:initActive&&initiative.length>0,round:initRound,turn:initTurnIdx,eid:encEid,list:out};
   const s=JSON.stringify(payload);if(s===_lastInit)return;_lastInit=s;
   lastData._battle=payload; postMeta('battle',payload);
@@ -1562,7 +1574,10 @@ function pokeFind(name){const I=pokeIdx();let k=pnorm(name);if(I[k])return I[k];
   if(m){const f={alolan:'alola',galarian:'galar',hisuian:'hisui',paldean:'paldea',mega:'mega'}[m[1]];k=pnorm(m[2])+f;if(I[k])return I[k];}
   return null;}
 // Formula: STR = Atk/5, CON = Def/5, DEX = Spe/5, WIS = SpA/5, INT = SpD/5 (all rounded down), CHA = average of those five (rounded down).
-function sbScores(b){const f=v=>Math.floor(v/5),o={STR:f(b.atk),DEX:f(b.spe),CON:f(b.def),INT:f(b.spd),WIS:f(b.spa)};o.CHA=Math.floor((o.STR+o.DEX+o.CON+o.INT+o.WIS)/5);return o;}
+function sbScores(b){const f=v=>Math.max(1,Math.min(30,Math.floor(v/5))),o={STR:f(b.atk),DEX:f(b.spe),CON:f(b.def),INT:f(b.spd),WIS:f(b.spa)};o.CHA=Math.max(1,Math.min(30,Math.floor((o.STR+o.DEX+o.CON+o.INT+o.WIS)/5)));return o;}   // every score 1–30
+const sbMod=v=>Math.floor(((parseInt(v)||10)-10)/2);
+// Movement from base Speed: 1-20 20 ft, 21-40 25, 41-60 30, 61-80 40, 81-100 50, 101-125 60, 126-150 80, 151+ 100. AC = 10 + CON mod.
+function sbSpeed(s){return s>=151?100:s>=126?80:s>=101?60:s>=81?50:s>=61?40:s>=41?30:s>=21?25:20;}
 // HP die from base HP: 1-50 d4, 51-75 d6, 76-100 d8, 101-125 d10, 126+ d12.
 function sbDie(hp){return hp<=50?4:hp<=75?6:hp<=100?8:hp<=125?10:12;}
 // Max HP: level 1 = the die's max + DEX mod (only if positive); each later level rolls the die (1s rerolled) + DEX mod.
@@ -1575,28 +1590,37 @@ function sbList(){const d=document.getElementById('sbNames');if(d&&!d.options.le
 function sbMake(){
   const name=(document.getElementById('sbName').value||'').trim(),lvl=Math.max(1,parseInt(document.getElementById('sbLvl').value)||1),e=pokeFind(name);
   if(!e){document.getElementById('sbOut').innerHTML='<div class="sb-card">No Pokémon called “'+x(name)+'”. Pick one from the list as you type.</div>';return;}
-  const st=sbScores(e),die=sbDie(e.hp);SB={n:e.n,lvl,types:e.types,base:{hp:e.hp,atk:e.atk,def:e.def,spa:e.spa,spd:e.spd,spe:e.spe},st,die,hp:sbRollHP(die,st.DEX,lvl),row:-1};renderSB();}
+  const st=sbScores(e),die=sbDie(e.hp);SB={n:e.n,lvl,types:e.types,base:{hp:e.hp,atk:e.atk,def:e.def,spa:e.spa,spd:e.spd,spe:e.spe},st,die,hp:sbRollHP(die,st.DEX,lvl),ac:10+sbMod(st.CON),spd:sbSpeed(e.spe),row:-1};renderSB();}
+function sbBlank(){SB={n:'',lvl:1,types:[],base:null,st:{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10},die:8,hp:10,ac:10,spd:30,row:-1};renderSB();   // any NPC: name it, set every number
+  setTimeout(()=>{const n=document.getElementById('sbN');if(n)n.focus();},30);}
 function sbFromRow(i){const r=initiative[i];if(!r)return;const b=r.sb||{},e=pokeFind(r.name.replace(/\s+\d+$/,''));
   const st=b.st||(e?sbScores(e):{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10});
-  SB={n:r.name,lvl:b.lvl||1,types:(r.types||[]).slice(),base:b.base||(e?{hp:e.hp,atk:e.atk,def:e.def,spa:e.spa,spd:e.spd,spe:e.spe}:null),st:Object.assign({},st),die:b.die||(e?sbDie(e.hp):8),hp:parseInt(r.hpMax)||0,row:i};
+  SB={n:r.name,lvl:b.lvl||1,types:(r.types||[]).slice(),base:b.base||(e?{hp:e.hp,atk:e.atk,def:e.def,spa:e.spa,spd:e.spd,spe:e.spe}:null),st:Object.assign({},st),die:b.die||(e?sbDie(e.hp):8),hp:parseInt(r.hpMax)||0,
+    ac:b.ac!=null?b.ac:10+sbMod(st.CON),spd:b.spd!=null?b.spd:(e?sbSpeed(e.spe):30),row:i};
   renderSB();document.getElementById('sbOut').scrollIntoView({block:'nearest',behavior:'smooth'});}
 function sbLoad(i){const b=statBlocks[+i];if(!b)return;SB=Object.assign({},JSON.parse(JSON.stringify(b)),{row:-1});renderSB();}
 function renderSB(){
-  const el=document.getElementById('sbOut');if(!el)return;if(!SB){el.innerHTML='';return;}const md=v=>{const m=Math.floor(((parseInt(v)||10)-10)/2);return (m>=0?'+':'')+m;};
-  el.innerHTML='<div class="sb-card"><div class="sb-top"><b>'+x(SB.n)+'</b><span>Lv '+SB.lvl+(SB.types.length?' · '+SB.types.join(' / '):'')+'</span>'
+  const el=document.getElementById('sbOut');if(!el)return;if(!SB){el.innerHTML='';return;}const md=v=>{const m=sbMod(v);return (m>=0?'+':'')+m;};
+  const tsel=k=>'<select class="manage-inp" style="width:auto" onchange="SB.types['+k+']=this.value;SB.types=SB.types.filter(Boolean);renderSB()"><option value="">'+(k?'— type 2 —':'— type —')+'</option>'+Object.keys(TYPE_COLORS).map(t=>'<option'+(SB.types[k]===t?' selected':'')+'>'+t+'</option>').join('')+'</select>';
+  el.innerHTML='<div class="sb-card"><div class="sb-top"><input class="manage-inp sb-name" id="sbN" placeholder="Name (e.g. Bandit Captain)" value="'+x(SB.n)+'" oninput="SB.n=this.value.trim()">'
+    +'<label class="sb-lvl">Lv <input class="manage-inp" type="number" min="1" max="100" style="width:58px" value="'+SB.lvl+'" onchange="SB.lvl=Math.max(1,parseInt(this.value)||1)"></label>'+tsel(0)+tsel(1)
     +(SB.base?'<span>Base HP '+SB.base.hp+' · Atk '+SB.base.atk+' · Def '+SB.base.def+' · SpA '+SB.base.spa+' · SpD '+SB.base.spd+' · Spe '+SB.base.spe+'</span>':'')+'</div>'
-    +'<div class="sb-stats">'+STAT_ABBR.map(k=>'<div class="sb-st"><label>'+k+'</label><input type="number" value="'+SB.st[k]+'" onchange="SB.st.'+k+'=parseInt(this.value)||0;renderSB()"><i>'+md(SB.st[k])+'</i></div>').join('')+'</div>'
-    +'<div class="sb-hp">HP die <b>d'+SB.die+'</b> · Max HP <input class="manage-inp" type="number" value="'+SB.hp+'" onchange="SB.hp=Math.max(1,parseInt(this.value)||1);renderSB()">'
+    +'<div class="sb-stats">'+STAT_ABBR.map(k=>'<div class="sb-st"><label>'+k+'</label><input type="number" min="1" max="30" value="'+SB.st[k]+'" onchange="sbSetStat(\''+k+'\',this.value)"><i>'+md(SB.st[k])+'</i></div>').join('')+'</div>'
+    +'<div class="sb-hp">AC <input class="manage-inp" type="number" min="0" value="'+SB.ac+'" style="width:58px" onchange="SB.ac=parseInt(this.value)||0"> · Speed <input class="manage-inp" type="number" min="0" step="5" value="'+SB.spd+'" style="width:64px" onchange="SB.spd=parseInt(this.value)||0"> ft'
+    +' · HP die <select class="manage-inp" style="width:auto" onchange="SB.die=+this.value">'+[4,6,8,10,12].map(d=>'<option value="'+d+'"'+(SB.die===d?' selected':'')+'>d'+d+'</option>').join('')+'</select>'
+    +' · Max HP <input class="manage-inp" type="number" value="'+SB.hp+'" onchange="SB.hp=Math.max(1,parseInt(this.value)||1);renderSB()">'
     +'<button class="init-mini-btn" onclick="SB.hp=sbRollHP(SB.die,SB.st.DEX,SB.lvl);renderSB()">🎲 Re-roll HP</button></div>'
     +'<div class="sb-btns">'+(SB.row>=0&&initiative[SB.row]?'<button class="dice-roll-btn" onclick="sbApplyRow()">✓ Update '+x(initiative[SB.row].name)+'</button>':'<button class="dice-roll-btn" onclick="sbAdd()">+ Add to fight</button>')
     +'<button class="init-mini-btn" onclick="sbSave()">💾 Save</button><button class="init-mini-btn" onclick="SB=null;renderSB()">✕ Close</button></div>'
-    +'<div class="sb-note">Every number can be changed (for a boss, say). Moves are up to you.</div></div>';}
-function sbAdd(){if(!SB)return;let name=SB.n,k=2;while(initiative.some(r=>r.name===name))name=SB.n+' '+(k++);
-  initiative.push({name,type:'npc',init:Math.floor(Math.random()*20)+1+Math.floor((SB.st.DEX-10)/2),hp:SB.hp,hpMax:SB.hp,types:SB.types.slice(0,2),conditions:[],sb:{lvl:SB.lvl,st:Object.assign({},SB.st),die:SB.die,base:SB.base}});
+    +'<div class="sb-note">Every number can be changed (for a boss, say). Scores go from 1 to 30. A Pokémon’s AC is 10 + its CON modifier; changing CON updates it. Moves are up to you.</div></div>';}
+function sbSetStat(k,v){SB.st[k]=Math.max(1,Math.min(30,parseInt(v)||1));if(k==='CON')SB.ac=10+sbMod(SB.st.CON);renderSB();}   // capped at 30
+function sbAdd(){if(!SB)return;const nm=document.getElementById('sbN');if(nm)SB.n=nm.value.trim();const base=SB.n||'NPC';let name=base,k=2;while(initiative.some(r=>r.name===name))name=base+' '+(k++);
+  initiative.push({name,type:'npc',init:Math.floor(Math.random()*20)+1+Math.floor((SB.st.DEX-10)/2),hp:SB.hp,hpMax:SB.hp,types:SB.types.slice(0,2),conditions:[],sb:{lvl:SB.lvl,st:Object.assign({},SB.st),die:SB.die,base:SB.base,ac:SB.ac,spd:SB.spd}});
   sortInit();initActive=true;renderInit();dm_save();}
-function sbApplyRow(){const r=initiative[SB.row];if(!r)return;const old=parseInt(r.hpMax)||0;r.sb={lvl:SB.lvl,st:Object.assign({},SB.st),die:SB.die,base:SB.base};
+function sbApplyRow(){const r=initiative[SB.row];if(!r)return;const nm=document.getElementById('sbN');if(nm&&nm.value.trim())r.name=nm.value.trim();r.types=SB.types.slice(0,2);
+  const old=parseInt(r.hpMax)||0;r.sb={lvl:SB.lvl,st:Object.assign({},SB.st),die:SB.die,base:SB.base,ac:SB.ac,spd:SB.spd};
   r.hpMax=SB.hp;r.hp=Math.max(0,Math.min(SB.hp,(parseInt(r.hp)||0)+(SB.hp-old)));SB=null;renderSB();renderInit();dm_save();}
-function sbSave(){if(!SB)return;const b={n:SB.n,lvl:SB.lvl,types:SB.types,base:SB.base,st:Object.assign({},SB.st),die:SB.die,hp:SB.hp};
+function sbSave(){if(!SB)return;const nm=document.getElementById('sbN');if(nm)SB.n=nm.value.trim()||'NPC';const b={n:SB.n,lvl:SB.lvl,types:SB.types,base:SB.base,st:Object.assign({},SB.st),die:SB.die,hp:SB.hp,ac:SB.ac,spd:SB.spd};
   const i=statBlocks.findIndex(o=>o.n===b.n&&o.lvl===b.lvl);if(i>=0)statBlocks[i]=b;else statBlocks.push(b);dm_save();sbList();}
 // ── MONSTER QUICK-ADD presets ──
 const MONSTERS=[
