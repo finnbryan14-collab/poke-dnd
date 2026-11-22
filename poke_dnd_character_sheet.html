@@ -1077,6 +1077,10 @@ body.reduce-motion .rp-die.tumble,body.reduce-motion .tcg.bursting,body.reduce-m
 .xp-s{font-size:12.5px;color:var(--tx2);line-height:1.45}
 .xp-opts{display:flex;flex-wrap:wrap;gap:7px}.xp-opts button{flex:1;min-width:64px;background:var(--bg3);border:1px solid var(--bdr2);border-radius:10px;padding:8px;color:var(--tx);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .xp-opts button:hover{border-color:var(--t)}.xp-opts small{font-size:10.5px;color:var(--tx2)}.xp-opts input{width:90px;background:var(--bg);border:1px solid var(--bdr2);border-radius:8px;color:var(--tx);padding:7px;font:inherit}
+.pnt-txt{width:100%;background:var(--bg);border:1px solid var(--bdr2);border-radius:9px;color:var(--tx);padding:8px;font:inherit;font-size:13px;resize:vertical}
+.pnt-big{width:100%;max-width:300px;aspect-ratio:1;object-fit:cover;border-radius:10px;border:2px solid var(--gold);align-self:center}
+.pnt-tries{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.pnt-tries img{width:48px;height:48px;object-fit:cover;border-radius:7px;border:2px solid transparent;cursor:pointer;opacity:.75}.pnt-tries img.on{border-color:var(--gold);opacity:1}
+.xp-opts button[disabled]{opacity:.45;pointer-events:none}
 .xp-x{align-self:flex-end;background:none;border:0;color:var(--tx3);cursor:pointer;font-size:12px}
 .is-roll{background:var(--gold);color:#1a1300;border:0;border-radius:9px;padding:4px 10px;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap}
 .comp-mk{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:8px}.comp-mk input{background:var(--bg);border:1px solid var(--bdr2);border-radius:8px;color:var(--tx);padding:6px 8px;font:inherit;font-size:13px}
@@ -2182,7 +2186,7 @@ function renderHeroCard(){
     <div class="hero-inner">
       <div class="hero-art-col">
         <button class="hero-art" onclick="pickPortrait()" title="${PORTRAIT?'Change':'Add'} your portrait">${PORTRAIT?`<img src="${esc(_portraitUrl)}" alt="Portrait of ${esc(name)}">`:`<span class="hero-ini">${esc(ini)}</span><span class="hero-art-add">＋ Portrait</span>`}</button>
-        <div class="hero-art-btns"><button onclick="pickPortrait()">${PORTRAIT?'Change':'Upload'}</button>${PORTRAIT?'<button onclick="removePortrait()">Remove</button>':''}${boardDiffers?'<button onclick="usePortraitFrom(_boardImg,true)" title="Your board token shows a different portrait — use that one here">Use board’s</button>':''}</div>
+        <div class="hero-art-btns"><button onclick="pickPortrait()">${PORTRAIT?'Change':'Upload'}</button><button onclick="openPainter()" title="Paint a portrait from a description (online AI painter)">🎨 Paint</button>${PORTRAIT?'<button onclick="removePortrait()">Remove</button>':''}${boardDiffers?'<button onclick="usePortraitFrom(_boardImg,true)" title="Your board token shows a different portrait — use that one here">Use board’s</button>':''}</div>
       </div>
       <div class="hero-id">
         <div class="hero-name">${esc(name)}</div>
@@ -2229,6 +2233,51 @@ function squareImage(file,max){return new Promise((res,rej)=>{const u=URL.create
     res(clear?c.toDataURL('image/png'):c.toDataURL('image/jpeg',.9));};
   im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('That file isn’t an image the browser can read.'));};im.src=u;});}
 function pickPortrait(){$i('portraitFile').click();}
+// ── 🎨 Paint my portrait: the same online painter as the board's token card (Pollinations' free endpoint; same words +
+// same seed = the same picture, so refining keeps the seed; 🎲 picks a new one; about one picture per 45 s, small logo).
+// The chosen try goes through the normal portrait path (squareImage → savePortrait → uploadPortrait).
+const PNT={desc:'',seed:0,tries:[],cur:-1,busy:false,msg:''},PNT_GAP=45000;
+const PNT_STYLE=', fantasy RPG character portrait, medieval world with Pokémon, head and shoulders, painted trading card art, detailed, soft light, simple background';
+function pntNext(){try{return +localStorage.getItem('pokeDnD_paintNext')||0;}catch(e){return 0;}}
+function openPainter(){
+  if(!PNT.desc)PNT.desc=[S.charName||'a young Pokémon trainer',S.gender,S.age?'age '+S.age:'',S.type1?S.type1+(S.type2?'/'+S.type2:'')+' type':''].filter(Boolean).join(', ');
+  if(!PNT.seed)PNT.seed=1+Math.floor(Math.random()*99999);
+  let host=$i('paintBox');if(!host){host=ce('div');host.id='paintBox';host.className='xpick';host.addEventListener('click',e=>{if(e.target===host)closePainter();});document.body.appendChild(host);}
+  host.classList.add('show');renderPainter();}
+function closePainter(){const h=$i('paintBox');if(h)h.classList.remove('show');}
+function renderPainter(){
+  const host=$i('paintBox');if(!host||!host.classList.contains('show'))return;const T=PNT.tries[PNT.cur],wait=Math.max(0,pntNext()-Date.now());
+  const ta=$i('pntTxt');if(ta)PNT.desc=ta.value;
+  host.innerHTML='<div class="xp-card" style="--t:var(--acc)"><div class="xp-t">🎨 Paint my portrait</div>'
+    +'<div class="xp-s">Describe how your character looks. Not quite right? Change the words and paint again (it keeps the same pose and style), or 🎲 for a fresh take.</div>'
+    +'<textarea id="pntTxt" rows="3" class="pnt-txt" placeholder="e.g. a hooded young rogue with dark hair, a red scarf and a silver bracelet">'+escH(PNT.desc)+'</textarea>'
+    +'<div class="xp-opts"><button onclick="painterGo(false)"'+(PNT.busy?' disabled':'')+'><b>'+(PNT.tries.length?'🎨 Paint again':'🎨 Paint it')+'</b></button>'
+    +(PNT.tries.length?'<button onclick="painterGo(true)"'+(PNT.busy?' disabled':'')+'><b>🎲 Fresh take</b></button>':'')+(T?'<button onclick="painterUse()"'+(PNT.busy?' disabled':'')+'><b>✓ Use as my portrait</b></button>':'')+'</div>'
+    +(T?'<img class="pnt-big" src="'+T.src+'" alt="">':'')
+    +(PNT.tries.length>1?'<div class="pnt-tries">'+PNT.tries.map((x,k)=>'<img src="'+x.src+'" class="'+(k===PNT.cur?'on':'')+'" onclick="PNT.cur='+k+';renderPainter()" title="'+escH(x.desc)+'">').join('')+'</div>':'')
+    +'<div class="xp-s">'+escH(PNT.msg||(wait>0?'Ready in about '+Math.ceil(wait/1000)+' s.':''))+'</div>'
+    +'<div class="xp-s" style="opacity:.7;font-size:11px">Your words go to Pollinations, a free online image service.</div>'
+    +'<button class="xp-x" onclick="closePainter()">Close</button></div>';}
+async function painterGo(fresh){
+  const ta=$i('pntTxt');if(ta)PNT.desc=ta.value.slice(0,400);const words=(PNT.desc||'').trim();if(PNT.busy)return;
+  if(!words){PNT.msg='Describe your character first.';renderPainter();return;}
+  const wait=pntNext()-Date.now();if(wait>0){PNT.msg='The free painter allows one picture about every 45 seconds: ready in '+Math.ceil(wait/1000)+' s.';renderPainter();return;}
+  if(fresh)PNT.seed=1+Math.floor(Math.random()*99999);
+  PNT.busy=true;PNT.msg='Painting… (usually under half a minute)';renderPainter();
+  let next=Date.now()+PNT_GAP;
+  try{const r=await fetch('https://image.pollinations.ai/prompt/'+encodeURIComponent(words+PNT_STYLE)+'?width=512&height=512&safe=true&seed='+PNT.seed);
+    if(!r.ok){const ra=parseInt(r.headers.get('Retry-After'))||45;next=Date.now()+ra*1000;throw new Error(r.status===402||r.status===429?'the free painter is busy: try again in '+ra+' s':'the painter answered '+r.status);}
+    const blob=await r.blob();if(!/^image\//.test(blob.type))throw new Error('no picture came back');
+    PNT.tries.unshift({src:URL.createObjectURL(blob),blob,desc:words,seed:PNT.seed});if(PNT.tries.length>6){const x=PNT.tries.pop();URL.revokeObjectURL(x.src);}
+    PNT.cur=0;PNT.msg='';
+  }catch(e){PNT.msg='Couldn’t paint it: '+e.message+'.';}
+  try{localStorage.setItem('pokeDnD_paintNext',String(next));}catch(e){}
+  PNT.busy=false;renderPainter();setTimeout(renderPainter,PNT_GAP+200);}
+async function painterUse(){
+  const T=PNT.tries[PNT.cur];if(!T)return;
+  let img;try{img=await squareImage(new File([T.blob],'portrait.jpg',{type:T.blob.type||'image/jpeg'}),420);}catch(e){PNT.msg=e.message;renderPainter();return;}
+  _uploadFailed=false;if(savePortrait({img,aid:'',c:''}))uploadPortrait();
+  renderHeroCard();closePainter();flashRestMsg('🎨 New portrait'+(S.campaignId?': it’s your board token’s picture too.':'.'));}
 async function portraitPicked(inp){
   const f=inp.files&&inp.files[0];inp.value='';if(!f)return;
   let img;try{img=await squareImage(f,420);}catch(e){alert(e.message);return;}

@@ -57,6 +57,16 @@ card picks its picture by itself:
    that design, drawn on each screen.
 4. Otherwise its initials on its type colour.
 
+**🎨 Paint a picture** (in every token card, and **🎨 Paint** on a player's hero card) asks an online AI painter for a
+picture from your words, for example "a grizzled old sailor with a white beard, a blue coat and a pipe". Then:
+- **Not quite right?** Change the words and paint again. It keeps the same pose and style, so you can fix one thing at a
+  time ("red coat", "add an eyepatch"). **🎲** gives a fresh take.
+- The last few tries stay underneath; click one to go back to it.
+- **✓ Use this picture** saves it into the campaign, so everyone sees it, and it stays even if the painter changes.
+
+It uses Pollinations, a free online image service: one picture about every 45 seconds, with a small Pollinations logo
+in the corner, and your words are sent to them. DMs can paint any token; players can paint their own.
+
 To bring back 3D models, tick **🧊 3D models for characters** under ♟ Tokens. It changes every screen,
 and unticking it goes back to standees. Scenery is always 3D.
 

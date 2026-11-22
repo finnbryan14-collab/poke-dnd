@@ -82,6 +82,10 @@ button{cursor:pointer;border:none;background:none}
 .tk-dist.over{background:var(--red);color:#fff}
 .ping-l{font:700 12px var(--font-display);color:#fff;background:rgba(11,11,17,.85);padding:2px 9px;border-radius:9px;transform:translateY(-26px);animation:fadeUp 2.2s forwards}
 @keyframes fadeUp{0%{opacity:0}10%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
+.paint{border:1px solid var(--bg5);border-radius:10px;padding:2px 9px 9px;margin-top:9px;background:rgba(255,255,255,.02)}
+.paint-big{display:block;width:100%;max-width:260px;aspect-ratio:1;object-fit:cover;border-radius:9px;margin-top:8px;border:2px solid var(--gold)}
+.paint-tries{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}.paint-tries img{width:44px;height:44px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer;opacity:.75}
+.paint-tries img.on{border-color:var(--gold);opacity:1}
 .aoe-bar{position:absolute;left:50%;bottom:80px;transform:translateX(-50%);display:none;gap:4px;padding:5px;border-radius:14px;z-index:5;background:rgba(18,20,30,.92);border:1px solid var(--bg5);flex-wrap:wrap;justify-content:center;max-width:calc(100% - 16px)}
 .aoe-bar button{padding:5px 9px;border-radius:9px;font-size:12px;font-weight:700;color:var(--tx2)}.aoe-bar button:hover{background:var(--bg4)}.aoe-bar button.on{background:var(--gold);color:#1a1300}
 .tpl-l{font:800 12px var(--font);color:#fff;background:rgba(0,0,0,.62);border:2px solid var(--c,#ffce4d);padding:2px 8px;border-radius:9px;white-space:nowrap;pointer-events:none}
@@ -655,6 +659,46 @@ function renderPic(g,person){
   const cv=document.createElement('canvas');cv.width=cv.height=256;const x=cv.getContext('2d'),id=x.createImageData(256,256);
   for(let y=0;y<256;y++)for(let i=0;i<1024;i+=4){const s=(255-y)*1024+i,d=y*1024+i;id.data[d]=SRGB[px[s]];id.data[d+1]=SRGB[px[s+1]];id.data[d+2]=SRGB[px[s+2]];id.data[d+3]=px[s+3];}
   x.putImageData(id,0,0);return cv;}
+// ── 🎨 Paint a picture: an online AI image generator paints a character from words (Finn, 2026-11: "a good quality image
+// that can be refined a couple of times"). It's Pollinations' free, keyless endpoint: GET image.pollinations.ai/prompt/<words>
+// ?width&height&seed&safe. Same words + same seed = the same picture, so refining keeps the seed and changes the words;
+// 🎲 picks a new seed. Free use is one picture at a time, about 45 s apart per internet address, with a small logo.
+// Tries stay on this screen (blob links); the chosen one is uploaded into the campaign (uploadAsset 'art') as look.img.
+const PAINT={};const PAINT_GAP=45000;let paintNext=0;
+try{paintNext=+localStorage.getItem('pokeDnD_paintNext')||0;}catch(e){}
+const PAINT_STYLE=', fantasy RPG character portrait, medieval world with Pokémon, head and shoulders, painted trading card art, detailed, soft light, simple background';
+function paintState(lk,name){return PAINT[lk]||(PAINT[lk]={desc:name||'',seed:1+Math.floor(Math.random()*99999),tries:[],cur:-1,busy:false,msg:''});}
+async function paintIt(lk,fresh){
+  const P=PAINT[lk];if(!P||P.busy)return;const words=(P.desc||'').trim();if(!words){P.msg='Describe who to paint first.';renderCard();return;}
+  const wait=paintNext-Date.now();if(wait>0){P.msg='The free painter allows one picture about every 45 seconds: ready in '+Math.ceil(wait/1000)+' s.';renderCard();setTimeout(renderCard,wait+200);return;}
+  if(fresh)P.seed=1+Math.floor(Math.random()*99999);
+  P.busy=true;P.msg='Painting… (usually under half a minute)';renderCard();
+  const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(words+PAINT_STYLE)+'?width=512&height=512&safe=true&seed='+P.seed;
+  try{const r=await fetch(url);
+    if(!r.ok){const ra=parseInt(r.headers.get('Retry-After'))||45;paintNext=Date.now()+ra*1000;throw new Error(r.status===402||r.status===429?'the free painter is busy: try again in '+ra+' s':'the painter answered '+r.status);}
+    const blob=await r.blob();if(!/^image\//.test(blob.type))throw new Error('no picture came back');
+    P.tries.unshift({src:URL.createObjectURL(blob),blob,desc:words,seed:P.seed});if(P.tries.length>6){const x=P.tries.pop();URL.revokeObjectURL(x.src);}
+    P.cur=0;P.msg='Like it? Use it. Not quite? Change the words and paint again (same pose and style), or 🎲 for a fresh take.';
+  }catch(e){P.msg='Couldn’t paint it: '+e.message+'.';}
+  paintNext=Math.max(paintNext,Date.now()+PAINT_GAP);try{localStorage.setItem('pokeDnD_paintNext',String(paintNext));}catch(e){}
+  P.busy=false;renderCard();setTimeout(renderCard,PAINT_GAP+200);
+}
+async function paintUse(lk){
+  const P=PAINT[lk],T=P&&P.tries[P.cur];if(!T)return;P.busy=true;P.msg='Saving it to the campaign…';renderCard();
+  try{const {aid}=await uploadAsset(new File([T.blob],'painted-'+slug(T.desc).slice(0,40)+'.jpg',{type:T.blob.type||'image/jpeg'}),'art');setLook(lk,{img:aid});P.msg='✓ It’s the picture now, on every screen.';}
+  catch(e){P.msg='Couldn’t save it: '+e.message;}
+  P.busy=false;renderCard();}
+function paintHTML(t,i){   // the token card's painter
+  const lk=t.look;if(!lk||!canLook(lk))return '';const P=paintState(lk,(i.name||'').replace(/\s+\d+$/,'')),T=P.tries[P.cur],wait=Math.max(0,paintNext-Date.now());
+  return '<div class="paint"><label class="lbl">🎨 Paint a picture <span class="tip">(online AI painter)</span></label>'
+    +'<textarea class="inp" data-paint="1" rows="2" placeholder="e.g. a grizzled old sailor with a white beard, a blue coat and a pipe">'+esc(P.desc)+'</textarea>'
+    +'<div class="row"><button class="btn sm pri" data-act="paint"'+(P.busy?' disabled':'')+'>'+(P.tries.length?'🎨 Paint again':'🎨 Paint it')+'</button>'
+    +(P.tries.length?'<button class="btn sm" data-act="paintNew" title="A fresh take (new pose and style)"'+(P.busy?' disabled':'')+'>🎲</button>':'')
+    +(T?'<button class="btn sm" data-act="paintUse"'+(P.busy?' disabled':'')+'>✓ Use this picture</button>':'')+(wait>0&&!P.busy?'<span class="tip">ready in ~'+Math.ceil(wait/1000)+' s</span>':'')+'</div>'
+    +(T?'<img class="paint-big" src="'+T.src+'" alt="">':'')
+    +(P.tries.length>1?'<div class="paint-tries">'+P.tries.map((x,k)=>'<img src="'+x.src+'" data-act="paintPick" data-k="'+k+'" class="'+(k===P.cur?'on':'')+'" title="'+esc(x.desc)+'">').join('')+'</div>':'')
+    +(P.msg?'<div class="tip" style="margin-top:5px">'+esc(P.msg)+'</div>':'')
+    +'<div class="tip" style="margin-top:4px;opacity:.75">Your words go to Pollinations, a free online image service.</div></div>';}
 function picHTML(t,i,look){   // the token card's picture options while characters are standees
   const art=!look.img&&autoArt(t,i),des=!look.img&&!art&&(look.npc||look.kit);
   return '<label class="lbl">Standee picture</label><div class="tip" style="margin-top:0">'+(look.img?'Showing your uploaded picture.':art?'Showing its official Pokémon art. Upload a picture below to use your own.':des?'Showing a picture of its design. Change it with ✨ above or 🧍 Design.':'No picture yet: describe it with ✨ above, design one, or upload a picture below.')+'</div>'
@@ -700,6 +744,7 @@ async function uploadAsset(file,kind){       // kind: 'map' | 'img' | 'model' | 
   let data,w=0,h=0;
   if(kind==='map'){const r=await shrinkImage(file,2400,'image/jpeg',.85);data=r.data;w=r.w;h=r.h;}
   else if(kind==='img'){const r=await shrinkImage(file,420,'image/png');data=r.data;}
+  else if(kind==='art'){const r=await shrinkImage(file,512,'image/jpeg',.9);data=r.data;kind='img';}   // an AI painting (section 15): a picture like any other
   else if(kind==='tex'){const r=await shrinkImage(file,512,'image/jpeg',.88);data=r.data;}
   else{
     if(!/\.glb$/i.test(file.name))throw new Error('Export the model from Blender as a .glb file (glTF Binary).');
@@ -1309,6 +1354,7 @@ function renderCard(){
       +'<div class="row"><input class="inp" id="mUrl" placeholder="…or paste a link to a .glb"><button class="btn sm" data-act="useUrl">Use</button></div>'
       +(look.model||look.npc||look.kit?'<label class="lbl">Model size</label><input type="range" min=".3" max="3" step=".05" data-look="scale" value="'+num(look.scale,1)+'">':'')
       +(look.model&&tk.clips.length?animHTML(tk,look):''):picHTML(t,i,look))
+      +paintHTML(t,i)
       +'<label class="lbl">Portrait (token + standee art)</label><div class="row" style="margin-top:0"><label class="btn sm up">⬆ Upload image<input type="file" accept="image/*" data-up="img"></label>'+(look.img?'<button class="btn sm" data-act="clrImg">Remove</button>':'')+'</div>'
       +(IS_DM&&libOpts('img')?'<div class="row"><select class="inp" data-lib="img"><option value="">…or pick an uploaded image</option>'+libOpts('img')+'</select></div>':'')
       +(t.kind==='npc'?'<div class="tip" style="margin-top:6px">Every “'+esc(i.name.replace(/\s+\d+$/,''))+'” token shares this look.</div>':'')+'</div>';
@@ -1375,6 +1421,10 @@ function act(a,d){
     case 'hide':if(tk)patchToken(tk.id,{hidden:!tk.data.hidden});break;
     case 'remove':if(tk&&confirm('Remove '+tk.info.name+' from this scene?'))removeToken(tk.id);break;
     case 'clrModel':if(tk)setLook(tk.data.look,{model:null});break;
+    case 'paint':if(tk){document.activeElement&&document.activeElement.blur();const ta=document.querySelector('#card [data-paint]');if(ta)paintState(tk.data.look).desc=ta.value.slice(0,400);paintIt(tk.data.look,false);}break;
+    case 'paintNew':if(tk){document.activeElement&&document.activeElement.blur();const ta=document.querySelector('#card [data-paint]');if(ta)paintState(tk.data.look).desc=ta.value.slice(0,400);paintIt(tk.data.look,true);}break;
+    case 'paintUse':if(tk){document.activeElement&&document.activeElement.blur();paintUse(tk.data.look);}break;
+    case 'paintPick':if(tk){document.activeElement&&document.activeElement.blur();const P=PAINT[tk.data.look];if(P){P.cur=+d.k;renderCard();}}break;
     case 'shape':{const same=tool==='shape'&&shapeMode===d.v;shapeMode=d.v;setTool(same?'select':'shape');break;}
     case 'shapeReset':if(confirm('Make this map a full rectangle again?'))write('board/scenes/'+sceneId(),{mask:null},'PATCH');break;
     case 'aoe':aoe=d.v;renderAoeBar();break;
@@ -1446,6 +1496,7 @@ function act(a,d){
     const t=e.target,tk=selected&&TOK.get(selected);
     if(t.dataset.sf){setSceneField(t.dataset.sf,t.type==='checkbox'?t.checked:(t.type==='number'||t.type==='range')?+t.value:t.value);t.blur();}
     else if(t.dataset.opt){write('board/opts/'+t.dataset.opt,t.checked||null);t.blur();}   // campaign-wide board settings (DM)
+    else if(t.dataset.paint&&tk){paintState(tk.data.look).desc=t.value.slice(0,400);}
     else if(t.dataset.note&&tk){setLook(tk.data.look,{notes:t.value.slice(0,3000)});}
     else if(t.id==='scFit')aiFit=t.checked;
     else if(t.dataset.up){const f=t.files&&t.files[0];t.value='';doUpload(t.dataset.up,f);}
@@ -1461,7 +1512,7 @@ function act(a,d){
     else if(t.dataset.pb&&selProp){bldField(t.dataset.pb,t);t.blur();}                      // a building's design (section 14)
     else if(t.dataset.pbx&&selProp&&t.value){bldSwap(t.dataset.pbx,t.value);t.blur();}
   });
-  root.addEventListener('input',e=>{const t=e.target,tk=selected&&TOK.get(selected);if(t.id==='scAi')aiSceneDesc=t.value;if(t.id==='adAi')adAiDesc=t.value;if(t.id==='bAi')bAiDesc=t.value;
+  root.addEventListener('input',e=>{const t=e.target,tk=selected&&TOK.get(selected);if(t.dataset.paint&&tk)paintState(tk.data.look).desc=t.value.slice(0,400);if(t.id==='scAi')aiSceneDesc=t.value;if(t.id==='adAi')adAiDesc=t.value;if(t.id==='bAi')bAiDesc=t.value;
     if(t.dataset.sf==='gridAlpha')gridMat.opacity=+t.value;
     if(t.dataset.look==='scale'&&tk&&tk.model){tk.look=Object.assign({},tk.look,{scale:+t.value});tk.fitModel();}});
 });
@@ -4660,7 +4711,7 @@ $('#jGo').addEventListener('click',()=>{
 if(FB&&CID&&(ME||IS_DM))start();else showJoin();
 
 // A handle for automated tests and for poking around in the browser console.
-window.PB={get tree(){return tree;},TOK,m3d,dexEntry,autoArt,designPic,applyShape,maskCells,tplIn,TPLOBJ,get aoe(){return aoe;},poseGuess,POSES,shrinkTex,camera,controls,MAP,renderer,fogMesh,fogCanvas,fogTex,act,setTilt,setTool,select,uploadAsset,setLook,addToken,patchToken,newScene,showToPlayers,setSceneField,sceneId,tokenInfo,fitView,get selected(){return selected;},
+window.PB={get tree(){return tree;},TOK,PAINT,paintIt,paintUse,get paintNext(){return paintNext;},set paintNext(v){paintNext=v;},m3d,dexEntry,autoArt,designPic,applyShape,maskCells,tplIn,TPLOBJ,get aoe(){return aoe;},poseGuess,POSES,shrinkTex,camera,controls,MAP,renderer,fogMesh,fogCanvas,fogTex,act,setTilt,setTool,select,uploadAsset,setLook,addToken,patchToken,newScene,showToPlayers,setSceneField,sceneId,tokenInfo,fitView,get selected(){return selected;},
   buildNpc,NPC_PRESETS,NPC_DEF,openDesigner,closeDesigner,ND,PROPS,TERRAIN,PROPOBJ,propsOf,makeProp,selectProp,get selProp(){return selProp;},
   TOWNS,BLD_PRESETS,bldRandom,bldDef,buildBld,genBlock,undo,UNDO,inBld,propsSet,get scDraft(){return scDraft;},
   WK,openWorkshop,closeWorkshop,kitsOf,prefabsOf,groundsOf,buildKitInto,sanPart,sanParts,sanBld,sanNpc,askClaude,aiSystem,selSet,setSel,savePrefab,KITROOTS,kitStamp,get scKit(){return scKit;},get scPrefab(){return scPrefab;},
