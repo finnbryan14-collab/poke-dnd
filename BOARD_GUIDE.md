@@ -19,7 +19,71 @@ from the web, and the board only works online anyway. The character sheet still 
 It opens in its own tab, already signed in to the campaign. Put it on a second monitor, or split
 the screen with your sheet.
 
-## New in this update (for the DM)
+## New: table extras
+
+**For the DM**
+- **🎵 Jukebox** (dashboard): paste YouTube links (a song, a playlist, rain sounds…), tag them (⚔ Battle, 🏘 Town…) and
+  press ▶: it plays on every player's board, from the same spot. Tick "When a fight starts…" and ▶ Start switches to your
+  first ⚔ Battle track, then back. Music needs the apps opened from the website.
+- **💬 Speak** (dashboard, or an NPC token's card on the board): type a line and it appears in a game-style text box on
+  every screen, with the NPC's picture.
+- **✨ Evolve** (a Pokémon token's card): everyone sees the evolution. A foe's token changes species; a companion changes
+  once its owner confirms on their sheet.
+- **🌿 Wild** (dashboard): list what lives in each area (levels, how common, how many) and 🎲 roll an encounter. One click
+  adds them to the fight with stat blocks, another puts them on the board.
+- **🏪 Shop** (dashboard): open a shop (prices in Gimmis, Ghouls or Ghold, with stock if you like). Players buy from
+  their Bag. **🎁 Give something** drops items or coins into a player's Bag (they tap to take it).
+- **👁 Line of sight** (✎ This scene → 🌫 Fog of war): walls and buildings block what the party sees and the fog clears as
+  they explore. On an uploaded map, trace its walls with **👁 Sight walls** (🌲 Scenery → Walls). At night only lit
+  squares show (fires, lamps, tokens with 🔦 Carry a light).
+- **📽 Show** (dock, or a token's card): moves every player's camera to what you're looking at.
+- **📺 TV** (dashboard top bar, or 🖥 Display on the board): a link for a TV or a stream: the board with no buttons,
+  following whoever's turn it is.
+- **📖 Recap** (dashboard): while the dashboard is open it notes the big moments (fights, natural 20s, NPC lines,
+  evolutions, level-ups, shopping…). Next session it drafts a "Previously on…" you can edit and show as a handout, or
+  copy into Claude for a dramatic version (free).
+- **🗺 World** (dashboard): upload a map of the world, add places, move the 🚩 party marker, count days and keep a
+  travel log. Players see it (not hidden places) and can add notes to places.
+- **🤫 Whispers** (dashboard): players' private notes to you, and your replies. **🔎 Ctrl+K** looks up any move or Pokémon.
+
+**Also new**
+- **✨ Move animations:** when someone uses a move (picking a target under 💥 Damage in their sheet's Battle Mode), a
+  fireball, lightning bolt, water beam or leaf storm in the move's type flies from their token to the target, with a sound
+  for its type. Foes' moves rolled on the dashboard flare too.
+- **💥 Damage numbers** float over a token when its HP changes. **🖼 Portraits** show in the turn order.
+- **🛡 Foe HP** (dashboard → 🎬 Scene): choose whether players see a foe's HP as numbers, a percentage, words
+  (Healthy, Wounded…) or not at all.
+- **📋 Rules gaps** (dashboard): exactly which moves and abilities in the rules sheet still need numbers, as a checklist.
+- **🧪 Practice** (dashboard): a throwaway campaign with sample players and Pokémon in a new tab, to try every tool. 🗑 End
+  practice deletes it.
+- On the sheet: **🧭 Character creator** for new players, **🩹 condition reminders** on your turn, and **⚙ Settings →
+  Text size / Colour-blind colours**.
+
+**Newest**
+- **✏️ Draw** (dock, or press D): anyone sketches on the map for everyone, to plan a move. Pick a colour, add ➜ arrow heads;
+  drawings fade after a minute (the DM's stay with 📌 Keep mine). 🧽 rubs them out.
+- **🔊 Pokémon cries:** a Pokémon's real cry plays when it appears on the board, comes out of its Poké Ball, evolves or
+  speaks. 🔊 on a Pokémon token's card plays it again. (The sounds switch in 🖥 Display turns them off.)
+- **❓ Quiz** (dashboard): Who's that Pokémon? A shadow appears on every sheet and board, players type their guesses
+  (3 each), the first right one wins a point. Pick the generations, then ▶ Next.
+- **📇 People** (dashboard, top bar): everyone the party has met. Speaking as someone with 💬 adds them; you set how they
+  feel about the party and what the party knows, and players keep notes on them.
+- **🤫 Secret rolls:** players can roll a check only you see (it pops up for you; the table just sees "rolled in secret").
+- **✋ Pause card:** a player can ask for a pause or to move on, without their name. Only you see it; OK clears it.
+- On the sheet: **🎮 Move token** in Battle Mode (moves your token a square per tap, handy with the board on a TV),
+  **🤝 Give** items and coins to another player from the Bag, and **⚙ Settings → 🕘 Older versions** to go back if
+  something got deleted by mistake.
+
+**For players**
+- **🔔 Your turn:** a chime, a buzz on phones, and the tab blinks.
+- **😮 Emotes:** in your token's card: ❗ ❓ 💢 ♪ 💤 ❤️…
+- **🎲 3D dice:** every roll also tumbles across the board (🖥 Display turns them off).
+- **🔴 Send out / Return** a companion: it arrives in a Poké Ball and goes back in a red beam.
+- On the sheet: **📇 Card** (hero card and each companion) makes a real-size trading card to print; **✨ Evolve** on a
+  companion; **📒 Pokédex**, **🗺 World map** and **🤫 Whisper** in the row under the header; shops and gifts in the
+  Bag; **🔎 Ctrl+K** to look anything up; **🔈 Listen on this screen** in the 🎵 corner to hear the music on the sheet.
+
+## New in the previous update (for the DM)
 
 - **🎨 Paint a map:** in **✎ This scene**, click **🎨 Paint a map**, describe the place ("a forest road beside a river
   with a wooden bridge") and paint. It's painted from above in the scene's shape; **✓ Use** makes it the map.

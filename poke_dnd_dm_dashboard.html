@@ -184,6 +184,7 @@ details.adv{margin-top:16px;font-size:12px;color:var(--tx2)}details.adv>summary{
 .dice-result .crit{color:var(--grn)}
 .dice-result .fumble{color:var(--red)}
 .dice-log{display:flex;flex-direction:column;gap:3px;max-height:120px;overflow-y:auto}
+.qz-now{display:flex;gap:12px;align-items:center;margin-top:10px}.qz-now img{width:84px;height:84px;object-fit:contain;flex-shrink:0}.dice-log-entry.sec{border-left:3px solid #c77dff;padding-left:7px;background:rgba(199,125,255,.07)}
 .dice-log-entry{font-size:11px;color:var(--tx3);padding:3px 8px;border-bottom:1px solid var(--bdr)}
 .dice-log-entry:last-child{border-bottom:none}
 .dice-log-entry b{color:var(--tx2)}
@@ -486,6 +487,21 @@ body.reduce-motion .rp-card,body.reduce-motion .rp-die.tumble,body.reduce-motion
 .enc-float{position:absolute;left:54px;top:-2px;font-family:var(--font-display);font-weight:700;font-size:20px;pointer-events:none;z-index:5;text-shadow:0 2px 5px rgba(0,0,0,.6);animation:encFloat 1s ease-out forwards}
 .enc-float.dmg{color:#ff5d5d}.enc-float.heal{color:#3ddf93}
 @keyframes encFloat{0%{opacity:0;transform:translateY(4px) scale(.7)}25%{opacity:1;transform:translateY(-4px) scale(1.1)}100%{opacity:0;transform:translateY(-30px) scale(1)}}
+/* 🎭 batch 3: jukebox, wild tables, shops, whispers, search */
+.tool-btn.hot{border-color:var(--gold);color:var(--gold)}.init-mini-btn.on{border-color:var(--gold);color:var(--gold)}
+.jb-now{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg3);border-radius:10px;padding:8px 10px;margin:8px 0;font-size:12.5px}
+.jb-row{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:8px}.jb-row.on{background:var(--gold-bg)}.jb-row:hover{background:var(--bg3)}
+.jb-tag{font-size:11px;color:var(--tx2);white-space:nowrap}.jb-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px}.jb-a{color:var(--tx3);text-decoration:none}
+.wild-rows{display:flex;flex-direction:column;gap:6px;margin-top:8px}.wild-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--tx2)}
+.wild-out{display:flex;gap:12px;align-items:center;background:var(--bg3);border-radius:12px;padding:8px 12px;margin-top:8px}.wild-out img{width:76px;height:76px;object-fit:contain}
+.badge-live{font-size:11px;font-weight:700;color:var(--grn)}
+.wh-wrap{display:flex;flex-direction:column;gap:8px}.wh-who{display:flex;gap:6px;flex-wrap:wrap}.wh-thread{max-height:260px;overflow-y:auto}
+.dq-list{flex:1;overflow-y:auto;padding:6px;min-width:0;max-height:62vh}.tb-win .dq-r{display:block;width:100%;text-align:left;background:none;border:0;color:#e7edf8;padding:6px 8px;border-radius:8px;font:600 13px Inter,sans-serif;cursor:pointer}
+.tb-win .dq-r.on,.tb-win .dq-r:hover{background:#222b40}.dq-k{display:inline-block;min-width:70px;font-size:10.5px;color:#8a9bbb;text-transform:uppercase}#dqOne div{margin:3px 0}
+.prac-bar{position:sticky;top:0;z-index:999;background:#3b2a07;color:#ffe9a8;border-bottom:2px solid #ffce4d;padding:8px 14px;font:13px Inter,sans-serif;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.prac-bar button{background:#ffce4d;color:#1a1300;border:0;border-radius:8px;padding:4px 10px;font:700 12px Inter,sans-serif;cursor:pointer}
+.gap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:10px}.gap-t{background:var(--bg3);border-radius:8px;padding:6px 9px;font-size:12px}
+.gap-t summary{cursor:pointer;font-weight:700}.gap-t div{color:var(--tx2);margin-top:5px;line-height:1.5}.gap-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 </style>
 </head>
 <body>
@@ -498,6 +514,7 @@ body.reduce-motion .rp-card,body.reduce-motion .rp-die.tumble,body.reduce-motion
   <div class="conn-badge offline" id="connBadge"><div class="conn-dot"></div><span id="connTxt">Offline</span></div>
   <span class="countdown-lbl" id="countdownLbl"></span>
   <button class="refresh-btn" id="boardBtn" onclick="openBoard()" style="display:none" title="Open the live board (scenes, map, tokens)">🗺 Board</button>
+  <button class="refresh-btn" id="tvBtn" onclick="copyTvLink()" style="display:none" title="Copy a link to the board for a TV at the table or a stream: no controls, it follows the turn">📺 TV</button>
   <button class="refresh-btn" id="refreshBtn" onclick="doRefresh()" style="display:none">⟳ Refresh</button>
 </nav>
 
@@ -516,6 +533,7 @@ body.reduce-motion .rp-card,body.reduce-motion .rp-die.tumble,body.reduce-motion
     <input class="inp" id="dmNameInp" placeholder="e.g. Coach, DM">
 
     <button class="btn btn-acc" id="connectBtn" onclick="connect()">Connect</button>
+    <button class="btn" onclick="practiceOpen()" title="Opens a throwaway campaign with sample players in a new tab" style="margin-top:8px">🧪 Try a practice campaign first</button>
     <div style="text-align:center;margin:10px 0;font-size:11px;color:var(--tx3)">— or —</div>
     <button class="btn" id="createBtn" onclick="dmCreateCampaign()" style="background:var(--bg3);color:var(--tx)">Create a New Campaign</button>
     <div class="err-msg" id="errMsg"></div>
@@ -643,6 +661,17 @@ function respond(data) {
     <button class="tool-btn" id="hoToggle" onclick="togglePanel('hoPanel');renderHandouts()">📜 Handouts</button>
     <button class="tool-btn" id="pcToggle" onclick="togglePanel('pcPanel');renderPCards()">🗂 Party board</button>
     <button class="tool-btn" id="bkToggle" onclick="togglePanel('bkPanel');renderBackup()">💾 Backup</button>
+    <button class="tool-btn" id="jbToggle" onclick="togglePanel('jbPanel');renderJb()">🎵 Jukebox</button>
+    <button class="tool-btn" id="spToggle" onclick="togglePanel('spPanel');renderSpeak()">💬 Speak</button>
+    <button class="tool-btn" id="wildToggle" onclick="togglePanel('wildPanel');renderWild()">🌿 Wild</button>
+    <button class="tool-btn" id="shopToggle" onclick="togglePanel('shopPanel');renderShop()">🏪 Shop</button>
+    <button class="tool-btn" id="worldToggle" onclick="tbWorldOpen()">🗺 World</button>
+    <button class="tool-btn" id="rcToggle" onclick="togglePanel('rcPanel');renderRecap()">📖 Recap</button>
+    <button class="tool-btn" id="whToggle" onclick="togglePanel('whPanel');renderWh()">🤫 Whispers</button>
+    <button class="tool-btn" id="qzToggle" onclick="togglePanel('qzPanel');renderQuiz()" title="Who’s that Pokémon? A guessing game for the table">❓ Quiz</button>
+    <button class="tool-btn" onclick="tbPeopleOpen()" title="The people the party has met">📇 People</button>
+    <button class="tool-btn" id="gapToggle" onclick="togglePanel('gapPanel');renderGaps()" title="Moves and abilities in the rules sheet that still need numbers">📋 Rules gaps</button>
+    <button class="tool-btn" onclick="practiceOpen()" title="A throwaway campaign in a new tab, to try every tool">🧪 Practice</button>
     <button class="tool-btn" id="showHiddenBtn" onclick="toggleShowHidden()" style="display:none">Show hidden (0)</button>
   </div>
 
@@ -674,6 +703,7 @@ function respond(data) {
     <div id="bcastCurrent" style="font-size:11px;color:var(--tx2);margin-top:8px"></div>
 
     <div class="scene-sec">⚔ Current foe <span style="font-weight:400;color:var(--tx3)">— flags super-effective moves on players' cards</span></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--tx2);margin-bottom:8px">🛡 Players see a foe’s HP as <select class="manage-inp" id="foeHpSel" style="width:auto" onchange="lastData._foehp=this.value;Sync.setMeta(campaignId,'foehp',this.value).catch(()=>{})"><option value="exact">exact numbers</option><option value="pct" selected>a percentage</option><option value="vague">words (Healthy, Wounded…)</option><option value="none">nothing</option></select></div>
     <label style="display:flex;gap:7px;align-items:center;font-size:12px;color:var(--tx2);margin-bottom:8px"><input type="checkbox" id="hintsOn" checked onchange="Sync.setMeta(campaignId,'hints',this.checked).catch(()=>{})"> Show players type matchups (super effective / not very effective) against the foe they target or the current foe</label>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
       <div class="manage-field"><label>Type 1</label><select class="manage-inp" id="foeT1" style="width:130px"></select></div>
@@ -715,6 +745,53 @@ function respond(data) {
     <div class="scene-sec">Automatic snapshots on this computer</div>
     <div id="bkSnaps"></div>
     <div style="font-size:10.5px;color:var(--tx3);margin-top:6px">Snapshots skip the roll log and uploaded files (those stay safe in the campaign). Download a backup now and then too: it has everything, and works on any computer.</div>
+  </div>
+  <!-- 🎵 JUKEBOX -->
+  <div class="slide-panel" id="jbPanel" style="display:none">
+    <div class="panel-head">🎵 Jukebox <span style="font-size:10px;color:var(--tx3);font-weight:400">— YouTube links; ▶ plays one on every player's board (and on sheets that turn it on)</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="manage-inp" id="jbUrl" placeholder="Paste a YouTube link (a video or a playlist)" style="flex:1;min-width:230px" onkeydown="if(event.key==='Enter')jbAdd()"><input class="manage-inp" id="jbTitle" placeholder="Name (optional)" style="width:160px">
+      <select class="manage-inp" id="jbTag" style="width:auto"></select><button class="dice-roll-btn" onclick="jbAdd()">＋ Add</button></div>
+    <div id="jbMsg" style="font-size:11.5px;color:var(--tx2);margin-top:6px"></div><div id="jbNow"></div><div id="jbList"></div>
+    <label style="display:flex;gap:7px;align-items:center;font-size:12px;color:var(--tx2);margin-top:8px"><input type="checkbox" id="jbAuto" onchange="jbAuto=this.checked;dm_save()"> When a fight starts (▶ Start), play the first ⚔ Battle track; when it ends, go back to what was playing</label>
+    <div style="font-size:10.5px;color:var(--tx3);margin-top:6px">Music plays in YouTube’s own player, so it needs the internet and the apps opened from the website (not a file on your computer). Each player picks their own volume. To hear it on this computer as well, open 🎵 at the bottom left and press Listen.</div>
+  </div>
+  <!-- 💬 SPEAK AS AN NPC -->
+  <div class="slide-panel" id="spPanel" style="display:none">
+    <div class="panel-head">💬 Speak as an NPC <span style="font-size:10px;color:var(--tx3);font-weight:400">— a game-style text box on every player's sheet and board</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="manage-inp" id="spWho" list="spWhoL" placeholder="Who’s talking (e.g. Old Man Rocco)" style="width:220px" onfocus="renderSpeak()"><datalist id="spWhoL"></datalist>
+      <input class="manage-inp" id="spText" maxlength="400" placeholder="What they say…" style="flex:1;min-width:220px" onkeydown="if(event.key==='Enter')spSay()"><button class="dice-roll-btn" onclick="spSay()">Say it</button></div>
+    <div style="font-size:10.5px;color:var(--tx3);margin-top:6px">Their picture is their board token’s portrait, or the Pokémon’s artwork if they’re a Pokémon. On the board you can also speak from an NPC token’s card.</div>
+    <div id="spList" style="margin-top:6px"></div>
+  </div>
+  <!-- 🌿 WILD ENCOUNTERS -->
+  <div class="slide-panel" id="wildPanel" style="display:none">
+    <div class="panel-head">🌿 Wild Pokémon <span style="font-size:10px;color:var(--tx3);font-weight:400">— what lives in each area; 🎲 rolls an encounter with its stat blocks ready</span></div>
+    <div id="wildBox"></div>
+  </div>
+  <!-- 🏪 SHOPS + GIFTS -->
+  <div class="slide-panel" id="shopPanel" style="display:none">
+    <div class="panel-head">🏪 Shops &amp; gifts <span style="font-size:10px;color:var(--tx3);font-weight:400">— open a shop players buy from, or drop something into a player's Bag</span></div>
+    <div id="shopBox"></div>
+  </div>
+  <!-- 📖 RECAP -->
+  <div class="slide-panel" id="rcPanel" style="display:none">
+    <div class="panel-head">📖 Session recap <span style="font-size:10px;color:var(--tx3);font-weight:400">— “Previously on…”, written from what happened</span></div>
+    <div id="rcBox"></div>
+  </div>
+  <!-- 📋 RULES GAPS -->
+  <div class="slide-panel" id="gapPanel" style="display:none">
+    <div class="panel-head">📋 Rules gaps <span style="font-size:10px;color:var(--tx3);font-weight:400">— what the rules sheet still needs before players can use it</span></div>
+    <div id="gapBox"></div>
+  </div>
+  <!-- 🤫 WHISPERS -->
+  <div class="slide-panel" id="whPanel" style="display:none">
+    <div class="panel-head">🤫 Whispers <span style="font-size:10px;color:var(--tx3);font-weight:400">— private notes between you and one player</span></div>
+    <div id="whDm"></div>
+  </div>
+  <!-- ❓ WHO'S THAT POKÉMON? -->
+  <div class="slide-panel" id="qzPanel" style="display:none">
+    <div class="panel-head">❓ Who’s that Pokémon? <span style="font-size:10px;color:var(--tx3);font-weight:400">— a shadow on every player's sheet and board; the first right guess wins the round</span></div>
+    <div id="qzBox"></div>
   </div>
   <!-- SHARED ROLL FEED (#3) -->
   <div class="slide-panel" id="feedPanel" style="display:none">
@@ -795,7 +872,7 @@ function respond(data) {
 
 <script>
 const RELAY_STORAGE_KEY = 'pokeDnD_DM_relay';
-const DM_SK = 'pokeDnD_DM_v2';
+const DM_SK = new URLSearchParams(location.search).get('practice')==='1' ? 'pokeDnD_DM_practice' : 'pokeDnD_DM_v2';   // 🧪 the practice tab keeps its own saved data
 const TYPE_COLORS={Fire:'#FF6B35',Water:'#4A90D9',Ice:'#74CEC0',Grass:'#7AC74C',Electric:'#F7D02C',Bug:'#A6B91A',Fighting:'#C22E28',Psychic:'#F95587',Dark:'#705746',Ghost:'#735797',Poison:'#A33EA1',Rock:'#B6A136',Ground:'#E2BF65',Steel:'#B7B7CE',Dragon:'#6F35FC',Flying:'#A98FF3',Fairy:'#D685AD',Normal:'#A8A878'};
 const STAT_ABBR=['STR','DEX','CON','INT','WIS','CHA'];
 const PP_MAX={1:10,2:13,3:16,4:21,5:24,6:27,7:30,8:35,9:38,10:41,11:44,12:49,13:52,14:55,15:58,16:63,17:66,18:69,19:72,20:75};
@@ -863,6 +940,8 @@ const Sync={
     for(let i=0;i<n;i++)await put('/parts/'+i,data.slice(i*N,(i+1)*N));
     await this._fb('PUT',id+'/board/library/'+aid,{name,kind,bytes,t:{'.sv':'timestamp'}});return aid;},   // shows in the board's "Files in this campaign"
   setLook(id,pk,v){return this._fb('PATCH',id+'/board/looks/'+this.key(pk),v);},
+  boardGet(id,p){return this.fb()?this._fb('GET',id+'/board/'+p):Promise.resolve(null);},   // 🎮 the move pad reads where tokens are…
+  boardPatch(id,p,v){return this.fb()?this._fb('PATCH',id+'/board/'+p,v):Promise.reject(new Error('needs the live (Firebase) server'));},   // …and moves one
   // 💾 The whole campaign + its uploaded files as one object (Firebase only). restore() writes it back one part at a time
   // (the database rules refuse replacing a whole campaign in one go) and each uploaded file piece by piece. Parts the
   // backup doesn't have are left as they are.
@@ -902,12 +981,12 @@ let dmT=0,_dmPushT=null;
 const DM_DEV=(()=>{try{let d=localStorage.getItem('pokeDnD_DM_dev');if(!d){d=Math.random().toString(36).slice(2,10);localStorage.setItem('pokeDnD_DM_dev',d);}return d;}catch(e){return 'dev';}})();   // which computer saved it
 const toArr=v=>Array.isArray(v)?v:(v&&typeof v==='object'?Object.keys(v).sort((a,b)=>a-b).map(k=>v[k]):[]);   // Firebase may hand arrays back as {0:…,1:…}
 function dmPayload(){return {notes:dmNotes,gnotes:document.getElementById('dmGlobalNotes')?.value||'',blocks:statBlocks,hidden:hiddenPlayers,conds:conditions,
-  enc:{list:initiative,round:initRound,turn:initTurnIdx,eid:encEid,active:initActive},t:dmT,dev:DM_DEV};}
+  enc:{list:initiative,round:initRound,turn:initTurnIdx,eid:encEid,active:initActive},tables:wildTables,shops,journal,jbAuto,t:dmT,dev:DM_DEV};}
 function dm_save(push){
   if(push!==false)dmT=Date.now();
   try{localStorage.setItem(DM_SK,JSON.stringify({
     relayUrl,campaignId,dmName,dmNotes,
-    hiddenPlayers,conditions,initiative,initRound,initTurnIdx,encEid,statBlocks,dmT,
+    hiddenPlayers,conditions,initiative,initRound,initTurnIdx,encEid,statBlocks,dmT,wildTables,shops,journal,jbAuto,
     globalNotes:document.getElementById('dmGlobalNotes')?.value||''
   }));}catch(e){}
   if(push!==false&&campaignId&&Sync.fb()){clearTimeout(_dmPushT);_dmPushT=setTimeout(()=>Sync.setDm(campaignId,dmPayload()).catch(()=>{}),700);}
@@ -917,10 +996,11 @@ function adoptDm(d){   // a newer copy saved on another computer: take it
   dmNotes=d.notes||{};statBlocks=toArr(d.blocks);hiddenPlayers=d.hidden||{};conditions=d.conds||{};
   const e=d.enc||{};initiative=toArr(e.list).map(r=>Object.assign({},r,{types:toArr(r.types),conditions:toArr(r.conditions)}));
   initRound=e.round||1;initTurnIdx=e.turn||0;encEid=e.eid||0;initActive=!!e.active&&initiative.length>0;
+  wildTables=toArr(d.tables).map(t=>Object.assign({},t,{rows:toArr(t.rows)}));shops=toArr(d.shops).map(o=>Object.assign({},o,{items:toArr(o.items)}));journal=toArr(d.journal);jbAuto=!!d.jbAuto;   // 🌿 🏪 📖 🎵
   const g=document.getElementById('dmGlobalNotes');if(g&&document.activeElement!==g)g.value=d.gnotes||'';
   dmT=d.t;dm_save(false);return true;
 }
-const dmHasData=()=>!!(Object.keys(dmNotes).length||statBlocks.length||initiative.length||(document.getElementById('dmGlobalNotes')?.value||'').trim());
+const dmHasData=()=>!!(Object.keys(dmNotes).length||statBlocks.length||initiative.length||journal.length||shops.length||wildTables.some(t=>toArr(t.rows).length)||(document.getElementById('dmGlobalNotes')?.value||'').trim());
 function battleToInit(bt){   // no encounter here but one is running (e.g. a dashboard that never saved to the campaign): pick it up instead of ending it
   if(initiative.length||!bt||!bt.active||!toArr(bt.list).length)return false;
   initiative=toArr(bt.list).map(r=>({name:r.name,type:r.kind==='pc'?'pc':'npc',init:r.init,hp:r.hp,hpMax:r.hpMax,types:toArr(r.types),conditions:toArr(r.conditions),playerKey:r.pk||undefined}));
@@ -936,6 +1016,7 @@ function dm_load(){
     hiddenPlayers=v.hiddenPlayers||{}; conditions=v.conditions||{};
     dmT=v.dmT||0;
     initiative=v.initiative||[]; initRound=v.initRound||1; initTurnIdx=v.initTurnIdx||0; statBlocks=Array.isArray(v.statBlocks)?v.statBlocks:[];
+    wildTables=Array.isArray(v.wildTables)?v.wildTables:[];shops=Array.isArray(v.shops)?v.shops:[];journal=Array.isArray(v.journal)?v.journal:[];jbAuto=!!v.jbAuto;
     encEid=v.encEid||(Array.isArray(v.initiative)&&v.initiative.length?Date.now():0);   // an encounter saved before the update still takes players' rolls
     initActive=Array.isArray(initiative)&&initiative.length>0;
     if(v.globalNotes)setTimeout(()=>{const el=document.getElementById('dmGlobalNotes');if(el)el.value=v.globalNotes;},50);
@@ -962,7 +1043,7 @@ async function connect(){
     if(relay)relayUrl=relay;
     const data=await Sync.get(id);
     if(data&&data.error)throw new Error(data.error);
-    if(campaignId&&campaignId!==id){dmNotes={};hiddenPlayers={};conditions={};initiative=[];initRound=1;initTurnIdx=0;encEid=0;initActive=false;dmT=0;   // a different campaign: don't carry this one's fight or notes over
+    if(campaignId&&campaignId!==id){dmNotes={};hiddenPlayers={};conditions={};initiative=[];initRound=1;initTurnIdx=0;encEid=0;initActive=false;dmT=0;journal=[];jbPrev=undefined;   // a different campaign: don't carry this one's fight or notes over
       const g=document.getElementById('dmGlobalNotes');if(g)g.value='';}
     campaignId=id; dmName=nm;
     const mine={notes:Object.assign({},dmNotes),blocks:statBlocks.slice(),g:(document.getElementById('dmGlobalNotes')?.value||'').trim()};
@@ -1016,7 +1097,7 @@ function disconnect(){
   document.getElementById('dashScreen').style.display='none';
   document.getElementById('setupScreen').style.display='flex';
   document.getElementById('refreshBtn').style.display='none';
-  document.getElementById('boardBtn').style.display='none';
+  document.getElementById('boardBtn').style.display='none';document.getElementById('tvBtn').style.display='none';
   setConnBadge('offline','Offline');
   document.getElementById('countdownLbl').textContent='';
   const btn=document.getElementById('connectBtn');
@@ -1029,7 +1110,7 @@ function showDash(data){
   document.getElementById('dashScreen').style.display='block';
   document.getElementById('dispCampaignId').textContent=campaignId;
   document.getElementById('refreshBtn').style.display='block';
-  document.getElementById('boardBtn').style.display='block';
+  document.getElementById('boardBtn').style.display='block';document.getElementById('tvBtn').style.display='block';
   setConnBadge('live','Live');
   renderPlayers(data);
   populateFoeTypes(); renderRollFeed(); renderEnvControls(); renderSceneState();
@@ -1051,7 +1132,8 @@ function setEnv(){
 function clearEnv(){document.getElementById('envWeather').value='';document.getElementById('envTerrain').value='';setEnv();}
 function renderEnvControls(){
   const env=lastData._env||{}, cur=document.getElementById('envCurrent'), eb=document.getElementById('envToggle');
-  {const h=document.getElementById('hintsOn');if(h&&document.activeElement!==h)h.checked=lastData._hints!==false;}   // 🎯 type hints for players
+  {const h=document.getElementById('hintsOn');if(h&&document.activeElement!==h)h.checked=lastData._hints!==false;}
+  {const f=document.getElementById('foeHpSel');if(f&&document.activeElement!==f)f.value=['exact','pct','vague','none'].includes(lastData._foehp)?lastData._foehp:'pct';}   // 🎯 type hints for players
   if(cur){
     if(env.weather||env.terrain){cur.innerHTML='Active: '+[env.weather?'☁ '+env.weather:'',env.terrain?'▦ '+env.terrain:''].filter(Boolean).join(' · ');eb&&eb.classList.add('active');}
     else{cur.textContent='No weather or terrain set.';eb&&eb.classList.remove('active');}
@@ -1063,11 +1145,13 @@ function renderEnvControls(){
 // ── SHARED ROLL FEED (#3) ────────────────────────────
 function renderRollFeed(){
   const el=document.getElementById('rollFeed');if(!el)return;
-  const log=Array.isArray(lastData._log)?lastData._log.slice().reverse():[];
+  const S0=lastData._secret||{},sec=Object.values(S0).filter(v=>v&&v.n).map(v=>({who:v.n,text:'🤫 '+(v.what||'Secret roll')+': '+v.total+(v.txt?' ('+v.txt+')':''),t:v.t,sec:1}));   // 🤫 only the DM sees these
+  if(sec.length>40)Object.keys(S0).sort().slice(0,sec.length-30).forEach(k=>Sync.delMeta(campaignId,'secret/'+k).catch(()=>{}));
+  const log=(Array.isArray(lastData._log)?lastData._log.filter(e=>!/^🤫 rolled in secret/.test(e.text||'')):[]).concat(sec).sort((a,b)=>(a.t||0)-(b.t||0)).reverse();
   const ft=document.getElementById('feedToggle');
   if(ft)ft.textContent=log.length?'📜 Roll Feed ('+log.length+')':'📜 Roll Feed';
   if(!log.length){el.innerHTML='<div class="init-empty">No rolls yet. When a player taps 🎲 Roll on a move, it shows up here.</div>';return;}
-  el.innerHTML=log.map(e=>'<div class="dice-log-entry"><b>'+x(e.who)+'</b> '+x(e.text)+' <span style="opacity:.5">'+new Date(e.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>').join('');
+  el.innerHTML=log.map(e=>'<div class="dice-log-entry'+(e.sec?' sec':'')+'"><b>'+x(e.who)+'</b> '+x(e.text)+' <span style="opacity:.5">'+new Date(e.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</span></div>').join('');
 }
 
 // ── REFRESH ───────────────────────────────────────────
@@ -1077,6 +1161,9 @@ function applyCampaignData(data){
   const got=adoptDm(data._dm);   // the DM changed something on another computer
   if(got){sbList();updateHiddenBtn();}
   HANDOUTS=(data._handouts&&typeof data._handouts==='object')?JSON.parse(JSON.stringify(data._handouts)):{};renderHandouts();pcUpdate(data._cards);   // 📜 🗂
+  tbUpdate({say:data._say,evolve:data._evolve,music:data._music,world:data._world,dex:data._dex,people:data._people,quiz:data._quiz,secret:data._secret,pause:data._pause});   // 🎭 table extras
+  {const op=id=>document.getElementById(id)?.style.display==='block';lastData._music=data._music;lastData._whisper=data._whisper;lastData._shop=data._shop;lastData._loot=data._loot;lastData._qbuzz=data._qbuzz;lastData._secret=data._secret;lastData._board=data._board||lastData._board;
+    watchJournal(data);whWatch();quizWatch(data);if(op('jbPanel'))renderJb();if(op('shopPanel'))renderShop();if(op('qzPanel'))renderQuiz();}
   lastData=data; renderPlayers(data); renderRollFeed(); renderEnvControls(); renderSceneState();
   const ch=applyRolls(data._rolls)|applyDmg(data._dmg)|applyNext(data._next);   // players' initiative + damage, Next turn from the board
   if(currentView==='encounter') renderInit();else if(ch)pushBattle();
@@ -1104,6 +1191,609 @@ async function doRefresh(){
 // sheet and board once, and stays in their 📜 list until hidden. meta/handouts/{id} = {title,text,img,t,shown};
 // meta/handoutNow = {hid,t}. Pictures are uploaded like the board's (Sync.putAsset). Firebase only.
 let HANDOUTS={};
+// ── 🎭 Table extras: the SAME code in the sheet, the board and the dashboard (change all three together, like Sync) ──
+// What the DM (or a player) sends to everyone, shown the same way on every screen. All under the campaign's meta/:
+//  • say = {n, who, text, img, art, color, t}: an NPC's line in a game-style text box, typed out with little blips.
+//  • evolve = {n, from, to, a, b, who, pk, cid, t}: the evolution scene (a / b = Pokédex numbers of the old / new form).
+//  • music = {now:{k, v, l, at, t, on, loop, title}, list:{id:{u, v, l, title, tag}}}: the 🎵 jukebox (YouTube links).
+//    Each screen that listens plays the DM's pick from the same spot (at = seconds in when the DM pressed play, at time t).
+//  • world = {img, name, day, at:{x,y}, pins:{id:{x, y, n, d, ic, pn, vis, h}}, trip:{id:{d, text, t}}}: the 🗺 world map
+//    (x / y are fractions of the picture; d = the DM's note, pn = the party's notes, h = hidden from players).
+//  • dex/<num> = {n, num, ty, at, t, c, pn}: the 📒 party Pokédex (a board adds a Pokémon the first time players see it).
+//  • people/<id> = {n, img, art, color, where, att, d, pn, t, h}: 📇 people the party has met (the DM's 💬 adds them).
+//  • quiz = {id, num, h, on, rev, n, win, score, gen} + qbuzz/<push id> = {q, pk, n, ok, g, t}: ❓ Who's that Pokémon?
+//  • pause/<push id> = {k:'pause'|'skip', t}: ✋ the pause card (no name on it); secret/<push id>: 🤫 secret rolls (DM only).
+// Each app sets TB.host = {asset(id)→Promise<src>, set(path,val), push(path,val), me()→{pk,name,dm}, dexNum(name)→n|0,
+//   listen()→bool (play the music here?), upload(file)→Promise<id>, players()→{pk:{charName,companions}}}.
+// New things are shown once; what was already there when the screen opened isn't news (TB.seen).
+const TB={host:null,seen:{},people:{},quiz:null,sayQ:[],sayOn:false,music:null,world:null,dex:{},yt:null,ytP:null,jb:{k:'',err:'',blocked:false,open:false},wsel:'',wOpen:false,dOpen:false,dsel:'',dq:'',turnKey:''};
+const TB_ART='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+const tbEsc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function tbPrefs(){let p={};try{p=JSON.parse(localStorage.getItem('pokeDnD_tb')||'{}')||{};}catch(e){}return Object.assign({fx:true,vol:60,mute:false,here:false},p);}
+function tbSetPref(k,v){const p=tbPrefs();p[k]=v;try{localStorage.setItem('pokeDnD_tb',JSON.stringify(p));}catch(e){}return p;}
+function tbCss(){if(document.getElementById('tbCss'))return;const s=document.createElement('style');s.id='tbCss';s.textContent=
+  '.tb-say{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147481000;width:min(680px,calc(100vw - 20px));display:none;gap:12px;align-items:flex-start;background:#fbfbf7;color:#1d2230;border:4px solid #2b3245;border-radius:16px;padding:12px 16px 14px;box-shadow:0 0 0 3px #fbfbf7,0 12px 40px rgba(0,0,0,.55);font:600 16px/1.45 Inter,system-ui,sans-serif;cursor:pointer;animation:tbUp .25s ease-out}'
+  +'.tb-say .tb-pic{width:76px;height:76px;flex-shrink:0;border-radius:12px;border:3px solid var(--tbc,#2b3245);background:#dde3ee center/cover no-repeat;display:flex;align-items:center;justify-content:center;font:800 26px Inter,sans-serif;color:#fff}'
+  +'.tb-say .tb-nm{display:inline-block;font:800 12px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;background:var(--tbc,#2b3245);color:#fff;border-radius:8px;padding:2px 9px;margin-bottom:5px}'
+  +'.tb-say .tb-tx{white-space:pre-wrap;min-height:46px}.tb-say .tb-more{float:right;color:#e53935;animation:tbBob .8s infinite;font-size:13px}'
+  +'@keyframes tbUp{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}@keyframes tbBob{50%{transform:translateY(3px)}}'
+  +'.tb-evo{position:fixed;inset:0;z-index:2147482500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle at 50% 45%,#2a2f4a,#07080d 70%);color:#fff;font:700 20px Inter,system-ui,sans-serif;text-align:center;padding:20px;cursor:pointer;overflow:hidden}'
+  +'.tb-evo .tb-stage{position:relative;width:min(340px,70vw);height:min(340px,70vw)}.tb-evo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .5s,opacity .08s}'
+  +'.tb-evo img.sil{filter:brightness(0) invert(1) drop-shadow(0 0 18px #9fd8ff)}.tb-evo .tb-glow{position:absolute;inset:-30%;border-radius:50%;background:radial-gradient(circle,rgba(160,220,255,.55),transparent 60%);opacity:0;transition:opacity .6s}'
+  +'.tb-evo.go .tb-glow{opacity:1}.tb-evo .tb-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .35s}.tb-evo .tb-spk{position:absolute;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 10px #bfe6ff;animation:tbSpk 1.6s ease-out forwards}'
+  +'@keyframes tbSpk{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}.tb-evo small{font:600 12px Inter,sans-serif;color:#8a9bbb}'
+  +'.tb-jb{position:fixed;z-index:2147480000;left:12px;bottom:12px;background:#141a28;color:#e7edf8;border:1px solid #2a3550;border-radius:14px;box-shadow:0 8px 26px rgba(0,0,0,.5);font:600 12px Inter,system-ui,sans-serif;max-width:min(300px,calc(100vw - 24px))}'
+  +'.tb-jb .tb-jbh{display:flex;align-items:center;gap:7px;padding:7px 10px;cursor:pointer;white-space:nowrap}.tb-jb .tb-jbt{overflow:hidden;text-overflow:ellipsis;max-width:190px}'
+  +'.tb-jb .tb-jbb{padding:0 10px 10px}.tb-jb .tb-vid{width:224px;height:126px;border-radius:8px;overflow:hidden;background:#000;margin-bottom:7px}.tb-jb .tb-vid iframe{width:100%;height:100%;border:0}'
+  +'.tb-jb.min .tb-jbb{position:fixed;left:-9999px;top:0}.tb-jb input[type=range]{width:100%;accent-color:#ffce4d}.tb-jb button{background:#222b40;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:4px 9px;font:inherit;cursor:pointer}'
+  +'.tb-jb .tb-jbn{color:#ffce4d;font-size:11px;margin-top:5px;white-space:normal}.tb-eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}.tb-eq i{width:3px;background:#ffce4d;animation:tbEq .9s infinite ease-in-out}.tb-eq i:nth-child(2){animation-delay:.3s}.tb-eq i:nth-child(3){animation-delay:.6s}.tb-eq.off i{animation:none;height:3px}'
+  +'@keyframes tbEq{0%,100%{height:3px}50%{height:12px}}'
+  +'.tb-ov{position:fixed;inset:0;z-index:2147482000;background:rgba(5,6,10,.74);display:flex;align-items:center;justify-content:center;padding:12px}'
+  +'.tb-win{background:#141a28;color:#e7edf8;border:1px solid #2a3550;border-radius:14px;width:min(980px,100%);max-height:calc(100vh - 24px);display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);font:13.5px/1.5 Inter,system-ui,sans-serif;overflow:hidden}'
+  +'.tb-win h2{font:800 17px Inter,sans-serif;margin:0}.tb-wh{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #2a3550;flex-wrap:wrap}.tb-wh .tb-x{margin-left:auto}'
+  +'.tb-win button,.tb-win .tb-b{background:#222b40;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:5px 10px;font:600 12.5px Inter,sans-serif;cursor:pointer}.tb-win button.tb-p{background:#ffce4d;color:#1a1300;border-color:#ffce4d}'
+  +'.tb-win input,.tb-win textarea,.tb-win select{background:#0b0f18;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:6px 8px;font:13px Inter,sans-serif;width:100%;box-sizing:border-box}'
+  +'.tb-wb{display:flex;min-height:0;flex:1;overflow:hidden}.tb-map{position:relative;flex:1;min-width:0;overflow:auto;background:#0b0f18}.tb-map .tb-mi{position:relative;display:inline-block;min-width:100%}.tb-map img.tb-mimg{display:block;width:100%;height:auto;user-select:none}'
+  +'.tb-win .tb-pin{position:absolute;transform:translate(-50%,-26px);display:flex;flex-direction:column;align-items:center;font-size:24px;line-height:1;cursor:pointer;filter:drop-shadow(0 2px 3px #000);background:none;border:0;padding:0;border-radius:0}.tb-pin span{display:block;font:700 11px Inter,sans-serif;color:#fff;background:rgba(10,12,20,.8);border-radius:6px;padding:1px 6px;margin-top:2px;white-space:nowrap}'
+  +'.tb-pin.sel span{background:#ffce4d;color:#1a1300}.tb-pin.hid{opacity:.5}.tb-pin.unv{filter:grayscale(.7) drop-shadow(0 2px 3px #000)}.tb-party{position:absolute;transform:translate(-50%,-50%);font-size:26px;filter:drop-shadow(0 0 6px #ffce4d);pointer-events:none;animation:tbBob 1.6s infinite}'
+  +'.tb-side{width:300px;flex-shrink:0;border-left:1px solid #2a3550;overflow-y:auto;padding:12px 14px}.tb-side h3{font:800 13px Inter,sans-serif;margin:12px 0 5px;color:#ffce4d;letter-spacing:.04em;text-transform:uppercase}.tb-side .tb-r{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center}'
+  +'.tb-trip{font-size:12.5px;border-bottom:1px solid #222b40;padding:5px 0}.tb-trip b{color:#ffce4d}.tb-mut{color:#8a9bbb;font-size:12px}'
+  +'.tb-dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;padding:12px;overflow-y:auto;align-content:start}.tb-dc{background:#1b2234;border:1px solid #2a3550;border-radius:10px;padding:6px;text-align:center;cursor:pointer}.tb-dc:hover{border-color:#ffce4d}'
+  +'.tb-dc img{width:100%;aspect-ratio:1;object-fit:contain}.tb-dc b{display:block;font:700 12.5px Inter,sans-serif}.tb-dc i{display:block;font-style:normal;font-size:10.5px;color:#8a9bbb}.tb-dc.own{border-color:#3ddf93}.tb-ty{display:inline-block;font:700 10px Inter,sans-serif;color:#fff;border-radius:6px;padding:1px 6px;margin:1px}'
+  +'.tb-pause{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:2147482600;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;background:#3a1418;color:#ffe9e9;border:2px solid #ff5d5d;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.55);font:600 13px Inter,system-ui,sans-serif;max-width:calc(100vw - 20px);animation:tbPulse 1.6s infinite}'
+  +'.tb-pause b{font-size:15px}.tb-pause span{opacity:.8}.tb-pause button{background:#ff5d5d;color:#fff;border:0;border-radius:8px;padding:6px 14px;font:700 13px Inter,sans-serif;cursor:pointer}@keyframes tbPulse{50%{box-shadow:0 0 0 5px rgba(255,93,93,.35),0 10px 30px rgba(0,0,0,.55)}}'
+  +'.tb-win .tb-pc{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px 14px;font-size:15px}.tb-pc small{font:500 12px Inter,sans-serif;color:#8a9bbb}'
+  +'.tb-quiz{background:radial-gradient(circle at 50% 40%,rgba(30,90,200,.92),rgba(5,8,20,.94) 72%)}.tb-qz{position:relative;width:min(520px,100%);text-align:center;color:#fff;font:600 14px Inter,system-ui,sans-serif}'
+  +'.tb-qz .tb-x{position:absolute;right:0;top:0;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:4px 9px;cursor:pointer;font:inherit}'
+  +'.tb-qt{font:900 30px Inter,system-ui,sans-serif;color:#ffce4d;-webkit-text-stroke:1.5px #2a5bd7;text-shadow:0 3px 0 #2a5bd7,0 0 18px rgba(0,0,0,.5);margin:6px 38px 4px}.tb-qt b{color:#fff}'
+  +'.tb-qs{width:min(300px,62vw);aspect-ratio:1;margin:0 auto;background:radial-gradient(circle,rgba(255,255,255,.4) 0,transparent 62%)}.tb-qs img{width:100%;height:100%;object-fit:contain;filter:brightness(0);user-select:none;pointer-events:none}.tb-qs.rev img{filter:none;animation:tbPop .5s}'
+  +'@keyframes tbPop{0%{transform:scale(.85)}60%{transform:scale(1.08)}100%{transform:scale(1)}}.tb-qg{display:flex;gap:6px;justify-content:center;margin:8px auto 4px;max-width:360px}'
+  +'.tb-qg input{flex:1;min-width:0;background:#0b0f18;color:#fff;border:2px solid #ffce4d;border-radius:10px;padding:8px 10px;font:600 15px Inter,sans-serif}.tb-qg button{background:#ffce4d;color:#1a1300;border:0;border-radius:10px;padding:8px 14px;font:800 14px Inter,sans-serif;cursor:pointer}'
+  +'.tb-qw{font:800 18px Inter,sans-serif;margin:8px 0}.tb-qz .tb-mut{color:#c7d3ea}.tb-qsc{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}.tb-qsc span{background:rgba(0,0,0,.35);border-radius:999px;padding:3px 10px;font-size:12.5px}'
+  +'.tb-pp{display:inline-flex;width:64px;height:64px;border-radius:50%;align-items:center;justify-content:center;background:var(--tbc,#3a4560) center/cover no-repeat;color:#fff;font:800 20px Inter,sans-serif;border:3px solid var(--tbc,#3a4560);margin:2px auto 4px;box-sizing:border-box}.tb-pp.big{display:flex;width:120px;height:120px;font-size:36px}.tb-dc.hid{opacity:.5}'
+  +'@media (max-width:760px){.tb-wb{flex-direction:column;overflow-y:auto}.tb-side{width:auto;border-left:0;border-top:1px solid #2a3550}.tb-map{overflow:visible}.tb-say{font-size:14.5px}.tb-say .tb-pic{width:56px;height:56px}}';
+  document.head.appendChild(s);}
+function tbEl(id,cls,parent){let d=document.getElementById(id);if(!d){tbCss();d=document.createElement('div');d.id=id;if(cls)d.className=cls;(parent||document.body).appendChild(d);}return d;}
+function tbNew(kind,n){if(n==null||n==='')return false;const was=TB.seen[kind];TB.seen[kind]=String(n);return TB.started&&was!==String(n);}   // what was there at the first update is old news
+// sounds (made in the browser, nothing downloaded; 🔇 in each app's settings turns them off via tbPrefs().fx)
+function tbCtx(){try{TB.ac=TB.ac||new (window.AudioContext||window.webkitAudioContext)();if(TB.ac.state==='suspended')TB.ac.resume();return TB.ac;}catch(e){return null;}}
+function tbTone(f0,f1,dur,type,vol,when){if(!tbPrefs().fx)return;const c=tbCtx();if(!c)return;try{const t=c.currentTime+(when||0),o=c.createOscillator(),g=c.createGain();o.type=type||'square';o.frequency.setValueAtTime(f0,t);
+  if(f1&&f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t+dur);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.05,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.03);}catch(e){}}   // a sound never stops anything else
+function tbBlip(){tbTone(560+Math.random()*90,0,.04,'square',.03);}
+function tbChime(){[660,880,1320].forEach((f,i)=>tbTone(f,f,.4,'sine',.08,i*.13));}
+function tbFanfare(){[523,659,784,1047,784,1047].forEach((f,i)=>tbTone(f,f,i>3?.5:.22,'triangle',.08,i*.16));}
+// 🔊 a short sound for each type when a move is used (made from tones and filtered noise, nothing downloaded)
+const TB_TC={Fire:'#FF6B35',Water:'#4A90D9',Ice:'#74CEC0',Grass:'#7AC74C',Electric:'#F7D02C',Bug:'#A6B91A',Fighting:'#C22E28',Psychic:'#F95587',Dark:'#705746',Ghost:'#735797',Poison:'#A33EA1',Rock:'#B6A136',Ground:'#E2BF65',Steel:'#B7B7CE',Dragon:'#6F35FC',Flying:'#A98FF3',Fairy:'#D685AD',Normal:'#A8A878'};
+function tbNoise(f0,f1,dur,vol,ft,q,when){if(!tbPrefs().fx)return;const c=tbCtx();if(!c)return;try{const t=c.currentTime+(when||0),n=Math.ceil(c.sampleRate*dur),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+  const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type=ft||'bandpass';f.Q.value=q||1;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.12,t+Math.min(.05,dur*.25));g.gain.exponentialRampToValueAtTime(.0001,t+dur);s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);s.stop(t+dur+.02);}catch(e){}}
+function tbTypeSound(ty){const T=tbTone,N=tbNoise;switch(ty){
+  case 'Fire':N(300,2400,.5,.16,'bandpass',.8);for(let i=0;i<5;i++)N(3500,1800,.05,.05,'highpass',1,.08+i*.07);break;   // a roar and crackles
+  case 'Water':N(2200,400,.55,.14,'lowpass',1);T(700,300,.18,'sine',.05,.3);break;
+  case 'Electric':for(let i=0;i<6;i++)T(900+Math.random()*900,200,.05,'square',.035,i*.05);break;
+  case 'Grass':[880,1175,1320].forEach((f,i)=>T(f,f*1.2,.12,'triangle',.05,i*.08));N(1500,3000,.3,.04,'highpass',1);break;
+  case 'Ice':[2093,2637,3136].forEach((f,i)=>T(f,f,.25,'sine',.04,i*.07));break;
+  case 'Psychic':T(440,880,.6,'sine',.05);T(446,892,.6,'sine',.04);break;
+  case 'Ghost':T(700,180,.8,'sine',.05);T(706,176,.8,'triangle',.03);break;
+  case 'Dark':T(110,70,.5,'sawtooth',.05);N(400,150,.4,.06,'lowpass',1);break;
+  case 'Rock':case 'Ground':N(300,60,.6,.2,'lowpass',.7);T(80,40,.4,'sine',.1);break;
+  case 'Flying':N(600,3000,.45,.12,'bandpass',.6);break;
+  case 'Poison':[0,1,2,3].forEach(i=>T(300+Math.random()*300,900,.07,'sine',.05,i*.09));break;
+  case 'Bug':T(220,240,.5,'sawtooth',.025);T(226,236,.5,'sawtooth',.025);break;
+  case 'Dragon':T(90,260,.7,'sawtooth',.06);N(200,800,.7,.07,'bandpass',.8);break;
+  case 'Steel':T(1500,1480,.6,'square',.02);T(2250,2240,.6,'sine',.035);break;
+  case 'Fairy':[1568,2093,2637,3136,4186].forEach((f,i)=>T(f,f,.18,'sine',.03,i*.06));break;
+  default:N(900,200,.12,.18,'lowpass',1);T(140,60,.18,'sine',.1);}}   // Normal, Fighting: a thump
+function tbToast(msg){const d=tbEl('tbToast');d.style.cssText='position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:2147483000;background:#141a28;color:#e7edf8;border:2px solid #ffce4d;border-radius:12px;padding:8px 14px;font:700 14px Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:90vw;text-align:center;transition:opacity .4s';
+  d.textContent=msg;d.style.opacity='1';clearTimeout(TB.toastT);TB.toastT=setTimeout(()=>{d.style.opacity='0';},3500);}
+// one call from each app's live-data handler: m = the campaign's meta (or the sheet's _say/_evolve/… keys gathered up)
+function tbUpdate(m){m=m||{};
+  const s=m.say;if(s&&tbNew('say',s.n))tbSayShow(s);
+  const ev=m.evolve;if(ev&&tbNew('evo',ev.n))tbEvoShow(ev);tbQuiz(m.quiz);tbPauseShow(m.pause);tbSecret(m.secret);TB.started=true;
+  const ms=JSON.stringify(m.music||null);if(ms!==TB.ms){TB.ms=ms;TB.music=m.music||null;tbJb();}   // redraw only what changed (the board calls this on every token move)
+  const ws=JSON.stringify(m.world||null);if(ws!==TB.ws){TB.ws=ws;TB.world=m.world||null;if(TB.wOpen)tbWorldRender();}
+  const ds=JSON.stringify(m.dex||null);if(ds!==TB.ds){TB.ds=ds;TB.dex=(m.dex&&typeof m.dex==='object')?m.dex:{};if(TB.dOpen)tbDexRender();}
+  const ps=JSON.stringify(m.people||null);if(ps!==TB.ps){TB.ps=ps;TB.people=(m.people&&typeof m.people==='object')?m.people:{};if(TB.pOpen)tbPeopleRender();}}
+// your turn: a chime, a buzz on phones, and the tab title blinks until you look. key = which turn (the sheet and the board
+// on one device both notice it, so whichever goes first tells the other through localStorage)
+function tbTurnAlert(key,label){
+  if(!key||TB.turnKey===key)return;TB.turnKey=key;let last='';try{last=localStorage.getItem('pokeDnD_turnPing')||'';}catch(e){}
+  const i=last.lastIndexOf('@');if(i>0&&last.slice(0,i)===key&&Date.now()-(+last.slice(i+1)||0)<10000)return;
+  try{localStorage.setItem('pokeDnD_turnPing',key+'@'+Date.now());}catch(e){}
+  tbToast('⚔ '+(label||'Your turn!'));tbChime();try{if(navigator.vibrate&&navigator.userActivation&&navigator.userActivation.hasBeenActive)navigator.vibrate([140,90,140]);}catch(e){}   // phones only buzz after a first tap on the page
+  if(document.hidden&&!TB.blink){const t0=document.title;let on=false;TB.blink=setInterval(()=>{on=!on;document.title=on?'⚔ Your turn!':t0;},900);
+    const stop=()=>{if(document.hidden)return;clearInterval(TB.blink);TB.blink=0;document.title=t0;document.removeEventListener('visibilitychange',stop);};document.addEventListener('visibilitychange',stop);}}
+// 💬 NPC lines
+function tbSayShow(s){if(!s||!s.text)return;TB.sayQ.push(s);if(!TB.sayOn)tbSayNext();}
+function tbPicSrc(img,art){if(art)return Promise.resolve(TB_ART+(+art)+'.png');if(!img)return Promise.resolve('');if(/^https?:|^data:|^blob:/.test(img))return Promise.resolve(img);
+  return TB.host&&TB.host.asset?Promise.resolve(TB.host.asset(img)).catch(()=>''):Promise.resolve('');}
+function tbSayNext(){
+  const d=tbEl('tbSay','tb-say'),s=TB.sayQ.shift();clearTimeout(TB.sayT);clearInterval(TB.sayI);
+  if(!s){d.style.display='none';TB.sayOn=false;return;}TB.sayOn=true;
+  const ini=String(s.who||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  d.style.setProperty('--tbc',s.color||'#2b3245');d.innerHTML='<div class="tb-pic">'+tbEsc(ini)+'</div><div style="flex:1;min-width:0"><div class="tb-nm">'+tbEsc(s.who||'???')+'</div><div class="tb-tx"></div></div>';
+  d.style.display='flex';if(+s.art)tbCry(+s.art);tbPicSrc(s.img,s.art).then(src=>{const p=d.querySelector('.tb-pic');if(src&&p){p.style.backgroundImage='url("'+src.replace(/"/g,'%22')+'")';p.textContent='';}});
+  const tx=d.querySelector('.tb-tx'),full=String(s.text).slice(0,600);let i=0;
+  const done=()=>{clearInterval(TB.sayI);tx.innerHTML=tbEsc(full)+'<span class="tb-more">▼</span>';TB.sayDone=true;TB.sayT=setTimeout(tbSayNext,5000+full.length*45);};
+  TB.sayDone=false;TB.sayI=setInterval(()=>{i+=2;tx.textContent=full.slice(0,i);if(i%4===0&&/\S/.test(full[i]||''))tbBlip();if(i>=full.length)done();},34);
+  d.onclick=()=>{if(TB.sayDone)tbSayNext();else done();};}
+// ✨ evolution scene
+function tbEvoShow(ev){
+  if(!ev||!ev.b)return;const d=tbEl('tbEvo','tb-evo');d.className='tb-evo';d.style.display='flex';
+  const A=ev.a?TB_ART+(+ev.a)+'.png':'',B=TB_ART+(+ev.b)+'.png';
+  d.innerHTML='<div class="tb-msg">What? '+tbEsc(ev.from||'?')+' is evolving!</div><div class="tb-stage"><div class="tb-glow"></div>'+(A?'<img class="ea" src="'+A+'" alt="">':'')+'<img class="eb" src="'+B+'" alt="" style="opacity:0"></div><small>'+tbEsc(ev.who?ev.who+'’s Pokémon · ':'')+'tap to close</small><div class="tb-flash"></div>';
+  const a=d.querySelector('.ea'),b=d.querySelector('.eb'),msg=d.querySelector('.tb-msg'),fl=d.querySelector('.tb-flash'),T=[];TB.evoT&&TB.evoT.forEach(clearTimeout);TB.evoT=T;
+  const at=(ms,f)=>T.push(setTimeout(f,ms));
+  at(1300,()=>{d.classList.add('go');if(a)a.classList.add('sil');b.classList.add('sil');});
+  let t=1900,gap=420,on=false,k=0;while(gap>55){const g=gap,show=on=!on,kk=k++;at(t,()=>{if(a)a.style.opacity=show?0:1;b.style.opacity=show?1:0;tbTone(300+kk*28,0,.07,'triangle',.04);});t+=g;gap*=.86;}
+  at(t,()=>{fl.style.opacity='1';tbTone(900,1800,.5,'sine',.06);});
+  at(t+500,()=>{if(a)a.remove();b.style.opacity=1;b.classList.remove('sil');d.classList.remove('go');fl.style.opacity='0';msg.innerHTML='Congratulations! '+tbEsc(ev.from||'?')+' evolved into <b style="color:#ffce4d">'+tbEsc(ev.to||'?')+'</b>!';tbFanfare();setTimeout(()=>tbCry(+ev.b),900);
+    const st=d.querySelector('.tb-stage');for(let i=0;i<26;i++){const p=document.createElement('i');p.className='tb-spk';const an=Math.random()*6.28,r=120+Math.random()*120;p.style.cssText='left:50%;top:50%;--dx:'+Math.cos(an)*r+'px;--dy:'+Math.sin(an)*r+'px;animation-delay:'+(Math.random()*.4)+'s';st.appendChild(p);}});
+  at(t+9000,()=>{d.style.display='none';});
+  d.onclick=()=>{T.forEach(clearTimeout);d.style.display='none';};}
+// 🎵 jukebox player (YouTube's own player, loaded only when music plays here)
+function tbYtParse(u){u=String(u||'').trim();if(!u)return null;let m=u.match(/[?&]list=([\w-]{10,})/);const l=m?m[1]:'';
+  m=u.match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/);const v=m?m[1]:(/^[\w-]{11}$/.test(u)?u:'');return (v||l)?{v,l}:null;}
+function tbYT(){if(TB.ytP)return TB.ytP;TB.ytP=new Promise((res,rej)=>{if(window.YT&&window.YT.Player)return res(window.YT);const prev=window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady=()=>{try{if(prev)prev();}catch(e){}res(window.YT);};const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=()=>{TB.ytP=null;rej(new Error('YouTube couldn’t load (no internet?)'));};document.head.appendChild(s);});return TB.ytP;}
+function tbJbPos(n){const el=n.on&&n.t?(Date.now()-n.t)/1000:0;return Math.max(0,(+n.at||0)+(el>4?el:0));}   // joined late: catch up (a few seconds of clock difference between computers is ignored)
+const TB_YTERR={2:'That link isn’t a valid video.',5:'This video can’t play in the browser player.',100:'That video was removed or is private.',101:'The video’s owner doesn’t allow it to play outside YouTube.',150:'The video’s owner doesn’t allow it to play outside YouTube.',153:'YouTube won’t play here: open the apps from the website (not a file on your computer).'};
+function tbJb(){
+  const n=TB.music&&TB.music.now,host=TB.host,here=!!(host&&host.listen&&host.listen()),P=tbPrefs(),el=tbEl('tbJb','tb-jb',host&&host.jbParent&&host.jbParent());   // the board keeps it inside the map area
+  const live=!!(n&&(n.v||n.l));if(!live&&!(host&&host.me&&host.me().dm&&TB.music)){el.style.display='none';if(TB.yt&&TB.yt.pauseVideo)try{TB.yt.pauseVideo();}catch(e){}return;}
+  el.style.display=live?'':'none';el.classList.toggle('min',!TB.jb.open);
+  const title=n&&n.title?n.title:(n&&n.l&&!n.v?'Playlist':'Music'),playing=!!(n&&n.on);
+  if(!el.dataset.built){el.dataset.built='1';el.innerHTML='<div class="tb-jbh"><span class="tb-eq"><i></i><i></i><i></i></span><span class="tb-jbt"></span><span class="tb-jbc" style="margin-left:auto;opacity:.7">▴</span></div>'
+    +'<div class="tb-jbb"><div class="tb-vid"><div id="tbYtBox"></div></div><div style="display:flex;gap:6px;align-items:center"><button data-jb="mute">🔊</button><input type="range" min="0" max="100" data-jb="vol"></div>'
+    +'<div class="tb-jbhere" style="margin-top:7px"></div><div class="tb-jbn"></div></div>';
+    el.addEventListener('click',e=>{const b=e.target.closest('[data-jb]');if(!b){if(e.target.closest('.tb-jbh')){TB.jb.open=!TB.jb.open;tbJb();}return;}const k=b.dataset.jb;
+      if(k==='mute'){tbSetPref('mute',!tbPrefs().mute);tbJbVol();tbJb();}else if(k==='here'){tbSetPref('here',!tbPrefs().here);TB.jb.k='';tbJb();}else if(k==='tap'){TB.jb.blocked=false;try{TB.yt.playVideo();}catch(e){}tbJb();}});
+    el.addEventListener('input',e=>{if(e.target.dataset.jb==='vol'){tbSetPref('vol',+e.target.value);tbJbVol();}});}
+  el.querySelector('.tb-jbt').textContent=(playing?'🎵 ':'⏸ ')+title;el.querySelector('.tb-eq').classList.toggle('off',!playing||!here||P.mute);
+  el.querySelector('.tb-jbc').textContent=TB.jb.open?'▾':'▴';el.querySelector('[data-jb="mute"]').textContent=P.mute?'🔇':'🔊';const vr=el.querySelector('[data-jb="vol"]');if(document.activeElement!==vr)vr.value=P.vol;
+  const hb=el.querySelector('.tb-jbhere');hb.innerHTML=host&&host.hereToggle?'<button data-jb="here">'+(P.here?'🔊 Playing here · stop':'🔈 Listen on this screen')+'</button>':'';
+  el.querySelector('.tb-jbn').textContent=TB.jb.err||(TB.jb.blocked&&here?'':(!here?'Not playing on this screen.':''));
+  if(TB.jb.blocked&&here&&playing&&!TB.jb.err){el.querySelector('.tb-jbn').innerHTML='<button data-jb="tap" style="background:#ffce4d;color:#1a1300">🔊 Tap to hear the music</button>';}
+  el.querySelector('.tb-vid').style.display=here?'':'none';
+  if(!here){if(TB.yt&&TB.yt.pauseVideo)try{TB.yt.pauseVideo();}catch(e){}TB.jb.k='';return;}
+  const key=n?[n.k,n.v,n.l,n.on].join('|'):'';if(key===TB.jb.k)return;TB.jb.k=key;TB.jb.err='';
+  tbYT().then(YT=>{
+    const go=()=>{const p=TB.yt;if(!p||!p.loadVideoById)return;tbJbVol();if(!n.on){try{p.pauseVideo();}catch(e){}return;}
+      const at=tbJbPos(n);if(n.v)p.loadVideoById({videoId:n.v,startSeconds:at});else p.loadPlaylist({list:n.l,listType:'playlist',index:0,startSeconds:at});
+      if(n.l)try{p.setLoop(true);}catch(e){}clearTimeout(TB.jb.chk);TB.jb.chk=setTimeout(()=>{try{const st=p.getPlayerState();if(st!==1&&st!==3&&n.on){TB.jb.blocked=true;tbJb();}}catch(e){}},3500);};
+    if(!TB.yt){TB.yt=new YT.Player('tbYtBox',{width:224,height:126,playerVars:{autoplay:1,playsinline:1,rel:0,modestbranding:1},
+      events:{onReady:()=>{TB.yt.ready=true;go();},onStateChange:e=>{if(e.data===1){TB.jb.blocked=false;const nm=TB.yt.getVideoData&&TB.yt.getVideoData().title;if(nm&&TB.host&&TB.host.me&&TB.host.me().dm&&TB.music&&TB.music.now&&!TB.music.now.title)TB.host.set('music/now/title',nm);tbJb();}
+        if(e.data===0){const m=TB.music&&TB.music.now;if(m&&m.loop&&m.v)try{TB.yt.seekTo(0);TB.yt.playVideo();}catch(er){}}},
+        onError:e=>{TB.jb.err=TB_YTERR[e.data]||'This video can’t play here.';tbJb();}}});}
+    else if(TB.yt.ready)go();
+  }).catch(e=>{TB.jb.err=e.message;TB.jb.k='';tbJb();});}
+function tbJbVol(){const p=TB.yt,P=tbPrefs();if(!p||!p.setVolume)return;try{p.setVolume(P.vol);if(P.mute)p.mute();else p.unMute();}catch(e){}}
+// 🗺 world map (everyone can read it and add party notes to a pin; the DM edits it)
+function tbWorldOpen(){TB.wOpen=true;tbWorldRender();}
+function tbWorldClose(){TB.wOpen=false;const d=document.getElementById('tbWorld');if(d)d.remove();}
+function tbWorldRender(){
+  const W=TB.world||{},dm=!!(TB.host&&TB.host.me().dm),pins=W.pins&&typeof W.pins==='object'?W.pins:{},d=tbEl('tbWorld','tb-ov');
+  if(d.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){TB.wLater=true;return;}
+  const ids=Object.keys(pins).filter(k=>pins[k]&&(dm||!pins[k].h)),sel=pins[TB.wsel]&&(dm||!pins[TB.wsel].h)?TB.wsel:'',p=sel?pins[sel]:null;
+  const trip=W.trip&&typeof W.trip==='object'?Object.values(W.trip).filter(Boolean).sort((a,b)=>(b.t||0)-(a.t||0)):[];
+  const sc=d.querySelector('.tb-map'),st=sc?[sc.scrollLeft,sc.scrollTop]:null;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>🗺 '+tbEsc(W.name||'World map')+'</h2><span class="tb-mut">Day '+(+W.day||1)+'</span>'
+    +(dm?'<label class="tb-b" style="cursor:pointer">⬆ Map picture<input type="file" accept="image/*" data-w="up" hidden></label><button data-w="day">＋1 day</button>':'')
+    +'<button class="tb-x" data-w="x">✕</button></div><div class="tb-wb"><div class="tb-map">'
+    +(W.img?'<div class="tb-mi"><img class="tb-mimg" alt="" data-w="map">'+ids.map(k=>{const q=pins[k];return '<button class="tb-pin'+(k===sel?' sel':'')+(q.h?' hid':'')+(q.vis?'':' unv')+'" data-pin="'+tbEsc(k)+'" style="left:'+(+q.x*100)+'%;top:'+(+q.y*100)+'%">'+tbEsc(q.ic||'📍')+'<span>'+tbEsc(q.n||'?')+'</span></button>';}).join('')
+      +(W.at?'<div class="tb-party" style="left:'+(+W.at.x*100)+'%;top:'+(+W.at.y*100)+'%" title="The party">🚩</div>':'')+'</div>'
+      :'<div style="padding:40px;text-align:center" class="tb-mut">'+(dm?'Upload a map picture of your world (⬆ Map picture), or paint one with 🎨 on the board and save it.':'The DM hasn’t added a world map yet.')+'</div>')
+    +'</div><div class="tb-side">'
+    +(dm&&W.img?'<div class="tb-mut">'+(TB.wPlace==='pin'?'<b style="color:#ffce4d">Click the map to drop a pin.</b>':TB.wPlace==='party'?'<b style="color:#ffce4d">Click the map where the party is.</b>':'Add places, then move the party marker as you travel.')+'</div><div class="tb-r"><button data-w="addpin">📍 Add a place</button><button data-w="party">🚩 Move the party</button></div>':'')
+    +(p?'<h3>'+tbEsc(p.ic||'📍')+' '+tbEsc(p.n||'?')+'</h3>'
+      +(dm?'<input data-wf="n" value="'+tbEsc(p.n||'')+'" placeholder="Name"><div class="tb-r"><select data-wf="ic" style="width:auto">'+['📍','🏘','🏰','⛰','🌲','🏞','🕳','⚓','🏛','⛩','⚔','💀','💎','❓'].map(e=>'<option'+(e===(p.ic||'📍')?' selected':'')+'>'+e+'</option>').join('')+'</select>'
+        +'<label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-wf="vis" style="width:auto"'+(p.vis?' checked':'')+'> visited</label><label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-wf="h" style="width:auto"'+(p.h?' checked':'')+'> hidden</label></div>'
+        +'<textarea data-wf="d" rows="3" placeholder="What the party knows about it" style="margin-top:6px">'+tbEsc(p.d||'')+'</textarea>':(p.d?'<div style="white-space:pre-wrap">'+tbEsc(p.d)+'</div>':'')+(p.vis?'':'<div class="tb-mut">Not visited yet.</div>'))
+      +'<h3>Party notes</h3><textarea data-wf="pn" rows="4" placeholder="Anyone in the party can write here">'+tbEsc(p.pn||'')+'</textarea>'
+      +(dm?'<div class="tb-r"><button data-w="delpin" style="color:#ff5d5d">Delete this place</button></div>':'')
+      :'<div class="tb-mut" style="margin-top:8px">'+(ids.length?'Click a place on the map to read about it.':'No places yet.')+'</div>')
+    +'<h3>Travel log</h3>'+(dm?'<div class="tb-r"><input data-w="tripin" placeholder="e.g. Crossed the Ashen Pass" style="flex:1"><button data-w="trip">Add</button></div>':'')
+    +(trip.length?trip.slice(0,40).map(t=>'<div class="tb-trip"><b>Day '+(+t.d||1)+'</b> · '+tbEsc(t.text||'')+'</div>').join(''):'<div class="tb-mut">Nothing yet.</div>')+'</div></div></div>';
+  const im=d.querySelector('img.tb-mimg');if(im&&W.img)tbPicSrc(W.img).then(src=>{if(src)im.src=src;});
+  const sc2=d.querySelector('.tb-map');if(sc2&&st){sc2.scrollLeft=st[0];sc2.scrollTop=st[1];}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{if(e.target===d){tbWorldClose();return;}const H=TB.host;const pin=e.target.closest('[data-pin]');if(pin){TB.wsel=pin.dataset.pin;TB.wPlace='';tbWorldRender();return;}
+      const b=e.target.closest('[data-w]'),k=b&&b.dataset.w;
+      if(k==='map'&&TB.wPlace){const r=b.getBoundingClientRect(),x=+((e.clientX-r.left)/r.width).toFixed(4),y=+((e.clientY-r.top)/r.height).toFixed(4);
+        if(TB.wPlace==='party')H.set('world/at',{x,y});else{const n=prompt('Name of this place?','');if(n){const id='p'+Date.now().toString(36);H.set('world/pins/'+id,{x,y,n:n.slice(0,60),ic:'📍'});TB.wsel=id;}}TB.wPlace='';tbWorldRender();return;}
+      if(k==='x')tbWorldClose();else if(k==='addpin'){TB.wPlace='pin';tbWorldRender();}else if(k==='party'){TB.wPlace='party';tbWorldRender();}
+      else if(k==='day'){const day=(+(TB.world||{}).day||1)+1;H.set('world/day',day);const t=prompt('Day '+day+'. Anything to add to the travel log? (optional)','');if(t)H.push('world/trip',{d:day,text:t.slice(0,200),t:Date.now()});}
+      else if(k==='trip'){const i=d.querySelector('[data-w="tripin"]'),t=(i&&i.value||'').trim();if(t){H.push('world/trip',{d:+(TB.world||{}).day||1,text:t.slice(0,200),t:Date.now()});i.value='';}}
+      else if(k==='delpin'&&TB.wsel&&confirm('Delete this place from the map?')){H.set('world/pins/'+TB.wsel,null);TB.wsel='';}});
+    d.addEventListener('change',e=>{const t=e.target,H=TB.host;
+      if(t.dataset.w==='up'&&t.files&&t.files[0]){const f=t.files[0];t.value='';tbToast('Uploading the map…');Promise.resolve(H.upload(f)).then(id=>{if(id){H.set('world/img',id);tbToast('✓ Map added');}}).catch(er=>tbToast('Upload failed: '+er.message));return;}
+      const f=t.dataset.wf;if(!f||!TB.wsel)return;const v=t.type==='checkbox'?(t.checked||null):String(t.value).slice(0,f==='n'?60:2000);H.set('world/pins/'+TB.wsel+'/'+f,v===''?null:v);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.wLater&&!d.contains(document.activeElement)){TB.wLater=false;tbWorldRender();}},0));}}
+// 📒 party Pokédex (boards add entries; anyone can read it and leave a party note)
+function tbDexOpen(){TB.dOpen=true;tbDexRender();}
+function tbDexClose(){TB.dOpen=false;const d=document.getElementById('tbDexW');if(d)d.remove();}
+function tbOwned(){const o={},H=TB.host;if(!H||!H.players)return o;const ps=H.players()||{};for(const pk in ps){const p=ps[pk];if(!p||typeof p!=='object')continue;
+  (Array.isArray(p.companions)?p.companions:Object.values(p.companions||{})).forEach(c=>{const nm=c&&(c.species||c.name),num=nm&&H.dexNum?H.dexNum(nm):0;if(num){(o[num]=o[num]||[]).push((c.name&&c.name!==c.species?c.name+' ('+(p.charName||pk)+')':(p.charName||pk)));o[num].sp=o[num].sp||nm;}});}return o;}
+function tbDexRender(){
+  const d=tbEl('tbDexW','tb-ov');if(d.contains(document.activeElement)&&/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&document.activeElement.dataset.dx!=='q'){TB.dLater=true;return;}
+  const own=tbOwned(),all={};for(const k in TB.dex){const e=TB.dex[k];if(e&&e.num)all[e.num]=e;}for(const num in own)if(!all[num])all[num]={num:+num,n:own[num].sp||'',own:1};
+  const q=TB.dq.toLowerCase(),list=Object.values(all).filter(e=>!q||String(e.n||'').toLowerCase().includes(q)).sort((a,b)=>a.num-b.num),e=TB.dsel&&all[TB.dsel];
+  const tc=t=>TB_TC[t]||'#A8A878';
+  const qi=d.querySelector('[data-dx="q"]'),hadQ=qi&&document.activeElement===qi,pos=qi?qi.selectionStart:0;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>📒 Party Pokédex</h2><span class="tb-mut">'+Object.values(all).filter(x=>x.n).length+' seen · '+Object.keys(own).length+' with the party</span><input data-dx="q" placeholder="Search…" value="'+tbEsc(TB.dq)+'" style="width:160px"><button class="tb-x" data-dx="x">✕</button></div>'
+    +'<div class="tb-wb"><div class="tb-dex" style="flex:1">'+(list.length?list.map(x=>'<div class="tb-dc'+(own[x.num]?' own':'')+'" data-dn="'+x.num+'"><img loading="lazy" src="'+TB_ART+x.num+'.png" alt=""><b>'+tbEsc(x.n||'#'+x.num)+'</b><i>#'+String(x.num).padStart(4,'0')+(own[x.num]?' · ✓ party':'')+'</i></div>').join('')
+      :'<div class="tb-mut" style="padding:30px">No Pokémon yet. When the party meets one on the live board, it’s added here.</div>')+'</div>'
+    +(e?'<div class="tb-side"><img src="'+TB_ART+e.num+'.png" alt="" style="width:100%;aspect-ratio:1;object-fit:contain"><h3 style="margin-top:4px">'+tbEsc(e.n||'#'+e.num)+' <span class="tb-mut">#'+e.num+'</span></h3>'
+      +'<div>'+(e.ty||[]).map(t=>'<span class="tb-ty" style="background:'+tc(t)+'">'+tbEsc(t)+'</span>').join('')+'</div>'
+      +'<div class="tb-r"><button data-dx="cry" title="Hear its cry">🔊 Cry</button></div>'
+      +(e.at||e.t?'<div class="tb-mut" style="margin-top:6px">First seen'+(e.at?' at <b>'+tbEsc(e.at)+'</b>':'')+(e.t?', '+new Date(e.t).toLocaleDateString([],{month:'short',day:'numeric'}):'')+(e.c>1?' · seen '+e.c+' times':'')+'</div>':'')
+      +(own[e.num]?'<div style="margin-top:6px">✓ With the party: '+tbEsc(own[e.num].join(', '))+'</div>':'')
+      +(e.n?'<h3>Party notes</h3><textarea data-dx="pn" rows="5" placeholder="Where it lives, what it’s weak to, what happened…">'+tbEsc(e.pn||'')+'</textarea>':'')+'</div>':'')+'</div></div>';
+  if(hadQ){const n=d.querySelector('[data-dx="q"]');n.focus();try{n.setSelectionRange(pos,pos);}catch(er){}}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',ev=>{if(ev.target===d||ev.target.closest('[data-dx="x"]')){tbDexClose();return;}if(ev.target.closest('[data-dx="cry"]')){if(TB.dsel)tbCry(+TB.dsel);return;}const c=ev.target.closest('[data-dn]');if(c){TB.dsel=c.dataset.dn;tbDexRender();}});
+    d.addEventListener('input',ev=>{if(ev.target.dataset.dx==='q'){TB.dq=ev.target.value;tbDexRender();}});
+    d.addEventListener('change',ev=>{if(ev.target.dataset.dx==='pn'&&TB.dsel&&TB.dex[TB.dsel])TB.host.set('dex/'+TB.dsel+'/pn',String(ev.target.value).slice(0,2000)||null);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.dLater&&!d.contains(document.activeElement)){TB.dLater=false;tbDexRender();}},0));}}
+// 🔊 Pokémon cries (Finn 2026-11-22): the real cry, from PokeAPI's free collection on GitHub (the same place as the artwork),
+// when a Pokémon arrives on the board, evolves, speaks, or is revealed in the quiz. n = a name or a Pokédex number.
+// Follows the sounds switch (tbPrefs().fx), and never two at once.
+const TB_CRY='https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/';
+function tbCry(n){if(!tbPrefs().fx)return;const num=+n>0?Math.floor(+n):(TB.host&&TB.host.dexNum?TB.host.dexNum(String(n||'')):0);if(!num||num>1025)return;
+  const now=Date.now();if(now-(TB.cryAt||0)<600)return;TB.cryAt=now;
+  try{const a=new Audio(TB_CRY+num+'.ogg');a.volume=.45;const p=a.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}}
+function tbPicC(img,art){const k=(img||'')+'|'+(+art||0);TB.pics=TB.pics||{};return TB.pics[k]||(TB.pics[k]=tbPicSrc(img,art));}   // each picture fetched once per screen
+// ✋ the pause card (a table safety tool): a player taps "can we move on?" or "I need a pause" (tbPauseAsk); it goes to
+// meta/pause with no name on it, and only the DM's screens show it (tbPauseShow) until the DM taps OK, which clears them.
+function tbPauseAsk(){const d=tbEl('tbPauseW','tb-ov');d.innerHTML='<div class="tb-win" style="max-width:440px"><div class="tb-wh"><h2>✋ Pause card</h2><button class="tb-x" data-pz="x">✕</button></div><div style="padding:14px">'
+  +'<div class="tb-mut" style="margin-bottom:12px">Something at the table not sitting right, or a scene going on too long? Tap one. The DM sees it <b>without your name</b>, and nobody else sees it.</div>'
+  +'<div style="display:grid;gap:8px"><button class="tb-pc" data-pz="skip">⏩ <b>Can we move on?</b><small>Wrap this scene up, please</small></button><button class="tb-pc" data-pz="pause">✋ <b>I need a pause</b><small>Stop for a moment</small></button></div>'
+  +'<div class="tb-mut tb-pzn" style="margin-top:10px"></div></div></div>';
+  d.onclick=e=>{const b=e.target.closest('[data-pz]');if(e.target===d||(b&&b.dataset.pz==='x')){d.remove();return;}if(!b||!TB.host)return;
+    TB.host.push('pause',{k:b.dataset.pz,t:Date.now()});d.querySelector('.tb-pzn').textContent='✓ Sent. The DM sees it without your name.';setTimeout(()=>d.remove(),1800);};}
+function tbPauseShow(p){const H=TB.host;if(!H||!H.me||!H.me().dm)return;const L=Object.values(p&&typeof p==='object'?p:{}).filter(v=>v&&v.k),el=document.getElementById('tbPause');
+  if(!L.length){if(el)el.remove();return;}const skip=L.filter(v=>v.k==='skip').length,stop=L.length-skip,sig=L.length+'|'+stop;if(el&&el.dataset.sig===sig)return;
+  const d=tbEl('tbPause','tb-pause');d.dataset.sig=sig;if(TB.started)tbChime();
+  d.innerHTML='<b>'+(stop?'✋ A player asked for a pause':'⏩ A player asked to move on')+'</b><span>'+(stop&&skip?'(and '+skip+' to move on) ':L.length>1?'('+L.length+' asks) ':'')+'No name on it, and only you see this.</span><button data-pz="ok">OK</button>';
+  d.onclick=e=>{if(e.target.closest('[data-pz="ok"]')){H.set('pause',null);d.remove();}};}
+// 🤫 secret rolls: meta/secret/<push id> = {pk, n, what, total, txt, nat, t}, sent from a player's sheet. Only the DM's
+// screens show them: a pop-up as each one comes in (the dashboard also lists them in its roll feed).
+function tbSecret(sc){const H=TB.host;if(!H||!H.me||!H.me().dm)return;const s=JSON.stringify(sc||null);if(s===TB.secS)return;TB.secS=s;
+  const L=Object.entries(sc&&typeof sc==='object'?sc:{}).filter(([,v])=>v&&v.n),ids=new Set(L.map(([k])=>k));
+  if(TB.secSeen)L.forEach(([k,v])=>{if(!TB.secSeen.has(k))tbToast('🤫 '+v.n+' · '+(v.what||'Secret roll')+': '+v.total+(v.txt?' ('+v.txt+')':''));});TB.secSeen=ids;}
+// ❓ Who's that Pokémon? The DM's dashboard runs it: meta/quiz = {id, num, h:[answer hashes], on, rev, n (the name, once
+// revealed), win:{pk,n}, score:{pk:{n,p}}, gen}. Players guess on their sheet or board: meta/qbuzz/<push id> = {q, pk, n, ok, g, t}.
+// Push ids sort by arrival, so the first right answer wins. Answers are checked as hashes, so the name isn't in the data until
+// the reveal (the picture's number still is: it's a party game, on the honour system like the DM's notes).
+const tbQNorm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+function tbHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);}
+function tbQuiz(q){q=q&&typeof q==='object'&&q.on&&q.num?q:null;const old=TB.quiz,H=TB.host;TB.quiz=q;
+  if(!q){const d=document.getElementById('tbQuiz');if(d)d.remove();TB.qShut='';return;}
+  const fresh=!old||old.id!==q.id,shown=!(old&&old.id===q.id&&old.rev)&&q.rev;
+  if(fresh){TB.qLeft=3;TB.qMine='';}
+  if(H&&H.noQuiz)return;   // the dashboard has its own panel
+  if(TB.started&&fresh&&!q.rev)[392,523,659,784].forEach((f,i)=>tbTone(f,f,.14,'triangle',.06,i*.09));
+  if(TB.started&&shown)tbCry(q.num);
+  if(TB.qShut===q.id+'|'+(q.rev?1:0))return;tbQuizRender();}
+function tbQuizRender(){const q=TB.quiz;if(!q)return;const H=TB.host,me=H&&H.me?H.me():{},can=!me.dm&&!!me.pk&&!q.rev,d=tbEl('tbQuiz','tb-ov tb-quiz');
+  const sc=Object.values(q.score&&typeof q.score==='object'?q.score:{}).filter(s=>s&&s.n).sort((a,b)=>(b.p||0)-(a.p||0)).slice(0,6);
+  const key=[q.id,q.rev?1:0,q.n,q.win&&q.win.n,JSON.stringify(sc),TB.qMine,TB.qLeft].join('|');if(d.dataset.k===key)return;d.dataset.k=key;
+  const inp=d.querySelector('input'),keep=inp?inp.value:'',foc=!!inp&&document.activeElement===inp;
+  d.innerHTML='<div class="tb-qz"><button class="tb-x" data-q="x" title="Close (it comes back with the next Pokémon)">✕</button><div class="tb-qt">'+(q.rev?'It’s <b>'+tbEsc(q.n||'?')+'</b>!':'Who’s that Pokémon?')+'</div>'
+    +'<div class="tb-qs'+(q.rev?' rev':'')+'"><img src="'+TB_ART+(+q.num)+'.png" alt="" draggable="false"></div>'
+    +(q.rev?'<div class="tb-qw">'+(q.win&&q.win.n?'🏆 '+tbEsc(q.win.n)+' got it first!':'Nobody got it this time.')+'</div>'
+      :can?(TB.qMine==='ok'?'<div class="tb-qw">✓ You got it! Waiting for the reveal…</div>'
+        :TB.qLeft>0?'<div class="tb-qg"><input data-q="g" maxlength="40" placeholder="Type your guess…" autocomplete="off" spellcheck="false"><button data-q="go">Guess</button></div><div class="tb-mut">'+(TB.qMine==='no'?'✗ Not that one. ':'')+TB.qLeft+' guess'+(TB.qLeft===1?'':'es')+' left</div>'
+        :'<div class="tb-qw">Out of guesses. Wait for the reveal!</div>')
+      :'<div class="tb-mut">'+(me.dm?'Players guess on their sheet or board.':'Players guess on their sheets.')+'</div>')
+    +(sc.length?'<div class="tb-qsc">'+sc.map((s,i)=>'<span>'+(i===0&&s.p?'👑 ':'')+tbEsc(s.n)+' <b>'+(s.p||0)+'</b></span>').join('')+'</div>':'')+'</div>';
+  const ni=d.querySelector('input');if(ni){ni.value=keep;if(foc)ni.focus();}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(!b)return;if(b.dataset.q==='x'){const z=TB.quiz;TB.qShut=z?z.id+'|'+(z.rev?1:0):'';d.remove();}else if(b.dataset.q==='go')tbQuizGuess();});
+    d.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.q==='g')tbQuizGuess();});}}
+function tbQuizGuess(){const q=TB.quiz,H=TB.host,i=document.querySelector('#tbQuiz input');if(!q||q.rev||!i||!H||TB.qLeft<=0||TB.qMine==='ok')return;const g=i.value.trim();if(!g)return;
+  const ok=(Array.isArray(q.h)?q.h:Object.values(q.h||{})).includes(tbHash(tbQNorm(g))),me=H.me();i.value='';
+  H.push('qbuzz',{q:q.id,pk:me.pk,n:me.name||me.pk,ok,g:g.slice(0,40),t:Date.now()});
+  if(ok){TB.qMine='ok';tbFanfare();}else{TB.qLeft--;TB.qMine='no';tbTone(220,150,.25,'square',.04);}tbQuizRender();}
+// 📇 people the party has met: meta/people/<id> = {n, img, art, color, where, att, d (what the party knows: the DM writes it),
+// pn (party notes: anyone), t, h (hidden from players)}. The DM's 💬 Speak (dashboard, or a board token) adds whoever talks,
+// the first time (tbMeet; a plain Pokémon species is left to the Pokédex).
+const TB_ATT={unknown:['❔','Not sure yet','#8a9bbb'],friendly:['😊','Friendly','#3ddf93'],neutral:['😐','Neutral','#a9b4c6'],wary:['🤨','Wary','#ffce4d'],hostile:['😠','Hostile','#ff5d5d']};
+const tbPid=n=>String(n||'').toLowerCase().replace(/\s+\d+$/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'x';
+function tbMeet(s,where){const H=TB.host;if(!H||!s||!s.who||s.who==='???')return;const who=String(s.who).replace(/\s+\d+$/,'').trim(),id=tbPid(who);if(!who||TB.people[id]||(H.dexNum&&H.dexNum(who)))return;
+  const v={n:who.slice(0,60),img:s.img||'',art:+s.art||0,color:s.color||'',where:String(where||'').slice(0,80),att:'unknown',t:Date.now()};TB.people[id]=v;H.set('people/'+id,v);}
+function tbPeopleOpen(){TB.pOpen=true;tbPeopleRender();}
+function tbPeopleClose(){TB.pOpen=false;const d=document.getElementById('tbPeopleW');if(d)d.remove();}
+function tbPeopleRender(){
+  const d=tbEl('tbPeopleW','tb-ov'),H=TB.host,dm=!!(H&&H.me&&H.me().dm);if(d.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){TB.pLater=true;return;}
+  const P=TB.people||{},ids=Object.keys(P).filter(k=>P[k]&&P[k].n&&(dm||!P[k].h)).sort((a,b)=>(P[b].t||0)-(P[a].t||0)),sel=ids.includes(TB.psel)?TB.psel:'',p=sel?P[sel]:null;
+  const pic=(q,cls)=>'<span class="'+cls+'" data-pimg="'+tbEsc(q.img||'')+'" data-part="'+(+q.art||0)+'" style="--tbc:'+tbEsc(/^#[0-9a-f]{3,8}$/i.test(q.color||'')?q.color:'#3a4560')+'">'+tbEsc(String(q.n).trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase())+'</span>';
+  const att=q=>TB_ATT[q.att]||TB_ATT.unknown;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>📇 People we’ve met</h2><span class="tb-mut">'+ids.length+'</span>'+(dm?'<button data-pp="add">＋ Add someone</button>':'')+'<button class="tb-x" data-pp="x">✕</button></div><div class="tb-wb">'
+    +'<div class="tb-dex" style="flex:1">'+(ids.length?ids.map(k=>{const q=P[k],a=att(q);return '<div class="tb-dc'+(k===sel?' own':'')+(q.h?' hid':'')+'" data-pid="'+tbEsc(k)+'">'+pic(q,'tb-pp')+'<b>'+tbEsc(q.n)+'</b><i style="color:'+a[2]+'">'+a[0]+' '+a[1]+'</i>'+(q.where?'<i>'+tbEsc(q.where)+'</i>':'')+'</div>';}).join('')
+      :'<div class="tb-mut" style="padding:30px">Nobody yet. When the DM speaks as someone with 💬, they’re added here.</div>')+'</div>'
+    +(p?'<div class="tb-side">'+pic(p,'tb-pp big')+'<h3 style="margin-top:8px">'+tbEsc(p.n)+'</h3>'
+      +(dm?'<input data-pf="n" value="'+tbEsc(p.n)+'" placeholder="Name"><div class="tb-r"><select data-pf="att">'+Object.entries(TB_ATT).map(([k,a])=>'<option value="'+k+'"'+((p.att||'unknown')===k?' selected':'')+'>'+a[0]+' '+a[1]+'</option>').join('')+'</select></div>'
+        +'<div class="tb-r"><input data-pf="where" value="'+tbEsc(p.where||'')+'" placeholder="Where the party met them"></div><textarea data-pf="d" rows="3" placeholder="What the party knows about them" style="margin-top:6px">'+tbEsc(p.d||'')+'</textarea>'
+        +'<div class="tb-r"><label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-pf="h" style="width:auto"'+(p.h?' checked':'')+'> hidden from players</label><button data-pp="del" style="color:#ff5d5d">Delete</button></div>'
+       :'<div style="color:'+att(p)[2]+'">'+att(p)[0]+' '+att(p)[1]+'</div>'+(p.where||p.t?'<div class="tb-mut">Met'+(p.where?' at '+tbEsc(p.where):'')+(p.t?', '+new Date(p.t).toLocaleDateString([],{month:'short',day:'numeric'}):'')+'</div>':'')+(p.d?'<div style="white-space:pre-wrap;margin-top:6px">'+tbEsc(p.d)+'</div>':''))
+      +'<h3>Party notes</h3><textarea data-pf="pn" rows="5" placeholder="What they want, what they told you, whether you trust them…">'+tbEsc(p.pn||'')+'</textarea></div>':'')+'</div></div>';
+  d.querySelectorAll('[data-pimg]').forEach(el=>{const img=el.dataset.pimg,art=+el.dataset.part;if(!img&&!art)return;tbPicC(img,art).then(src=>{if(src){el.style.backgroundImage='url("'+src.replace(/"/g,'%22')+'")';el.textContent='';}});});
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{if(e.target===d||e.target.closest('[data-pp="x"]')){tbPeopleClose();return;}const c=e.target.closest('[data-pid]');if(c){TB.psel=c.dataset.pid;tbPeopleRender();return;}
+      const b=e.target.closest('[data-pp]'),k=b&&b.dataset.pp,H2=TB.host;
+      if(k==='add'){const n=prompt('Who did the party meet?','');if(n&&n.trim()){const id=tbPid(n);TB.psel=id;const v={n:n.trim().slice(0,60),att:'unknown',t:Date.now()};TB.people[id]=v;H2.set('people/'+id,v);tbPeopleRender();}}
+      else if(k==='del'&&TB.psel&&confirm('Delete '+((TB.people[TB.psel]||{}).n||'them')+' from the list?')){H2.set('people/'+TB.psel,null);TB.psel='';}});
+    d.addEventListener('change',e=>{const t=e.target,f=t.dataset.pf;if(!f||!TB.psel)return;const v=t.type==='checkbox'?(t.checked||null):String(t.value).slice(0,f==='n'?60:f==='where'?80:2000);TB.host.set('people/'+TB.psel+'/'+f,v===''?null:v);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.pLater&&!d.contains(document.activeElement)){TB.pLater=false;tbPeopleRender();}},0));}}
+// ── 🎭 Table extras on the dashboard (the shared block is just above): the DM's controls for them ──
+const playersOf=d=>{const o={};for(const k in d||{})if(k[0]!=='_'&&d[k]&&typeof d[k]==='object')o[k]=d[k];return o;};
+TB.host={asset:aid=>Sync.asset(campaignId,aid),set:(p,v)=>Sync.setMeta(campaignId,p,v).catch(e=>npcFlash('Couldn’t save: '+e.message)),push:(p,v)=>Sync.pushMeta(campaignId,p,v).catch(e=>npcFlash('Couldn’t save: '+e.message)),
+  me:()=>({pk:'DM',name:dmName||'DM',dm:true}),dexNum:n=>{const e=pokeFind(n);return e?e.num:0;},listen:()=>tbPrefs().here,hereToggle:true,
+  upload:async f=>Sync.putAsset(campaignId,await hoImgData(f),f.name,'map'),players:()=>playersOf(lastData),noQuiz:true};   // noQuiz: the ❓ panel instead of the pop-up
+const tbId=p=>(p||'')+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const slugN=s=>String(s||'').toLowerCase().replace(/\s+\d+$/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'x';   // same as the board's look keys (npc_<slug>)
+const needFb=el=>{if(Sync.fb()&&campaignId)return true;if(el)el.innerHTML='<div class="init-empty">This needs the live (Firebase) server and a connected campaign.</div>';return false;};
+// 📖 the journal: what happened at the table, kept with the DM's data (so it follows the DM), for the session recap
+let journal=[],jbAuto=false,jbPrev,wildTables=[],shops=[],wildSel=0,shopSel=0;
+function jot(k,t){if(!t)return;journal.push({t:Date.now(),k,x:String(t).slice(0,240)});if(journal.length>400)journal=journal.slice(-400);dm_save();if(document.getElementById('rcPanel')?.style.display!=='none')renderRecap();}
+const JW={init:false,log:new Set(),lv:{},dex:new Set(),trip:new Set(),evo:'',down:null,wh:null};
+const logSig=e=>(e.t||'')+'|'+(e.who||'')+'|'+String(e.text||'').slice(0,40);
+function watchJournal(d){
+  const log=Array.isArray(d._log)?d._log:[],ps=playersOf(d),dex=Object.keys(d._dex||{}),W=d._world||{},trip=Object.keys(W.trip||{}),ev=d._evolve||{};
+  if(!JW.init){JW.init=true;log.forEach(e=>JW.log.add(logSig(e)));for(const k in ps)JW.lv[k]=parseInt(ps[k].level)||1;dex.forEach(k=>JW.dex.add(k));trip.forEach(k=>JW.trip.add(k));JW.evo=ev.n||'';return;}
+  log.forEach(e=>{const s=logSig(e);if(JW.log.has(s))return;JW.log.add(s);const t=String(e.text||'').replace(/<[^>]*>/g,''),what=t.replace(/^🎲\s*/,'').split(' — ')[0];
+    if(/\bd20 20\b/.test(t))jot('crit',(e.who||'?')+' rolled a natural 20 ('+what+')');else if(/\bd20 1\b/.test(t))jot('fumble',(e.who||'?')+' rolled a natural 1 ('+what+')');
+    if(/^🛒/.test(t))jot('shop',t.replace(/^🛒\s*/,''));});
+  for(const k in ps){const L=parseInt(ps[k].level)||1;if(JW.lv[k]!=null&&L>JW.lv[k])jot('level',(ps[k].charName||k)+' reached level '+L);JW.lv[k]=L;}
+  dex.forEach(k=>{if(JW.dex.has(k))return;JW.dex.add(k);const e=d._dex[k]||{};jot('dex','The party met '+(e.n||'#'+k)+(e.at?' at '+e.at:''));});
+  trip.forEach(k=>{if(JW.trip.has(k))return;JW.trip.add(k);const r=W.trip[k]||{};if(r.text)jot('trip','Day '+(r.d||1)+': '+r.text);});
+  if(ev.n&&ev.n!==JW.evo){JW.evo=ev.n;jot('evo',(ev.who?ev.who+'’s ':'')+ev.from+' evolved into '+ev.to);}}
+function watchDowns(list){const now=new Set(list.filter(r=>r.kind==='npc'&&r.hpMax&&r.hp<=0).map(r=>r.name));if(JW.down)now.forEach(n=>{if(!JW.down.has(n))jot('ko',n+' was defeated');});JW.down=now;}
+// 💬 speak as an NPC: meta/say (portrait = its board token's picture, else the Pokémon's art)
+function spSay(){if(!needFb())return;const w=document.getElementById('spWho'),t=document.getElementById('spText'),who=(w.value||'').trim()||'???',text=(t.value||'').trim();if(!text){t.focus();return;}
+  const lk=((lastData._board||{}).looks||{})['npc_'+slugN(who)]||{},e=pokeFind(who.replace(/\s+\d+$/,'')),row=initiative.find(r=>r.name===who),ty=(row&&row.types&&row.types[0])||(e&&e.types[0]);
+  const s={n:tbId('s'),who,text:text.slice(0,400),img:lk.img||'',art:lk.img?0:(e?e.num:0),color:TYPE_COLORS[ty]||'#2b3245',t:Date.now()},B=lastData._board||{};
+  Sync.setMeta(campaignId,'say',s).catch(er=>npcFlash('Couldn’t send: '+er.message));tbMeet(s,((B.scenes||{})[B.active]||{}).name||'');   // 📇 the first time they speak
+  jot('say','“'+text+'” — '+who);t.value='';t.focus();renderSpeak();}
+function renderSpeak(){const l=document.getElementById('spWhoL');if(l){const tk=((lastData._board||{}).tokens||{})[(lastData._board||{}).active]||{};
+    const names=[...new Set(initiative.filter(r=>r.type==='npc').map(r=>r.name).concat(Object.values(tk).filter(t=>t&&t.kind==='npc').map(t=>t.name)))].filter(Boolean);l.innerHTML=names.map(n=>'<option value="'+x(n)+'">').join('');}
+  const el=document.getElementById('spList');if(el){const said=journal.filter(j=>j.k==='say').slice(-6).reverse();el.innerHTML=said.length?'<div class="scene-sec">Said recently</div>'+said.map(j=>'<div class="dice-log-entry">'+x(j.x)+'</div>').join(''):'';}}
+// ❓ Who's that Pokémon? (meta/quiz + meta/qbuzz; what the screens show is in the shared block). ▶ picks a Pokémon from the chosen
+// generations; the first right guess wins the round and a point (quizWatch reveals it), 👁 reveals with no winner, ■ ends it.
+const QZ_GENS=[[151,'Gen 1 (Kanto)'],[251,'Gens 1–2'],[386,'Gens 1–3'],[493,'Gens 1–4'],[649,'Gens 1–5'],[1025,'All 1,025']];
+const QZ={gen:151,used:[],judged:''};
+function qzPool(max){const o={};Object.values(pokeIdx()).forEach(e=>{if(e.num>=1&&e.num<=max&&!o[e.num])o[e.num]=e;});return o;}   // the first entry per number is the base form
+function qzName(num){const e=qzPool(1025)[num];return e?e.n:'?';}
+function qzAnswers(n){const a=[tbQNorm(n)];if(/-[FM]$/.test(n))a.push(tbQNorm(n.slice(0,-2)));return [...new Set(a)].map(tbHash);}   // Nidoran-F: "nidoran" counts too
+function qzNext(){if(!needFb())return;const pool=Object.values(qzPool(QZ.gen)),q=TB.quiz;let e=null;for(let k=0;k<30;k++){e=pool[Math.floor(Math.random()*pool.length)];if(!QZ.used.includes(e.num))break;}
+  QZ.used=QZ.used.concat(e.num).slice(-80);Sync.delMeta(campaignId,'qbuzz').catch(()=>{});
+  Sync.setMeta(campaignId,'quiz',{id:tbId('q'),num:e.num,h:qzAnswers(e.n),on:true,rev:false,gen:QZ.gen,score:(q&&q.score)||null,t:Date.now()}).catch(er=>npcFlash('Couldn’t start it: '+er.message));}
+function qzReveal(win){const q=TB.quiz;if(!q||q.rev)return;const sc=Object.assign({},q.score||{});if(win){const c=sc[win.pk]||{};sc[win.pk]={n:win.n,p:(+c.p||0)+1};}
+  const nm=qzName(q.num);Sync.setMeta(campaignId,'quiz',Object.assign({},q,{rev:true,n:nm,win:win||null,score:Object.keys(sc).length?sc:null})).catch(()=>{});
+  if(win)jot('quiz',win.n+' was first to name '+nm+' in Who’s that Pokémon?');}
+function qzEnd(){Sync.delMeta(campaignId,'quiz').catch(()=>{});Sync.delMeta(campaignId,'qbuzz').catch(()=>{});QZ.used=[];}
+function quizWatch(d){const q=d._quiz;if(!q||!q.on||q.rev||QZ.judged===q.id)return;
+  const w=Object.entries(d._qbuzz||{}).filter(([,v])=>v&&v.q===q.id&&v.ok).sort((a,b)=>a[0]<b[0]?-1:1)[0];if(w){QZ.judged=q.id;qzReveal({pk:w[1].pk,n:w[1].n});}}
+function renderQuiz(){const el=document.getElementById('qzBox');if(!el||!needFb(el))return;const q=TB.quiz,B=q?Object.entries(lastData._qbuzz||{}).filter(([,v])=>v&&v.q===q.id).sort((a,b)=>a[0]<b[0]?-1:1).map(([,v])=>v):[];
+  const sc=Object.values((q&&q.score)||{}).filter(t=>t&&t.n).sort((a,b)=>(b.p||0)-(a.p||0));
+  el.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select class="manage-inp" style="width:auto" onchange="QZ.gen=+this.value">'+QZ_GENS.map(([v,n])=>'<option value="'+v+'"'+(QZ.gen===v?' selected':'')+'>'+n+'</option>').join('')+'</select>'
+    +'<button class="dice-roll-btn" onclick="qzNext()">'+(q?'▶ Next Pokémon':'▶ Start the quiz')+'</button>'+(q&&!q.rev?'<button class="tool-btn" onclick="qzReveal(null)">👁 Reveal</button>':'')+(q?'<button class="tool-btn" onclick="qzEnd()">■ End</button>':'')+'</div>'
+    +(q?'<div class="qz-now"><img src="'+TB_ART+q.num+'.png" alt=""'+(q.rev?'':' style="filter:brightness(0)"')+'><div><b>'+x(q.rev?q.n:qzName(q.num))+'</b> <span style="color:var(--tx3)">#'+q.num+(q.rev?' · revealed':' · players see its shadow')+'</span>'
+      +(q.rev?'<div>'+(q.win?'🏆 '+x(q.win.n)+' got it first':'Nobody got it')+'</div>':'')
+      +'<div style="font-size:12px;color:var(--tx2);margin-top:4px">'+(B.length?B.map(v=>x(v.n)+(v.ok?' ✓':' ✗ <i>'+x(v.g||'')+'</i>')).join(' · '):'No guesses yet.')+'</div></div></div>'
+      +(sc.length?'<div style="font-size:12px;margin-top:6px">Score: '+sc.map(t=>x(t.n)+' <b>'+(t.p||0)+'</b>').join(' · ')+'</div>':'')
+      :'<div style="font-size:11.5px;color:var(--tx2);margin-top:6px">Every player’s sheet and board shows a Pokémon’s shadow, and the first to type its name wins the round (3 guesses each). Good as a warm-up or a break. The score carries on until you press ■ End.</div>');}
+// 🎵 jukebox: meta/music = {now, list}. ▶ on a track plays it on every screen that listens (players' boards; sheets that turn it on)
+const JB_TAGS=[['music','🎵 Music'],['battle','⚔ Battle'],['town','🏘 Town'],['wild','🌲 Wild'],['calm','🌙 Calm'],['tense','😱 Tense'],['boss','👑 Boss']];
+async function jbAdd(){const st=document.getElementById('jbMsg'),u=(document.getElementById('jbUrl').value||'').trim(),y=tbYtParse(u);if(!needFb(null)){st.textContent='This needs the live (Firebase) server.';return;}
+  if(!y){st.textContent='That doesn’t look like a YouTube link (youtube.com/watch?v=…, youtu.be/…, or a playlist link).';return;}
+  let title=(document.getElementById('jbTitle').value||'').trim();
+  if(!title){try{const r=await fetch('https://www.youtube.com/oembed?format=json&url='+encodeURIComponent(u));if(r.ok)title=((await r.json()).title||'').slice(0,80);}catch(e){}}   // the video's own name, when YouTube shares it
+  const id=tbId('m');await Sync.setMeta(campaignId,'music/list/'+id,{u:u.slice(0,300),v:y.v||'',l:y.l||'',title:title||(y.v?'YouTube video':'YouTube playlist'),tag:document.getElementById('jbTag').value,t:Date.now()}).catch(()=>{});
+  document.getElementById('jbUrl').value='';document.getElementById('jbTitle').value='';st.textContent='✓ Added. Press ▶ to play it for everyone.';}
+const jbNow=()=>((lastData._music||{}).now)||null;
+function jbSetNow(v){lastData._music=Object.assign({},lastData._music,{now:v});Sync.setMeta(campaignId,'music/now',v).catch(()=>{});renderJb();}
+function jbPlay(id){const it=((lastData._music||{}).list||{})[id];if(!it)return;jbSetNow({k:tbId('k'),id,v:it.v||'',l:it.l||'',at:0,t:Date.now(),on:true,loop:true,title:it.title||''});}
+function jbPause(){const n=jbNow();if(n)jbSetNow(Object.assign({},n,{k:tbId('k'),at:Math.round(tbJbPos(n)),t:Date.now(),on:false}));}
+function jbResume(){const n=jbNow();if(n)jbSetNow(Object.assign({},n,{k:tbId('k'),t:Date.now(),on:true}));}
+function jbLoop(){const n=jbNow();if(n)jbSetNow(Object.assign({},n,{loop:!n.loop}));}
+function jbStop(){jbSetNow(null);}
+function jbDel(id){if(!confirm('Remove this track from the jukebox?'))return;Sync.setMeta(campaignId,'music/list/'+id,null).catch(()=>{});}
+function jbFight(on){if(!jbAuto||!Sync.fb())return;const L=(lastData._music||{}).list||{},b=Object.keys(L).find(k=>L[k]&&L[k].tag==='battle');   // ⚔ battle music while a fight runs
+  if(on){if(!b)return;jbPrev=jbNow();jbPlay(b);}else if(jbPrev!==undefined){const p=jbPrev;jbPrev=undefined;jbSetNow(p?Object.assign({},p,{k:tbId('k'),t:Date.now()}):null);}}
+function renderJb(){const el=document.getElementById('jbList'),nw=document.getElementById('jbNow');if(!el||!nw)return;const tg=document.getElementById('jbTag');if(tg&&!tg.options.length)tg.innerHTML=JB_TAGS.map(([k,n])=>'<option value="'+k+'">'+n+'</option>').join('');if(!needFb(el)){nw.innerHTML='';return;}
+  const M=lastData._music||{},n=M.now,L=Object.entries(M.list||{}).filter(([,v])=>v).sort((a,b)=>(a[1].t||0)-(b[1].t||0));
+  nw.innerHTML=n?'<div class="jb-now"><span class="tb-eq'+(n.on?'':' off')+'"><i></i><i></i><i></i></span><b>'+(n.on?'Now playing':'Paused')+':</b> '+x(n.title||'YouTube')
+    +'<span style="margin-left:auto;display:flex;gap:6px">'+(n.on?'<button class="init-mini-btn" onclick="jbPause()">⏸ Pause</button>':'<button class="init-mini-btn" onclick="jbResume()">▶ Resume</button>')
+    +'<button class="init-mini-btn'+(n.loop?' on':'')+'" onclick="jbLoop()" title="Start again when it ends">🔁 '+(n.loop?'Loop on':'Loop off')+'</button><button class="init-mini-btn" onclick="jbStop()">⏹ Stop</button></span></div>':'<div class="init-empty" style="padding:8px">Nothing playing.</div>';
+  el.innerHTML=L.length?L.map(([id,v])=>'<div class="jb-row'+(n&&n.id===id?' on':'')+'"><button class="init-mini-btn" onclick="jbPlay(\''+id+'\')" title="Play for everyone">▶</button><span class="jb-tag">'+x((JB_TAGS.find(t=>t[0]===v.tag)||JB_TAGS[0])[1])+'</span><span class="jb-t">'+x(v.title||v.u)+'</span>'
+    +'<a href="'+x(v.u)+'" target="_blank" rel="noopener" class="jb-a" title="Open on YouTube">↗</a><button class="init-mini-btn" onclick="jbDel(\''+id+'\')" title="Remove">✕</button></div>').join(''):'<div class="init-empty">No tracks yet. Paste a YouTube link above: tavern music, a battle theme, rain sounds…</div>';
+  const a=document.getElementById('jbAuto');if(a)a.checked=jbAuto;}
+// 🌿 wild encounter tables: per area, which Pokémon live there, their levels, how common, how many. 🎲 rolls one.
+const WILD_W=[[6,'Common'],[3,'Uncommon'],[1,'Rare']];let wildLast=null;
+function wildCur(){if(!wildTables.length)wildTables.push({n:'Route 1',rows:[]});wildSel=Math.max(0,Math.min(wildSel,wildTables.length-1));return wildTables[wildSel];}
+function wildEdit(f){const T=wildCur();f(T);dm_save();renderWild();}
+function wildRoll(){const T=wildCur(),rows=T.rows.filter(r=>pokeFind(r.p||''));if(!rows.length){wildLast={err:'Add some Pokémon to this area first.'};renderWild();return;}
+  const tot=rows.reduce((a,r)=>a+(+r.w||1),0);let k=Math.random()*tot,pick=rows[0];for(const r of rows){k-=(+r.w||1);if(k<0){pick=r;break;}}
+  const n=Math.max(1,Math.min(12,/d/i.test(pick.c||'')?npcDice(pick.c).total:(parseInt(pick.c)||1))),lo=Math.max(1,parseInt(pick.lo)||1),hi=Math.max(lo,parseInt(pick.hi)||lo),e=pokeFind(pick.p);
+  wildLast={e,list:Array.from({length:n},()=>lo+Math.floor(Math.random()*(hi-lo+1))),area:T.n};renderWild();}
+function wildBlock(e,lvl){const st=sbScores(e),die=sbDie(e.hp);return {lvl,st,die,base:{hp:e.hp,atk:e.atk,def:e.def,spa:e.spa,spd:e.spd,spe:e.spe},hp:sbRollHP(die,st.DEX,lvl),ac:10+sbMod(st.CON),spd:sbSpeed(e.spe)};}
+function wildNames(e,n){const out=[];let k=1;for(let i=0;i<n;i++){let nm=e.n;while(initiative.some(r=>r.name===nm)||out.includes(nm))nm=e.n+' '+(++k);out.push(nm);}return out;}
+function wildFight(){const W=wildLast;if(!W||!W.e)return;const names=wildNames(W.e,W.list.length);
+  W.list.forEach((lv,i)=>{const b=wildBlock(W.e,lv);initiative.push({name:names[i],type:'npc',init:Math.floor(Math.random()*20)+1+sbMod(b.st.DEX),hp:b.hp,hpMax:b.hp,types:W.e.types.slice(0,2),conditions:[],sb:{lvl:lv,st:b.st,die:b.die,base:b.base,ac:b.ac,spd:b.spd,mv:[]}});});
+  sortInit();initActive=true;renderInit();dm_save();jot('fight','Wild '+W.e.n+(W.list.length>1?' ×'+W.list.length:'')+' appeared'+(W.area?' in '+W.area:''));W.added=names;renderWild();npcFlash('🌿 Added '+names.join(', ')+' to the fight');}
+async function wildBoard(){const W=wildLast;if(!W||!W.e||!needFb(null))return;const B=lastData._board||{},sid=B.active,sc=(B.scenes||{})[sid];if(!sc){npcFlash('Open a scene on the live board first (and show it to the players).');return;}
+  const names=W.added||wildNames(W.e,W.list.length),cx=Math.floor((parseInt(sc.cols)||24)/2),cy=Math.floor((parseInt(sc.rows)||16)/2);
+  for(let i=0;i<names.length;i++){const id=tbId('t'),dx=(i%4)-1,dy=Math.floor(i/4);await Sync._fb('PUT',campaignId+'/board/tokens/'+sid+'/'+id,{kind:'npc',name:names[i],types:W.e.types.slice(0,2),look:'npc_'+slugN(names[i]),size:1,x:cx+dx+.5,y:cy+dy+.5,rot:0,t:Date.now()}).catch(()=>{});}
+  npcFlash('🗺 Put '+names.length+' on the board, in the middle of “'+(sc.name||'the scene')+'”.');}
+function renderWild(){const el=document.getElementById('wildBox');if(!el)return;const T=wildCur(),W=wildLast;
+  el.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select class="manage-inp" style="width:auto" onchange="wildSel=+this.value;wildLast=null;renderWild()">'+wildTables.map((t,i)=>'<option value="'+i+'"'+(i===wildSel?' selected':'')+'>'+x(t.n||'Area')+'</option>').join('')+'</select>'
+    +'<input class="manage-inp" value="'+x(T.n)+'" placeholder="Area name (e.g. Viridian Forest)" style="width:200px" onchange="wildEdit(t=>t.n=this.value.trim()||\'Area\')"><button class="init-mini-btn" onclick="wildTables.push({n:\'New area\',rows:[]});wildSel=wildTables.length-1;dm_save();renderWild()">＋ New area</button>'
+    +(wildTables.length>1?'<button class="init-mini-btn" onclick="if(confirm(\'Delete this area’s table?\')){wildTables.splice(wildSel,1);wildSel=0;dm_save();renderWild();}">🗑</button>':'')+'</div>'
+    +'<div class="wild-rows">'+T.rows.map((r,i)=>'<div class="wild-row"><input class="manage-inp" list="sbNames" value="'+x(r.p||'')+'" placeholder="Pokémon" style="width:150px" onfocus="sbList()" onchange="wildEdit(t=>t.rows['+i+'].p=this.value.trim())">'
+      +'<label>Lv <input class="manage-inp" type="number" min="1" max="100" value="'+(r.lo||1)+'" style="width:56px" onchange="wildEdit(t=>t.rows['+i+'].lo=+this.value||1)"> to <input class="manage-inp" type="number" min="1" max="100" value="'+(r.hi||r.lo||1)+'" style="width:56px" onchange="wildEdit(t=>t.rows['+i+'].hi=+this.value||1)"></label>'
+      +'<select class="manage-inp" style="width:auto" onchange="wildEdit(t=>t.rows['+i+'].w=+this.value)">'+WILD_W.map(([w,n])=>'<option value="'+w+'"'+((+r.w||6)===w?' selected':'')+'>'+n+'</option>').join('')+'</select>'
+      +'<label>How many <input class="manage-inp" value="'+x(r.c||'1')+'" style="width:60px" title="A number, or dice like 1d3" onchange="wildEdit(t=>t.rows['+i+'].c=this.value.trim()||\'1\')"></label>'
+      +(pokeFind(r.p||'')?'':'<span style="color:var(--red);font-size:11px">'+(r.p?'not in the Pokédex':'')+'</span>')+'<button class="init-mini-btn" onclick="wildEdit(t=>t.rows.splice('+i+',1))">✕</button></div>').join('')+'</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="init-mini-btn" onclick="wildEdit(t=>t.rows.push({p:\'\',lo:1,hi:3,w:6,c:\'1\'}))">＋ Add a Pokémon</button><button class="dice-roll-btn" onclick="wildRoll()">🎲 Roll an encounter</button></div>'
+    +(W?(W.err?'<div class="init-empty">'+x(W.err)+'</div>':'<div class="wild-out"><img src="'+TB_ART+W.e.num+'.png" alt=""><div><b>'+(W.list.length>1?W.list.length+'× ':'')+'Wild '+x(W.e.n)+'</b> <span style="color:var(--tx2)">Lv '+W.list.join(', ')+' · '+x(W.e.types.join(' / '))+'</span>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button class="dice-roll-btn" onclick="wildFight()">'+(W.added?'✓ In the fight':'+ Add to fight')+'</button><button class="init-mini-btn" onclick="wildBoard()">🗺 Put on the board</button><button class="init-mini-btn" onclick="wildRoll()">🎲 Roll again</button></div></div></div>'):'');}
+// 🏪 shops (the DM's list of shops; one is open for the players at a time: meta/shop) and 🎁 gifts (meta/loot/<id>)
+const DM_ITEMS=[{n:'Fresh Water',d:'Heal 1d8',fx:'heal',dice:'1d8',cost:'Object Interaction'},{n:'Leppa Berry',d:'Gain 2d4 Energy',fx:'pp',dice:'2d4',cost:'Object Interaction'},{n:'Full Heal',d:'Heal any status condition',fx:'cure',cost:'Object Interaction'},
+  {n:'Vivichoke',d:'Bring target to stable (counts as 3 death save successes). A Bonus Action when given to another player.',fx:'stable',cost:'Bonus Action'},{n:'Honey',d:'Heals 1d8',fx:'heal',dice:'1d8',cost:'Bonus Action'}];   // the sheet's ITEM_PRESETS (Sitrus Berry left out: its effect isn't decided)
+const FXN={heal:'Heals (dice)',pp:'Energy (dice)',cure:'Cures conditions',stable:'Stabilizes',none:'Just an item'},COIN=[['gimmis','Gimmis'],['ghouls','Ghouls'],['ghold','Ghold']];
+function shopCur(){if(!shops.length)shops.push({name:'Poké Mart',note:'',items:[]});shopSel=Math.max(0,Math.min(shopSel,shops.length-1));return shops[shopSel];}
+function shopEdit(f){f(shopCur());dm_save();renderShop();}
+function shopOpen(){if(!needFb(null))return;const S=shopCur(),items={};S.items.forEach((it,i)=>{if(it.n)items['i'+i]={n:it.n,d:it.d||'',fx:it.fx||'none',dice:it.dice||'',cost:it.cost||'Object Interaction',p:Math.max(0,+it.p||0),cur:it.cur||'gimmis',q:it.q===''||it.q==null?null:Math.max(0,+it.q)};});
+  Sync.setMeta(campaignId,'shop',{open:true,name:S.name||'Shop',note:S.note||'',items,t:Date.now()}).then(()=>{lastData._shop={open:true,name:S.name,items};renderShop();}).catch(e=>npcFlash('Couldn’t open it: '+e.message));jot('shop',(S.name||'A shop')+' opened for business');}
+function shopClose(){Sync.setMeta(campaignId,'shop',null).catch(()=>{});lastData._shop=null;renderShop();}
+function giftSend(){if(!needFb(null))return;const who=[...document.querySelectorAll('#giftWho input:checked')].map(i=>i.value),st=document.getElementById('giftMsg');if(!who.length){st.textContent='Tick who gets it.';return;}
+  const n=(document.getElementById('giftN').value||'').trim(),money={};COIN.forEach(([k])=>{const v=parseInt(document.getElementById('giftC_'+k).value)||0;if(v>0)money[k]=v;});
+  const pre=DM_ITEMS.find(i=>i.n.toLowerCase()===n.toLowerCase()),items=n?[Object.assign({n,d:(document.getElementById('giftD').value||'').trim(),fx:'none',q:Math.max(1,parseInt(document.getElementById('giftQ').value)||1)},pre?{d:pre.d,fx:pre.fx,dice:pre.dice||'',cost:pre.cost}:{})]:[];
+  if(!items.length&&!Object.keys(money).length){st.textContent='Add an item or some coins.';return;}const note=(document.getElementById('giftNote').value||'').trim();
+  who.forEach(pk=>Sync.pushMeta(campaignId,'loot',{to:pk,items,money,note:note.slice(0,300),t:Date.now()}).catch(()=>{}));
+  const names=who.map(pk=>(lastData[pk]||{}).charName||pk);st.textContent='✓ Sent to '+names.join(', ')+'. It waits on their sheet until they take it.';
+  jot('gift',names.join(', ')+' received '+[items.length?items[0].n+(items[0].q>1?' ×'+items[0].q:''):'',Object.entries(money).map(([k,v])=>v+' '+k).join(', ')].filter(Boolean).join(' and '));
+  ['giftN','giftD','giftNote'].forEach(id=>{document.getElementById(id).value='';});COIN.forEach(([k])=>{document.getElementById('giftC_'+k).value='';});}
+function renderShop(){const el=document.getElementById('shopBox');if(!el)return;if(!needFb(el))return;const S=shopCur(),live=lastData._shop&&lastData._shop.open?lastData._shop:null,ps=playersOf(lastData);
+  if(el.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;
+  const loot=Object.entries(lastData._loot||{}).filter(([,v])=>v);
+  el.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select class="manage-inp" style="width:auto" onchange="shopSel=+this.value;renderShop()">'+shops.map((s,i)=>'<option value="'+i+'"'+(i===shopSel?' selected':'')+'>'+x(s.name||'Shop')+'</option>').join('')+'</select>'
+    +'<input class="manage-inp" value="'+x(S.name)+'" placeholder="Shop name" style="width:170px" onchange="shopEdit(s=>s.name=this.value.trim())"><input class="manage-inp" value="'+x(S.note||'')+'" placeholder="A line about it (optional)" style="flex:1;min-width:160px" onchange="shopEdit(s=>s.note=this.value.trim())">'
+    +'<button class="init-mini-btn" onclick="shops.push({name:\'New shop\',note:\'\',items:[]});shopSel=shops.length-1;dm_save();renderShop()">＋ New shop</button>'+(shops.length>1?'<button class="init-mini-btn" onclick="if(confirm(\'Delete this shop?\')){shops.splice(shopSel,1);shopSel=0;dm_save();renderShop();}">🗑</button>':'')+'</div>'
+    +'<div class="wild-rows">'+S.items.map((it,i)=>'<div class="wild-row"><input class="manage-inp" value="'+x(it.n||'')+'" placeholder="Item" style="width:130px" onchange="shopEdit(s=>s.items['+i+'].n=this.value.trim())"><input class="manage-inp" value="'+x(it.d||'')+'" placeholder="What it does" style="flex:1;min-width:140px" onchange="shopEdit(s=>s.items['+i+'].d=this.value.trim())">'
+      +'<select class="manage-inp" style="width:auto" onchange="shopEdit(s=>s.items['+i+'].fx=this.value)">'+Object.entries(FXN).map(([k,n])=>'<option value="'+k+'"'+((it.fx||'none')===k?' selected':'')+'>'+n+'</option>').join('')+'</select>'
+      +((it.fx==='heal'||it.fx==='pp')?'<input class="manage-inp" value="'+x(it.dice||'')+'" placeholder="1d8" style="width:56px" onchange="shopEdit(s=>s.items['+i+'].dice=this.value.trim())">':'')
+      +'<label>Price <input class="manage-inp" type="number" min="0" value="'+(+it.p||0)+'" style="width:64px" onchange="shopEdit(s=>s.items['+i+'].p=+this.value||0)"></label><select class="manage-inp" style="width:auto" onchange="shopEdit(s=>s.items['+i+'].cur=this.value)">'+COIN.map(([k,n])=>'<option value="'+k+'"'+((it.cur||'gimmis')===k?' selected':'')+'>'+n+'</option>').join('')+'</select>'
+      +'<label>Stock <input class="manage-inp" type="number" min="0" value="'+(it.q==null?'':it.q)+'" placeholder="∞" style="width:54px" title="Leave empty for plenty" onchange="shopEdit(s=>s.items['+i+'].q=this.value===\'\'?null:+this.value)"></label>'
+      +(live&&live.items&&live.items['i'+i]&&live.items['i'+i].q!=null?'<span style="font-size:11px;color:var(--tx2)">'+live.items['i'+i].q+' left now</span>':'')+'<button class="init-mini-btn" onclick="shopEdit(s=>s.items.splice('+i+',1))">✕</button></div>').join('')+'</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center"><select class="manage-inp" style="width:auto" onchange="if(this.value){const p=DM_ITEMS[+this.value];shopEdit(s=>s.items.push(Object.assign({p:5,cur:\'gimmis\',q:null},p)));}"><option value="">＋ Add an item…</option>'+DM_ITEMS.map((p,i)=>'<option value="'+i+'">'+x(p.n)+'</option>').join('')+'</select>'
+    +'<button class="init-mini-btn" onclick="shopEdit(s=>s.items.push({n:\'\',d:\'\',fx:\'none\',p:1,cur:\'gimmis\',q:null}))">＋ Custom item</button>'
+    +(live?'<span class="badge-live">● Open: '+x(live.name||'')+'</span><button class="dice-roll-btn" onclick="shopOpen()">↻ Update it</button><button class="init-mini-btn" onclick="shopClose()">■ Close the shop</button>':'<button class="dice-roll-btn" onclick="shopOpen()">▶ Open it for the players</button>')+'</div>'
+    +'<div style="font-size:10.5px;color:var(--tx3);margin-top:4px">Players buy from their sheet’s Bag tab; the coins come off their wallet. No exchange rate between coins is set in the rules, so price each item in one coin.</div>'
+    +'<div class="scene-sec">🎁 Give something</div><div id="giftWho" style="display:flex;gap:10px;flex-wrap:wrap">'+(Object.keys(ps).length?Object.entries(ps).map(([pk,p])=>'<label style="display:flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" value="'+x(pk)+'"> '+x(p.charName||pk)+'</label>').join(''):'<span class="init-empty">No players yet.</span>')+'</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><input class="manage-inp" id="giftN" list="giftNL" placeholder="Item (e.g. Leppa Berry, a rusty key)" style="width:200px"><datalist id="giftNL">'+DM_ITEMS.map(p=>'<option value="'+x(p.n)+'">').join('')+'</datalist>'
+    +'<input class="manage-inp" id="giftD" placeholder="What it is / does" style="flex:1;min-width:150px"><label style="font-size:12px">× <input class="manage-inp" id="giftQ" type="number" min="1" value="1" style="width:52px"></label></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center">'+COIN.map(([k,n])=>'<input class="manage-inp" id="giftC_'+k+'" type="number" min="0" placeholder="'+n+'" style="width:80px">').join('')
+    +'<input class="manage-inp" id="giftNote" placeholder="A note (optional)" style="flex:1;min-width:150px"><button class="dice-roll-btn" onclick="giftSend()">🎁 Send</button></div><div id="giftMsg" style="font-size:11.5px;color:var(--tx2);margin-top:4px"></div>'
+    +(loot.length?'<div style="font-size:11.5px;color:var(--tx2);margin-top:6px">Waiting to be taken: '+loot.map(([id,g])=>x((lastData[g.to]||{}).charName||g.to)+(g.from?' (from '+x(g.from)+')':'')+' <a href="#" onclick="Sync.delMeta(campaignId,\'loot/'+id+'\').catch(()=>{});return false" title="Take it back">✕</a>').join(' · ')+'</div>':'');}
+// 🤫 whispers from players: meta/whisper/<player>/<id> = {by:'p'|'dm', text, n, t}
+let whSel='';
+function whSeen(){try{return JSON.parse(localStorage.getItem('pokeDnD_whDmSeen')||'{}')||{};}catch(e){return {};}}
+function whThreads(){const W=lastData._whisper||{},o={};for(const pk in W){const m=W[pk];if(m&&typeof m==='object')o[pk]=Object.values(m).filter(v=>v&&v.text).sort((a,b)=>(a.t||0)-(b.t||0));}return o;}
+function whUnread(){const T=whThreads(),s=whSeen();let n=0;for(const pk in T)n+=T[pk].filter(m=>m.by!=='dm'&&(m.t||0)>(s[pk]||0)).length;return n;}
+function whWatch(){const T=whThreads(),all=[].concat(...Object.entries(T).map(([pk,l])=>l.filter(m=>m.by!=='dm').map(m=>({pk,m}))));
+  if(JW.wh){all.filter(o=>!JW.wh.has(o.m.t+o.pk)).forEach(o=>npcFlash('🤫 '+(o.m.n||o.pk)+' whispers: '+String(o.m.text).slice(0,90)));}JW.wh=new Set(all.map(o=>o.m.t+o.pk));
+  const b=document.getElementById('whToggle'),n=whUnread();if(b)b.textContent='🤫 Whispers'+(n?' ('+n+')':'');if(b)b.classList.toggle('hot',n>0);if(document.getElementById('whPanel')?.style.display!=='none')renderWh();}
+function renderWh(){const el=document.getElementById('whDm');if(!el)return;if(!needFb(el))return;const T=whThreads(),ps=playersOf(lastData),s=whSeen(),keys=[...new Set(Object.keys(ps).concat(Object.keys(T)))];
+  if(!whSel||!keys.includes(whSel))whSel=keys.find(k=>(T[k]||[]).some(m=>m.by!=='dm'&&(m.t||0)>(s[k]||0)))||keys[0]||'';
+  if(whSel&&T[whSel]&&T[whSel].length){s[whSel]=T[whSel][T[whSel].length-1].t;try{localStorage.setItem('pokeDnD_whDmSeen',JSON.stringify(s));}catch(e){}}
+  const keep=document.getElementById('whRe')?.value||'';
+  el.innerHTML='<div class="wh-wrap"><div class="wh-who">'+(keys.length?keys.map(k=>{const u=(T[k]||[]).filter(m=>m.by!=='dm'&&(m.t||0)>(s[k]||0)).length;return '<button class="init-mini-btn'+(k===whSel?' on':'')+'" onclick="whSel=\''+x(k)+'\';renderWh()">'+x((ps[k]||{}).charName||k)+(u?' ('+u+')':'')+'</button>';}).join(''):'<span class="init-empty">No players yet.</span>')+'</div>'
+    +(whSel?'<div class="wh-thread">'+((T[whSel]||[]).map(m=>'<div class="dice-log-entry"><b>'+(m.by==='dm'?'You':x(m.n||whSel))+'</b> '+x(m.text)+' <span style="opacity:.5">'+new Date(m.t||0).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'</span></div>').join('')||'<div class="init-empty">No whispers with them yet.</div>')+'</div>'
+      +'<div style="display:flex;gap:8px;margin-top:6px"><input class="manage-inp" id="whRe" placeholder="Whisper back to '+x((ps[whSel]||{}).charName||whSel)+'…" style="flex:1" onkeydown="if(event.key===\'Enter\')whReply()"><button class="dice-roll-btn" onclick="whReply()">Send</button></div>':'')+'</div>';
+  const r=document.getElementById('whRe');if(r)r.value=keep;whWatchBtn();}
+function whWatchBtn(){const b=document.getElementById('whToggle'),n=whUnread();if(b){b.textContent='🤫 Whispers'+(n?' ('+n+')':'');b.classList.toggle('hot',n>0);}}
+function whReply(){const r=document.getElementById('whRe'),t=(r&&r.value||'').trim();if(!t||!whSel)return;r.value='';Sync.pushMeta(campaignId,'whisper/'+whSel,{by:'dm',text:t.slice(0,600),n:'DM',t:Date.now()}).catch(e=>npcFlash('Couldn’t send: '+e.message));}
+// 📖 session recap: the journal grouped into sessions (a 5-hour gap starts a new one), written up as a draft to edit
+let rcSel=-1;
+function rcSessions(){const S=[];let cur=null;journal.forEach(e=>{if(!cur||e.t-cur.end>5*3600e3){cur={start:e.t,end:e.t,ev:[]};S.push(cur);}cur.end=e.t;cur.ev.push(e);});return S;}
+function rcText(s){if(!s)return '';const by=k=>s.ev.filter(e=>e.k===k).map(e=>e.x),L=['Previously, on our adventure…'],party=Object.values(playersOf(lastData)).map(p=>p.charName).filter(Boolean);
+  if(party.length)L.push(party.join(', ')+' pressed on.');
+  const add=(k,lead)=>{const v=by(k);if(v.length)L.push(lead+v.join('; ')+'.');};
+  add('trip','On the road: ');add('note','');add('fight','Trouble found them: ');add('ko','In the fighting, ');
+  const cr=by('crit');if(cr.length)L.push('Fortune smiled: '+cr.join('; ')+'.');const fu=by('fumble');if(fu.length)L.push('…and frowned: '+fu.join('; ')+'.');
+  const sy=by('say');if(sy.length)L.push('Words were spoken:\n'+sy.slice(-4).join('\n'));
+  add('handout','They found: ');add('evo','A moment to remember: ');add('level','Growing stronger: ');add('dex','New Pokémon crossed their path: ');add('shop','Shopping: ');add('gift','Gifts: ');
+  L.push('And now…');return L.join('\n\n');}
+function renderRecap(){const el=document.getElementById('rcBox');if(!el)return;const S=rcSessions();if(rcSel<0||rcSel>=S.length)rcSel=S.length-1;const s=S[rcSel];
+  if(el.contains(document.activeElement)&&document.activeElement.id==='rcText')return;
+  el.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'+(S.length?'<select class="manage-inp" style="width:auto" onchange="rcSel=+this.value;renderRecap()">'+S.map((x2,i)=>'<option value="'+i+'"'+(i===rcSel?' selected':'')+'>'+new Date(x2.start).toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'})+' · '+x2.ev.length+' moments</option>').join('')+'</select>':'')
+    +'<input class="manage-inp" id="rcNote" placeholder="Add a story beat (e.g. They freed the captured Pikachu)" style="flex:1;min-width:200px" onkeydown="if(event.key===\'Enter\'){jot(\'note\',this.value.trim());this.value=\'\';}"><button class="init-mini-btn" onclick="const i=document.getElementById(\'rcNote\');jot(\'note\',i.value.trim());i.value=\'\';">＋ Add</button></div>'
+    +(s?'<textarea class="manage-inp" id="rcText" rows="9" style="width:100%;margin-top:8px;resize:vertical;font:13px/1.5 Georgia,serif">'+x(rcText(s))+'</textarea>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="dice-roll-btn" onclick="rcShow()">📜 Show it to everyone</button><button class="init-mini-btn" onclick="renderRecap()" title="Write the draft again from the journal">↻ Redo the draft</button><button class="init-mini-btn" onclick="rcClaude()">✨ Make it dramatic (free, in Claude)</button>'
+      +'<button class="init-mini-btn" onclick="if(confirm(\'Clear the whole journal?\')){journal=[];dm_save();renderRecap();}">🗑 Clear the journal</button></div>'
+      +'<details style="margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:var(--tx2)">What the journal noticed ('+s.ev.length+')</summary>'+s.ev.map(e=>'<div class="dice-log-entry"><span style="opacity:.55">'+new Date(e.t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'</span> '+x(e.x)+'</div>').join('')+'</details>'
+      :'<div class="init-empty">Nothing in the journal yet. While this dashboard is open it notes the big moments by itself: fights and knockouts, natural 20s and 1s, NPC lines, handouts, evolutions, level-ups, new Pokémon, travel days, shopping and gifts. Add your own story beats above.</div>');}
+function rcShow(){const t=document.getElementById('rcText');if(!t||!needFb(null))return;const id='h'+Date.now().toString(36),h={title:'Previously on…',text:t.value.trim(),img:'',t:Date.now(),shown:true};
+  Sync.setMeta(campaignId,'handouts/'+id,h).then(()=>Sync.setMeta(campaignId,'handoutNow',{hid:id,t:Date.now()})).then(()=>{HANDOUTS[id]=h;renderHandouts();npcFlash('📜 The recap is up on every screen.');}).catch(e=>npcFlash('Couldn’t show it: '+e.message));}
+function rcClaude(){const s=rcSessions()[rcSel];if(!s)return;const q='Write a short, dramatic "Previously on…" recap (150 to 250 words) for my Pokémon × D&D tabletop campaign, to read aloud at the start of the next session. Medieval fantasy world where the creatures are Pokémon. Use only these facts, in order:\n\n'+s.ev.map(e=>'- '+e.x).join('\n');
+  (navigator.clipboard?navigator.clipboard.writeText(q):Promise.reject()).then(()=>{npcFlash('📋 Copied. Paste it into Claude, then paste the answer into the recap box.');window.open('https://claude.ai/new','_blank','noopener');}).catch(()=>prompt('Copy this and paste it into Claude:',q));}
+// 📺 a TV link for the board: no controls, follows the turn (and your 📽 Show on the board)
+function copyTvLink(){if(!campaignId||!Sync.fb())return;const base=location.href.replace(/[^/]*([?#].*)?$/,'');
+  const u=base+'poke_dnd_board.html?'+new URLSearchParams({c:campaignId,tv:'1',fb:FB_URL}).toString();(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>npcFlash('📺 TV link copied: open it on the TV or a stream.')).catch(()=>prompt('Copy this link for the TV:',u));}
+// 🔎 quick search (Ctrl+K): moves, Pokémon (with their stat-block numbers), conditions and items
+let DQS=null,DQR=[],DQI=0;
+function dqIndex(){if(DQS)return DQS;DQS=[];Object.entries(NPC_MOVES).forEach(([ty,ms])=>(ms||[]).forEach(m=>DQS.push({k:'Move',n:m.n,ty:m.type||ty,o:m})));Object.values(pokeIdx()).forEach(p=>DQS.push({k:'Pokémon',n:p.n,ty:p.types[0],o:p}));
+  COND_LIST.forEach(c=>DQS.push({k:'Condition',n:c,o:{}}));DM_ITEMS.forEach(it=>DQS.push({k:'Item',n:it.n,o:it}));DQS.forEach(r=>{r.l=String(r.n).toLowerCase();r.t=(r.l+' '+JSON.stringify(r.o)).toLowerCase();});return DQS;}
+function dqOpen(){tbCss();let d=document.getElementById('dqBox');if(!d){d=document.createElement('div');d.id='dqBox';d.className='tb-ov';d.style.alignItems='flex-start';d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);}
+  d.innerHTML='<div class="tb-win" style="max-width:720px;margin-top:6vh"><div class="tb-wh"><input id="dqIn" placeholder="Search moves, Pokémon, conditions, items…" autocomplete="off" style="flex:1;font-size:15px"><button class="tb-x" onclick="document.getElementById(\'dqBox\').remove()">✕</button></div><div class="tb-wb"><div id="dqList" class="dq-list"></div><div id="dqOne" class="tb-side"></div></div></div>';
+  const i=document.getElementById('dqIn');i.oninput=()=>dqRun(i.value);i.onkeydown=e=>{if(e.key==='Escape')d.remove();else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();dqShow(Math.max(0,Math.min(DQR.length-1,DQI+(e.key==='ArrowDown'?1:-1))));}};i.focus();dqRun('');}
+function dqRun(q){q=q.trim().toLowerCase();const I=dqIndex();DQR=!q?[]:I.filter(r=>r.l.includes(q)).sort((a,b)=>(a.l.startsWith(q)?0:1)-(b.l.startsWith(q)?0:1)||a.l.length-b.l.length).concat(I.filter(r=>!r.l.includes(q)&&r.t.includes(q))).slice(0,40);
+  const l=document.getElementById('dqList');l.innerHTML=DQR.length?DQR.map((r,i)=>'<button class="dq-r" data-i="'+i+'" onclick="dqShow('+i+')"><span class="dq-k">'+r.k+'</span>'+x(r.n)+(r.ty?' <small style="color:'+(TYPE_COLORS[r.ty]||'#aaa')+'">'+x(r.ty)+'</small>':'')+'</button>').join(''):'<div class="init-empty" style="padding:14px">'+(q?'Nothing matches.':'Type a name…')+'</div>';dqShow(0);}
+function dqShow(i){DQI=i;document.querySelectorAll('#dqList .dq-r').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));const r=DQR[i],el=document.getElementById('dqOne');if(!el)return;if(!r){el.innerHTML='';return;}const o=r.o,row=(k,v)=>v!=null&&v!==''?'<div><b>'+k+':</b> '+x(v)+'</div>':'';
+  let h='<h3 style="margin-top:0">'+x(r.n)+'</h3><div style="color:var(--tx2)">'+r.k+(r.ty?' · '+x(r.ty):'')+'</div>';
+  if(r.k==='Move')h+=row('Energy',o.c)+row('Damage',o.d)+row('Attack',o.a)+row('Range',o.r)+row('Targets',o.tg)+row('Effect',o.fx)+row('Style',o.s);
+  else if(r.k==='Pokémon'){const sc=sbScores(o);h='<img src="'+TB_ART+o.num+'.png" alt="" style="width:100%;max-width:190px;display:block;margin:0 auto">'+h+row('Base stats','HP '+o.hp+' · Atk '+o.atk+' · Def '+o.def+' · SpA '+o.spa+' · SpD '+o.spd+' · Spe '+o.spe)
+    +row('Scores','STR '+sc.STR+' DEX '+sc.DEX+' CON '+sc.CON+' INT '+sc.INT+' WIS '+sc.WIS+' CHA '+sc.CHA)+row('HP die / AC / Speed','d'+sbDie(o.hp)+' · '+(10+sbMod(sc.CON))+' · '+sbSpeed(o.spe)+' ft')
+    +'<button class="dice-roll-btn" style="margin-top:8px" onclick="document.getElementById(\'dqBox\').remove();setView(\'encounter\');document.getElementById(\'sbName\').value=\''+x(o.n).replace(/'/g,'\\\'')+'\';sbMake()">📊 Make a stat block</button>';}
+  else if(r.k==='Item')h+=row('Does',o.d)+row('Uses',o.cost);
+  el.innerHTML=h;}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.key==='k'||e.key==='K')){e.preventDefault();dqOpen();}});
+// ── 🎭 batch 4 on the dashboard ──
+// 📋 Rules gaps: moves in the rules sheet with no numbers yet (no Energy cost, damage or effect) and abilities with no bonus or
+// effect. Moves come from NPC_MOVES, abilities from RULES_ABIL_GAPS; tools/import_rules.py refreshes both.
+const RULES_ABIL_GAPS={"Barbaric":["Reckless","Sheer Force","Anger Point","Anger Shell","Huge Power"],"Bug":["Sticky Hold","Tangling Hair"],"Cosmic":["Dazzling","Tinted Lens","Wonder Skin","Super Luck"],"Dark":["Merciless","Mold Breaker","Shadow Tag"],"Dragon":["Marvel Scale"],"Electric":["Lightning Rod","Motor Drive","Surge Surfer","Volt Absorb","Electric Surge","Electromorphosis"],"Fairy":["Misty Surge","Serene Grace"],"Fighting":["Suction Cups","No Guard","Pure Power"],"Fire":["Flash Fire","White Smoke","Drought","Magma Armor"],"Flying":["Gale Wings"],"Friendly":["Friend Guard","Normalize","Well-Baked Body","Aroma Veil","Guard Dog","Harvest","Lingering Aroma","Screen Cleaner"],"Ghost":["Cursed Body","Perish Body"],"Grass":["Grass Pelt","Mycelium Might","Sap Sipper","Seed Sower","Effect Spore","Grassy Surge","Mega Sol"],"Gremlin":["Technician","Pickpocket","Receiver","Prankster"],"Ground":["Sand Spit","Sand Stream","Arena Trap"],"Hasty":["Speed Boost","Quick Draw"],"Ice":["Snow Warning","Ice Face"],"Lax":["Cheeck Pouch","Gluttony","Ripen","Cud Chew","Moody","Comatose"],"Mage":["Immunity","Sniper","Magician","Magic Bounce","Magic Guard"],"Monk":["Adaptability","Skill Link","Libero","Oppertunist","Zen Mode"],"Poison":["Neutralizing Gas","Stench","Poison Touch","Toxic Debris"],"Psychic":["Psychic Surge","Power Spot"],"Rock":["Rock Head","Rocky Payload","Purifying Salt"],"Shapeshifter":["Disguise","Mimicry","Protean","Contrary","Imposter"],"Steel":["Steely Spirit","Mirror Armor","Good as Gold"],"Support":["Regenerator","Curious Medicine","Triage","Poison Heal","Hospitality"],"Tank":["Bulletproof","Stamina","Sturdy","Battle Armor","Filter","Shield Dust"],"Theatrical":["Cloud Nine","Soundproof","Punk Rock","Queenly Majesty","Supreme Overlord","Zero to Hero"],"Water":["Rain Dish","Water Absorb","Drizzle","Water Bubble"],"Weapon Master":["Sharpness","Defiant","Stance Change"]};
+const RULES_SHEET='https://docs.google.com/spreadsheets/d/1SCjGGRKkFmwJD6SQsLguEkDlFzvsP_Ng8iOdF1Sl7Ww/edit';
+const noVal=v=>v==null||/^(|none|n\/a|—|-)$/i.test(String(v).trim());
+function gapMoves(){const o={};for(const t in NPC_MOVES){const l=(NPC_MOVES[t]||[]).filter(m=>m&&m.n&&noVal(m.c)&&noVal(m.d)&&noVal(m.fx)).map(m=>m.n);if(l.length)o[t]=l;}return o;}
+const gapCount=o=>Object.values(o).reduce((a,v)=>a+v.length,0);
+function renderGaps(){const el=document.getElementById('gapBox');if(!el)return;const M=gapMoves(),A=RULES_ABIL_GAPS,nm=gapCount(M),na=gapCount(A);
+  el.innerHTML='<div style="font-size:12.5px;color:var(--tx2)"><b style="color:var(--tx)">'+nm+' moves</b> have no Energy cost, damage or effect yet, and <b style="color:var(--tx)">'+na+' abilities</b> have no bonus or effect. Players see them as “No stats”. Fill them in on the rules sheet, and Finn’s updater brings them into the apps.</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="dice-roll-btn" onclick="copyGaps()">📋 Copy as a checklist</button><a class="init-mini-btn" style="text-decoration:none" href="'+RULES_SHEET+'" target="_blank" rel="noopener">Open the rules sheet ↗</a></div>'
+    +'<div class="gap-grid">'+Object.entries(M).sort((a,b)=>b[1].length-a[1].length).map(([t,l])=>'<details class="gap-t"><summary><span class="gap-dot" style="background:'+(TYPE_COLORS[t]||'#aaa')+'"></span>'+x(t)+' tab: '+l.length+' moves</summary><div>'+l.map(x).join(', ')+'</div></details>').join('')
+    +Object.entries(A).sort((a,b)=>b[1].length-a[1].length).map(([c,l])=>'<details class="gap-t"><summary><span class="gap-dot" style="background:'+(TYPE_COLORS[c]||'#888')+'"></span>Abilities, '+x(c)+': '+l.length+'</summary><div>'+l.map(x).join(', ')+'</div></details>').join('')+'</div>';}
+function gapText(){const M=gapMoves(),A=RULES_ABIL_GAPS;let t='Rules sheet: what still needs numbers\n';
+  for(const k in M)t+='\n'+k+' tab (moves need an Energy cost, damage or effect):\n'+M[k].map(n=>'  [ ] '+n).join('\n')+'\n';
+  for(const k in A)t+='\nAbilities, '+k+' (need a bonus or effect):\n'+A[k].map(n=>'  [ ] '+n).join('\n')+'\n';return t;}
+function copyGaps(){const t=gapText();(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>npcFlash('📋 Copied the checklist. Paste it anywhere (a note, the group chat).')).catch(()=>prompt('Copy this checklist:',t));}
+// 🧪 Practice campaign: a throwaway campaign with sample players, Pokémon, a scene, a shop, a wild table and a world map, in its
+// own tab (?practice=1, with its own saved data pokeDnD_DM_practice), so the DM can try every tool without touching the real
+// game. 🗑 End practice deletes it (it's marked meta/throwaway, which the database rules allow to be removed).
+const PRACTICE=new URLSearchParams(location.search).get('practice')==='1';
+function practiceOpen(){window.open(location.href.split(/[?#]/)[0]+'?practice=1','pokePractice');}
+async function practiceMake(){
+  if(!Sync.fb()){alert('The practice campaign needs the live (Firebase) server.');return null;}
+  const id='practice'+Array.from(crypto.getRandomValues(new Uint8Array(4)),b=>b.toString(16).padStart(2,'0')).join('');
+  const mv=t=>(NPC_MOVES[t]||[]).filter(m=>m.d&&!/x/i.test(String(m.c==null?'':m.c))).slice(0,3).map(m=>Object.assign({type:t,plusCount:0,equipped:true},m));
+  const P=(name,t1,t2,style,st,hp,comps)=>({charName:name,player:'Practice',type1:t1,type2:t2||'',style,level:3,hpCur:hp,hpMax:hp,ac:10+Math.floor((st.DEX-10)/2),acBase:10,speed:30,stats:st,
+    moves:mv(t1).concat(t2?mv(t2).slice(0,1):[]),abilities:[],conditions:[],companions:comps||[],items:[{id:'i1',n:'Fresh Water',q:2,d:'Heal 1d8',fx:'heal',dice:'1d8',cost:'Object Interaction'}],money:{gimmis:25,ghouls:0,ghold:0},ppMax1:16,ppCur:16,_updated:Date.now()});
+  const players={Lyra:P('Lyra','Water','Fairy','Special',{STR:9,DEX:14,CON:12,INT:13,WIS:15,CHA:12},20,[{id:'pc1',name:'Bubbles',species:'Marill',type1:'Water',type2:'Fairy',lvl:4,hpCur:16,hpMax:16,ac:11,speed:20,out:true}]),
+    Rook:P('Rook','Rock','Fighting','Physical',{STR:16,DEX:11,CON:15,INT:9,WIS:11,CHA:10},28),
+    Tamsin:P('Tamsin','Grass','','Special',{STR:10,DEX:13,CON:12,INT:15,WIS:13,CHA:11},19,[{id:'pc2',name:'Sprout',species:'Oddish',type1:'Grass',type2:'Poison',lvl:3,hpCur:12,hpMax:12,ac:11,speed:20,out:false}])};
+  const tok=(kind,o)=>Object.assign({kind,size:1,rot:0},o);
+  const board={active:'s1',scenes:{s1:{name:'Practice Grove',cols:16,rows:10,ground:'grass',grid:true,gridAlpha:.22,fogOn:false}},
+    tokens:{s1:{p1:tok('pc',{pk:'Lyra',name:'Lyra',look:'Lyra',x:3.5,y:4.5}),p2:tok('pc',{pk:'Rook',name:'Rook',look:'Rook',x:3.5,y:6.5}),p3:tok('pc',{pk:'Tamsin',name:'Tamsin',look:'Tamsin',x:2.5,y:5.5}),
+      c1:tok('comp',{pk:'Lyra',cid:'pc1',name:'Bubbles',look:'comp_Lyra_pc1',x:4.5,y:3.5}),f1:tok('npc',{name:'Pidgey',look:'npc_pidgey',x:11.5,y:4.5}),f2:tok('npc',{name:'Rattata',look:'npc_rattata',x:12.5,y:6.5})}},
+    props:{s1:{a:{t:'tree',x:8.5,y:2.5},b:{t:'pine',x:9.5,y:7.5},c:{t:'boulder',x:7.5,y:5.5},d:{t:'campfire',x:2.5,y:2.5},e:{t:'bush',x:13.5,y:2.5}}}};
+  const svg='data:image/svg+xml;base64,'+btoa('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="800" height="500" fill="#3f7fbf"/><path d="M90 120 Q300 40 520 110 T740 200 Q760 380 560 430 T160 420 Q40 300 90 120z" fill="#8bc26b"/><circle cx="560" cy="160" r="70" fill="#7a6a52"/><circle cx="230" cy="250" r="80" fill="#4f8a3c"/></svg>');
+  const meta={created:Date.now(),throwaway:true,world:{name:'Practice Isles',day:1,img:svg,at:{x:.3,y:.5},trip:{},pins:{a:{x:.29,y:.5,n:'Practice Grove',ic:'🌲',vis:true,d:'Where the practice starts.'},b:{x:.7,y:.32,n:'Mt. Example',ic:'⛰'},c:{x:.6,y:.8,n:'Harbour Town',ic:'⚓'}}}};
+  for(const [k,v] of [['meta',meta],['players',players],['board',board]])await Sync._fb('PUT',id+'/'+k,v);
+  wildTables=[{n:'Practice Grove',rows:[{p:'Pidgey',lo:2,hi:4,w:6,c:'1d2'},{p:'Rattata',lo:2,hi:3,w:6,c:'1'},{p:'Oddish',lo:3,hi:3,w:3,c:'1'},{p:'Pikachu',lo:4,hi:5,w:1,c:'1'}]}];
+  shops=[{name:'Practice Mart',note:'Everything a beginner needs.',items:[{n:'Fresh Water',d:'Heal 1d8',fx:'heal',dice:'1d8',cost:'Object Interaction',p:5,cur:'gimmis',q:null},{n:'Leppa Berry',d:'Gain 2d4 Energy',fx:'pp',dice:'2d4',cost:'Object Interaction',p:8,cur:'gimmis',q:3},{n:'Full Heal',d:'Heal any status condition',fx:'cure',cost:'Object Interaction',p:12,cur:'gimmis',q:null}]}];
+  journal=[];return id;}
+function practiceBoard(who){if(!campaignId)return;window.open('poke_dnd_board.html?'+new URLSearchParams(who==='dm'?{c:campaignId,dm:'1',fb:FB_URL}:{c:campaignId,p:who,fb:FB_URL}).toString(),'pokePractice_'+who);}
+async function practiceEnd(){const id=campaignId;if(!/^practice/.test(id||'')){alert('This isn’t a practice campaign, so nothing was deleted.');return;}   // never a real campaign
+  if(!confirm('End the practice? The practice campaign is deleted. Your real game isn’t touched.'))return;
+  clearInterval(refreshTimer);clearInterval(countdownTimer);if(_dmUnsub){_dmUnsub();_dmUnsub=null;}campaignId='';
+  try{await Sync.setMeta(id,'throwaway',true);for(const k of ['board','dm','players','log','meta'])await Sync._fb('DELETE',id+'/'+k).catch(()=>{});}catch(e){}
+  try{localStorage.removeItem(DM_SK);}catch(e){}
+  document.body.innerHTML='<div style="padding:60px 20px;font:16px Inter,sans-serif;color:#e7edf8;text-align:center">🧪 The practice campaign is gone. You can close this tab.</div>';}
+function practiceBoot(){const d=document.createElement('div');d.className='prac-bar';
+  d.innerHTML='🧪 <b>Practice campaign</b>: try anything here; it never touches your real game.<button onclick="practiceBoard(\'dm\')">🗺 Board as DM</button><button onclick="practiceBoard(\'Lyra\')">🗺 Board as Lyra (a player)</button><button onclick="practiceEnd()">🗑 End practice</button>';
+  document.body.prepend(d);document.title='🧪 Practice · '+document.title;
+  if(!campaignId)practiceMake().then(id=>{if(!id)return;document.getElementById('campaignInp').value=id;document.getElementById('dmNameInp').value='DM';dm_save(false);connect();});}
 function hoImgData(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{const s=Math.min(1,1600/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');
   c.width=Math.round(im.naturalWidth*s);c.height=Math.round(im.naturalHeight*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.86));};
   im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('that isn’t a picture'));};im.src=u;});}
@@ -1114,11 +1804,11 @@ async function hoSave(show){
   st.textContent=file?'Uploading the picture…':'Saving…';
   try{let img='';if(file)img=await Sync.putAsset(campaignId,await hoImgData(file),file.name,'img');
     const id='h'+Date.now().toString(36),h={title:title||'Handout',text,img,t:Date.now(),shown:!!show};
-    await Sync.setMeta(campaignId,'handouts/'+id,h);HANDOUTS[id]=h;if(show)await Sync.setMeta(campaignId,'handoutNow',{hid:id,t:Date.now()});
+    await Sync.setMeta(campaignId,'handouts/'+id,h);HANDOUTS[id]=h;if(show){await Sync.setMeta(campaignId,'handoutNow',{hid:id,t:Date.now()});jot('handout',h.title);}
     t.value='';tx.value='';f.value='';st.textContent=show?'✓ Shown to everyone.':'✓ Saved. Show it when the moment comes.';renderHandouts();}
   catch(e){st.textContent='Couldn’t save it: '+e.message;}}
 function hoShow(id,on){const h=HANDOUTS[id];if(!h)return;h.shown=on;Sync.setMeta(campaignId,'handouts/'+id+'/shown',on).catch(()=>{});
-  if(on)Sync.setMeta(campaignId,'handoutNow',{hid:id,t:Date.now()}).catch(()=>{});renderHandouts();}
+  if(on){Sync.setMeta(campaignId,'handoutNow',{hid:id,t:Date.now()}).catch(()=>{});jot('handout',h.title);}renderHandouts();}
 function hoDel(id){if(!confirm('Delete this handout?'))return;delete HANDOUTS[id];Sync.delMeta(campaignId,'handouts/'+id).catch(()=>{});renderHandouts();}
 function renderHandouts(){const el=document.getElementById('hoList');if(!el)return;const ks=Object.keys(HANDOUTS).sort((a,b)=>(HANDOUTS[b].t||0)-(HANDOUTS[a].t||0));
   el.innerHTML=ks.length?ks.map(k=>{const h=HANDOUTS[k];return '<div class="ho-row"><div><b>'+x(h.title)+'</b>'+(h.img?' 🖼':'')+(h.shown?' <span class="ho-on">shown</span>':'')+'<div class="ho-sub">'+x((h.text||'').slice(0,90))+'</div></div><div class="ho-act">'
@@ -1599,6 +2289,7 @@ function rollInitForAll(){
   encEid=Date.now();
   players.forEach(([pk,c])=>{initiative.push({name:c.charName||pk,type:'pc',init:null,playerKey:pk,types:[c.type1,c.type2].filter(Boolean)});});
   sortInit();initTurnIdx=0;initRound=1;initActive=true;
+  {const foes=initiative.filter(r=>r.type==='npc').map(r=>r.name);if(foes.length)jot('fight','a fight with '+foes.join(', '));}jbFight(true);   // 📖 🎵
   renderInit();dm_save();startAutoRefresh();
 }
 function rollMissingInit(){
@@ -1659,7 +2350,7 @@ function nextTurn(){
   document.getElementById('initRound').textContent=initRound;
   renderInit();dm_save();
 }
-function resetInit(){if(!confirm('End the encounter and clear it?'))return;initiative=[];initRound=1;initTurnIdx=0;initActive=false;encEid=0;renderInit();dm_save();startAutoRefresh();}
+function resetInit(){if(!confirm('End the encounter and clear it?'))return;jbFight(false);initiative=[];initRound=1;initTurnIdx=0;initActive=false;encEid=0;renderInit();dm_save();startAutoRefresh();}
 function combHPAdj(i,delta){const r=initiative[i];if(!r)return;if(r.type==='pc'){quickHP(r.playerKey,delta);}else{r.hp=Math.max(0,(parseInt(r.hp)||0)+delta);dm_save();}renderInit();encFloat(i,delta);}
 function encFloat(i,delta){
   delta=parseInt(delta)||0;if(!delta)return;
@@ -1715,7 +2406,7 @@ function pushBattle(){
   const out=initiative.map(r=>{const hp=combHP(r);return {name:r.name,kind:r.type,init:r.init,hp:hp.cur,hpMax:hp.max,types:r.types||[],conditions:combConds(r),pk:r.playerKey||'',ac:r.sb&&r.sb.ac,spd:r.sb&&r.sb.spd};});   // ac/spd: the board shows a foe's movement
   const payload={active:initActive&&initiative.length>0,round:initRound,turn:initTurnIdx,eid:encEid,list:out};
   const s=JSON.stringify(payload);if(s===_lastInit)return;_lastInit=s;
-  lastData._battle=payload; postMeta('battle',payload);
+  lastData._battle=payload; postMeta('battle',payload);watchDowns(out);   // 📖 knockouts go in the journal
 }
 
 // ── POKÉMON STAT BLOCKS (the DM's formula) ──
@@ -1770,6 +2461,7 @@ function npcRoll(i,n){
     const dm=npcDice(m.d,st,xv);if(dm)out.push(tag+'Dmg '+dm.total+' ('+dm.detail+')');}
   const text=r.name+' used '+n+(xv!=null?' (X='+xv+')':'')+': '+(out.join(' · ')||'no roll needed')+(m.fx?'. '+m.fx:'');
   const el=document.getElementById('diceResult');if(el)el.innerHTML='<div class="big-roll'+(crit?' crit':'')+'">'+x(n)+'</div><div class="roll-detail">'+x(text)+'</div>';
+  if(campaignId&&Sync.fb())Sync.boardFx(campaignId,'n_'+String(r.name).replace(/[.#$\[\]\/]/g,'_'),{a:/special/i.test(m.s||'')?'Cast':'Attack',ty:m.type||'',tg:'',n:tbId('f')}).catch(()=>{});   // ✨ the move's animation + sound on the board
   npcFlash(text);if(campaignId&&Sync.ready())Sync.pushLog(campaignId,{who:r.name,text:'⚔ '+n+(xv!=null?' (X='+xv+')':'')+': '+(out.join(' · ')||'no roll needed'),t:Date.now()}).then(()=>{if(!Sync.fb())doRefresh();}).catch(()=>{});}
 function npcFlash(t){let d=document.getElementById('npcToast');if(!d){d=document.createElement('div');d.id='npcToast';d.className='npc-toast';document.body.appendChild(d);}
   d.textContent=t;d.classList.add('show');clearTimeout(npcFlash._t);npcFlash._t=setTimeout(()=>d.classList.remove('show'),7000);}
@@ -2033,7 +2725,7 @@ function registerPWA(){
   }catch(e){}
 }
 registerPWA();
-dm_load();
+dm_load();if(PRACTICE)setTimeout(practiceBoot,0);   // 🧪
 {const fi=document.getElementById('fbInp');if(fi)fi.value=FB_URL||'';}
 if(Sync.ready()&&campaignId){
   document.getElementById('campaignInp').value=campaignId;

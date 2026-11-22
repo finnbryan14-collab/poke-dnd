@@ -91,7 +91,7 @@ button{cursor:pointer;border:none;background:none}
 .paint textarea{font:inherit;font-size:12.5px;resize:vertical;min-height:52px}
 .pz-msg{margin-top:6px}.pz-note{margin-top:4px;opacity:.7;font-size:11px}
 .aoe-bar{position:absolute;left:50%;bottom:80px;transform:translateX(-50%);display:none;gap:4px;padding:5px;border-radius:14px;z-index:5;background:rgba(18,20,30,.92);border:1px solid var(--bg5);flex-wrap:wrap;justify-content:center;max-width:calc(100% - 16px)}
-.aoe-bar button{padding:5px 9px;border-radius:9px;font-size:12px;font-weight:700;color:var(--tx2)}.aoe-bar button:hover{background:var(--bg4)}.aoe-bar button.on{background:var(--gold);color:#1a1300}
+.aoe-bar button{padding:5px 9px;border-radius:9px;font-size:12px;font-weight:700;color:var(--tx2)}.aoe-bar .dcol{width:26px;height:26px;padding:0;border-radius:50%;background:var(--dc)!important;border:2px solid rgba(255,255,255,.3)}.aoe-bar .dcol.on{border-color:#fff;box-shadow:0 0 0 2px var(--dc)}.aoe-bar .dtip{font-size:11px;color:var(--tx3);align-self:center;padding:0 5px}.aoe-bar button:hover{background:var(--bg4)}.aoe-bar button.on{background:var(--gold);color:#1a1300}
 .tpl-l{font:800 12px var(--font);color:#fff;background:rgba(0,0,0,.62);border:2px solid var(--c,#ffce4d);padding:2px 8px;border-radius:9px;white-space:nowrap;pointer-events:none}
 .ruler-l{font:800 13px var(--font);background:var(--gold);color:#1a1300;padding:2px 9px;border-radius:9px;box-shadow:0 2px 10px rgba(0,0,0,.55)}
 
@@ -238,6 +238,22 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
   background:rgba(16,21,31,.96);border:2px solid var(--acc);border-radius:12px;padding:8px 14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:90%;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 
+.emo{position:relative;min-width:42px;height:42px;padding:0 7px;border-radius:21px;background:#fff;border:3px solid #23283a;display:flex;align-items:center;justify-content:center;font:700 23px/1 var(--font);color:#e53935;box-shadow:0 4px 12px rgba(0,0,0,.45);animation:emoPop 2.8s ease-out forwards;margin-bottom:10px}
+.emo::after{content:'';position:absolute;left:50%;bottom:-10px;margin-left:-7px;border:7px solid transparent;border-top-color:#23283a;border-bottom:0}
+@keyframes emoPop{0%{transform:scale(0) translateY(10px)}12%{transform:scale(1.18)}20%{transform:scale(1)}85%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+.dice-l{font:800 14px var(--font-display);color:#fff;background:rgba(0,0,0,.62);border:2px solid var(--c,#ffce4d);border-radius:9px;padding:1px 9px;white-space:nowrap;animation:fadeUp 3.2s forwards}
+.dice-l.n20{color:#1a1300;background:var(--gold);border-color:#fff;font-size:17px;box-shadow:0 0 18px rgba(255,206,77,.9)}
+.emo-row .btn{min-width:34px;font-size:15px;padding:3px 5px}
+.dmgf{font:800 23px var(--font-display);-webkit-text-stroke:1.5px rgba(0,0,0,.6);text-shadow:0 2px 6px rgba(0,0,0,.6);animation:dmgUp 1.5s ease-out forwards;margin-bottom:8px}
+.dmgf.hurt{color:#ff5d5d}.dmgf.heal{color:#3ddf93}.cb .dmgf.hurt{color:#ff8a1f}.cb .dmgf.heal{color:#4a9be8}
+@keyframes dmgUp{0%{opacity:0;transform:translateY(8px) scale(.6)}15%{opacity:1;transform:translateY(0) scale(1.18)}30%{transform:scale(1)}100%{opacity:0;transform:translateY(-36px)}}
+.ic,.ic-act{display:inline-flex;align-items:center;gap:5px}
+.ic-pic{width:20px;height:20px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(255,255,255,.85);background:#fff}
+.ic-pic.ini{display:inline-flex;align-items:center;justify-content:center;font:700 8.5px var(--font);color:#fff;letter-spacing:0}
+body.tv .tb,body.tv .dock,body.tv #panel,body.tv #card,body.tv .brand,body.tv .leds,body.tv .ic-act,body.tv #aoeBar{display:none!important}
+body.tv #app{grid-template-columns:minmax(0,1fr)}
+#stage #tbJb{position:absolute;left:12px;bottom:16px;z-index:7}
+@media (max-width:760px){#stage #tbJb{bottom:auto;top:8px;left:8px}}
 @media (max-width:760px){
   #app{grid-template-columns:minmax(0,1fr)}
   .topbar{gap:8px;padding:7px 10px}
@@ -249,6 +265,7 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
   .topbar{flex-wrap:wrap;row-gap:5px}.init{order:9;flex:1 1 100%;padding:1px 0 2px}   /* phones: the turn order gets its own row */
   .ic,.ic-r{padding:6px 10px;font-size:12px}.ic-act{padding:7px 12px;font-size:12.5px;order:-1}.ic-r{order:-2}   /* turn buttons first, so they never scroll off */
   .roll-feed{bottom:72px;max-width:calc(100% - 16px);left:8px}
+  .ic-pic,.ic-pic.ini{display:none}   /* phones: no room for portraits in the turn order (names stay) */
   .btn.sm{min-height:32px}   /* phones: easier to tap */
   .dock{bottom:10px;gap:3px;padding:5px}.dk{width:40px;height:42px}.dk small{font-size:7.5px}
 }
@@ -265,6 +282,10 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
     <div class="tb">
       <button class="tb-btn" id="bRolls" title="Recent rolls" style="display:none">🎲<span class="tl-txt"> Rolls</span></button>
       <button class="tb-btn" id="bHo" title="Handouts from the DM" style="display:none">📜<span class="tl-txt"> Handouts</span></button>
+      <button class="tb-btn" id="bWorld" title="The world map" style="display:none">🗺<span class="tl-txt"> World</span></button>
+      <button class="tb-btn" id="bDex" title="The Pokémon the party has met" style="display:none">📒<span class="tl-txt"> Pokédex</span></button>
+      <button class="tb-btn" id="bPeople" title="People the party has met" style="display:none">📇<span class="tl-txt"> People</span></button>
+      <button class="tb-btn" id="bPause" title="Pause card: ask the DM for a pause or to move on, without your name" style="display:none">✋</button>
       <button class="tb-btn" id="bNames" title="Show names (N)">🏷<span class="tl-txt"> Names</span></button>
       <button class="tb-btn" id="bFollow" title="Camera follows whoever's turn it is (F)">🎯<span class="tl-txt"> Follow turn</span></button>
       <button class="tb-btn" id="bFull" title="Full screen">⛶</button>
@@ -277,8 +298,10 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
       <button class="dk on" data-tool="select" title="Move tokens / pan the map (V)">🖐<small>Move</small></button>
       <button class="dk" data-tool="measure" title="Measure distance (M)">📏<small>Measure</small></button>
       <button class="dk" data-tool="ping" title="Ping a spot for everyone (or double-click)">📍<small>Ping</small></button>
+      <button class="dk" data-tool="draw" title="Draw on the map for everyone: arrows and circles to plan a move (D)">✏️<small>Draw</small></button>
       <button class="dk dm-only" data-tool="fog" title="Paint fog of war">🌫<small>Fog</small></button>
       <button class="dk dm-only" data-tool="scenery" title="Build scenery: place 3D props, paint the ground">🌲<small>Scenery</small></button>
+      <button class="dk dm-only" id="bShow" title="Show everyone what you’re looking at: every player’s camera moves here">📽<small>Show</small></button>
       <span class="dk-sep"></span>
       <button class="dk" id="bTilt" title="Tilt the camera — tokens stand up (T)">🎬<small>Tilt</small></button>
       <button class="dk" id="bFit" title="Fit the whole map on screen (C)">⌖<small>Fit</small></button>
@@ -383,6 +406,7 @@ function lsJSON(k){try{return JSON.parse(localStorage.getItem(k)||'{}')||{};}cat
 const Q=new URLSearchParams(location.search);
 let FB=(Q.get('fb')||lsGet(FB_KEY)||DEFAULT_FB).trim().replace(/\/+$/,'');
 let CID=(Q.get('c')||'').trim(), ME=fbKey(Q.get('p')||''), IS_DM=Q.get('dm')==='1';
+const TV=Q.get('tv')==='1'&&!IS_DM;   // 📺 a screen for the table's TV or a stream: no controls, follows the turn (section 11)
 const PREFS=Object.assign({names:true,panel:innerWidth>760},lsJSON(PREF_KEY));
 function savePrefs(){try{localStorage.setItem(PREF_KEY,JSON.stringify(PREFS));}catch(e){}}
 
@@ -552,8 +576,9 @@ function applyScene(sid,sd){
     if(newScene)fitView();
   }
   grid.visible=sd.grid!==false;if(document.activeElement?.dataset?.sf!=='gridAlpha')gridMat.opacity=num(sd.gridAlpha,.22);
-  const fsig=(sd.fogOn?'1':'0')+'|'+cols+'x'+rows+'|'+(sd.fog||'');
-  if(fsig!==MAP.fsig&&!fogDraft){MAP.fsig=fsig;drawFog(sd.fogOn,fogCells(sd,cols,rows),cols,rows);}
+  sightUpdate(sid,sd);const dim=SIGHT.on&&!IS_DM;   // 👁 players see squares out of sight dimmed
+  const fsig=(sd.fogOn||SIGHT.on?'1':'0')+'|'+cols+'x'+rows+'|'+(sd.fog||'')+(dim?'|'+SIGHT.key:'');
+  if(fsig!==MAP.fsig&&!fogDraft){MAP.fsig=fsig;drawFog(sd.fogOn||SIGHT.on,fogCells(sd,cols,rows),cols,rows,dim?SIGHT.cells:null);}
   const tsig=cols+'x'+rows+'|'+(sd.terr||'');   // painted ground (section 14)
   if(tsig!==MAP.tsig&&!terrDraft){MAP.tsig=tsig;drawTerr(terrCells(sd,cols,rows),cols,rows);}
   const mk=maskCells(sd,cols,rows),msig=cols+'x'+rows+'|'+(mk||'');if(msig!==MAP.msig){MAP.msig=msig;drawMask(mk,cols,rows);}
@@ -571,10 +596,10 @@ function setGround(sd,sig){
 // Fog is one character per grid square, row by row: '1' = revealed, anything else = hidden.
 function fogCells(sd,cols,rows){const s=String(sd.fog||'');let o='';for(let i=0;i<cols*rows;i++)o+=s[i]==='1'?'1':'0';return o;}
 function inFog(x,y){const sd=sceneData();if(!sd||!sd.fogOn)return false;const c=Math.floor(x),r=Math.floor(y);if(c<0||r<0||c>=MAP.cols||r>=MAP.rows)return false;return (sd.fog||'')[r*MAP.cols+c]!=='1';}
-function drawFog(on,cells,cols,rows){
+function drawFog(on,cells,cols,rows,sight){
   fogMesh.visible=!!on;if(!on)return;
   const small=document.createElement('canvas');small.width=cols;small.height=rows;const sx=small.getContext('2d'),img=sx.createImageData(cols,rows);
-  for(let i=0;i<cols*rows;i++){const v=cells[i]==='1'?0:255;img.data[i*4]=img.data[i*4+1]=img.data[i*4+2]=v;img.data[i*4+3]=255;}
+  for(let i=0;i<cols*rows;i++){const v=cells[i]==='1'?(sight&&!sight[i]?150:0):255;/* explored but out of sight: dimmed */img.data[i*4]=img.data[i*4+1]=img.data[i*4+2]=v;img.data[i*4+3]=255;}
   sx.putImageData(img,0,0);
   const K=10;   // a new size needs a fresh GPU copy, or the old-sized image sticks around
   if(fogCanvas.width!==cols*K||fogCanvas.height!==rows*K){fogCanvas.width=cols*K;fogCanvas.height=rows*K;fogTex.dispose();}
@@ -651,7 +676,7 @@ const pkey=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u03
 function dexEntry(name){const n=String(name||'').replace(/\s+\d+$/,'').trim();if(!n)return null;const w=n.split(/\s+/);   // "Pidgey 2", "Wild Pidgey", "Onix the Boss"
   return POKE_NT[pkey(n)]||POKE_NT[pkey(w[w.length-1])]||POKE_NT[pkey(w[0])]||null;}
 const ART='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
-function autoArt(t,info){if(!t||t.kind==='pc')return '';const e=dexEntry(t.kind==='comp'?(info.species||info.name):info.name);return e?ART+e.num+'.png':'';}
+function autoArt(t,info){if(!t||t.kind==='pc')return '';const e=dexEntry(t.sp||(t.kind==='comp'?(info.species||info.name):info.name));return e?ART+e.num+'.png':'';}   // t.sp: the species it evolved into
 // A designed look (NPC design or workshop model) still gets a picture: its model is drawn once, on each screen, into a small
 // canvas (head and shoulders for people). Nothing is uploaded.
 const PICS=new Map();let picRT=null,picScene=null,picCam=null;
@@ -955,17 +980,18 @@ class Token{
     const lk=this.look,mref=!m3d()?'':lk.model||(lk.kit&&kitsOf()[lk.kit]?'kit:'+lk.kit+':'+kitStamp(lk.kit):'')||(lk.npc?npcRef(lk.npc):'');   // 3D (if the DM turned it on): an uploaded .glb, else a workshop model, else an NPC design   // an uploaded .glb, else a workshop model, else an NPC design
     if(mref!==this.modelRef){this.modelRef=mref;this.setModel(mref);}
     if(this.model)this.fitModel();
-    const pct=(info.hpMax&&info.hp!=null)?clamp(info.hp/info.hpMax,0,1):-1,rp=pct<0?-1:Math.round(pct*100);
-    if(rp!==this.hpPct){this.hpPct=rp;this.track.visible=rp>=0;this.hp.visible=rp>0;
+    const fm=t.kind==='npc'&&!IS_DM?foeHp():'exact',p0=(info.hpMax&&info.hp!=null)?clamp(info.hp/info.hpMax,0,1):-1;   // players see a foe's HP as the DM chose (meta/foehp)
+    const pct=fm==='none'?-1:(fm==='vague'&&p0>0?Math.ceil(p0*4)/4:p0),rp=pct<0?-1:Math.round(pct*100),cb=!!tbPrefs().cb;
+    if(rp!==this.hpPct||cb!==this.cb){this.hpPct=rp;this.cb=cb;this.track.visible=rp>=0;this.hp.visible=rp>0;
       if(rp>0){this.hp.geometry.dispose();const L=Math.PI*2*rp/100;this.hp.geometry=RING(.505,.575,Math.PI/2-L,L);}
-      this.hpMat.color.set(rp>50?0x3ddf93:rp>25?0xffce4d:0xff5d5d);}
+      this.hpMat.color.set(rp>50?(cb?0x4a9be8:0x3ddf93):rp>25?0xffce4d:(cb?0xff8a1f:0xff5d5d));}   // 🎨 colour-blind: blue → yellow → orange
     this.down=!!(info.hpMax&&info.hp!=null&&info.hp<=0);
-    if(info.hp!=null&&this.prevHp!=null){if(info.hp<this.prevHp)this.act(info.hp<=0?'Down':'Hurt');else if(this.prevHp<=0&&info.hp>0)this.stand();}
+    if(info.hp!=null&&this.prevHp!=null){if(info.hp<this.prevHp)this.act(info.hp<=0?'Down':'Hurt');else if(this.prevHp<=0&&info.hp>0)this.stand();if(info.hp!==this.prevHp)floatNum(this,info.hp-this.prevHp);}
     if(info.hp!=null)this.prevHp=info.hp;
     this.discMat.color.set(this.down?0x777777:0xffffff);this.cardMat.color.set(this.down?0x8a8a8a:0xffffff);this.cardMat.rotation=this.down?-1.3:0;
     this.turn=isTurnOf(t,info);this.glow.visible=this.turn;this.selR.visible=selected===this.id;
     this.ghost=IS_DM&&!!t.hidden;
-    this.g.visible=IS_DM||!(t.hidden||(t.kind==='npc'&&inFog(this.target.x,this.target.y)));   // fog hides foes, never the party
+    this.g.visible=IS_DM||!(t.hidden||(t.kind==='npc'&&(inFog(this.target.x,this.target.y)||!inSight(this.target.x,this.target.y))));   // fog (and 👁 line of sight) hides foes, never the party
     this.discMat.opacity=this.ghost?.45:1;
     this.renderLabel();
   }
@@ -1050,10 +1076,13 @@ class Token{
     if(this.cardMat.map)this.cardMat.map.dispose();this.cardMat.dispose();   // models are shared between tokens, so they stay cached
   }
 }
+let TOKSID='';
 function syncTokens(sid){
-  const toks=sid?tokensOf(sid):{},looks=board().looks||{};
-  for(const [id,tk] of TOK)if(!toks[id]){tk.dispose();TOK.delete(id);if(selected===id)selected='';}
-  for(const id in toks){const t=toks[id];if(!t||typeof t!=='object')continue;let tk=TOK.get(id);if(!tk){tk=new Token(id);TOK.set(id,tk);}tk.update(t,tokenInfo(t),looks[t.look]||null);}
+  const toks=sid?tokensOf(sid):{},looks=board().looks||{},same=sid===TOKSID;TOKSID=sid;let cried=false;
+  for(const [id,tk] of TOK)if(!toks[id]){TOK.delete(id);if(selected===id)selected='';if(!firstSync&&tk.data&&tk.data.kind==='comp'&&tk.g.visible)recall(tk);else tk.dispose();}   // 🔴 a companion leaves in a red beam
+  for(const id in toks){const t=toks[id];if(!t||typeof t!=='object')continue;let tk=TOK.get(id),born=false;if(!tk){tk=new Token(id);TOK.set(id,tk);born=!firstSync;}tk.update(t,tokenInfo(t),looks[t.look]||null);
+    if(born&&t.kind==='comp'&&tk.g.visible)sendOut(tk);
+    if(born&&same&&!cried&&tk.g.visible&&t.kind!=='pc'){const e=dexEntry(t.sp||(t.kind==='comp'?(tk.info.species||tk.info.name):tk.info.name));if(e){cried=true;setTimeout(()=>tbCry(e.num),t.kind==='comp'?700:0);}}}   // 🔊 a Pokémon arrives
 }
 function findTokenFor(entry){for(const tk of TOK.values()){if(tk.g.visible&&isTurnOf(tk.data,tk.info)&&entry===activeTurn())return tk;}
   for(const tk of TOK.values()){if(!tk.g.visible)continue;if(entry.pk&&tk.data.pk&&fbKey(entry.pk)===fbKey(tk.data.pk))return tk;if((entry.name||'').toLowerCase()===tk.info.name.toLowerCase())return tk;}return null;}
@@ -1063,7 +1092,7 @@ const lastFx={};
 function handleFx(fx){
   for(const k in fx||{}){const v=fx[k];if(!v||typeof v!=='object')continue;const sig=String(v.n||'');if(lastFx[k]===sig)continue;lastFx[k]=sig;if(firstSync)continue;
     for(const tk of TOK.values()){const d=tk.data;if(!d)continue;
-      if(k==='tok_'+tk.id||(d.kind==='pc'&&k==='pc_'+fbKey(d.pk))||(d.kind==='comp'&&k==='cp_'+fbKey(d.pk)+'_'+d.cid))tk.act(v.a);}}
+      if(k==='tok_'+tk.id||(d.kind==='pc'&&k==='pc_'+fbKey(d.pk))||(d.kind==='comp'&&k==='cp_'+fbKey(d.pk)+'_'+d.cid)||(d.kind==='npc'&&tk.info&&k==='n_'+fxName(tk.info.name))){tk.act(v.a);if(v.ty&&tk.g.visible)moveFx(tk,v.ty,v.tg);break;}}}
 }
 function myToken(){for(const tk of TOK.values())if(tk.data.kind==='pc'&&fbKey(tk.data.pk)===ME)return tk;return null;}
 
@@ -1087,8 +1116,9 @@ const feet=(a,b)=>Math.round(Math.max(Math.abs(b.x-a.x),Math.abs(b.y-a.y)))*FT_P
 function onDown(e){
   if(e.button===2||!sceneData())return;
   downAt={x:e.clientX,y:e.clientY,moved:false,empty:false};
-  if(e.pointerType==='touch'){clearTimeout(lpTimer);const ev={clientX:e.clientX,clientY:e.clientY};lpTimer=setTimeout(()=>{if(downAt&&!downAt.moved&&!dragging){const g=groundAt(ev);if(g)sendPing(g);}},650);}
+  if(e.pointerType==='touch'){clearTimeout(lpTimer);const ev={clientX:e.clientX,clientY:e.clientY};lpTimer=setTimeout(()=>{if(downAt&&!downAt.moved&&!dragging&&!drawing){const g=groundAt(ev);if(g)sendPing(g);}},650);}
   if(tool==='ping'){const g=groundAt(e);if(g)sendPing(g);controls.enabled=false;return;}
+  if(tool==='draw'){const g=groundAt(e);if(g){controls.enabled=false;drawStart(g);}return;}   // ✏️
   if(tool==='fog'&&IS_DM){controls.enabled=false;painting={reveal:(fogMode==='reveal')!==e.shiftKey};paintAt(e);return;}
   if(tool==='scenery'&&IS_DM){if(sceneryDown(e))controls.enabled=false;return;}   // section 14
   if(tool==='shape'&&IS_DM){const g=groundAt(e);if(g){controls.enabled=false;const c={x:Math.floor(g.x),y:Math.floor(g.y)};shapeDrag={a:c,b:c};drawShapeBox();}return;}
@@ -1101,6 +1131,7 @@ function onDown(e){
 }
 addEventListener('pointermove',e=>{
   if(downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>6)downAt.moved=true;
+  if(drawing){const g=groundAt(e);if(g)drawMove(g);return;}
   if(dragging){const g=groundAt(e);if(!g)return;const tk=dragging.tk,h=tk.size/2;
     tk.target.set(clamp(g.x+dragging.ox,h,MAP.cols-h),clamp(g.y+dragging.oy,h,MAP.rows-h));
     const sp=snapTok(tk.target.x,tk.target.y,tk.size),ft=feet(dragging.start,sp),spd=tk.info&&tk.info.speed,u=mvUsed(tk.data),tot=u.k?u.ft+ft:ft,lim=spd?(u.dash?spd*2:spd):0;
@@ -1115,7 +1146,7 @@ addEventListener('pointermove',e=>{
     const h=tk?tk.id:'';if(h!==hovered){const old=TOK.get(hovered);hovered=h;if(old)old.renderLabel();if(tk)tk.renderLabel();}}
 });
 addEventListener('pointerup',e=>{
-  clearTimeout(lpTimer);sceneryUp(e);
+  clearTimeout(lpTimer);sceneryUp(e);if(drawing)drawEnd();
   if(dragging){const tk=dragging.tk,p=snapTok(tk.target.x,tk.target.y,tk.size);tk.target.set(p.x,p.y);dragLock.set(tk.id,performance.now()+900);
     const u=mvUsed(tk.data),ft=feet(dragging.start,p);sendPos(tk,p.x,p.y,true,u.k&&ft?{k:u.k,ft:u.ft+ft,dash:u.dash||null}:null);tk.dist='';dragging=null;tk.renderLabel();renderer.domElement.style.cursor='';}
   if(shapeDrag){applyShape(shapeDrag.a,shapeDrag.b,shapeMode==='add');shapeDrag=null;shapeBox.visible=false;}
@@ -1222,10 +1253,57 @@ function tplMove(g){const T=tplDraft;let d;
   T.r=Math.max(1,Math.round(d));T.a=Math.atan2(g.y-T.y,g.x-T.x);drawTpl('_draft',T,myInfo().color,'');}
 function tplCommit(){const T=tplDraft,sid=sceneId(),me=myInfo();tplDraft=null;dropTpl('_draft');if(!sid||!T)return;
   write('board/tpl/'+tplWho(),{s:T.s,x:+T.x.toFixed(2),y:+T.y.toFixed(2),a:+T.a.toFixed(3),r:T.r,tid:T.tid||null,sid,by:me.name,color:me.color,t:Date.now()});renderAoeBar();}
-function renderAoeBar(){const el=$('#aoeBar');if(!el)return;if(tool!=='measure'){el.style.display='none';return;}
+function renderAoeBar(){const el=$('#aoeBar');if(!el)return;if(tool==='draw'){drawBarRender(el);return;}if(tool!=='measure'){el.style.display='none';return;}
   const L=board().tpl||{},mine=L[tplWho()];
   const h=Object.entries(TPL_N).map(([k,[ic,n,tip]])=>'<button class="'+(aoe===k?'on':'')+'" data-act="aoe" data-v="'+k+'" title="'+tip+'">'+ic+' '+n+'</button>').join('')
     +(mine?'<button data-act="tplClear" title="Take your template off the map">✕ Clear mine</button>':'')+(IS_DM&&Object.keys(L).length?'<button data-act="tplAll" title="Take everyone’s templates off the map">✕ Clear all</button>':'');
+  if(el.dataset.h!==h){el.dataset.h=h;el.innerHTML=h;}el.style.display='flex';}
+// ── ✏️ Draw on the map (Finn 2026-11-22): board/draw/<scene>/<id> = {by, c (colour), p ("x,y x,y …" in squares), w (width),
+// a (1 = an arrow head), pin (the DM kept it), t}. Anyone draws with the ✏️ tool, and the others see the line grow. A drawing
+// fades after a minute unless the DM pinned it; then whoever drew it (or the DM) deletes it.
+const DRAW_COLS=['#ffce4d','#ff5d5d','#4a9be8','#3ddf93','#c77dff','#ffffff'],DRAWOBJ=new Map(),DRAW_LIFE=60,DRAW_FADE=15;
+let drawing=null,drawCol='',drawArrow=false,drawPin=false;
+const drawsOf=sid=>{const d=board().draw;return (d&&sid&&d[sid]&&typeof d[sid]==='object')?d[sid]:{};};
+const drawWho=()=>ME||'DM';
+function drawDef(){const c=TYPE_COLORS[(players()[ME]||{}).type1];if(IS_DM||!/^#[0-9a-f]{6}$/i.test(c||''))return '#ffce4d';const n=parseInt(c.slice(1),16),f=v=>Math.round(v+(255-v)*.35).toString(16).padStart(2,'0');return '#'+f(n>>16)+f(n>>8&255)+f(n&255);}   // your type's colour, lightened so it shows on grass
+function drawColNow(){return drawCol||drawDef();}
+function drawVal(dr){return {by:drawWho(),c:dr.c,p:dr.pts.map(q=>q[0].toFixed(2)+','+q[1].toFixed(2)).join(' '),w:.14,a:dr.a||null,pin:dr.pin||null,t:TS};}
+function drawStart(g){const sid=sceneId();if(!sid)return;drawing={id:uid('d'),sid,pts:[[g.x,g.y]],c:drawColNow(),a:drawArrow?1:0,pin:IS_DM&&drawPin?true:null,sent:0,busy:false,q:Promise.resolve()};drawLocal();}
+function drawMove(g){const P=drawing.pts,l=P[P.length-1];if(Math.hypot(g.x-l[0],g.y-l[1])<.12||P.length>=400)return;P.push([g.x,g.y]);drawLocal();
+  if(!drawing.busy&&performance.now()-drawing.sent>250)drawSend(drawing);}
+function drawLocal(){const dr=drawing;if(!dr)return;const v=drawVal(dr);v.t=Date.now();tree=fbSetAt(tree,'/board/draw/'+dr.sid+'/'+dr.id,v);queue();}   // instant on this screen
+function drawSend(dr){dr.sent=performance.now();dr.busy=true;const v=drawVal(dr);dr.q=dr.q.then(()=>fb('PUT','campaigns/'+CID+'/board/draw/'+dr.sid+'/'+dr.id,v)).catch(()=>{}).then(()=>{dr.busy=false;});return dr.q;}   // in order, so the last one wins
+function drawEnd(){const dr=drawing;drawing=null;if(!dr)return;
+  if(dr.pts.length<2){tree=fbSetAt(tree,'/board/draw/'+dr.sid+'/'+dr.id,null);queue();return;}
+  drawing=dr;drawLocal();drawing=null;   // the finished line, right away on this screen
+  drawSend(dr).then(()=>{if(!dr.pin)setTimeout(()=>{const v=drawsOf(dr.sid)[dr.id];if(v&&!v.pin)write('board/draw/'+dr.sid+'/'+dr.id,null);},(DRAW_LIFE+2)*1000);});}
+function strokeGeo(pts,w){const n=pts.length,pos=[],idx=[];
+  for(let i=0;i<n;i++){const a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)],q=pts[i];let dx=b[0]-a[0],dy=b[1]-a[1];const l=Math.hypot(dx,dy)||1;dx/=l;dy/=l;
+    pos.push(q[0]-dy*w/2,0,q[1]+dx*w/2,q[0]+dy*w/2,0,q[1]-dx*w/2);if(i)idx.push(2*i-2,2*i-1,2*i,2*i-1,2*i+1,2*i);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);return g;}
+function arrowGeo(pts){const n=pts.length,e=pts[n-1];let k=n-2;while(k>0&&Math.hypot(e[0]-pts[k][0],e[1]-pts[k][1])<.4)k--;const a=pts[k];let dx=e[0]-a[0],dy=e[1]-a[1];const l=Math.hypot(dx,dy)||1;dx/=l;dy/=l;
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([e[0]+dx*.38,0,e[1]+dy*.38,e[0]-dy*.3,0,e[1]+dx*.3,e[0]+dy*.3,0,e[1]-dx*.3],3));return g;}
+function dropDraw(id){const o=DRAWOBJ.get(id);if(!o)return;world.remove(o.g);o.g.traverse(m=>{if(m.geometry)m.geometry.dispose();});o.mat.dispose();DRAWOBJ.delete(id);}
+function syncDraw(sid){const D=drawsOf(sid);
+  for(const [id,o] of DRAWOBJ)if(o.sid!==sid||!D[id])dropDraw(id);
+  for(const id in D){const v=D[id];if(!v||typeof v.p!=='string')continue;const sig=v.p.length+'|'+v.c+'|'+(v.a?1:0)+'|'+v.p.slice(-16);let o=DRAWOBJ.get(id);
+    if(o){o.pin=!!v.pin;if(o.sig===sig)continue;}
+    const pts=v.p.split(' ').map(q=>q.split(',').map(Number)).filter(q=>q.length===2&&isFinite(q[0])&&isFinite(q[1]));if(pts.length<2)continue;
+    const born=o?o.born:performance.now();if(o)dropDraw(id);
+    const mat=new THREE.MeshBasicMaterial({color:new THREE.Color(/^#[0-9a-f]{6}$/i.test(v.c||'')?v.c:'#ffce4d'),transparent:true,opacity:.95,depthWrite:false,side:THREE.DoubleSide}),g=new THREE.Group();
+    const m=new THREE.Mesh(strokeGeo(pts,clamp(+v.w||.14,.05,.5)),mat);m.renderOrder=8;g.add(m);
+    if(v.a&&pts.length>2){const ah=new THREE.Mesh(arrowGeo(pts),mat);ah.renderOrder=8;g.add(ah);}
+    g.position.y=.075;world.add(g);DRAWOBJ.set(id,{g,mat,sig,sid,born,pin:!!v.pin,by:v.by});}}
+function tickDraw(){if(!DRAWOBJ.size)return;const now=performance.now();
+  for(const [id,o] of DRAWOBJ){if(o.pin||(drawing&&drawing.id===id)){o.mat.opacity=.95;o.g.visible=true;continue;}const left=DRAW_LIFE-(now-o.born)/1000;
+    o.mat.opacity=left>DRAW_FADE?.95:Math.max(0,left/DRAW_FADE*.95);o.g.visible=left>0;
+    if(left<-4&&!o.gone&&(IS_DM||o.by===drawWho())){o.gone=true;write('board/draw/'+o.sid+'/'+id,null);}}}   // tidy up after a closed screen
+function drawBarRender(el){const D=drawsOf(sceneId()),mine=Object.values(D).some(v=>v&&v.by===drawWho()),c=drawColNow(),cols=[...new Set([drawDef(),...DRAW_COLS])];
+  const h=cols.map(k=>'<button class="dcol'+(c===k?' on':'')+'" data-act="dcol" data-v="'+k+'" style="--dc:'+k+'" title="Pen colour"></button>').join('')
+    +'<button class="'+(drawArrow?'on':'')+'" data-act="darrow" title="Put an arrow head on the end of each line">➜ Arrow</button>'
+    +(IS_DM?'<button class="'+(drawPin?'on':'')+'" data-act="dpin" title="Your drawings stay until you rub them out">📌 Keep mine</button>':'')
+    +(mine?'<button data-act="dclear" title="Rub out your drawings">🧽 Clear mine</button>':'')+(IS_DM&&Object.keys(D).length?'<button data-act="dclearAll" title="Rub out every drawing on this map">🧽 Clear all</button>':'')
+    +'<span class="dtip">'+(IS_DM&&drawPin?'Yours stay put':'Drawings fade after a minute')+'</span>';
   if(el.dataset.h!==h){el.dataset.h=h;el.innerHTML=h;}el.style.display='flex';}
 // ruler
 const ruler={g:new THREE.Group(),t:0};
@@ -1268,11 +1346,12 @@ function newScene(){
 function showToPlayers(sid){write('board/active',sid);viewSid='';toast('▶ Players now see “'+((board().scenes||{})[sid]||{}).name+'”');}
 function deleteScene(sid){
   const sc=board().scenes||{};if(!confirm('Delete the scene “'+(sc[sid]||{}).name+'”, its tokens and its scenery?'))return;
-  write('board/scenes/'+sid,null);write('board/tokens/'+sid,null);write('board/props/'+sid,null);
+  write('board/scenes/'+sid,null);write('board/tokens/'+sid,null);write('board/props/'+sid,null);write('board/draw/'+sid,null);
   if(board().active===sid){const other=Object.keys(board().scenes||{})[0]||null;write('board/active',other);}viewSid='';
 }
 function setSceneField(k,v){
   const sid=sceneId(),sd=sceneData();if(!sd)return;const o={};
+  if(k==='los'&&v)o.fogOn=true;   // line of sight works through the fog
   if(k==='cols'||k==='rows'){v=clamp(Math.round(v)||16,4,120);const oc=MAP.cols,or=MAP.rows,nc=k==='cols'?v:oc,nr=k==='rows'?v:or;
     if(sd.fog){const old=fogCells(sd,oc,or);let s='';for(let y=0;y<nr;y++)for(let x=0;x<nc;x++)s+=(x<oc&&y<or)?old[y*oc+x]:'0';o.fog=s;}   // keep revealed areas where they were
     if(sd.terr){const old=terrCells(sd,oc,or);let s='';for(let y=0;y<nr;y++)for(let x=0;x<nc;x++)s+=(x<oc&&y<or)?old[y*oc+x]:'.';o.terr=s;}}   // …and the painted ground
@@ -1333,13 +1412,20 @@ function renderTop(){
   const sd=sceneData(),b=board(),live=(b.scenes||{})[b.active];
   $('#sceneT').innerHTML=sd?esc(sd.name||'Untitled scene')+(IS_DM?(sceneId()===b.active?'<small>● Live — players see this</small>':'<small>✎ Editing · players see '+esc(live?live.name:'nothing')+'</small>'):''):(IS_DM?'No scene yet':'Waiting for the DM…');
   const bt=battle(),el=$('#init');
-  if(!bt){if(el.innerHTML)el.innerHTML='';return;}
+  if(!bt){if(el.innerHTML){el.innerHTML='';topH='';}return;}
   const myName=(myInfo().name||'').toLowerCase();
   const h='<span class="ic-r">⚔ Round '+(bt.round||1)+'</span>'+bt.list.map((r,i)=>{const down=r.hpMax&&r.hp<=0,me=(r.pk&&fbKey(r.pk)===ME)||(r.name||'').toLowerCase()===myName;
-    return '<button class="ic'+(i===(bt.turn||0)?' on':'')+(me?' me':'')+(down?' down':'')+'" data-i="'+i+'">'+(r.init!=null?r.init+' · ':'')+esc(r.name||'?')+'</button>';}).join('')
+    return '<button class="ic'+(i===(bt.turn||0)?' on':'')+(me?' me':'')+(down?' down':'')+'" data-i="'+i+'">'+icPic(r)+(r.init!=null?r.init+' · ':'')+esc(r.name||'?')+'</button>';}).join('')
     +turnBtnsHTML(bt);
-  if(el.innerHTML!==h)el.innerHTML=h;
+  if(topH!==h){topH=h;el.innerHTML=h;}
 }
+let topH='';const ICPIC=new Map();   // 🖼 the turn order's portraits (an uploaded picture is fetched once)
+function icPic(r){let tk=null;for(const t of TOK.values()){if(!t.g.visible||!t.data||!t.info)continue;
+    if(r.pk&&t.data.kind==='pc'&&fbKey(r.pk)===fbKey(t.data.pk)){tk=t;break;}if(!r.pk&&(r.name||'').toLowerCase()===t.info.name.toLowerCase()){tk=t;break;}}
+  const ref=tk&&tk.img,col=tk?tk.info.color:(TYPE_COLORS[(r.types||[])[0]]||'#9aa3b5');
+  if(ref){if(/^(https?|data|blob):/.test(ref))return '<img class="ic-pic" src="'+esc(ref)+'" alt="">';const c=ICPIC.get(ref);if(c)return '<img class="ic-pic" src="'+c+'" alt="">';
+    if(c===undefined){ICPIC.set(ref,null);assetData(ref).then(d=>{ICPIC.set(ref,d);topH='';renderTop();}).catch(()=>{});}}
+  return '<span class="ic-pic ini" style="background:'+col+'">'+esc(initials(r.name))+'</span>';}
 // The encounter is run from the DM's dashboard; these buttons send it requests (meta/next, meta/rolls/<me>) that it applies.
 function myRow(bt){const n=(myInfo().name||'').toLowerCase();return IS_DM?null:(bt.list||[]).find(r=>(r.pk&&fbKey(r.pk)===ME)||(r.kind==='pc'&&(r.name||'').toLowerCase()===n))||null;}
 function turnBtnsHTML(bt){
@@ -1366,8 +1452,10 @@ function renderEmpty(sd){
   if(el.dataset.h!==h){el.dataset.h=h;el.innerHTML=h;}
 }
 const typeOpts=sel=>'<option value="">— type —</option>'+Object.keys(TYPE_COLORS).map(t=>'<option'+(t===sel?' selected':'')+'>'+t+'</option>').join('');
-const gfxHTML=()=>'<div class="sec"><h3>🖥 Display</h3><div class="row" style="margin-top:0"><button class="btn'+(PREFS.low?' pri':'')+'" data-act="lowGfx">🐢 Low graphics: '+(PREFS.low?'on':'off')+'</button></div>'
-  +'<div class="tip">Turn it on if the board is slow or your phone gets warm: no shadows, fewer pixels and frames. Only this device changes.</div></div>';
+const gfxHTML=()=>'<div class="sec"><h3>🖥 Display</h3><div class="row" style="margin-top:0"><button class="btn'+(PREFS.low?' pri':'')+'" data-act="lowGfx">🐢 Low graphics: '+(PREFS.low?'on':'off')+'</button>'
+  +'<button class="btn'+(PREFS.dice!==false?' pri':'')+'" data-act="diceTog">🎲 3D dice: '+(PREFS.dice!==false?'on':'off')+'</button><button class="btn'+(tbPrefs().fx?' pri':'')+'" data-act="fxTog">🔔 Sounds: '+(tbPrefs().fx?'on':'off')+'</button><button class="btn'+(tbPrefs().cb?' pri':'')+'" data-act="cbTog" title="HP shows blue → yellow → orange instead of green → red">🎨 Colour-blind colours: '+(tbPrefs().cb?'on':'off')+'</button></div>'
+  +'<div class="tip">Low graphics helps if the board is slow or your phone gets warm: no shadows, fewer pixels and frames. Sounds are the dice, blips and your-turn chime (the music has its own volume). Only this device changes.</div>'
+  +(IS_DM?'<div class="row"><button class="btn" data-act="tvLink">📺 Copy a TV link</button></div><div class="tip">The board without controls, following whoever’s turn it is and your 📽 Show: for a TV at the table or a stream.</div>':'')+'</div>';
 const BLENDER_TIPS='<details><summary>Making a 3D model in Blender</summary><ol class="tip">'
   +'<li>Model the character standing on the ground, facing the <b>front view</b> (numpad 1).</li>'
   +'<li><b>File → Export → glTF 2.0</b>, Format: <b>glTF Binary (.glb)</b>. Tick <b>Selected Objects</b> and <b>Apply Modifiers</b>.</li>'
@@ -1422,6 +1510,8 @@ function panelHTML(){
     +'<div><label class="lbl">Weather</label><select class="inp" data-sf="wx">'+Object.entries(WEATHER).map(([k,n])=>'<option value="'+k+'"'+((WEATHER[sd.wx]?sd.wx:'none')===k?' selected':'')+'>'+n+'</option>').join('')+'</select></div></div>'
     +'<div class="tip">At dusk, at night, indoors and in the dark, fires, lamps, crystals and glowing things light up what’s around them.</div>'
     +'<h4>🌫 Fog of war</h4><label class="chk"><input type="checkbox" data-sf="fogOn"'+(sd.fogOn?' checked':'')+'> Hide unexplored areas from players</label>'
+    +'<label class="chk"><input type="checkbox" data-sf="los"'+(sd.los?' checked':'')+'> 👁 Line of sight: walls block what the party sees, and the fog clears as they explore</label>'
+    +(sd.los?'<div class="tip">Walls, rock walls, hedges and buildings block sight. On an uploaded map, trace its walls with <b>👁 Sight walls</b> (🌲 Scenery → Walls; players never see them). At night or in the dark, only lit squares show: fires, lamps, and tokens carrying a 🔦 light.</div>':'')
     +'<div class="row"><div class="seg" style="flex:1"><button data-act="fm" data-v="reveal" class="'+(tool==='fog'&&fogMode==='reveal'?'on':'')+'">Reveal brush</button><button data-act="fm" data-v="hide" class="'+(tool==='fog'&&fogMode==='hide'?'on':'')+'">Hide brush</button></div></div>'
     +'<div class="row"><span class="tip">Brush</span><div class="seg" style="flex:1">'+[1,3,5,9].map(n=>'<button data-act="brush" data-v="'+n+'" class="'+(brush===n?'on':'')+'">'+n+'×'+n+'</button>').join('')+'</div></div>'
     +'<div class="row"><button class="btn sm" data-act="fogAll" data-v="1">Reveal all</button><button class="btn sm" data-act="fogAll" data-v="0">Hide all</button><span class="tip">Shift-drag does the opposite.</span></div>'
@@ -1465,12 +1555,22 @@ function renderCard(){
   const exact=IS_DM||canMove(t),pct=i.hpMax&&i.hp!=null?clamp(i.hp/i.hpMax,0,1):null;
   let h='<div class="c-hd"><span class="c-dot"></span><div><div class="c-nm">'+esc(i.name)+'</div><div class="c-sub">'+(t.kind==='pc'?'Player character':t.kind==='comp'?'Companion of '+esc(i.owner||''):'NPC / foe')+(i.types.length?' · '+esc(i.types.join(' / ')):'')+(t.hidden?' · hidden':'')+'</div></div><button class="c-x" data-act="close" title="Close">✕</button></div>';
   {const u=mvUsed(t),spd=i.speed;if(u.k&&spd&&canMove(t))h+='<div class="c-mv'+(u.ft>(u.dash?spd*2:spd)?' over':'')+'">🦶 Moved <b>'+u.ft+' / '+(u.dash?spd*2:spd)+' ft</b> this turn'+(u.dash?' (dashing)':'')+'<button class="btn sm'+(u.dash?' on':'')+'" data-act="dash" title="Dash: double your movement this turn">💨 Dash</button></div>';}
-  if(pct!=null)h+='<div class="c-hp"><span>HP</span><span>'+(exact?i.hp+' / '+i.hpMax:Math.round(pct*100)+'%')+'</span></div><div class="hpbar"><i style="width:'+(pct*100)+'%;background:'+(pct>.5?'var(--grn)':pct>.25?'var(--gold)':'var(--red)')+'"></i></div>';
+  {const fm=t.kind==='npc'&&!IS_DM?foeHp():'',show=pct!=null&&fm!=='none',pb=fm==='vague'&&pct>0?Math.ceil(pct*4)/4:pct,cb=tbPrefs().cb;
+    if(show)h+='<div class="c-hp"><span>HP</span><span>'+(exact||fm==='exact'?i.hp+' / '+i.hpMax:fm==='vague'?hpWord(pct):Math.round(pct*100)+'%')+'</span></div><div class="hpbar"><i style="width:'+(pb*100)+'%;background:'+(pb>.5?(cb?'#4a9be8':'var(--grn)'):pb>.25?'var(--gold)':(cb?'#ff8a1f':'var(--red)'))+'"></i></div>';}
   if(i.conds.length)h+='<div class="chips">'+i.conds.map(c=>'<span class="chip">'+(COND_ICON[String(c).toLowerCase()]||'•')+' '+esc(c)+'</span>').join('')+'</div>';
   h+='<div class="row"><button class="btn sm" data-act="focus">🎯 Center</button>'+(canMove(t)?'<button class="btn sm" data-act="rot" data-v="-1" title="Turn left">⟲</button><button class="btn sm" data-act="rot" data-v="1" title="Turn right">⟳</button>':'')+'</div>';
   if(canMove(t)){const P=[['Attack','⚔'],['Sword','🔥'],['Cast','✨'],['Dodge','💨'],['Hurt','💥']],has=tk.clips&&tk.clips.length;
     const list=P.filter(([n])=>has?!!tk.clipFor(n):n!=='Sword');
     if(list.length)h+='<label class="lbl">Pose</label><div class="row" style="margin-top:0">'+list.map(([n,ic])=>'<button class="btn sm" data-act="pose" data-v="'+n+'">'+ic+' '+n+'</button>').join('')+'</div>';}
+  if(canMove(t))h+='<label class="lbl">😮 Emote</label><div class="row emo-row" style="margin-top:0">'+EMOTES.map(e=>'<button class="btn sm" data-act="emote" data-v="'+e+'" title="Pop up a bubble over this token">'+e+'</button>').join('')+'</div>';
+  {let x='';const sp=t.sp||(t.kind==='comp'?(i.species||i.name):i.name);
+    if(canMove(t)&&t.kind!=='npc')x+='<button class="btn sm'+(t.light?' on':'')+'" data-act="light" title="Carry a light: in the dark, you light up 30 ft around you">🔦 '+(t.light?'Light on':'Carry a light')+'</button>';
+    if(dexEntry(sp)&&(IS_DM||(t.kind==='comp'&&canMove(t))))x+='<button class="btn sm" data-act="evolve" title="Play the evolution for everyone">✨ Evolve…</button>';
+    if(t.kind!=='pc'&&dexEntry(sp))x+='<button class="btn sm" data-act="cry" title="Hear its cry (on this screen)">🔊 Cry</button>';
+    if(t.kind==='comp'&&canMove(t))x+='<button class="btn sm" data-act="recall" title="Back into its Poké Ball">🔴 Return</button>';
+    if(IS_DM)x+='<button class="btn sm" data-act="showTok" title="Move every player’s camera to this token">📽 Show everyone</button>';
+    if(x)h+='<div class="row">'+x+'</div>';}
+  if(IS_DM&&t.kind==='npc')h+='<label class="lbl">💬 Say something as '+esc(i.name.replace(/\s+\d+$/,''))+'</label><div class="row" style="margin-top:0"><input class="inp" id="tkSay" maxlength="400" placeholder="“None shall pass the bridge tonight.”"><button class="btn sm pri" data-act="say">Say</button></div>';
   if(IS_DM)h+='<div class="row"><select class="inp" data-tf="size" style="max-width:120px">'+[['.5','Tiny'],['1','Medium'],['2','Large'],['3','Huge'],['4','Gigantic']].map(([v,n])=>'<option value="'+v+'"'+(num(t.size,1)===+v?' selected':'')+'>'+n+'</option>').join('')+'</select>'
     +'<button class="btn sm" data-act="hide">'+(t.hidden?'🙈 Hidden':'👁 Visible')+'</button><button class="btn sm dng" data-act="remove">Remove</button></div>';
   if(canLook(lk)){
@@ -1504,7 +1604,7 @@ function setTool(t){
   tool=t;document.querySelectorAll('.dk[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));
   if(t!=='scenery'){selProp='';selSet.clear();drawSelMarks();placeGhost(null);updPropSel();}
   renderAoeBar();
-  renderer.domElement.style.cursor=t==='measure'||t==='ping'||t==='shape'?'crosshair':t==='fog'||(t==='scenery'&&scMode==='paint')?'cell':'';renderPanel();renderCard();
+  renderer.domElement.style.cursor=t==='measure'||t==='ping'||t==='shape'||t==='draw'?'crosshair':t==='fog'||(t==='scenery'&&scMode==='paint')?'cell':'';renderPanel();renderCard();
 }
 async function doUpload(kind,file){
   if(!file)return;
@@ -1547,6 +1647,23 @@ function act(a,d){
     case 'placeMe':{const me=players()[ME]||{};const id=addToken({kind:'pc',pk:ME,name:me.charName||ME,look:ME});if(id)setTimeout(()=>select(id),50);break;}
     case 'placeComp':{const me=players()[ME]||{},c=(me.companions||[]).find(x=>x&&x.id===d.cid);if(c){const id=addToken(compToken(ME,c));if(id)setTimeout(()=>select(id),50);}break;}
     case 'pose':if(tk)write('board/fx/tok_'+tk.id,{a:d.v,n:uid('f'),by:ME||'DM'});break;
+    case 'emote':if(tk)write('board/emote/'+tk.id,{e:d.v,n:uid('e')});break;
+    case 'light':if(tk)patchToken(tk.id,{light:tk.data.light?null:true});break;
+    case 'recall':if(tk)removeToken(tk.id);break;
+    case 'cry':if(tk){const t=tk.data,i=tk.info,e=dexEntry(t.sp||(t.kind==='comp'?(i.species||i.name):i.name));if(e){TB.cryAt=0;tbCry(e.num);}}break;   // 🔊
+    case 'dcol':drawCol=d.v;renderAoeBar();break;   // ✏️ pen colour, arrow heads, keep (DM), rub out
+    case 'darrow':drawArrow=!drawArrow;renderAoeBar();break;
+    case 'dpin':{drawPin=!drawPin;const sid=sceneId(),D=drawsOf(sid),o={};if(drawPin)for(const k in D)if(D[k]&&D[k].by===drawWho())o[k+'/pin']=true;if(Object.keys(o).length)write('board/draw/'+sid,o,'PATCH');renderAoeBar();break;}
+    case 'dclear':{const sid=sceneId(),D=drawsOf(sid),o={};for(const k in D)if(D[k]&&D[k].by===drawWho())o[k]=null;if(Object.keys(o).length)write('board/draw/'+sid,o,'PATCH');break;}
+    case 'dclearAll':if(confirm('Rub out every drawing on this map?'))write('board/draw/'+sceneId(),null);break;
+    case 'evolve':if(tk)evolveToken(tk);break;
+    case 'showTok':if(tk)sendLook(tk.pos.x,tk.pos.y,Math.min(sph().radius,16));break;
+    case 'show':if(sceneData())sendLook(controls.target.x,controls.target.z,sph().radius);break;
+    case 'say':if(tk){const el=$('#tkSay'),v=((el&&el.value)||'').trim();if(!v){toast('Type what they say first.');break;}sayAs(tk,v);el.value='';}break;
+    case 'tvLink':copyTv();break;
+    case 'diceTog':PREFS.dice=PREFS.dice===false;savePrefs();renderPanel();break;
+    case 'fxTog':tbSetPref('fx',!tbPrefs().fx);renderPanel();break;
+    case 'cbTog':tbSetPref('cb',!tbPrefs().cb);document.body.classList.toggle('cb',!!tbPrefs().cb);queue();renderPanel();renderCard();break;
     case 'mapPaint':MAPPAINT=!MAPPAINT;renderPanel();break;
     case 'dash':if(tk){const u=mvUsed(tk.data);if(u.k){const mv={k:u.k,ft:u.ft,dash:u.dash?null:true};tk.data=Object.assign({},tk.data,{mv});patchToken(tk.id,{mv});renderCard();}}break;
     case 'close':select('');break;
@@ -1651,7 +1768,7 @@ function act(a,d){
     if(t.dataset.look==='scale'&&tk&&tk.model){tk.look=Object.assign({},tk.look,{scale:+t.value});tk.fitModel();}});
 });
 [$('#panel'),$('#card')].forEach(root=>root.addEventListener('keydown',e=>{   // Enter in a ✨ box makes it
-  const a={adAi:'adAi',bAi:'bWord',tkAi:'tkAi',bInD:'bInNew'}[e.target.id];if(e.key==='Enter'&&a){e.preventDefault();act(a,{});}
+  const a={adAi:'adAi',bAi:'bWord',tkAi:'tkAi',bInD:'bInNew',tkSay:'say'}[e.target.id];if(e.key==='Enter'&&a){e.preventDefault();act(a,{});}
   if(e.key==='Enter'&&e.target.dataset.pz==='edit'&&e.target.closest('[data-pzh="map"]')){e.preventDefault();const P=mapPaintState();pzInput(P,e.target);e.target.blur();pzEdit(P,renderPanel);return;}
   if(e.key==='Enter'&&e.target.dataset.pz==='edit'){e.preventDefault();const tk=paintHost();if(tk){pzInput(paintState(tk.data.look),e.target);e.target.blur();pzEdit(paintState(tk.data.look),renderCard);}}}));
 document.addEventListener('paste',e=>{const f=pzPasted(e);if(f&&$('#panel [data-pzh="map"]')&&(!$('#card .paint')||$('#panel').contains(document.activeElement))){e.preventDefault();pzAdd(mapPaintState(),f,'pasted picture',renderPanel);return;}
@@ -1695,7 +1812,7 @@ const ROLLS={seen:null,list:[]};
 function syncRolls(){
   const lg=(tree&&tree.log)||{},ks=Object.keys(lg).sort();ROLLS.list=ks.slice(-20).map(k=>lg[k]).filter(Boolean);$('#bRolls').style.display=ROLLS.list.length?'':'none';
   if(ROLLS.seen===null||firstSync){ROLLS.seen=new Set(ks);return;}   // what was there before this screen opened isn't news
-  ks.filter(k=>!ROLLS.seen.has(k)).forEach(k=>{ROLLS.seen.add(k);if(lg[k])showRoll(lg[k]);});}
+  ks.filter(k=>!ROLLS.seen.has(k)).forEach(k=>{ROLLS.seen.add(k);if(lg[k]){showRoll(lg[k]);rollDice3D(lg[k]);}});}
 function showRoll(e){const host=$('#rollFeed');if(!host)return;const d=document.createElement('div');d.className='rf-item';
   d.innerHTML='<b>'+esc(e.who||'?')+'</b> '+esc(String(e.text||'').replace(/<[^>]*>/g,''));host.appendChild(d);while(host.children.length>4)host.firstChild.remove();
   setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),700);},12000);}
@@ -1711,6 +1828,546 @@ function mvUsed(t){const b=battle(),k=b?(b.round||1)+'|'+(b.turn||0):'',m=t&&t.m
 HO.onList=n=>{const b=$('#bHo');if(b)b.style.display=n?'':'none';};
 $('#bHo').addEventListener('click',hoListOpen);
 const syncBtns=()=>{$('#bNames').classList.toggle('on',!!PREFS.names);$('#bFollow').classList.toggle('on',!!PREFS.follow);};
+// ── 🎭 Table extras: the SAME code in the sheet, the board and the dashboard (change all three together, like Sync) ──
+// What the DM (or a player) sends to everyone, shown the same way on every screen. All under the campaign's meta/:
+//  • say = {n, who, text, img, art, color, t}: an NPC's line in a game-style text box, typed out with little blips.
+//  • evolve = {n, from, to, a, b, who, pk, cid, t}: the evolution scene (a / b = Pokédex numbers of the old / new form).
+//  • music = {now:{k, v, l, at, t, on, loop, title}, list:{id:{u, v, l, title, tag}}}: the 🎵 jukebox (YouTube links).
+//    Each screen that listens plays the DM's pick from the same spot (at = seconds in when the DM pressed play, at time t).
+//  • world = {img, name, day, at:{x,y}, pins:{id:{x, y, n, d, ic, pn, vis, h}}, trip:{id:{d, text, t}}}: the 🗺 world map
+//    (x / y are fractions of the picture; d = the DM's note, pn = the party's notes, h = hidden from players).
+//  • dex/<num> = {n, num, ty, at, t, c, pn}: the 📒 party Pokédex (a board adds a Pokémon the first time players see it).
+//  • people/<id> = {n, img, art, color, where, att, d, pn, t, h}: 📇 people the party has met (the DM's 💬 adds them).
+//  • quiz = {id, num, h, on, rev, n, win, score, gen} + qbuzz/<push id> = {q, pk, n, ok, g, t}: ❓ Who's that Pokémon?
+//  • pause/<push id> = {k:'pause'|'skip', t}: ✋ the pause card (no name on it); secret/<push id>: 🤫 secret rolls (DM only).
+// Each app sets TB.host = {asset(id)→Promise<src>, set(path,val), push(path,val), me()→{pk,name,dm}, dexNum(name)→n|0,
+//   listen()→bool (play the music here?), upload(file)→Promise<id>, players()→{pk:{charName,companions}}}.
+// New things are shown once; what was already there when the screen opened isn't news (TB.seen).
+const TB={host:null,seen:{},people:{},quiz:null,sayQ:[],sayOn:false,music:null,world:null,dex:{},yt:null,ytP:null,jb:{k:'',err:'',blocked:false,open:false},wsel:'',wOpen:false,dOpen:false,dsel:'',dq:'',turnKey:''};
+const TB_ART='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+const tbEsc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function tbPrefs(){let p={};try{p=JSON.parse(localStorage.getItem('pokeDnD_tb')||'{}')||{};}catch(e){}return Object.assign({fx:true,vol:60,mute:false,here:false},p);}
+function tbSetPref(k,v){const p=tbPrefs();p[k]=v;try{localStorage.setItem('pokeDnD_tb',JSON.stringify(p));}catch(e){}return p;}
+function tbCss(){if(document.getElementById('tbCss'))return;const s=document.createElement('style');s.id='tbCss';s.textContent=
+  '.tb-say{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147481000;width:min(680px,calc(100vw - 20px));display:none;gap:12px;align-items:flex-start;background:#fbfbf7;color:#1d2230;border:4px solid #2b3245;border-radius:16px;padding:12px 16px 14px;box-shadow:0 0 0 3px #fbfbf7,0 12px 40px rgba(0,0,0,.55);font:600 16px/1.45 Inter,system-ui,sans-serif;cursor:pointer;animation:tbUp .25s ease-out}'
+  +'.tb-say .tb-pic{width:76px;height:76px;flex-shrink:0;border-radius:12px;border:3px solid var(--tbc,#2b3245);background:#dde3ee center/cover no-repeat;display:flex;align-items:center;justify-content:center;font:800 26px Inter,sans-serif;color:#fff}'
+  +'.tb-say .tb-nm{display:inline-block;font:800 12px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;background:var(--tbc,#2b3245);color:#fff;border-radius:8px;padding:2px 9px;margin-bottom:5px}'
+  +'.tb-say .tb-tx{white-space:pre-wrap;min-height:46px}.tb-say .tb-more{float:right;color:#e53935;animation:tbBob .8s infinite;font-size:13px}'
+  +'@keyframes tbUp{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}@keyframes tbBob{50%{transform:translateY(3px)}}'
+  +'.tb-evo{position:fixed;inset:0;z-index:2147482500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle at 50% 45%,#2a2f4a,#07080d 70%);color:#fff;font:700 20px Inter,system-ui,sans-serif;text-align:center;padding:20px;cursor:pointer;overflow:hidden}'
+  +'.tb-evo .tb-stage{position:relative;width:min(340px,70vw);height:min(340px,70vw)}.tb-evo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .5s,opacity .08s}'
+  +'.tb-evo img.sil{filter:brightness(0) invert(1) drop-shadow(0 0 18px #9fd8ff)}.tb-evo .tb-glow{position:absolute;inset:-30%;border-radius:50%;background:radial-gradient(circle,rgba(160,220,255,.55),transparent 60%);opacity:0;transition:opacity .6s}'
+  +'.tb-evo.go .tb-glow{opacity:1}.tb-evo .tb-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .35s}.tb-evo .tb-spk{position:absolute;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 10px #bfe6ff;animation:tbSpk 1.6s ease-out forwards}'
+  +'@keyframes tbSpk{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}.tb-evo small{font:600 12px Inter,sans-serif;color:#8a9bbb}'
+  +'.tb-jb{position:fixed;z-index:2147480000;left:12px;bottom:12px;background:#141a28;color:#e7edf8;border:1px solid #2a3550;border-radius:14px;box-shadow:0 8px 26px rgba(0,0,0,.5);font:600 12px Inter,system-ui,sans-serif;max-width:min(300px,calc(100vw - 24px))}'
+  +'.tb-jb .tb-jbh{display:flex;align-items:center;gap:7px;padding:7px 10px;cursor:pointer;white-space:nowrap}.tb-jb .tb-jbt{overflow:hidden;text-overflow:ellipsis;max-width:190px}'
+  +'.tb-jb .tb-jbb{padding:0 10px 10px}.tb-jb .tb-vid{width:224px;height:126px;border-radius:8px;overflow:hidden;background:#000;margin-bottom:7px}.tb-jb .tb-vid iframe{width:100%;height:100%;border:0}'
+  +'.tb-jb.min .tb-jbb{position:fixed;left:-9999px;top:0}.tb-jb input[type=range]{width:100%;accent-color:#ffce4d}.tb-jb button{background:#222b40;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:4px 9px;font:inherit;cursor:pointer}'
+  +'.tb-jb .tb-jbn{color:#ffce4d;font-size:11px;margin-top:5px;white-space:normal}.tb-eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}.tb-eq i{width:3px;background:#ffce4d;animation:tbEq .9s infinite ease-in-out}.tb-eq i:nth-child(2){animation-delay:.3s}.tb-eq i:nth-child(3){animation-delay:.6s}.tb-eq.off i{animation:none;height:3px}'
+  +'@keyframes tbEq{0%,100%{height:3px}50%{height:12px}}'
+  +'.tb-ov{position:fixed;inset:0;z-index:2147482000;background:rgba(5,6,10,.74);display:flex;align-items:center;justify-content:center;padding:12px}'
+  +'.tb-win{background:#141a28;color:#e7edf8;border:1px solid #2a3550;border-radius:14px;width:min(980px,100%);max-height:calc(100vh - 24px);display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);font:13.5px/1.5 Inter,system-ui,sans-serif;overflow:hidden}'
+  +'.tb-win h2{font:800 17px Inter,sans-serif;margin:0}.tb-wh{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #2a3550;flex-wrap:wrap}.tb-wh .tb-x{margin-left:auto}'
+  +'.tb-win button,.tb-win .tb-b{background:#222b40;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:5px 10px;font:600 12.5px Inter,sans-serif;cursor:pointer}.tb-win button.tb-p{background:#ffce4d;color:#1a1300;border-color:#ffce4d}'
+  +'.tb-win input,.tb-win textarea,.tb-win select{background:#0b0f18;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:6px 8px;font:13px Inter,sans-serif;width:100%;box-sizing:border-box}'
+  +'.tb-wb{display:flex;min-height:0;flex:1;overflow:hidden}.tb-map{position:relative;flex:1;min-width:0;overflow:auto;background:#0b0f18}.tb-map .tb-mi{position:relative;display:inline-block;min-width:100%}.tb-map img.tb-mimg{display:block;width:100%;height:auto;user-select:none}'
+  +'.tb-win .tb-pin{position:absolute;transform:translate(-50%,-26px);display:flex;flex-direction:column;align-items:center;font-size:24px;line-height:1;cursor:pointer;filter:drop-shadow(0 2px 3px #000);background:none;border:0;padding:0;border-radius:0}.tb-pin span{display:block;font:700 11px Inter,sans-serif;color:#fff;background:rgba(10,12,20,.8);border-radius:6px;padding:1px 6px;margin-top:2px;white-space:nowrap}'
+  +'.tb-pin.sel span{background:#ffce4d;color:#1a1300}.tb-pin.hid{opacity:.5}.tb-pin.unv{filter:grayscale(.7) drop-shadow(0 2px 3px #000)}.tb-party{position:absolute;transform:translate(-50%,-50%);font-size:26px;filter:drop-shadow(0 0 6px #ffce4d);pointer-events:none;animation:tbBob 1.6s infinite}'
+  +'.tb-side{width:300px;flex-shrink:0;border-left:1px solid #2a3550;overflow-y:auto;padding:12px 14px}.tb-side h3{font:800 13px Inter,sans-serif;margin:12px 0 5px;color:#ffce4d;letter-spacing:.04em;text-transform:uppercase}.tb-side .tb-r{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center}'
+  +'.tb-trip{font-size:12.5px;border-bottom:1px solid #222b40;padding:5px 0}.tb-trip b{color:#ffce4d}.tb-mut{color:#8a9bbb;font-size:12px}'
+  +'.tb-dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;padding:12px;overflow-y:auto;align-content:start}.tb-dc{background:#1b2234;border:1px solid #2a3550;border-radius:10px;padding:6px;text-align:center;cursor:pointer}.tb-dc:hover{border-color:#ffce4d}'
+  +'.tb-dc img{width:100%;aspect-ratio:1;object-fit:contain}.tb-dc b{display:block;font:700 12.5px Inter,sans-serif}.tb-dc i{display:block;font-style:normal;font-size:10.5px;color:#8a9bbb}.tb-dc.own{border-color:#3ddf93}.tb-ty{display:inline-block;font:700 10px Inter,sans-serif;color:#fff;border-radius:6px;padding:1px 6px;margin:1px}'
+  +'.tb-pause{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:2147482600;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;background:#3a1418;color:#ffe9e9;border:2px solid #ff5d5d;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.55);font:600 13px Inter,system-ui,sans-serif;max-width:calc(100vw - 20px);animation:tbPulse 1.6s infinite}'
+  +'.tb-pause b{font-size:15px}.tb-pause span{opacity:.8}.tb-pause button{background:#ff5d5d;color:#fff;border:0;border-radius:8px;padding:6px 14px;font:700 13px Inter,sans-serif;cursor:pointer}@keyframes tbPulse{50%{box-shadow:0 0 0 5px rgba(255,93,93,.35),0 10px 30px rgba(0,0,0,.55)}}'
+  +'.tb-win .tb-pc{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px 14px;font-size:15px}.tb-pc small{font:500 12px Inter,sans-serif;color:#8a9bbb}'
+  +'.tb-quiz{background:radial-gradient(circle at 50% 40%,rgba(30,90,200,.92),rgba(5,8,20,.94) 72%)}.tb-qz{position:relative;width:min(520px,100%);text-align:center;color:#fff;font:600 14px Inter,system-ui,sans-serif}'
+  +'.tb-qz .tb-x{position:absolute;right:0;top:0;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:4px 9px;cursor:pointer;font:inherit}'
+  +'.tb-qt{font:900 30px Inter,system-ui,sans-serif;color:#ffce4d;-webkit-text-stroke:1.5px #2a5bd7;text-shadow:0 3px 0 #2a5bd7,0 0 18px rgba(0,0,0,.5);margin:6px 38px 4px}.tb-qt b{color:#fff}'
+  +'.tb-qs{width:min(300px,62vw);aspect-ratio:1;margin:0 auto;background:radial-gradient(circle,rgba(255,255,255,.4) 0,transparent 62%)}.tb-qs img{width:100%;height:100%;object-fit:contain;filter:brightness(0);user-select:none;pointer-events:none}.tb-qs.rev img{filter:none;animation:tbPop .5s}'
+  +'@keyframes tbPop{0%{transform:scale(.85)}60%{transform:scale(1.08)}100%{transform:scale(1)}}.tb-qg{display:flex;gap:6px;justify-content:center;margin:8px auto 4px;max-width:360px}'
+  +'.tb-qg input{flex:1;min-width:0;background:#0b0f18;color:#fff;border:2px solid #ffce4d;border-radius:10px;padding:8px 10px;font:600 15px Inter,sans-serif}.tb-qg button{background:#ffce4d;color:#1a1300;border:0;border-radius:10px;padding:8px 14px;font:800 14px Inter,sans-serif;cursor:pointer}'
+  +'.tb-qw{font:800 18px Inter,sans-serif;margin:8px 0}.tb-qz .tb-mut{color:#c7d3ea}.tb-qsc{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}.tb-qsc span{background:rgba(0,0,0,.35);border-radius:999px;padding:3px 10px;font-size:12.5px}'
+  +'.tb-pp{display:inline-flex;width:64px;height:64px;border-radius:50%;align-items:center;justify-content:center;background:var(--tbc,#3a4560) center/cover no-repeat;color:#fff;font:800 20px Inter,sans-serif;border:3px solid var(--tbc,#3a4560);margin:2px auto 4px;box-sizing:border-box}.tb-pp.big{display:flex;width:120px;height:120px;font-size:36px}.tb-dc.hid{opacity:.5}'
+  +'@media (max-width:760px){.tb-wb{flex-direction:column;overflow-y:auto}.tb-side{width:auto;border-left:0;border-top:1px solid #2a3550}.tb-map{overflow:visible}.tb-say{font-size:14.5px}.tb-say .tb-pic{width:56px;height:56px}}';
+  document.head.appendChild(s);}
+function tbEl(id,cls,parent){let d=document.getElementById(id);if(!d){tbCss();d=document.createElement('div');d.id=id;if(cls)d.className=cls;(parent||document.body).appendChild(d);}return d;}
+function tbNew(kind,n){if(n==null||n==='')return false;const was=TB.seen[kind];TB.seen[kind]=String(n);return TB.started&&was!==String(n);}   // what was there at the first update is old news
+// sounds (made in the browser, nothing downloaded; 🔇 in each app's settings turns them off via tbPrefs().fx)
+function tbCtx(){try{TB.ac=TB.ac||new (window.AudioContext||window.webkitAudioContext)();if(TB.ac.state==='suspended')TB.ac.resume();return TB.ac;}catch(e){return null;}}
+function tbTone(f0,f1,dur,type,vol,when){if(!tbPrefs().fx)return;const c=tbCtx();if(!c)return;try{const t=c.currentTime+(when||0),o=c.createOscillator(),g=c.createGain();o.type=type||'square';o.frequency.setValueAtTime(f0,t);
+  if(f1&&f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t+dur);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.05,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.03);}catch(e){}}   // a sound never stops anything else
+function tbBlip(){tbTone(560+Math.random()*90,0,.04,'square',.03);}
+function tbChime(){[660,880,1320].forEach((f,i)=>tbTone(f,f,.4,'sine',.08,i*.13));}
+function tbFanfare(){[523,659,784,1047,784,1047].forEach((f,i)=>tbTone(f,f,i>3?.5:.22,'triangle',.08,i*.16));}
+// 🔊 a short sound for each type when a move is used (made from tones and filtered noise, nothing downloaded)
+const TB_TC={Fire:'#FF6B35',Water:'#4A90D9',Ice:'#74CEC0',Grass:'#7AC74C',Electric:'#F7D02C',Bug:'#A6B91A',Fighting:'#C22E28',Psychic:'#F95587',Dark:'#705746',Ghost:'#735797',Poison:'#A33EA1',Rock:'#B6A136',Ground:'#E2BF65',Steel:'#B7B7CE',Dragon:'#6F35FC',Flying:'#A98FF3',Fairy:'#D685AD',Normal:'#A8A878'};
+function tbNoise(f0,f1,dur,vol,ft,q,when){if(!tbPrefs().fx)return;const c=tbCtx();if(!c)return;try{const t=c.currentTime+(when||0),n=Math.ceil(c.sampleRate*dur),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+  const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type=ft||'bandpass';f.Q.value=q||1;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.12,t+Math.min(.05,dur*.25));g.gain.exponentialRampToValueAtTime(.0001,t+dur);s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);s.stop(t+dur+.02);}catch(e){}}
+function tbTypeSound(ty){const T=tbTone,N=tbNoise;switch(ty){
+  case 'Fire':N(300,2400,.5,.16,'bandpass',.8);for(let i=0;i<5;i++)N(3500,1800,.05,.05,'highpass',1,.08+i*.07);break;   // a roar and crackles
+  case 'Water':N(2200,400,.55,.14,'lowpass',1);T(700,300,.18,'sine',.05,.3);break;
+  case 'Electric':for(let i=0;i<6;i++)T(900+Math.random()*900,200,.05,'square',.035,i*.05);break;
+  case 'Grass':[880,1175,1320].forEach((f,i)=>T(f,f*1.2,.12,'triangle',.05,i*.08));N(1500,3000,.3,.04,'highpass',1);break;
+  case 'Ice':[2093,2637,3136].forEach((f,i)=>T(f,f,.25,'sine',.04,i*.07));break;
+  case 'Psychic':T(440,880,.6,'sine',.05);T(446,892,.6,'sine',.04);break;
+  case 'Ghost':T(700,180,.8,'sine',.05);T(706,176,.8,'triangle',.03);break;
+  case 'Dark':T(110,70,.5,'sawtooth',.05);N(400,150,.4,.06,'lowpass',1);break;
+  case 'Rock':case 'Ground':N(300,60,.6,.2,'lowpass',.7);T(80,40,.4,'sine',.1);break;
+  case 'Flying':N(600,3000,.45,.12,'bandpass',.6);break;
+  case 'Poison':[0,1,2,3].forEach(i=>T(300+Math.random()*300,900,.07,'sine',.05,i*.09));break;
+  case 'Bug':T(220,240,.5,'sawtooth',.025);T(226,236,.5,'sawtooth',.025);break;
+  case 'Dragon':T(90,260,.7,'sawtooth',.06);N(200,800,.7,.07,'bandpass',.8);break;
+  case 'Steel':T(1500,1480,.6,'square',.02);T(2250,2240,.6,'sine',.035);break;
+  case 'Fairy':[1568,2093,2637,3136,4186].forEach((f,i)=>T(f,f,.18,'sine',.03,i*.06));break;
+  default:N(900,200,.12,.18,'lowpass',1);T(140,60,.18,'sine',.1);}}   // Normal, Fighting: a thump
+function tbToast(msg){const d=tbEl('tbToast');d.style.cssText='position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:2147483000;background:#141a28;color:#e7edf8;border:2px solid #ffce4d;border-radius:12px;padding:8px 14px;font:700 14px Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:90vw;text-align:center;transition:opacity .4s';
+  d.textContent=msg;d.style.opacity='1';clearTimeout(TB.toastT);TB.toastT=setTimeout(()=>{d.style.opacity='0';},3500);}
+// one call from each app's live-data handler: m = the campaign's meta (or the sheet's _say/_evolve/… keys gathered up)
+function tbUpdate(m){m=m||{};
+  const s=m.say;if(s&&tbNew('say',s.n))tbSayShow(s);
+  const ev=m.evolve;if(ev&&tbNew('evo',ev.n))tbEvoShow(ev);tbQuiz(m.quiz);tbPauseShow(m.pause);tbSecret(m.secret);TB.started=true;
+  const ms=JSON.stringify(m.music||null);if(ms!==TB.ms){TB.ms=ms;TB.music=m.music||null;tbJb();}   // redraw only what changed (the board calls this on every token move)
+  const ws=JSON.stringify(m.world||null);if(ws!==TB.ws){TB.ws=ws;TB.world=m.world||null;if(TB.wOpen)tbWorldRender();}
+  const ds=JSON.stringify(m.dex||null);if(ds!==TB.ds){TB.ds=ds;TB.dex=(m.dex&&typeof m.dex==='object')?m.dex:{};if(TB.dOpen)tbDexRender();}
+  const ps=JSON.stringify(m.people||null);if(ps!==TB.ps){TB.ps=ps;TB.people=(m.people&&typeof m.people==='object')?m.people:{};if(TB.pOpen)tbPeopleRender();}}
+// your turn: a chime, a buzz on phones, and the tab title blinks until you look. key = which turn (the sheet and the board
+// on one device both notice it, so whichever goes first tells the other through localStorage)
+function tbTurnAlert(key,label){
+  if(!key||TB.turnKey===key)return;TB.turnKey=key;let last='';try{last=localStorage.getItem('pokeDnD_turnPing')||'';}catch(e){}
+  const i=last.lastIndexOf('@');if(i>0&&last.slice(0,i)===key&&Date.now()-(+last.slice(i+1)||0)<10000)return;
+  try{localStorage.setItem('pokeDnD_turnPing',key+'@'+Date.now());}catch(e){}
+  tbToast('⚔ '+(label||'Your turn!'));tbChime();try{if(navigator.vibrate&&navigator.userActivation&&navigator.userActivation.hasBeenActive)navigator.vibrate([140,90,140]);}catch(e){}   // phones only buzz after a first tap on the page
+  if(document.hidden&&!TB.blink){const t0=document.title;let on=false;TB.blink=setInterval(()=>{on=!on;document.title=on?'⚔ Your turn!':t0;},900);
+    const stop=()=>{if(document.hidden)return;clearInterval(TB.blink);TB.blink=0;document.title=t0;document.removeEventListener('visibilitychange',stop);};document.addEventListener('visibilitychange',stop);}}
+// 💬 NPC lines
+function tbSayShow(s){if(!s||!s.text)return;TB.sayQ.push(s);if(!TB.sayOn)tbSayNext();}
+function tbPicSrc(img,art){if(art)return Promise.resolve(TB_ART+(+art)+'.png');if(!img)return Promise.resolve('');if(/^https?:|^data:|^blob:/.test(img))return Promise.resolve(img);
+  return TB.host&&TB.host.asset?Promise.resolve(TB.host.asset(img)).catch(()=>''):Promise.resolve('');}
+function tbSayNext(){
+  const d=tbEl('tbSay','tb-say'),s=TB.sayQ.shift();clearTimeout(TB.sayT);clearInterval(TB.sayI);
+  if(!s){d.style.display='none';TB.sayOn=false;return;}TB.sayOn=true;
+  const ini=String(s.who||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  d.style.setProperty('--tbc',s.color||'#2b3245');d.innerHTML='<div class="tb-pic">'+tbEsc(ini)+'</div><div style="flex:1;min-width:0"><div class="tb-nm">'+tbEsc(s.who||'???')+'</div><div class="tb-tx"></div></div>';
+  d.style.display='flex';if(+s.art)tbCry(+s.art);tbPicSrc(s.img,s.art).then(src=>{const p=d.querySelector('.tb-pic');if(src&&p){p.style.backgroundImage='url("'+src.replace(/"/g,'%22')+'")';p.textContent='';}});
+  const tx=d.querySelector('.tb-tx'),full=String(s.text).slice(0,600);let i=0;
+  const done=()=>{clearInterval(TB.sayI);tx.innerHTML=tbEsc(full)+'<span class="tb-more">▼</span>';TB.sayDone=true;TB.sayT=setTimeout(tbSayNext,5000+full.length*45);};
+  TB.sayDone=false;TB.sayI=setInterval(()=>{i+=2;tx.textContent=full.slice(0,i);if(i%4===0&&/\S/.test(full[i]||''))tbBlip();if(i>=full.length)done();},34);
+  d.onclick=()=>{if(TB.sayDone)tbSayNext();else done();};}
+// ✨ evolution scene
+function tbEvoShow(ev){
+  if(!ev||!ev.b)return;const d=tbEl('tbEvo','tb-evo');d.className='tb-evo';d.style.display='flex';
+  const A=ev.a?TB_ART+(+ev.a)+'.png':'',B=TB_ART+(+ev.b)+'.png';
+  d.innerHTML='<div class="tb-msg">What? '+tbEsc(ev.from||'?')+' is evolving!</div><div class="tb-stage"><div class="tb-glow"></div>'+(A?'<img class="ea" src="'+A+'" alt="">':'')+'<img class="eb" src="'+B+'" alt="" style="opacity:0"></div><small>'+tbEsc(ev.who?ev.who+'’s Pokémon · ':'')+'tap to close</small><div class="tb-flash"></div>';
+  const a=d.querySelector('.ea'),b=d.querySelector('.eb'),msg=d.querySelector('.tb-msg'),fl=d.querySelector('.tb-flash'),T=[];TB.evoT&&TB.evoT.forEach(clearTimeout);TB.evoT=T;
+  const at=(ms,f)=>T.push(setTimeout(f,ms));
+  at(1300,()=>{d.classList.add('go');if(a)a.classList.add('sil');b.classList.add('sil');});
+  let t=1900,gap=420,on=false,k=0;while(gap>55){const g=gap,show=on=!on,kk=k++;at(t,()=>{if(a)a.style.opacity=show?0:1;b.style.opacity=show?1:0;tbTone(300+kk*28,0,.07,'triangle',.04);});t+=g;gap*=.86;}
+  at(t,()=>{fl.style.opacity='1';tbTone(900,1800,.5,'sine',.06);});
+  at(t+500,()=>{if(a)a.remove();b.style.opacity=1;b.classList.remove('sil');d.classList.remove('go');fl.style.opacity='0';msg.innerHTML='Congratulations! '+tbEsc(ev.from||'?')+' evolved into <b style="color:#ffce4d">'+tbEsc(ev.to||'?')+'</b>!';tbFanfare();setTimeout(()=>tbCry(+ev.b),900);
+    const st=d.querySelector('.tb-stage');for(let i=0;i<26;i++){const p=document.createElement('i');p.className='tb-spk';const an=Math.random()*6.28,r=120+Math.random()*120;p.style.cssText='left:50%;top:50%;--dx:'+Math.cos(an)*r+'px;--dy:'+Math.sin(an)*r+'px;animation-delay:'+(Math.random()*.4)+'s';st.appendChild(p);}});
+  at(t+9000,()=>{d.style.display='none';});
+  d.onclick=()=>{T.forEach(clearTimeout);d.style.display='none';};}
+// 🎵 jukebox player (YouTube's own player, loaded only when music plays here)
+function tbYtParse(u){u=String(u||'').trim();if(!u)return null;let m=u.match(/[?&]list=([\w-]{10,})/);const l=m?m[1]:'';
+  m=u.match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/);const v=m?m[1]:(/^[\w-]{11}$/.test(u)?u:'');return (v||l)?{v,l}:null;}
+function tbYT(){if(TB.ytP)return TB.ytP;TB.ytP=new Promise((res,rej)=>{if(window.YT&&window.YT.Player)return res(window.YT);const prev=window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady=()=>{try{if(prev)prev();}catch(e){}res(window.YT);};const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=()=>{TB.ytP=null;rej(new Error('YouTube couldn’t load (no internet?)'));};document.head.appendChild(s);});return TB.ytP;}
+function tbJbPos(n){const el=n.on&&n.t?(Date.now()-n.t)/1000:0;return Math.max(0,(+n.at||0)+(el>4?el:0));}   // joined late: catch up (a few seconds of clock difference between computers is ignored)
+const TB_YTERR={2:'That link isn’t a valid video.',5:'This video can’t play in the browser player.',100:'That video was removed or is private.',101:'The video’s owner doesn’t allow it to play outside YouTube.',150:'The video’s owner doesn’t allow it to play outside YouTube.',153:'YouTube won’t play here: open the apps from the website (not a file on your computer).'};
+function tbJb(){
+  const n=TB.music&&TB.music.now,host=TB.host,here=!!(host&&host.listen&&host.listen()),P=tbPrefs(),el=tbEl('tbJb','tb-jb',host&&host.jbParent&&host.jbParent());   // the board keeps it inside the map area
+  const live=!!(n&&(n.v||n.l));if(!live&&!(host&&host.me&&host.me().dm&&TB.music)){el.style.display='none';if(TB.yt&&TB.yt.pauseVideo)try{TB.yt.pauseVideo();}catch(e){}return;}
+  el.style.display=live?'':'none';el.classList.toggle('min',!TB.jb.open);
+  const title=n&&n.title?n.title:(n&&n.l&&!n.v?'Playlist':'Music'),playing=!!(n&&n.on);
+  if(!el.dataset.built){el.dataset.built='1';el.innerHTML='<div class="tb-jbh"><span class="tb-eq"><i></i><i></i><i></i></span><span class="tb-jbt"></span><span class="tb-jbc" style="margin-left:auto;opacity:.7">▴</span></div>'
+    +'<div class="tb-jbb"><div class="tb-vid"><div id="tbYtBox"></div></div><div style="display:flex;gap:6px;align-items:center"><button data-jb="mute">🔊</button><input type="range" min="0" max="100" data-jb="vol"></div>'
+    +'<div class="tb-jbhere" style="margin-top:7px"></div><div class="tb-jbn"></div></div>';
+    el.addEventListener('click',e=>{const b=e.target.closest('[data-jb]');if(!b){if(e.target.closest('.tb-jbh')){TB.jb.open=!TB.jb.open;tbJb();}return;}const k=b.dataset.jb;
+      if(k==='mute'){tbSetPref('mute',!tbPrefs().mute);tbJbVol();tbJb();}else if(k==='here'){tbSetPref('here',!tbPrefs().here);TB.jb.k='';tbJb();}else if(k==='tap'){TB.jb.blocked=false;try{TB.yt.playVideo();}catch(e){}tbJb();}});
+    el.addEventListener('input',e=>{if(e.target.dataset.jb==='vol'){tbSetPref('vol',+e.target.value);tbJbVol();}});}
+  el.querySelector('.tb-jbt').textContent=(playing?'🎵 ':'⏸ ')+title;el.querySelector('.tb-eq').classList.toggle('off',!playing||!here||P.mute);
+  el.querySelector('.tb-jbc').textContent=TB.jb.open?'▾':'▴';el.querySelector('[data-jb="mute"]').textContent=P.mute?'🔇':'🔊';const vr=el.querySelector('[data-jb="vol"]');if(document.activeElement!==vr)vr.value=P.vol;
+  const hb=el.querySelector('.tb-jbhere');hb.innerHTML=host&&host.hereToggle?'<button data-jb="here">'+(P.here?'🔊 Playing here · stop':'🔈 Listen on this screen')+'</button>':'';
+  el.querySelector('.tb-jbn').textContent=TB.jb.err||(TB.jb.blocked&&here?'':(!here?'Not playing on this screen.':''));
+  if(TB.jb.blocked&&here&&playing&&!TB.jb.err){el.querySelector('.tb-jbn').innerHTML='<button data-jb="tap" style="background:#ffce4d;color:#1a1300">🔊 Tap to hear the music</button>';}
+  el.querySelector('.tb-vid').style.display=here?'':'none';
+  if(!here){if(TB.yt&&TB.yt.pauseVideo)try{TB.yt.pauseVideo();}catch(e){}TB.jb.k='';return;}
+  const key=n?[n.k,n.v,n.l,n.on].join('|'):'';if(key===TB.jb.k)return;TB.jb.k=key;TB.jb.err='';
+  tbYT().then(YT=>{
+    const go=()=>{const p=TB.yt;if(!p||!p.loadVideoById)return;tbJbVol();if(!n.on){try{p.pauseVideo();}catch(e){}return;}
+      const at=tbJbPos(n);if(n.v)p.loadVideoById({videoId:n.v,startSeconds:at});else p.loadPlaylist({list:n.l,listType:'playlist',index:0,startSeconds:at});
+      if(n.l)try{p.setLoop(true);}catch(e){}clearTimeout(TB.jb.chk);TB.jb.chk=setTimeout(()=>{try{const st=p.getPlayerState();if(st!==1&&st!==3&&n.on){TB.jb.blocked=true;tbJb();}}catch(e){}},3500);};
+    if(!TB.yt){TB.yt=new YT.Player('tbYtBox',{width:224,height:126,playerVars:{autoplay:1,playsinline:1,rel:0,modestbranding:1},
+      events:{onReady:()=>{TB.yt.ready=true;go();},onStateChange:e=>{if(e.data===1){TB.jb.blocked=false;const nm=TB.yt.getVideoData&&TB.yt.getVideoData().title;if(nm&&TB.host&&TB.host.me&&TB.host.me().dm&&TB.music&&TB.music.now&&!TB.music.now.title)TB.host.set('music/now/title',nm);tbJb();}
+        if(e.data===0){const m=TB.music&&TB.music.now;if(m&&m.loop&&m.v)try{TB.yt.seekTo(0);TB.yt.playVideo();}catch(er){}}},
+        onError:e=>{TB.jb.err=TB_YTERR[e.data]||'This video can’t play here.';tbJb();}}});}
+    else if(TB.yt.ready)go();
+  }).catch(e=>{TB.jb.err=e.message;TB.jb.k='';tbJb();});}
+function tbJbVol(){const p=TB.yt,P=tbPrefs();if(!p||!p.setVolume)return;try{p.setVolume(P.vol);if(P.mute)p.mute();else p.unMute();}catch(e){}}
+// 🗺 world map (everyone can read it and add party notes to a pin; the DM edits it)
+function tbWorldOpen(){TB.wOpen=true;tbWorldRender();}
+function tbWorldClose(){TB.wOpen=false;const d=document.getElementById('tbWorld');if(d)d.remove();}
+function tbWorldRender(){
+  const W=TB.world||{},dm=!!(TB.host&&TB.host.me().dm),pins=W.pins&&typeof W.pins==='object'?W.pins:{},d=tbEl('tbWorld','tb-ov');
+  if(d.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){TB.wLater=true;return;}
+  const ids=Object.keys(pins).filter(k=>pins[k]&&(dm||!pins[k].h)),sel=pins[TB.wsel]&&(dm||!pins[TB.wsel].h)?TB.wsel:'',p=sel?pins[sel]:null;
+  const trip=W.trip&&typeof W.trip==='object'?Object.values(W.trip).filter(Boolean).sort((a,b)=>(b.t||0)-(a.t||0)):[];
+  const sc=d.querySelector('.tb-map'),st=sc?[sc.scrollLeft,sc.scrollTop]:null;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>🗺 '+tbEsc(W.name||'World map')+'</h2><span class="tb-mut">Day '+(+W.day||1)+'</span>'
+    +(dm?'<label class="tb-b" style="cursor:pointer">⬆ Map picture<input type="file" accept="image/*" data-w="up" hidden></label><button data-w="day">＋1 day</button>':'')
+    +'<button class="tb-x" data-w="x">✕</button></div><div class="tb-wb"><div class="tb-map">'
+    +(W.img?'<div class="tb-mi"><img class="tb-mimg" alt="" data-w="map">'+ids.map(k=>{const q=pins[k];return '<button class="tb-pin'+(k===sel?' sel':'')+(q.h?' hid':'')+(q.vis?'':' unv')+'" data-pin="'+tbEsc(k)+'" style="left:'+(+q.x*100)+'%;top:'+(+q.y*100)+'%">'+tbEsc(q.ic||'📍')+'<span>'+tbEsc(q.n||'?')+'</span></button>';}).join('')
+      +(W.at?'<div class="tb-party" style="left:'+(+W.at.x*100)+'%;top:'+(+W.at.y*100)+'%" title="The party">🚩</div>':'')+'</div>'
+      :'<div style="padding:40px;text-align:center" class="tb-mut">'+(dm?'Upload a map picture of your world (⬆ Map picture), or paint one with 🎨 on the board and save it.':'The DM hasn’t added a world map yet.')+'</div>')
+    +'</div><div class="tb-side">'
+    +(dm&&W.img?'<div class="tb-mut">'+(TB.wPlace==='pin'?'<b style="color:#ffce4d">Click the map to drop a pin.</b>':TB.wPlace==='party'?'<b style="color:#ffce4d">Click the map where the party is.</b>':'Add places, then move the party marker as you travel.')+'</div><div class="tb-r"><button data-w="addpin">📍 Add a place</button><button data-w="party">🚩 Move the party</button></div>':'')
+    +(p?'<h3>'+tbEsc(p.ic||'📍')+' '+tbEsc(p.n||'?')+'</h3>'
+      +(dm?'<input data-wf="n" value="'+tbEsc(p.n||'')+'" placeholder="Name"><div class="tb-r"><select data-wf="ic" style="width:auto">'+['📍','🏘','🏰','⛰','🌲','🏞','🕳','⚓','🏛','⛩','⚔','💀','💎','❓'].map(e=>'<option'+(e===(p.ic||'📍')?' selected':'')+'>'+e+'</option>').join('')+'</select>'
+        +'<label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-wf="vis" style="width:auto"'+(p.vis?' checked':'')+'> visited</label><label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-wf="h" style="width:auto"'+(p.h?' checked':'')+'> hidden</label></div>'
+        +'<textarea data-wf="d" rows="3" placeholder="What the party knows about it" style="margin-top:6px">'+tbEsc(p.d||'')+'</textarea>':(p.d?'<div style="white-space:pre-wrap">'+tbEsc(p.d)+'</div>':'')+(p.vis?'':'<div class="tb-mut">Not visited yet.</div>'))
+      +'<h3>Party notes</h3><textarea data-wf="pn" rows="4" placeholder="Anyone in the party can write here">'+tbEsc(p.pn||'')+'</textarea>'
+      +(dm?'<div class="tb-r"><button data-w="delpin" style="color:#ff5d5d">Delete this place</button></div>':'')
+      :'<div class="tb-mut" style="margin-top:8px">'+(ids.length?'Click a place on the map to read about it.':'No places yet.')+'</div>')
+    +'<h3>Travel log</h3>'+(dm?'<div class="tb-r"><input data-w="tripin" placeholder="e.g. Crossed the Ashen Pass" style="flex:1"><button data-w="trip">Add</button></div>':'')
+    +(trip.length?trip.slice(0,40).map(t=>'<div class="tb-trip"><b>Day '+(+t.d||1)+'</b> · '+tbEsc(t.text||'')+'</div>').join(''):'<div class="tb-mut">Nothing yet.</div>')+'</div></div></div>';
+  const im=d.querySelector('img.tb-mimg');if(im&&W.img)tbPicSrc(W.img).then(src=>{if(src)im.src=src;});
+  const sc2=d.querySelector('.tb-map');if(sc2&&st){sc2.scrollLeft=st[0];sc2.scrollTop=st[1];}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{if(e.target===d){tbWorldClose();return;}const H=TB.host;const pin=e.target.closest('[data-pin]');if(pin){TB.wsel=pin.dataset.pin;TB.wPlace='';tbWorldRender();return;}
+      const b=e.target.closest('[data-w]'),k=b&&b.dataset.w;
+      if(k==='map'&&TB.wPlace){const r=b.getBoundingClientRect(),x=+((e.clientX-r.left)/r.width).toFixed(4),y=+((e.clientY-r.top)/r.height).toFixed(4);
+        if(TB.wPlace==='party')H.set('world/at',{x,y});else{const n=prompt('Name of this place?','');if(n){const id='p'+Date.now().toString(36);H.set('world/pins/'+id,{x,y,n:n.slice(0,60),ic:'📍'});TB.wsel=id;}}TB.wPlace='';tbWorldRender();return;}
+      if(k==='x')tbWorldClose();else if(k==='addpin'){TB.wPlace='pin';tbWorldRender();}else if(k==='party'){TB.wPlace='party';tbWorldRender();}
+      else if(k==='day'){const day=(+(TB.world||{}).day||1)+1;H.set('world/day',day);const t=prompt('Day '+day+'. Anything to add to the travel log? (optional)','');if(t)H.push('world/trip',{d:day,text:t.slice(0,200),t:Date.now()});}
+      else if(k==='trip'){const i=d.querySelector('[data-w="tripin"]'),t=(i&&i.value||'').trim();if(t){H.push('world/trip',{d:+(TB.world||{}).day||1,text:t.slice(0,200),t:Date.now()});i.value='';}}
+      else if(k==='delpin'&&TB.wsel&&confirm('Delete this place from the map?')){H.set('world/pins/'+TB.wsel,null);TB.wsel='';}});
+    d.addEventListener('change',e=>{const t=e.target,H=TB.host;
+      if(t.dataset.w==='up'&&t.files&&t.files[0]){const f=t.files[0];t.value='';tbToast('Uploading the map…');Promise.resolve(H.upload(f)).then(id=>{if(id){H.set('world/img',id);tbToast('✓ Map added');}}).catch(er=>tbToast('Upload failed: '+er.message));return;}
+      const f=t.dataset.wf;if(!f||!TB.wsel)return;const v=t.type==='checkbox'?(t.checked||null):String(t.value).slice(0,f==='n'?60:2000);H.set('world/pins/'+TB.wsel+'/'+f,v===''?null:v);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.wLater&&!d.contains(document.activeElement)){TB.wLater=false;tbWorldRender();}},0));}}
+// 📒 party Pokédex (boards add entries; anyone can read it and leave a party note)
+function tbDexOpen(){TB.dOpen=true;tbDexRender();}
+function tbDexClose(){TB.dOpen=false;const d=document.getElementById('tbDexW');if(d)d.remove();}
+function tbOwned(){const o={},H=TB.host;if(!H||!H.players)return o;const ps=H.players()||{};for(const pk in ps){const p=ps[pk];if(!p||typeof p!=='object')continue;
+  (Array.isArray(p.companions)?p.companions:Object.values(p.companions||{})).forEach(c=>{const nm=c&&(c.species||c.name),num=nm&&H.dexNum?H.dexNum(nm):0;if(num){(o[num]=o[num]||[]).push((c.name&&c.name!==c.species?c.name+' ('+(p.charName||pk)+')':(p.charName||pk)));o[num].sp=o[num].sp||nm;}});}return o;}
+function tbDexRender(){
+  const d=tbEl('tbDexW','tb-ov');if(d.contains(document.activeElement)&&/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&document.activeElement.dataset.dx!=='q'){TB.dLater=true;return;}
+  const own=tbOwned(),all={};for(const k in TB.dex){const e=TB.dex[k];if(e&&e.num)all[e.num]=e;}for(const num in own)if(!all[num])all[num]={num:+num,n:own[num].sp||'',own:1};
+  const q=TB.dq.toLowerCase(),list=Object.values(all).filter(e=>!q||String(e.n||'').toLowerCase().includes(q)).sort((a,b)=>a.num-b.num),e=TB.dsel&&all[TB.dsel];
+  const tc=t=>TB_TC[t]||'#A8A878';
+  const qi=d.querySelector('[data-dx="q"]'),hadQ=qi&&document.activeElement===qi,pos=qi?qi.selectionStart:0;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>📒 Party Pokédex</h2><span class="tb-mut">'+Object.values(all).filter(x=>x.n).length+' seen · '+Object.keys(own).length+' with the party</span><input data-dx="q" placeholder="Search…" value="'+tbEsc(TB.dq)+'" style="width:160px"><button class="tb-x" data-dx="x">✕</button></div>'
+    +'<div class="tb-wb"><div class="tb-dex" style="flex:1">'+(list.length?list.map(x=>'<div class="tb-dc'+(own[x.num]?' own':'')+'" data-dn="'+x.num+'"><img loading="lazy" src="'+TB_ART+x.num+'.png" alt=""><b>'+tbEsc(x.n||'#'+x.num)+'</b><i>#'+String(x.num).padStart(4,'0')+(own[x.num]?' · ✓ party':'')+'</i></div>').join('')
+      :'<div class="tb-mut" style="padding:30px">No Pokémon yet. When the party meets one on the live board, it’s added here.</div>')+'</div>'
+    +(e?'<div class="tb-side"><img src="'+TB_ART+e.num+'.png" alt="" style="width:100%;aspect-ratio:1;object-fit:contain"><h3 style="margin-top:4px">'+tbEsc(e.n||'#'+e.num)+' <span class="tb-mut">#'+e.num+'</span></h3>'
+      +'<div>'+(e.ty||[]).map(t=>'<span class="tb-ty" style="background:'+tc(t)+'">'+tbEsc(t)+'</span>').join('')+'</div>'
+      +'<div class="tb-r"><button data-dx="cry" title="Hear its cry">🔊 Cry</button></div>'
+      +(e.at||e.t?'<div class="tb-mut" style="margin-top:6px">First seen'+(e.at?' at <b>'+tbEsc(e.at)+'</b>':'')+(e.t?', '+new Date(e.t).toLocaleDateString([],{month:'short',day:'numeric'}):'')+(e.c>1?' · seen '+e.c+' times':'')+'</div>':'')
+      +(own[e.num]?'<div style="margin-top:6px">✓ With the party: '+tbEsc(own[e.num].join(', '))+'</div>':'')
+      +(e.n?'<h3>Party notes</h3><textarea data-dx="pn" rows="5" placeholder="Where it lives, what it’s weak to, what happened…">'+tbEsc(e.pn||'')+'</textarea>':'')+'</div>':'')+'</div></div>';
+  if(hadQ){const n=d.querySelector('[data-dx="q"]');n.focus();try{n.setSelectionRange(pos,pos);}catch(er){}}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',ev=>{if(ev.target===d||ev.target.closest('[data-dx="x"]')){tbDexClose();return;}if(ev.target.closest('[data-dx="cry"]')){if(TB.dsel)tbCry(+TB.dsel);return;}const c=ev.target.closest('[data-dn]');if(c){TB.dsel=c.dataset.dn;tbDexRender();}});
+    d.addEventListener('input',ev=>{if(ev.target.dataset.dx==='q'){TB.dq=ev.target.value;tbDexRender();}});
+    d.addEventListener('change',ev=>{if(ev.target.dataset.dx==='pn'&&TB.dsel&&TB.dex[TB.dsel])TB.host.set('dex/'+TB.dsel+'/pn',String(ev.target.value).slice(0,2000)||null);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.dLater&&!d.contains(document.activeElement)){TB.dLater=false;tbDexRender();}},0));}}
+// 🔊 Pokémon cries (Finn 2026-11-22): the real cry, from PokeAPI's free collection on GitHub (the same place as the artwork),
+// when a Pokémon arrives on the board, evolves, speaks, or is revealed in the quiz. n = a name or a Pokédex number.
+// Follows the sounds switch (tbPrefs().fx), and never two at once.
+const TB_CRY='https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/';
+function tbCry(n){if(!tbPrefs().fx)return;const num=+n>0?Math.floor(+n):(TB.host&&TB.host.dexNum?TB.host.dexNum(String(n||'')):0);if(!num||num>1025)return;
+  const now=Date.now();if(now-(TB.cryAt||0)<600)return;TB.cryAt=now;
+  try{const a=new Audio(TB_CRY+num+'.ogg');a.volume=.45;const p=a.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}}
+function tbPicC(img,art){const k=(img||'')+'|'+(+art||0);TB.pics=TB.pics||{};return TB.pics[k]||(TB.pics[k]=tbPicSrc(img,art));}   // each picture fetched once per screen
+// ✋ the pause card (a table safety tool): a player taps "can we move on?" or "I need a pause" (tbPauseAsk); it goes to
+// meta/pause with no name on it, and only the DM's screens show it (tbPauseShow) until the DM taps OK, which clears them.
+function tbPauseAsk(){const d=tbEl('tbPauseW','tb-ov');d.innerHTML='<div class="tb-win" style="max-width:440px"><div class="tb-wh"><h2>✋ Pause card</h2><button class="tb-x" data-pz="x">✕</button></div><div style="padding:14px">'
+  +'<div class="tb-mut" style="margin-bottom:12px">Something at the table not sitting right, or a scene going on too long? Tap one. The DM sees it <b>without your name</b>, and nobody else sees it.</div>'
+  +'<div style="display:grid;gap:8px"><button class="tb-pc" data-pz="skip">⏩ <b>Can we move on?</b><small>Wrap this scene up, please</small></button><button class="tb-pc" data-pz="pause">✋ <b>I need a pause</b><small>Stop for a moment</small></button></div>'
+  +'<div class="tb-mut tb-pzn" style="margin-top:10px"></div></div></div>';
+  d.onclick=e=>{const b=e.target.closest('[data-pz]');if(e.target===d||(b&&b.dataset.pz==='x')){d.remove();return;}if(!b||!TB.host)return;
+    TB.host.push('pause',{k:b.dataset.pz,t:Date.now()});d.querySelector('.tb-pzn').textContent='✓ Sent. The DM sees it without your name.';setTimeout(()=>d.remove(),1800);};}
+function tbPauseShow(p){const H=TB.host;if(!H||!H.me||!H.me().dm)return;const L=Object.values(p&&typeof p==='object'?p:{}).filter(v=>v&&v.k),el=document.getElementById('tbPause');
+  if(!L.length){if(el)el.remove();return;}const skip=L.filter(v=>v.k==='skip').length,stop=L.length-skip,sig=L.length+'|'+stop;if(el&&el.dataset.sig===sig)return;
+  const d=tbEl('tbPause','tb-pause');d.dataset.sig=sig;if(TB.started)tbChime();
+  d.innerHTML='<b>'+(stop?'✋ A player asked for a pause':'⏩ A player asked to move on')+'</b><span>'+(stop&&skip?'(and '+skip+' to move on) ':L.length>1?'('+L.length+' asks) ':'')+'No name on it, and only you see this.</span><button data-pz="ok">OK</button>';
+  d.onclick=e=>{if(e.target.closest('[data-pz="ok"]')){H.set('pause',null);d.remove();}};}
+// 🤫 secret rolls: meta/secret/<push id> = {pk, n, what, total, txt, nat, t}, sent from a player's sheet. Only the DM's
+// screens show them: a pop-up as each one comes in (the dashboard also lists them in its roll feed).
+function tbSecret(sc){const H=TB.host;if(!H||!H.me||!H.me().dm)return;const s=JSON.stringify(sc||null);if(s===TB.secS)return;TB.secS=s;
+  const L=Object.entries(sc&&typeof sc==='object'?sc:{}).filter(([,v])=>v&&v.n),ids=new Set(L.map(([k])=>k));
+  if(TB.secSeen)L.forEach(([k,v])=>{if(!TB.secSeen.has(k))tbToast('🤫 '+v.n+' · '+(v.what||'Secret roll')+': '+v.total+(v.txt?' ('+v.txt+')':''));});TB.secSeen=ids;}
+// ❓ Who's that Pokémon? The DM's dashboard runs it: meta/quiz = {id, num, h:[answer hashes], on, rev, n (the name, once
+// revealed), win:{pk,n}, score:{pk:{n,p}}, gen}. Players guess on their sheet or board: meta/qbuzz/<push id> = {q, pk, n, ok, g, t}.
+// Push ids sort by arrival, so the first right answer wins. Answers are checked as hashes, so the name isn't in the data until
+// the reveal (the picture's number still is: it's a party game, on the honour system like the DM's notes).
+const tbQNorm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+function tbHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);}
+function tbQuiz(q){q=q&&typeof q==='object'&&q.on&&q.num?q:null;const old=TB.quiz,H=TB.host;TB.quiz=q;
+  if(!q){const d=document.getElementById('tbQuiz');if(d)d.remove();TB.qShut='';return;}
+  const fresh=!old||old.id!==q.id,shown=!(old&&old.id===q.id&&old.rev)&&q.rev;
+  if(fresh){TB.qLeft=3;TB.qMine='';}
+  if(H&&H.noQuiz)return;   // the dashboard has its own panel
+  if(TB.started&&fresh&&!q.rev)[392,523,659,784].forEach((f,i)=>tbTone(f,f,.14,'triangle',.06,i*.09));
+  if(TB.started&&shown)tbCry(q.num);
+  if(TB.qShut===q.id+'|'+(q.rev?1:0))return;tbQuizRender();}
+function tbQuizRender(){const q=TB.quiz;if(!q)return;const H=TB.host,me=H&&H.me?H.me():{},can=!me.dm&&!!me.pk&&!q.rev,d=tbEl('tbQuiz','tb-ov tb-quiz');
+  const sc=Object.values(q.score&&typeof q.score==='object'?q.score:{}).filter(s=>s&&s.n).sort((a,b)=>(b.p||0)-(a.p||0)).slice(0,6);
+  const key=[q.id,q.rev?1:0,q.n,q.win&&q.win.n,JSON.stringify(sc),TB.qMine,TB.qLeft].join('|');if(d.dataset.k===key)return;d.dataset.k=key;
+  const inp=d.querySelector('input'),keep=inp?inp.value:'',foc=!!inp&&document.activeElement===inp;
+  d.innerHTML='<div class="tb-qz"><button class="tb-x" data-q="x" title="Close (it comes back with the next Pokémon)">✕</button><div class="tb-qt">'+(q.rev?'It’s <b>'+tbEsc(q.n||'?')+'</b>!':'Who’s that Pokémon?')+'</div>'
+    +'<div class="tb-qs'+(q.rev?' rev':'')+'"><img src="'+TB_ART+(+q.num)+'.png" alt="" draggable="false"></div>'
+    +(q.rev?'<div class="tb-qw">'+(q.win&&q.win.n?'🏆 '+tbEsc(q.win.n)+' got it first!':'Nobody got it this time.')+'</div>'
+      :can?(TB.qMine==='ok'?'<div class="tb-qw">✓ You got it! Waiting for the reveal…</div>'
+        :TB.qLeft>0?'<div class="tb-qg"><input data-q="g" maxlength="40" placeholder="Type your guess…" autocomplete="off" spellcheck="false"><button data-q="go">Guess</button></div><div class="tb-mut">'+(TB.qMine==='no'?'✗ Not that one. ':'')+TB.qLeft+' guess'+(TB.qLeft===1?'':'es')+' left</div>'
+        :'<div class="tb-qw">Out of guesses. Wait for the reveal!</div>')
+      :'<div class="tb-mut">'+(me.dm?'Players guess on their sheet or board.':'Players guess on their sheets.')+'</div>')
+    +(sc.length?'<div class="tb-qsc">'+sc.map((s,i)=>'<span>'+(i===0&&s.p?'👑 ':'')+tbEsc(s.n)+' <b>'+(s.p||0)+'</b></span>').join('')+'</div>':'')+'</div>';
+  const ni=d.querySelector('input');if(ni){ni.value=keep;if(foc)ni.focus();}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(!b)return;if(b.dataset.q==='x'){const z=TB.quiz;TB.qShut=z?z.id+'|'+(z.rev?1:0):'';d.remove();}else if(b.dataset.q==='go')tbQuizGuess();});
+    d.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.q==='g')tbQuizGuess();});}}
+function tbQuizGuess(){const q=TB.quiz,H=TB.host,i=document.querySelector('#tbQuiz input');if(!q||q.rev||!i||!H||TB.qLeft<=0||TB.qMine==='ok')return;const g=i.value.trim();if(!g)return;
+  const ok=(Array.isArray(q.h)?q.h:Object.values(q.h||{})).includes(tbHash(tbQNorm(g))),me=H.me();i.value='';
+  H.push('qbuzz',{q:q.id,pk:me.pk,n:me.name||me.pk,ok,g:g.slice(0,40),t:Date.now()});
+  if(ok){TB.qMine='ok';tbFanfare();}else{TB.qLeft--;TB.qMine='no';tbTone(220,150,.25,'square',.04);}tbQuizRender();}
+// 📇 people the party has met: meta/people/<id> = {n, img, art, color, where, att, d (what the party knows: the DM writes it),
+// pn (party notes: anyone), t, h (hidden from players)}. The DM's 💬 Speak (dashboard, or a board token) adds whoever talks,
+// the first time (tbMeet; a plain Pokémon species is left to the Pokédex).
+const TB_ATT={unknown:['❔','Not sure yet','#8a9bbb'],friendly:['😊','Friendly','#3ddf93'],neutral:['😐','Neutral','#a9b4c6'],wary:['🤨','Wary','#ffce4d'],hostile:['😠','Hostile','#ff5d5d']};
+const tbPid=n=>String(n||'').toLowerCase().replace(/\s+\d+$/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'x';
+function tbMeet(s,where){const H=TB.host;if(!H||!s||!s.who||s.who==='???')return;const who=String(s.who).replace(/\s+\d+$/,'').trim(),id=tbPid(who);if(!who||TB.people[id]||(H.dexNum&&H.dexNum(who)))return;
+  const v={n:who.slice(0,60),img:s.img||'',art:+s.art||0,color:s.color||'',where:String(where||'').slice(0,80),att:'unknown',t:Date.now()};TB.people[id]=v;H.set('people/'+id,v);}
+function tbPeopleOpen(){TB.pOpen=true;tbPeopleRender();}
+function tbPeopleClose(){TB.pOpen=false;const d=document.getElementById('tbPeopleW');if(d)d.remove();}
+function tbPeopleRender(){
+  const d=tbEl('tbPeopleW','tb-ov'),H=TB.host,dm=!!(H&&H.me&&H.me().dm);if(d.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){TB.pLater=true;return;}
+  const P=TB.people||{},ids=Object.keys(P).filter(k=>P[k]&&P[k].n&&(dm||!P[k].h)).sort((a,b)=>(P[b].t||0)-(P[a].t||0)),sel=ids.includes(TB.psel)?TB.psel:'',p=sel?P[sel]:null;
+  const pic=(q,cls)=>'<span class="'+cls+'" data-pimg="'+tbEsc(q.img||'')+'" data-part="'+(+q.art||0)+'" style="--tbc:'+tbEsc(/^#[0-9a-f]{3,8}$/i.test(q.color||'')?q.color:'#3a4560')+'">'+tbEsc(String(q.n).trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase())+'</span>';
+  const att=q=>TB_ATT[q.att]||TB_ATT.unknown;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>📇 People we’ve met</h2><span class="tb-mut">'+ids.length+'</span>'+(dm?'<button data-pp="add">＋ Add someone</button>':'')+'<button class="tb-x" data-pp="x">✕</button></div><div class="tb-wb">'
+    +'<div class="tb-dex" style="flex:1">'+(ids.length?ids.map(k=>{const q=P[k],a=att(q);return '<div class="tb-dc'+(k===sel?' own':'')+(q.h?' hid':'')+'" data-pid="'+tbEsc(k)+'">'+pic(q,'tb-pp')+'<b>'+tbEsc(q.n)+'</b><i style="color:'+a[2]+'">'+a[0]+' '+a[1]+'</i>'+(q.where?'<i>'+tbEsc(q.where)+'</i>':'')+'</div>';}).join('')
+      :'<div class="tb-mut" style="padding:30px">Nobody yet. When the DM speaks as someone with 💬, they’re added here.</div>')+'</div>'
+    +(p?'<div class="tb-side">'+pic(p,'tb-pp big')+'<h3 style="margin-top:8px">'+tbEsc(p.n)+'</h3>'
+      +(dm?'<input data-pf="n" value="'+tbEsc(p.n)+'" placeholder="Name"><div class="tb-r"><select data-pf="att">'+Object.entries(TB_ATT).map(([k,a])=>'<option value="'+k+'"'+((p.att||'unknown')===k?' selected':'')+'>'+a[0]+' '+a[1]+'</option>').join('')+'</select></div>'
+        +'<div class="tb-r"><input data-pf="where" value="'+tbEsc(p.where||'')+'" placeholder="Where the party met them"></div><textarea data-pf="d" rows="3" placeholder="What the party knows about them" style="margin-top:6px">'+tbEsc(p.d||'')+'</textarea>'
+        +'<div class="tb-r"><label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-pf="h" style="width:auto"'+(p.h?' checked':'')+'> hidden from players</label><button data-pp="del" style="color:#ff5d5d">Delete</button></div>'
+       :'<div style="color:'+att(p)[2]+'">'+att(p)[0]+' '+att(p)[1]+'</div>'+(p.where||p.t?'<div class="tb-mut">Met'+(p.where?' at '+tbEsc(p.where):'')+(p.t?', '+new Date(p.t).toLocaleDateString([],{month:'short',day:'numeric'}):'')+'</div>':'')+(p.d?'<div style="white-space:pre-wrap;margin-top:6px">'+tbEsc(p.d)+'</div>':''))
+      +'<h3>Party notes</h3><textarea data-pf="pn" rows="5" placeholder="What they want, what they told you, whether you trust them…">'+tbEsc(p.pn||'')+'</textarea></div>':'')+'</div></div>';
+  d.querySelectorAll('[data-pimg]').forEach(el=>{const img=el.dataset.pimg,art=+el.dataset.part;if(!img&&!art)return;tbPicC(img,art).then(src=>{if(src){el.style.backgroundImage='url("'+src.replace(/"/g,'%22')+'")';el.textContent='';}});});
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{if(e.target===d||e.target.closest('[data-pp="x"]')){tbPeopleClose();return;}const c=e.target.closest('[data-pid]');if(c){TB.psel=c.dataset.pid;tbPeopleRender();return;}
+      const b=e.target.closest('[data-pp]'),k=b&&b.dataset.pp,H2=TB.host;
+      if(k==='add'){const n=prompt('Who did the party meet?','');if(n&&n.trim()){const id=tbPid(n);TB.psel=id;const v={n:n.trim().slice(0,60),att:'unknown',t:Date.now()};TB.people[id]=v;H2.set('people/'+id,v);tbPeopleRender();}}
+      else if(k==='del'&&TB.psel&&confirm('Delete '+((TB.people[TB.psel]||{}).n||'them')+' from the list?')){H2.set('people/'+TB.psel,null);TB.psel='';}});
+    d.addEventListener('change',e=>{const t=e.target,f=t.dataset.pf;if(!f||!TB.psel)return;const v=t.type==='checkbox'?(t.checked||null):String(t.value).slice(0,f==='n'?60:f==='where'?80:2000);TB.host.set('people/'+TB.psel+'/'+f,v===''?null:v);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.pLater&&!d.contains(document.activeElement)){TB.pLater=false;tbPeopleRender();}},0));}}
+// ── 🎭 Table extras on the board (the shared block is just above): what this board reads and writes for it ──
+TB.host={asset:aid=>assetData(aid),set:(p,v)=>write('meta/'+p,v),push:(p,v)=>fb('POST','campaigns/'+CID+'/meta/'+p,v).catch(e=>toast('Couldn’t save: '+e.message,5000)),
+  me:()=>({pk:ME,name:myInfo().name,dm:IS_DM}),dexNum:n=>{const e=dexEntry(n);return e?e.num:0;},listen:()=>true,upload:f=>uploadAsset(f,'map').then(r=>r.aid),players:()=>players(),jbParent:()=>stage};
+$('#bWorld').addEventListener('click',tbWorldOpen);$('#bDex').addEventListener('click',tbDexOpen);$('#bPeople').addEventListener('click',tbPeopleOpen);$('#bPause').addEventListener('click',tbPauseAsk);$('#bShow').addEventListener('click',()=>act('show',{}));
+let DEXN=null;const DEXDONE=new Set();
+function dexName(num){if(!DEXN){DEXN={};for(const k in POKE_NT)DEXN[POKE_NT[k].num]=k;}const k=DEXN[num];return k?k[0].toUpperCase()+k.slice(1):'';}
+// 📒 a player's board adds a Pokémon to the party Pokédex the first time it's in view (not hidden, not in fog or out of sight)
+function dexSeen(sd){if(IS_DM||!tree||!sd)return;const dx=(tree.meta&&tree.meta.dex)||{};
+  for(const tk of TOK.values()){const t=tk.data;if(!t||t.kind!=='npc'||t.hidden||!tk.g.visible)continue;const e=dexEntry(t.sp||tk.info.name);if(!e||dx[e.num]||DEXDONE.has(e.num))continue;
+    DEXDONE.add(e.num);write('meta/dex/'+e.num,{n:dexName(e.num),num:e.num,ty:e.types.slice(0,2),at:sd.name||'',t:TS});}}
+// 💬 the DM speaks as an NPC (token card): meta/say, shown on every sheet and board
+function sayAs(tk,text){const t=tk.data,i=tk.info,lk=tk.look||{},e=dexEntry(t.sp||i.name);
+  const s={n:uid('s'),who:i.name.replace(/\s+\d+$/,''),text:text.slice(0,400),img:lk.img||'',art:lk.img?0:(e?e.num:0),color:i.color,t:Date.now()};write('meta/say',s);tbMeet(s,(sceneData()||{}).name||'');}
+// ✨ evolve a Pokémon token: everyone sees the evolution scene. A foe's token takes the new species (t.sp, its art and
+// types) and keeps its name, so the DM's encounter still matches it; a companion changes on its owner's sheet (they confirm).
+function evolveToken(tk){const t=tk.data,i=tk.info,cur=t.sp||(t.kind==='comp'?(i.species||i.name):i.name),e=dexEntry(cur);if(!e){toast('That isn’t a Pokémon the Pokédex knows.');return;}
+  const from=dexName(e.num)||cur,to0=prompt('Evolve '+from+' into which Pokémon?',dexName(e.num+1));if(!to0)return;const ne=dexEntry(to0);if(!ne){toast('“'+to0+'” isn’t in the Pokédex.');return;}
+  const to=dexName(ne.num)||to0.trim();
+  write('meta/evolve',{n:uid('v'),from,to,a:e.num,b:ne.num,who:t.kind==='comp'?(i.owner||''):'',pk:t.kind==='comp'?fbKey(t.pk):null,cid:t.kind==='comp'?t.cid:null,t:Date.now()});
+  if(t.kind!=='comp')patchToken(tk.id,{sp:to,types:ne.types.slice(0,2)});else toast(from+' is evolving! Its owner confirms the new species on their sheet.',5000);}
+// 📽 the DM shows everyone something: board/look = {sid, x, y, r, n}; every player's camera glides there
+let lastLook='',zoomAnim=null;
+function sendLook(x,y,r){write('board/look',{sid:sceneId(),x:+(+x).toFixed(2),y:+(+y).toFixed(2),r:+(+r).toFixed(1),n:uid('l')});toast('📽 Everyone’s view moves here.');}
+function handleLook(lk){const sig=(lk&&lk.n)||'';if(sig===lastLook)return;lastLook=sig;if(firstSync||!lk||IS_DM||lk.sid!==sceneId())return;
+  focusOn(+lk.x,+lk.y);if(+lk.r)zoomAnim={r0:sph().radius,r1:clamp(+lk.r,controls.minDistance,controls.maxDistance),k:0};toast('📽 The DM is showing you something');}
+// 📺 TV mode (?tv=1): no controls, follows the turn and the DM's 📽, sees what players see. For a TV at the table or a stream.
+function tvLink(){return location.href.split(/[?#]/)[0]+'?'+new URLSearchParams({c:CID,tv:'1',fb:FB}).toString();}
+function copyTv(){const u=tvLink();(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast('📺 TV link copied. Open it on the TV (or a stream): the board without controls, following the turn.',6500)).catch(()=>prompt('Copy this link for the TV:',u));}
+// 😮 emotes: board/emote/<token> = {e, n}; a speech bubble pops up over the token on every screen (players: their own tokens)
+const EMOTES=['❗','❓','💢','♪','💤','❤️','💧','💡','😅','👍'];
+const lastEmo={};
+function handleEmotes(em){for(const id in em||{}){const v=em[id];if(!v||typeof v!=='object')continue;const sig=String(v.n||'');if(lastEmo[id]===sig)continue;lastEmo[id]=sig;if(firstSync)continue;
+  const tk=TOK.get(id);if(tk&&tk.g.visible)showEmote(tk,String(v.e||'❗').slice(0,4));}}
+function showEmote(tk,e){const w=document.createElement('div'),el=document.createElement('div');el.className='emo';el.textContent=e;w.appendChild(el);
+  const o=new CSS2DObject(w),tf=tiltFactor(),h=(tk.model?tk.mh:1.2*tk.size);o.position.set(0,.1+tf*(h+.6),-(1-tf)*(.5*tk.size+.75));o.center.set(.5,1);tk.g.add(o);
+  tbTone(880,1320,.08,'square',.03);setTimeout(()=>{tk.g.remove(o);w.remove();},2900);}
+// 🔴 Poké Ball: a companion token arrives in a ball thrown from its trainer's token, and leaves in a red beam
+let ballGeo=null,ballMat=null;
+const FXL=[];   // short-lived effects (ball throws, recall beams, bursts, dice), ticked every frame
+function tickFx(dt){for(let i=FXL.length-1;i>=0;i--){const f=FXL[i];f.t+=dt;const k=Math.min(1,f.t/f.dur);f.tick(k,f.t,dt);if(k>=1){FXL.splice(i,1);if(f.end)f.end();}}}
+function ballMesh(){if(!ballGeo){const c=document.createElement('canvas');c.width=256;c.height=128;const x=c.getContext('2d');x.fillStyle='#e53935';x.fillRect(0,0,256,64);x.fillStyle='#f4f4f4';x.fillRect(0,64,256,64);
+    x.fillStyle='#16161c';x.fillRect(0,57,256,14);x.beginPath();x.arc(64,64,18,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(64,64,10,0,7);x.fill();
+    ballGeo=new THREE.SphereGeometry(.2,24,16);ballMat=new THREE.MeshStandardMaterial({map:canvasTex(c),roughness:.35,metalness:.1});}
+  const m=new THREE.Mesh(ballGeo,ballMat);m.castShadow=true;return m;}
+function trainerOf(t){for(const tk of TOK.values())if(tk.data&&tk.data.kind==='pc'&&fbKey(tk.data.pk)===fbKey(t.pk))return tk;return null;}
+function burst(x,y,col,big){const m=new THREE.Mesh(new THREE.SphereGeometry(.5,20,12),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false}));m.position.set(x,.45,y);world.add(m);
+  FXL.push({t:0,dur:.45,tick(k){m.scale.setScalar((.3+k*1.6)*(big||1));m.material.opacity=.9*(1-k);},end(){world.remove(m);m.geometry.dispose();m.material.dispose();}});}
+function sendOut(tk){const tr=trainerOf(tk.data),to=tk.target.clone(),from=tr?tr.pos.clone():new THREE.Vector2(to.x-1.6,to.y+1.6),b=ballMesh(),g=tk.g;let popped=false;
+  world.add(b);g.scale.setScalar(.001);
+  FXL.push({t:0,dur:1.05,tick(k,t){if(t<.62){const u=t/.62;b.position.set(from.x+(to.x-from.x)*u,.25+Math.sin(Math.PI*u)*2.2,from.y+(to.y-from.y)*u);b.rotation.x-=.35;return;}
+      if(!popped){popped=true;world.remove(b);burst(to.x,to.y,0xffffff);tbTone(700,1400,.15,'sine',.05);}
+      const u=Math.min(1,(t-.62)/.43),s=u<.7?u/.7*1.12:1.12-(u-.7)/.3*.12;g.scale.setScalar(Math.max(.001,s));},
+    end(){if(b.parent)world.remove(b);g.scale.setScalar(1);}});}
+function recall(tk){const tr=trainerOf(tk.data),at=tk.pos.clone(),g=tk.g;let beam=null;
+  if(tr){const a=new THREE.Vector3(tr.pos.x,.5,tr.pos.y),e=new THREE.Vector3(at.x,.4,at.y),L=Math.max(.1,a.distanceTo(e));
+    beam=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,1,8,1,true),new THREE.MeshBasicMaterial({color:0xff3b3b,transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false}));
+    beam.scale.set(1,L,1);beam.position.copy(a).add(e).multiplyScalar(.5);beam.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),e.clone().sub(a).normalize());world.add(beam);}
+  tk.discMat.color.set(0xff6b6b);tk.cardMat.color.set(0xff6b6b);tbTone(1200,500,.35,'sawtooth',.03);
+  FXL.push({t:0,dur:.6,tick(k){g.scale.setScalar(Math.max(.001,1-k));if(beam)beam.material.opacity=.9*(1-k);},end(){if(beam){world.remove(beam);beam.geometry.dispose();beam.material.dispose();}tk.dispose();}});}
+// ── 🛡 The DM's setting for how players see a foe's HP (meta/foehp): 'exact' numbers, 'pct' (the default), 'vague' words, 'none'
+const foeHp=()=>{const v=tree&&tree.meta&&tree.meta.foehp;return ['exact','pct','vague','none'].includes(v)?v:'pct';};
+const hpWord=p=>p<=0?'Down':p>.75?'Healthy':p>.5?'Wounded':p>.25?'Badly hurt':'Barely standing';
+// 💥 floating numbers when a token's HP changes ("−7" red, "+5" green); none for a foe whose HP players don't see
+function floatNum(tk,d){if(!d||!tk.g.visible||firstSync)return;if(tk.data.kind==='npc'&&!IS_DM&&['vague','none'].includes(foeHp()))return;
+  const w=document.createElement('div'),el=document.createElement('div');el.className='dmgf '+(d<0?'hurt':'heal');el.textContent=(d>0?'+':'−')+Math.abs(d);w.appendChild(el);
+  const o=new CSS2DObject(w),tf=tiltFactor();o.position.set(.25,.1+tf*((tk.model?tk.mh:1.2*tk.size)+.3),-(1-tf)*(.5*tk.size+.35));o.center.set(.5,1);tk.g.add(o);setTimeout(()=>{tk.g.remove(o);w.remove();},1600);}
+// ✨ move animations: a used move (board/fx with ty = its type, tg = its target's name) shoots a type-coloured attack from the
+// user's token to the target's; with no target it flares around the user. Every screen sees it and hears the type's sound.
+const SHOT={Electric:'bolt',Water:'beam',Ice:'beam',Grass:'shards',Rock:'shards',Steel:'shards',Bug:'shards',Fighting:'impact',Normal:'impact',Ground:'impact'};   // the rest: a glowing orb with a trail
+const fxName=s=>String(s||'').replace(/[.#$\[\]\/]/g,'_');
+const addM=(geo,col,op)=>{const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op==null?.95:op,depthWrite:false}));m.renderOrder=9;world.add(m);return m;};   // solid colour: glowing (additive) washes out on bright ground
+const dropM=m=>{world.remove(m);m.geometry.dispose();m.material.dispose();};
+function shock(x,y,col){const m=addM(RING(.4,.55,0,Math.PI*2),col,.9);m.position.set(x,.08,y);FXL.push({t:0,dur:.5,tick(k){const s=1+k*2.2;m.scale.set(s,1,s);m.material.opacity=.9*(1-k);},end(){dropM(m);}});}
+function findByName(n,not){const t=String(n||'').toLowerCase();if(!t)return null;for(const tk of TOK.values())if(tk!==not&&tk.g.visible&&tk.info&&tk.info.name.toLowerCase()===t)return tk;return null;}
+function moveFx(src,ty,tg){
+  const col=new THREE.Color(TYPE_COLORS[ty]||'#ffffff'),dst=findByName(tg,src),kind=SHOT[ty]||'orb';tbTypeSound(ty);
+  const hit=()=>{if(dst){burst(dst.pos.x,dst.pos.y,col,1.1);shock(dst.pos.x,dst.pos.y,col);}};
+  if(!dst){burst(src.pos.x,src.pos.y,col,1.3);shock(src.pos.x,src.pos.y,col);return 'flare';}
+  const a=new THREE.Vector3(src.pos.x,.55,src.pos.y),b=new THREE.Vector3(dst.pos.x,.55,dst.pos.y),L=a.distanceTo(b),dir=b.clone().sub(a).normalize();
+  if(kind==='impact'){const m=addM(new THREE.SphereGeometry(.18,12,8),col);FXL.push({t:0,dur:.25,tick(k){m.position.copy(a).lerp(b,k);},end(){dropM(m);hit();}});return kind;}   // a dash of light, then the hit
+  if(kind==='bolt'){const geo=new THREE.CylinderGeometry(.05,.05,1,6,1,true),segs=[],pts=[],UP=new THREE.Vector3(0,1,0),side=new THREE.Vector3(-dir.z,0,dir.x);let done=false;   // a jagged bolt of thick segments (WebGL lines are always 1 px)
+    for(let i=0;i<12;i++)segs.push(addM(geo,col,1));
+    FXL.push({t:0,dur:.45,tick(k){for(let i=0;i<13;i++){const p=a.clone().lerp(b,i/12);if(i%12){p.addScaledVector(side,(Math.random()-.5)*.6);p.y+=(Math.random()-.5)*.3;}pts[i]=p;}
+      for(let i=0;i<12;i++){const m=segs[i],p=pts[i],q=pts[i+1];m.position.copy(p).add(q).multiplyScalar(.5);m.quaternion.setFromUnitVectors(UP,q.clone().sub(p).normalize());m.scale.set(1,Math.max(.01,p.distanceTo(q)),1);m.material.opacity=k<.7?1:1-(k-.7)/.3;}
+      if(!done&&k>.15){done=true;hit();}},end(){segs.forEach(m=>{world.remove(m);m.material.dispose();});geo.dispose();}});return kind;}
+  if(kind==='beam'){const m=addM(new THREE.CylinderGeometry(.09,.13,1,10,1,true),col,.85);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir);let done=false;
+    FXL.push({t:0,dur:.6,tick(k){const g=Math.min(1,k/.35);m.scale.set(1,Math.max(.01,L*g),1);m.position.copy(a).addScaledVector(dir,L*g/2);m.material.opacity=k<.6?.85:.85*(1-(k-.6)/.4);if(!done&&g>=1){done=true;hit();}},end(){dropM(m);}});return kind;}
+  if(kind==='shards'){let left=5;
+    for(let i=0;i<5;i++){const m=addM(new THREE.TetrahedronGeometry(.11),col),off=new THREE.Vector3((Math.random()-.5)*.5,(Math.random()-.5)*.3,(Math.random()-.5)*.5);m.visible=false;
+      FXL.push({t:-i*.05,dur:.4,tick(k){if(k<=0)return;m.visible=true;m.position.copy(a).lerp(b,k).addScaledVector(off,Math.sin(Math.PI*k));m.rotation.x+=.4;m.rotation.y+=.3;},end(){dropM(m);if(--left===0)hit();}});}return kind;}
+  const m=addM(new THREE.SphereGeometry(.26,16,12),col,1);let last=0;
+  FXL.push({t:0,dur:.5,tick(k,t){m.position.copy(a).lerp(b,k);m.position.y+=Math.sin(Math.PI*k)*.6;
+    if(t-last>.03){last=t;const s2=addM(new THREE.SphereGeometry(.16,8,6),col,.7);s2.position.copy(m.position);FXL.push({t:0,dur:.3,tick(q){s2.material.opacity=.6*(1-q);s2.scale.setScalar(1-q*.6);},end(){dropM(s2);}});}},end(){dropM(m);hit();}});
+  return kind;}
+// ── 🎲 3D dice: every roll in the log also tumbles across the board as real dice that land on the numbers rolled (read
+// from the roll's text: "d20 14" and "2d6[3,5]"). Scripted, not simulated: each die spins down into the exact turn that
+// puts its number on top, readable from the camera. 🖥 Display → 🎲 3D dice turns them off on one device.
+const DIE={},DIEMAT=new Map();
+function dieShape(s){
+  const V=(x,y,z)=>new THREE.Vector3(x,y,z);let F=[];
+  if(s===6){for(const ax of [0,1,2])for(const sg of [1,-1])F.push([[1,1],[1,-1],[-1,-1],[-1,1]].map(([a,b])=>{const v=[0,0,0];v[ax]=sg;v[(ax+1)%3]=a;v[(ax+2)%3]=b;return V(v[0],v[1],v[2]);}));}
+  else if(s===8){for(const x of [1,-1])for(const y of [1,-1])for(const z of [1,-1])F.push([V(x,0,0),V(0,y,0),V(0,0,z)]);}
+  else if(s===4){const P=[V(1,1,1),V(-1,-1,1),V(-1,1,-1),V(1,-1,-1)];for(let i=0;i<4;i++)F.push(P.filter((_,j)=>j!==i));}   // face i is opposite corner i
+  else if(s===10){const a=.1,h=a*(1+Math.cos(Math.PI/5))/(1-Math.cos(Math.PI/5)),T=V(0,h,0),B=V(0,-h,0),U=[],L=[];   // a pentagonal trapezohedron (the height keeps each kite flat)
+    for(let k=0;k<5;k++){const t=k*Math.PI*2/5;U.push(V(Math.cos(t),a,Math.sin(t)));L.push(V(Math.cos(t+Math.PI/5),-a,Math.sin(t+Math.PI/5)));}
+    for(let k=0;k<5;k++){F.push([T,U[k],L[k],U[(k+1)%5]]);F.push([B,L[k],U[(k+1)%5],L[(k+1)%5]]);}}
+  else{const g=(s===12?new THREE.DodecahedronGeometry(1,0):new THREE.IcosahedronGeometry(1,0)).toNonIndexed(),p=g.attributes.position,groups=[];
+    for(let i=0;i<p.count;i+=3){const t=[0,1,2].map(j=>V(p.getX(i+j),p.getY(i+j),p.getZ(i+j))),n=t[1].clone().sub(t[0]).cross(t[2].clone().sub(t[0])).normalize();
+      let G=groups.find(q=>q.n.dot(n)>.999);if(!G){G={n,v:[]};groups.push(G);}for(const v of t)if(!G.v.some(w=>w.distanceTo(v)<1e-4))G.v.push(v);}
+    g.dispose();F=groups.map(q=>q.v);}
+  return F.map((vs,fi)=>{const c=vs.reduce((a,v)=>a.add(v),V(0,0,0)).multiplyScalar(1/vs.length);let n=vs[1].clone().sub(vs[0]).cross(vs[2].clone().sub(vs[0])).normalize();if(n.dot(c)<0)n.negate();
+    const u=vs[0].clone().sub(c).normalize(),r=u.clone().cross(n),ang=v=>Math.atan2(v.clone().sub(c).dot(u),v.clone().sub(c).dot(r));   // u = up on the face, r = right (seen from outside)
+    const ord=vs.slice().sort((A,B)=>ang(A)-ang(B)),rad=Math.max(...ord.map(v=>v.distanceTo(c)));let inr=1e9;
+    for(let k=0;k<ord.length;k++){const A=ord[k],B=ord[(k+1)%ord.length],e=B.clone().sub(A).normalize(),w=c.clone().sub(A);inr=Math.min(inr,w.sub(e.multiplyScalar(w.dot(e))).length());}
+    return {v:ord,c,n,u,r,rad,inr,fi};});}
+function dieGeo(s){if(DIE[s])return DIE[s];const F=dieShape(s),pos=[],uv=[],COLS=5,ROWS=4;
+  F.forEach((f,i)=>{const cx=i%COLS,cy=Math.floor(i/COLS),U=v=>{const d=v.clone().sub(f.c);return [(cx+.5+.5*d.dot(f.r)/f.rad)/COLS,1-(cy+.5-.5*d.dot(f.u)/f.rad)/ROWS];};
+    for(let k=1;k<f.v.length-1;k++)for(const v of [f.v[0],f.v[k],f.v[k+1]]){pos.push(v.x,v.y,v.z);uv.push(...U(v));}});
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.computeVertexNormals();
+  return DIE[s]={g,F};}
+function dieMat(s,col){const k=s+col;if(DIEMAT.has(k))return DIEMAT.get(k);const {F}=dieGeo(s),C=128,cv=document.createElement('canvas');cv.width=C*5;cv.height=C*4;const x=cv.getContext('2d');
+  const n=parseInt(col.slice(1),16),lum=((n>>16)*.299+(n>>8&255)*.587+(n&255)*.114)/255,ink=lum>.62?'#16161c':'#ffffff',edge=lum>.62?'rgba(255,255,255,.55)':'rgba(0,0,0,.55)';
+  x.fillStyle=col;x.fillRect(0,0,cv.width,cv.height);x.textAlign='center';x.textBaseline='middle';x.lineJoin='round';
+  const label=(t,px,py,rot,sz)=>{x.save();x.translate(px,py);x.rotate(rot);x.font='800 '+sz+'px Fredoka, Inter, sans-serif';x.lineWidth=sz*.16;x.strokeStyle=edge;x.strokeText(t,0,sz*.04);x.fillStyle=ink;x.fillText(t,0,sz*.04);x.restore();};
+  F.forEach((f,i)=>{const ox=(i%5)*C+C/2,oy=Math.floor(i/5)*C+C/2;
+    if(s===4){const P=[new THREE.Vector3(1,1,1),new THREE.Vector3(-1,-1,1),new THREE.Vector3(-1,1,-1),new THREE.Vector3(1,-1,-1)];
+      [0,1,2,3].filter(j=>j!==i).forEach(j=>{const d=P[j].clone().sub(f.c),dx=d.dot(f.r)/f.rad,dy=d.dot(f.u)/f.rad;label(String(j+1),ox+dx*C*.27,oy-dy*C*.27,Math.atan2(dx,dy),C*.2);});}
+    else{const t=String(i+1)+(s>=8&&(i+1===6||i+1===9)?'.':''),sz=C*.5*f.inr/f.rad*(t.length>1?.82:1.05)*1.1;label(t,ox,oy,0,sz);}});
+  const m=new THREE.MeshStandardMaterial({map:canvasTex(cv),roughness:.32,metalness:.05,transparent:true});DIEMAT.set(k,m);return m;}
+function diceFrom(text){const out=[],t=String(text||'').replace(/<[^>]*>/g,'');let m;const r1=/\bd20 (\d+)/g;while((m=r1.exec(t)))out.push({s:20,v:+m[1]});
+  const r2=/(\d+)d(\d+)\[([\d,\s]+)\]/g;while((m=r2.exec(t))){const s=+m[2];m[3].split(',').forEach(v=>{v=+v;if(v>=1&&v<=s)out.push({s,v});});}
+  return out.filter(d=>[4,6,8,10,12,20].includes(d.s)&&d.v>=1&&d.v<=d.s).slice(0,10);}
+function rollColor(who){const ps=players(),w=String(who||'').toLowerCase();for(const k in ps){const p=ps[k];if(p&&(String(p.charName||'').toLowerCase()===w||k.toLowerCase()===w))return TYPE_COLORS[p.type1]||'#e53935';}return w==='dm'?DM_COLOR:'#6b2fbf';}
+let diceGroups=0;
+function rollDice3D(e){
+  const ds=diceFrom(e.text);if(!ds.length||PREFS.dice===false||!sceneData()||diceGroups>=3)return;diceGroups++;
+  const col=rollColor(e.who),el=renderer.domElement,dist=camera.position.distanceTo(controls.target),vh=2*dist*Math.tan(THREE.MathUtils.degToRad(camera.fov/2)),vw=vh*el.clientWidth/Math.max(1,el.clientHeight);
+  const S=clamp(vh*.032,.3,2.2),cu=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion);cu.y=0;if(cu.lengthSq()<1e-6)cu.set(0,0,-1);cu.normalize();const cr=new THREE.Vector3(-cu.z,0,cu.x);
+  const base=controls.target.clone().addScaledVector(cr,-vw*.18).addScaledVector(cu,-vh*.16+(diceGroups-1)*S*2.8),UP=new THREE.Vector3(0,1,0);
+  const dice=ds.map((d,i)=>{const {g,F}=dieGeo(d.s),m=new THREE.Mesh(g,dieMat(d.s,col));m.scale.setScalar(S);m.castShadow=true;world.add(m);
+    let q1,h;if(d.s===4){const P=[[1,1,1],[-1,-1,1],[-1,1,-1],[1,-1,-1]][d.v-1];q1=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(...P).normalize(),UP);h=F[d.v-1].c.dot(F[d.v-1].n);
+      q1.premultiply(new THREE.Quaternion().setFromAxisAngle(UP,Math.random()*6.28));}
+    else{const f=F[d.v-1];q1=new THREE.Quaternion().setFromUnitVectors(f.n,UP);h=f.c.dot(f.n);const u2=f.u.clone().applyQuaternion(q1);u2.y=0;u2.normalize();
+      q1.premultiply(new THREE.Quaternion().setFromAxisAngle(UP,Math.atan2(u2.clone().cross(cu).y,u2.dot(cu))));}
+    const end=base.clone().addScaledVector(cr,(i-(ds.length-1)/2)*S*2.3),start=end.clone().addScaledVector(cr,-vw*.22).addScaledVector(cu,(Math.random()-.5)*vh*.15);
+    return {m,q1,h:h*S,end,start,ax:new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).normalize(),spin:12+Math.random()*8,d};});
+  const nat=ds.find(d=>d.s===20&&d.v===20)?20:ds.find(d=>d.s===20&&d.v===1)?1:0,tmp=new THREE.Quaternion();let lab=null,clack=0;
+  FXL.push({t:0,dur:4.6,tick(k,t){
+    for(const D of dice){const u=Math.min(1,t/1.3),e1=1-Math.pow(1-u,3),b=u<.3?2.4*S*(1-Math.pow(u/.3,2)):u<.62?.6*S*Math.sin(Math.PI*(u-.3)/.32):u<.84?.2*S*Math.sin(Math.PI*(u-.62)/.22):0;
+      D.m.position.set(D.start.x+(D.end.x-D.start.x)*e1,D.h+b,D.start.z+(D.end.z-D.start.z)*e1);
+      D.m.quaternion.copy(D.q1).multiply(tmp.setFromAxisAngle(D.ax,D.spin*Math.pow(1-Math.min(1,u*1.08),2)));
+      if(t>4.2)D.m.material.opacity=1-(t-4.2)/.4;}
+    const bk=[.3,.62,.84].findIndex(v=>v*1.3>t)<0?3:[.3,.62,.84].findIndex(v=>v*1.3>t);if(bk>clack){clack=bk;tbTone(170+Math.random()*90,0,.05,'square',.035);}
+    if(t>1.35&&!lab){const w=document.createElement('div'),l=document.createElement('div');l.className='dice-l'+(nat===20?' n20':'');l.style.setProperty('--c',col);
+      l.textContent=(nat===20?'✨ NAT 20! ':nat===1?'💀 nat 1 · ':'')+String(e.who||'');w.appendChild(l);lab=new CSS2DObject(w);lab.position.copy(base).addScaledVector(cu,S*1.6);world.add(lab);
+      if(nat===20){burst(base.x,base.z,0xffce4d,1.6);tbFanfare();}else if(nat===1)tbTone(160,90,.4,'sawtooth',.04);}},
+    end(){for(const D of dice){world.remove(D.m);D.m.material.opacity=1;}if(lab){world.remove(lab);lab.element.remove();}diceGroups=Math.max(0,diceGroups-1);}});return dice;}
+// ── 👁 Line of sight (scenes/<id>.los): walls, rock walls, hedges, buildings, 👁 sight walls (drawn like walls, invisible to
+// players: trace an uploaded map's walls with them) and the map's own edges block vision. The party shares what any PC or
+// companion sees. In the dark (night, dark) only lit squares count, besides the squares right next to you: fires, lamps and
+// glowing props (LIGHT_PROPS), and tokens carrying a light (🔦 in the token card, 30 ft). Players see squares out of sight
+// dimmed and foes there hidden; every screen clears the fog where the party can see (merged into scenes/<id>.fog).
+const VB={cliff:1,wall:1,woodwall:1,brick:1,citywall:1,iwall:1,hedge:1,vwall:1};   // fences, railings and bars don't block sight
+const SIGHT={sig:'',cells:null,on:false,key:0,writeT:0};
+function segX(ax,ay,bx,by,s){const d1x=bx-ax,d1y=by-ay,d2x=s[2]-s[0],d2y=s[3]-s[1],den=d1x*d2y-d1y*d2x;if(Math.abs(den)<1e-9)return false;
+  const t=((s[0]-ax)*d2y-(s[1]-ay)*d2x)/den,u=((s[0]-ax)*d1y-(s[1]-ay)*d1x)/den;return t>1e-4&&t<1-1e-4&&u>=-1e-4&&u<=1+1e-4;}
+function sightSegs(sid,sd){
+  const segs=[],ps=propsOf(sid),C=MAP.cols,R=MAP.rows;
+  for(const id in ps){const p=ps[id];if(!p)continue;
+    if(VB[p.t]){const L=lenOf(p),r=num(p.r,0),x=num(p.x,0),y=num(p.y,0);segs.push([x,y,x+L*Math.cos(r),y-L*Math.sin(r)]);}
+    else if(p.t==='bld'){const b=bldDef(p.b),r=num(p.r,0),cx=num(p.x,.5),cy=num(p.y,.5),c=Math.cos(r),s=Math.sin(r),W=(lx,lz)=>[cx+c*lx+s*lz,cy-s*lx+c*lz],door=!!b.dr&&b.dr!=='none';
+      const seg=(A,B)=>{const a=W(A[0],A[1]),e=W(B[0],B[1]);segs.push([a[0],a[1],e[0],e[1]]);};
+      if(b.sh==='round'){const rr=Math.min(b.w,b.d)/2,P=[];for(let k=0;k<8;k++){const a=k/8*Math.PI*2+Math.PI/8;P.push([Math.sin(a)*rr,Math.cos(a)*rr]);}for(let k=0;k<8;k++)if(!(door&&k===7))seg(P[k],P[(k+1)%8]);}
+      else{const w=b.w/2,d=b.d/2;seg([-w,d],[-w,-d]);seg([-w,-d],[w,-d]);seg([w,-d],[w,d]);if(door&&w>.6){seg([w,d],[.6,d]);seg([-.6,d],[-w,d]);}else if(!door)seg([w,d],[-w,d]);}}}
+  const mk=maskCells(sd,C,R);if(mk)for(let y=0;y<R;y++)for(let x=0;x<C;x++){if(mk[y*C+x]==='0')continue;
+    if(x>0&&mk[y*C+x-1]==='0')segs.push([x,y,x,y+1]);if(x<C-1&&mk[y*C+x+1]==='0')segs.push([x+1,y,x+1,y+1]);if(y>0&&mk[(y-1)*C+x]==='0')segs.push([x,y,x+1,y]);if(y<R-1&&mk[(y+1)*C+x]==='0')segs.push([x,y+1,x+1,y+1]);}
+  return segs;}
+function segIndex(segs){const idx=new Map(),B=4,k=(x,y)=>(x+10)*4096+y+10;
+  segs.forEach((s,i)=>{const x0=Math.floor((Math.min(s[0],s[2])-.5)/B),x1=Math.floor((Math.max(s[0],s[2])+.5)/B),y0=Math.floor((Math.min(s[1],s[3])-.5)/B),y1=Math.floor((Math.max(s[1],s[3])+.5)/B);
+    for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){let a=idx.get(k(x,y));if(!a)idx.set(k(x,y),a=[]);a.push(i);}});return idx;}
+function sightClear(S,ax,ay,bx,by){const st=++S.stamp,n=Math.max(1,Math.ceil(Math.hypot(bx-ax,by-ay)/.5));let last=-1;
+  for(let i=0;i<=n;i++){const x=ax+(bx-ax)*i/n,y=ay+(by-ay)*i/n,k=(Math.floor(x/4)+10)*4096+Math.floor(y/4)+10;if(k===last)continue;last=k;const a=S.idx.get(k);if(!a)continue;
+    for(const j of a){if(S.mark[j]===st)continue;S.mark[j]=st;if(segX(ax,ay,bx,by,S.segs[j]))return false;}}return true;}
+function sightUpdate(sid,sd){
+  if(!sd||!sd.los){if(SIGHT.on){SIGHT.on=false;SIGHT.sig='';}return;}
+  const C=MAP.cols,R=MAP.rows,dark=sd.tod==='night'||sd.tod==='dark',all=Object.values(tokensOf(sid)).filter(t=>t&&typeof t==='object');
+  const eyes=all.filter(t=>(t.kind==='pc'||t.kind==='comp')&&!t.hidden),ps=propsOf(sid),pk=[];
+  for(const id in ps){const p=ps[id];if(p&&(VB[p.t]||p.t==='bld'||(dark&&LIGHT_PROPS[p.t])))pk.push(id,p.t,p.x,p.y,p.r,p.l,p.h?1:0,p.t==='bld'?JSON.stringify(p.b||{}):'');}
+  const sig=[sid,C,R,dark,sd.mask||'',eyes.map(t=>Math.floor(num(t.x,.5))+','+Math.floor(num(t.y,.5))+(t.light?'L':'')).sort().join(';'),pk.join('|')].join('#');
+  if(sig===SIGHT.sig&&SIGHT.on)return;SIGHT.sig=sig;
+  const segs=sightSegs(sid,sd),S={segs,idx:segIndex(segs),mark:new Uint32Array(segs.length),stamp:0},out=new Uint8Array(C*R),RMAX=30;
+  const look=(vx,vy,x,y)=>{if(sightClear(S,vx,vy,x+.5,y+.5))return true;for(const [ox,oy] of [[.2,.2],[.8,.2],[.2,.8],[.8,.8]])if(sightClear(S,vx,vy,x+ox,y+oy))return true;return false;};
+  let lit=null;
+  if(dark){lit=new Uint8Array(C*R);const L=[];for(const id in ps){const p=ps[id];if(p&&LIGHT_PROPS[p.t]&&!p.h)L.push([num(p.x,.5),num(p.y,.5),clamp(Math.round(LIGHT_PROPS[p.t][1]*3),2,7)]);}
+    eyes.forEach(t=>{if(t.light)L.push([num(t.x,.5),num(t.y,.5),6]);});
+    for(const [lx,ly,r] of L)for(let y=Math.max(0,Math.floor(ly-r));y<=Math.min(R-1,Math.floor(ly+r));y++)for(let x=Math.max(0,Math.floor(lx-r));x<=Math.min(C-1,Math.floor(lx+r));x++){
+      const i=y*C+x;if(!lit[i]&&Math.hypot(x+.5-lx,y+.5-ly)<=r+.5&&look(lx,ly,x,y))lit[i]=1;}}
+  for(const t of eyes){const vx=num(t.x,.5),vy=num(t.y,.5);
+    for(let y=Math.max(0,Math.floor(vy-RMAX));y<=Math.min(R-1,Math.floor(vy+RMAX));y++)for(let x=Math.max(0,Math.floor(vx-RMAX));x<=Math.min(C-1,Math.floor(vx+RMAX));x++){
+      const i=y*C+x;if(out[i])continue;if(dark&&!lit[i]&&!(Math.abs(x+.5-vx)<1.6&&Math.abs(y+.5-vy)<1.6))continue;if(look(vx,vy,x,y))out[i]=1;}}
+  SIGHT.cells=out;SIGHT.on=true;SIGHT.key++;revealSoon(sid);}
+function inSight(x,y){if(!SIGHT.on||IS_DM)return true;const c=Math.floor(x),r=Math.floor(y);if(c<0||r<0||c>=MAP.cols||r>=MAP.rows)return true;return !!SIGHT.cells[r*MAP.cols+c];}
+function revealSoon(sid){clearTimeout(SIGHT.writeT);SIGHT.writeT=setTimeout(()=>{const sd=(board().scenes||{})[sid];if(!sd||!sd.los||!SIGHT.on||sid!==sceneId()||fogDraft)return;
+  const C=MAP.cols,R=MAP.rows,f=fogCells(sd,C,R).split('');let ch=false;for(let i=0;i<C*R;i++)if(SIGHT.cells[i]&&f[i]!=='1'){f[i]='1';ch=true;}
+  if(ch||!sd.fogOn)write('board/scenes/'+sid,{fog:f.join(''),fogOn:true},'PATCH');},450+Math.random()*350);}   // (screens that compute the same sight write the same squares)
 $('#bNames').addEventListener('click',()=>{PREFS.names=!PREFS.names;savePrefs();syncBtns();for(const tk of TOK.values())tk.renderLabel();});
 $('#bFollow').addEventListener('click',()=>{PREFS.follow=!PREFS.follow;savePrefs();syncBtns();toast(PREFS.follow?'Camera follows whoever’s turn it is.':'Camera stays where you put it.');});
 $('#bPanel').addEventListener('click',()=>{PREFS.panel=!PREFS.panel;savePrefs();renderPanel();setTimeout(resize,0);});
@@ -1722,7 +2379,7 @@ addEventListener('keydown',e=>{
   if(/INPUT|SELECT|TEXTAREA/.test((document.activeElement||{}).tagName||''))return;
   const k=e.key.toLowerCase(),tk=selected&&TOK.get(selected);
   if(sceneryKey(k,e))return;
-  if(k==='t')setTilt(!tiltOn);else if(k==='m')setTool(tool==='measure'?'select':'measure');else if(k==='v'||k==='escape'){setTool('select');if(k==='escape')select('');}
+  if(k==='t')setTilt(!tiltOn);else if(k==='m')setTool(tool==='measure'?'select':'measure');else if(k==='d')setTool(tool==='draw'?'select':'draw');else if(k==='v'||k==='escape'){setTool('select');if(k==='escape')select('');}
   else if(k==='n')$('#bNames').click();else if(k==='f')$('#bFollow').click();else if(k==='c')fitView();
   else if((k==='delete'||k==='backspace')&&IS_DM&&tk){e.preventDefault();act('remove',{});}
   else if(k==='r'&&tk&&canMove(tk.data))act('rot',{v:e.shiftKey?-1:1});
@@ -2288,6 +2945,7 @@ const PROPS={
   gate:{n:'Town gate',cat:'Walls',ic:'🏯',c:'#a8a094',b:(g,c)=>{const M=texM('stone',c);for(const s of [-1,1])part(g,uvBox(1,3.4,1),M,s*1.75,1.7,0);part(g,uvBox(4.5,.9,1),M,0,3.05,0);
     for(const z of [.45,-.45])part(g,G.tor(1.25,.12,16,Math.PI),M,0,2,z);for(let x=-2.05;x<2.1;x+=.68)part(g,G.box(.35,.4,1),M,x,3.7,0);}},
   // inside: furniture, walls and lights for taverns, shops, homes, temples, forges… (wall pieces have their back on the −z side, against a wall)
+  vwall:{n:'Sight wall',cat:'Walls',ic:'👁',c:'#9b59ff',len:1,b:(g,c,R,p)=>{const L=lenOf(p);part(g,G.box(L,1.1,.06),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.3,visible:IS_DM,depthWrite:false}),L/2,.55,0).castShadow=false;}},   // 👁 blocks line of sight; invisible to players
   iwall:{n:'Inside wall',cat:'Walls',ic:'🏠',c:'#e8dcc4',len:1,b:(g,c,R,p)=>{const L=lenOf(p),T=mat(WOOD),n=Math.max(1,Math.round(L/1.5));part(g,G.box(L,1.4,.2),mat(c),L/2,.7,0);
     part(g,G.box(L+.02,.16,.24),T,L/2,.08,0);part(g,G.box(L+.04,.08,.26),T,L/2,1.4,0);for(let i=0;i<=n;i++)part(g,G.box(.1,1.4,.24),T,i*L/n,.7,0);}},
   bars:{n:'Iron bars',cat:'Dungeon',ic:'⛓',c:'#3a3c42',len:1,b:(g,c,R,p)=>{const L=lenOf(p),M=metal(c),n=Math.max(2,Math.round(L/.16));for(let i=0;i<=n;i++)part(g,G.cyl(.025,.025,1.6,6),M,i*L/n,.8,0);
@@ -2717,7 +3375,9 @@ function propSeen(p){   // any part of it outside the fog? (like foes: fog hides
   const x=num(p.x,.5),y=num(p.y,.5),r=num(p.r,0);
   if(p.t==='bld'){const b=bldDef(p.b),c=Math.cos(r),s=Math.sin(r);   // a building shows once any square under it is revealed
     for(let i=0;i<b.w;i++)for(let j=0;j<b.d;j++){const a=i+.5-b.w/2,z=j+.5-b.d/2;if(!inFog(x+a*c+z*s,y-a*s+z*c))return true;}return false;}
-  const half=PROPS[p.t].len?lenOf(p)*clamp(num(p.s,1),.2,6)/2:0;return !inFog(x+Math.cos(r)*half,y-Math.sin(r)*half);}
+  const L=PROPS[p.t].len?lenOf(p)*clamp(num(p.s,1),.2,6):0;   // a wall shows once either side of it is revealed anywhere along it (so a wall the party sees isn't lost in the fog behind it)
+  if(L){const c=Math.cos(r),s=Math.sin(r),n=Math.max(1,Math.ceil(L/.5));for(let i=0;i<=n;i++){const u=L*i/n,px=x+c*u,py=y-s*u;for(const o of [-.35,.35])if(!inFog(px+s*o,py+c*o))return true;}return false;}
+  return !inFog(x,y);}
 function syncProps(sid){
   const ps=sid?propsOf(sid):{};
   for(const [pid,P] of PROPOBJ)if(!ps[pid]||P.sid!==sid){propG.remove(P.o);disposeProp(P.o);PROPOBJ.delete(pid);}
@@ -4840,13 +5500,16 @@ function reconcile(){
   const b=board(),sid=sceneId(),sd=sid?b.scenes[sid]:null;
   setAcc(IS_DM?DM_COLOR:(TYPE_COLORS[(players()[ME]||{}).type1]||DM_COLOR));
   if(sid!==lastSid){lastSid=sid;if(selected)select('');}
-  {const mt=(tree&&tree.meta)||{};hoUpdate(mt.handouts,mt.handoutNow,CID,assetData);}   // 📜 handouts from the DM
+  {const mt=(tree&&tree.meta)||{};hoUpdate(mt.handouts,mt.handoutNow,CID,assetData);if(tree)tbUpdate(mt);   // 📜 handouts, 💬 NPC lines, ✨ evolutions, 🎵 music, 🗺 world, 📒 Pokédex
+    $('#bWorld').style.display=(IS_DM||(TB.world&&(TB.world.img||TB.world.pins)))?'':'none';$('#bDex').style.display=(IS_DM||Object.keys(TB.dex).length)?'':'none';
+    $('#bPeople').style.display=(IS_DM||Object.values(TB.people||{}).some(q=>q&&q.n&&!q.h))?'':'none';$('#bPause').style.display=(!IS_DM&&!TV&&ME)?'':'none';}
   syncRolls();   // 🎲 new rolls pop up
-  applyScene(sid,sd);applyMood(sd);syncTokens(sid);syncProps(sid);syncTpl(sid);handleFx(b.fx);renderTop();renderPanel();renderCard();renderEmpty(sd);renderAoeBar();
+  applyScene(sid,sd);applyMood(sd);syncTokens(sid);syncProps(sid);syncTpl(sid);syncDraw(sid);handleFx(b.fx);handleEmotes(b.emote);handleLook(b.look);dexSeen(sd);renderTop();renderPanel();renderCard();renderEmpty(sd);renderAoeBar();
   const pg=b.ping,pk=pg?pg.t+'|'+pg.by:'';
   if(pk!==lastPing){if(!firstSync&&pg&&pg.sid===sid)showPing(pg);lastPing=pk;}
   const bt=battle(),a=activeTurn(),tk2=a?(bt.round+'|'+bt.turn+'|'+a.name):'';
-  if(tk2!==lastTurn){lastTurn=tk2;if(!firstSync&&a&&PREFS.follow){const tk=findTokenFor(a);if(tk)focusOn(tk.pos.x,tk.pos.y);}}
+  if(tk2!==lastTurn){lastTurn=tk2;if(!firstSync&&a&&PREFS.follow){const tk=findTokenFor(a);if(tk)focusOn(tk.pos.x,tk.pos.y);}
+    if(!firstSync&&a&&!IS_DM&&!TV&&myRow(bt)===a)tbTurnAlert((bt.eid||0)+'|'+(bt.round||1)+'|'+(bt.turn||0),'Your turn, '+(a.name||'')+'!');}   // 🔔
   if(tree)firstSync=false;
 }
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h);labels.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();}
@@ -4866,7 +5529,8 @@ function frame(){
   controls.update();
   const zo=renderer.domElement.clientHeight/(2*camera.position.distanceTo(controls.target)*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2))<26;   // squares under ~26 px: names would pile up
   if(zo!==zoomedOut){zoomedOut=zo;for(const tk of TOK.values())tk.renderLabel();}
-  const tf=tiltFactor();for(const tk of TOK.values())tk.tick(dt,tf);tickPings(dt);tickScenery(dt);
+  if(zoomAnim){zoomAnim.k=Math.min(1,zoomAnim.k+dt/.6);setSph(sph().phi,null,zoomAnim.r0+(zoomAnim.r1-zoomAnim.r0)*ease(zoomAnim.k));if(zoomAnim.k>=1)zoomAnim=null;}   // 📽
+  const tf=tiltFactor();for(const tk of TOK.values())tk.tick(dt,tf);tickPings(dt);tickScenery(dt);tickFx(dt);tickDraw();
   if(TPLOBJ.size&&(tplT+=dt)>.25){tplT=0;syncTpl(sceneId());}   // emanations follow their token
   renderer.render(scene,camera);labels.render(scene,camera);
 }
@@ -4875,6 +5539,8 @@ function frame(){
 function start(){
   $('#join').style.display='none';
   if(PREFS.follow===undefined)PREFS.follow=!IS_DM;          // players follow the active turn by default
+  if(TV){document.body.classList.add('tv');PREFS.follow=true;PREFS.names=true;PREFS.panel=false;}
+  document.body.classList.toggle('cb',!!tbPrefs().cb);   // 📺 (not saved: this device's own settings stay)
   document.querySelectorAll('.dm-only').forEach(el=>el.style.display=IS_DM?'':'none');
   syncBtns();resize();setAcc(IS_DM?DM_COLOR:DM_COLOR);renderPanel();renderTop();
   connect();frame();
@@ -4896,7 +5562,7 @@ $('#jGo').addEventListener('click',()=>{
   const u=new URLSearchParams({c:CID});if(IS_DM)u.set('dm','1');else u.set('p',m);history.replaceState(null,'','?'+u.toString());
   start();
 });
-if(FB&&CID&&(ME||IS_DM))start();else showJoin();
+if(FB&&CID&&(ME||IS_DM||TV))start();else showJoin();
 
 // A handle for automated tests and for poking around in the browser console.
 // ── ✨ New-version notice (same code in all three apps). On the website only: every 5 minutes, ask the site when this
@@ -4915,7 +5581,7 @@ function verBar(){
     b.onclick=()=>{if(y)location.reload();else{VER.off=true;d.remove();}};});
   document.body.appendChild(d);}
 setTimeout(verCheck,4000);setInterval(verCheck,5*60000);
-window.PB={get tree(){return tree;},TOK,PAINT,paintState,paintUse,Polli,pzState,pzGo,pzEdit,pzAdd,m3d,dexEntry,autoArt,designPic,applyShape,maskCells,tplIn,TPLOBJ,get aoe(){return aoe;},poseGuess,POSES,shrinkTex,camera,controls,MAP,renderer,fogMesh,fogCanvas,fogTex,act,setTilt,setTool,select,uploadAsset,setLook,addToken,patchToken,newScene,showToPlayers,setSceneField,sceneId,tokenInfo,fitView,get selected(){return selected;},
+window.PB={get tree(){return tree;},drawStart,drawMove,drawEnd,DRAWOBJ,drawsOf,tickDraw,syncDraw,get drawing(){return drawing;},tbCry,tbQuizGuess,tbPeopleOpen,tbPauseAsk,tbMeet,TOK,TB,moveFx,floatNum,foeHp,icPic,SIGHT,sightUpdate,inSight,diceFrom,rollDice3D,dieShape,FXL,sendLook,evolveToken,sayAs,dexName,EMOTES,TV,PAINT,paintState,paintUse,Polli,pzState,pzGo,pzEdit,pzAdd,m3d,dexEntry,autoArt,designPic,applyShape,maskCells,tplIn,TPLOBJ,get aoe(){return aoe;},poseGuess,POSES,shrinkTex,camera,controls,MAP,renderer,fogMesh,fogCanvas,fogTex,act,setTilt,setTool,select,uploadAsset,setLook,addToken,patchToken,newScene,showToPlayers,setSceneField,sceneId,tokenInfo,fitView,get selected(){return selected;},
   buildNpc,NPC_PRESETS,NPC_DEF,openDesigner,closeDesigner,ND,PROPS,TERRAIN,PROPOBJ,propsOf,makeProp,selectProp,get selProp(){return selProp;},
   TOWNS,BLD_PRESETS,bldRandom,bldDef,buildBld,genBlock,undo,UNDO,inBld,propsSet,get scDraft(){return scDraft;},
   WK,openWorkshop,closeWorkshop,kitsOf,prefabsOf,groundsOf,buildKitInto,sanPart,sanParts,sanBld,sanNpc,askClaude,aiSystem,selSet,setSel,savePrefab,KITROOTS,kitStamp,get scKit(){return scKit;},get scPrefab(){return scPrefab;},

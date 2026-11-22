@@ -1190,6 +1190,44 @@ body.reduce-motion .rp-die.tumble,body.reduce-motion .tcg.bursting,body.reduce-m
 .ll-totals{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--tx2)}
 .ll-totals b{font-family:var(--font-display);font-size:15px;color:var(--tx)}
 .ll-totals small{color:var(--tx3);font-size:10px}
+/* 🎭 batch 3: campaign chip row, shop + gifts, whispers, quick search */
+.tb-bar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:0 auto 10px}
+.tb-chip{background:var(--bg3);border:1px solid var(--bdr2);color:var(--tx);border-radius:999px;padding:5px 12px;font:700 12px var(--font);cursor:pointer}
+.tb-chip:hover{border-color:var(--tx3)}.tb-chip.hot{border-color:var(--gold);box-shadow:0 0 0 2px rgba(255,206,77,.22);color:var(--gold)}
+.shop-card{background:linear-gradient(180deg,#2a2213,#1a1610);border:1px solid #7a6330;border-radius:var(--rl);padding:10px 12px;margin-bottom:10px}
+.shop-card.gift{background:linear-gradient(180deg,#14261d,#101a15);border-color:#2f7a52}
+.shop-hd{font:800 14px var(--font);color:var(--gold)}.shop-card.gift .shop-hd{color:var(--grn)}.shop-hd small{font-weight:600;color:var(--tx2)}
+.shop-note{font-size:12px;color:var(--tx2);margin-top:3px}.shop-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.shop-it{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;background:rgba(0,0,0,.22);border-radius:8px;padding:6px 9px}.shop-it small{color:var(--tx2);flex:1 1 160px}
+.shop-buy{margin-left:auto;display:flex;align-items:center;gap:8px}.shop-buy .btn-add[disabled]{opacity:.45;cursor:not-allowed}
+.wh-m{background:#1b2234;border-radius:10px;padding:7px 10px;margin:6px 0;max-width:85%}.wh-m.me{margin-left:auto;background:#24304a}.wh-m.dm{border-left:3px solid #ffce4d}.wh-m small{display:block;color:#8a9bbb;font-size:10.5px;margin-top:2px}
+.qs-list{flex:1;overflow-y:auto;padding:6px;min-width:0;max-height:62vh}.tb-win .qs-r{display:block;width:100%;text-align:left;background:none;border:0;color:#e7edf8;padding:6px 8px;border-radius:8px;font:600 13px Inter,sans-serif;cursor:pointer}
+.tb-win .qs-r.on,.tb-win .qs-r:hover{background:#222b40}.qs-k{display:inline-block;min-width:70px;font-size:10.5px;color:#8a9bbb;text-transform:uppercase;letter-spacing:.04em}
+#qsOne div{margin:3px 0}
+/* batch 4: condition reminders, character creator, colour-blind colours */
+.cond-rem{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:2147480500;width:min(460px,calc(100vw - 20px));background:#141a28;color:#e7edf8;border:2px solid #ffce4d;border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.55);font:13.5px/1.5 Inter,sans-serif;display:none}
+.cond-rem .cr-t{font-weight:800;color:#ffce4d;margin-bottom:4px}.cond-rem .cr-b div{margin:3px 0}.cond-rem .cr-btns{display:flex;gap:8px;margin-top:10px;justify-content:flex-end}
+.cc-steps{display:flex;gap:4px;padding:8px 14px 0}.cc-steps span{flex:1;height:5px;border-radius:3px;background:#222b40;font-size:0}.cc-steps span.done{background:#7a6330}.cc-steps span.on{background:#ffce4d}
+.cc-body{padding:12px 16px;overflow-y:auto;flex:1;min-height:260px}.cc-body label{display:block;font-size:12px;color:#8a9bbb;font-weight:700}.cc-body p{margin:0 0 10px}
+.cc-h{font:800 12px Inter,sans-serif;color:#ffce4d;text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px}
+.cc-types{display:flex;flex-wrap:wrap;gap:6px}.tb-win .cc-ty{border-color:var(--t,#33405e)}.tb-win .cc-ty.on{background:var(--t,#ffce4d);color:#fff;border-color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.cc-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}.tb-win .cc-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:10px 12px;border-radius:10px;white-space:normal}
+.tb-win .cc-card.on{border-color:#ffce4d;background:#2a2213}.cc-card small{color:#ffce4d}.cc-card span{color:#8a9bbb;font-weight:500;font-size:12px}
+.cc-how{display:flex;flex-direction:column;gap:6px}.cc-body .cc-how label{display:flex;gap:6px;align-items:center;color:#e7edf8;font-size:13px;font-weight:600}
+.cc-r{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.cc-stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:10px}.cc-st{background:#1b2234;border-radius:10px;padding:6px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center}
+.cc-st i{font-style:normal;color:#ffce4d;font-weight:700}.cc-st span{font:800 18px Inter,sans-serif}
+.cc-list{display:flex;flex-direction:column;gap:5px;max-height:46vh;overflow-y:auto}.cc-body .cc-it{display:flex;gap:8px;align-items:flex-start;background:#1b2234;border-left:4px solid var(--t,#555);border-radius:8px;padding:6px 9px;color:#e7edf8;font-weight:500;font-size:13px;cursor:pointer}
+.cc-it.on{background:#24304a}.cc-it small{color:#8a9bbb}.cc-it em{display:block;font-style:normal;color:#8a9bbb;font-size:11.5px}.cc-sum{display:flex;flex-direction:column;gap:10px}
+.tb-win button[disabled]{opacity:.45;cursor:not-allowed}
+@media (max-width:760px){.cc-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+body.cb{--grn:#4a9be8;--red:#ff8a1f}
+.sr-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px}.tb-win .sr-b{display:flex;justify-content:space-between;gap:6px;text-align:left}.sr-h{font:800 12px var(--font);color:#ffce4d;letter-spacing:.05em;text-transform:uppercase;margin:12px 0 6px}
+.sr-adv,.gv-to{display:flex;gap:6px;flex-wrap:wrap}.tb-win .sr-adv button.on,.tb-win .gv-to button.on{background:#ffce4d;color:#1a1300;border-color:#ffce4d}.sr-note{margin-top:8px;font-weight:700;color:#3ddf93;min-height:18px}
+.gv-coins{display:grid;gap:6px}.gv-coins label{display:grid;gap:3px;font-size:12.5px}.snap-r{display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid #222b40;padding:9px 0;font-size:12.5px}.snap-r small{color:#8a9bbb;display:block;margin-top:2px}.snap-r button{flex-shrink:0}
+.pad{margin-top:9px;display:flex;flex-direction:column;align-items:center;gap:6px}.pad-g{display:grid;grid-template-columns:repeat(3,54px);gap:5px}.pad-g button{height:48px;border-radius:10px;background:var(--bg3);border:1px solid var(--bdr2);color:var(--tx);font-size:20px;cursor:pointer;touch-action:manipulation}.pad-g button:active{background:var(--acc-bg);border-color:var(--acc)}
+.pad-c{display:flex;align-items:center;justify-content:center;text-align:center;font:700 10px/1.3 var(--font);color:var(--tx3)}.pad-n{font-size:12px;color:var(--tx2);text-align:center;min-height:16px}.pad-who{background:var(--bg3);color:var(--tx);border:1px solid var(--bdr2);border-radius:8px;padding:5px 8px;font:600 12px var(--font)}
+.coin-give{align-self:center}
 </style>
 </head>
 <body>
@@ -1286,6 +1324,7 @@ body.reduce-motion .rp-die.tumble,body.reduce-motion .tcg.bursting,body.reduce-m
 <div id="ambience" class="ambience" aria-hidden="true"></div>
 <div id="bcastBanner" class="bcast-banner" style="display:none"></div>
 <button id="hoBtn" class="ho-btn" style="display:none" onclick="hoListOpen()"></button>
+<div id="tbBar" class="tb-bar" style="display:none"></div>
 <div id="initStrip" class="init-strip" style="display:none"></div>
 <div id="envBanner" class="env-banner" style="display:none"></div>
 <div id="levelUpBanner" class="levelup-banner" style="display:none"></div>
@@ -1544,6 +1583,7 @@ body.reduce-motion .rp-die.tumble,body.reduce-motion .tcg.bursting,body.reduce-m
     </div>
   </div>
   <div class="bag-toast" id="bagToast"></div>
+  <div id="lootBox"></div><div id="shopBox"></div>
   <div class="moves-stack" id="myItems"></div>
   <div class="card mt12" id="card-inv">
     <div class="card-hd" onclick="toggleCard('card-inv')"><div class="card-title">Other gear &amp; notes</div><div class="card-chevron">▾</div></div>
@@ -1807,15 +1847,31 @@ body.reduce-motion .rp-die.tumble,body.reduce-motion .tcg.bursting,body.reduce-m
         <input type="checkbox" id="setSfx" class="set-switch" onchange="toggleSetting('sfx',this.checked)">
       </label>
       <label class="set-row">
+        <div><div class="set-name">Table sounds</div><div class="set-desc">Sounds from the campaign: Pokémon cries, NPC text blips, evolutions and the your-turn chime. On by default (shared with the board on this device).</div></div>
+        <input type="checkbox" id="setTbFx" class="set-switch" onchange="tbSetPref('fx',this.checked)">
+      </label>
+      <label class="set-row">
         <div><div class="set-name">Reduce motion</div><div class="set-desc">Disable the holographic shimmer, card tilt, roll animation, and the living background. Easier on older devices.</div></div>
         <input type="checkbox" id="setReduceMotion" class="set-switch" onchange="toggleSetting('reduceMotion',this.checked)">
       </label>
+      <label class="set-row">
+        <div><div class="set-name">Text size</div><div class="set-desc">Make everything on this sheet bigger (this device only).</div></div>
+        <select id="setTextSize" class="std-inp" style="width:auto" onchange="toggleSetting('textSize',+this.value)"><option value="1">Normal</option><option value="1.12">Larger</option><option value="1.25">Largest</option></select>
+      </label>
+      <label class="set-row">
+        <div><div class="set-name">Colour-blind colours</div><div class="set-desc">Good / bad colours (HP bars and the like) use blue and orange instead of green and red, here and on the board.</div></div>
+        <input type="checkbox" id="setCb" class="set-switch" onchange="toggleSetting('cb',this.checked)">
+      </label>
+      <div class="set-sec">New character</div>
+      <div class="set-desc" style="margin-bottom:10px">A step-by-step guide: types, style, ability scores, subclass, moves and abilities.</div>
+      <button class="btn-add" onclick="closeSettings();ccOpen()">🧭 Character creator</button>
       <div class="set-sec">Backup</div>
       <div class="set-desc" style="margin-bottom:10px">Save your character to a file, or load one back. Your browser keeps the live copy automatically.</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-add" onclick="exportChar()">⬇ Export character</button>
         <button class="btn-sm" onclick="triggerImport()" style="padding:8px 14px">⬆ Import character</button>
         <button class="btn-sm" onclick="window.print()" style="padding:8px 14px">🖨 Print / PDF</button>
+        <button class="btn-sm" onclick="closeSettings();snapOpen()" style="padding:8px 14px" title="Go back to how your character was earlier (this device)">🕘 Older versions</button>
         <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importChar(this.files[0]);this.value=''">
       </div>
     </div>
@@ -1980,6 +2036,8 @@ const Sync={
     for(let i=0;i<n;i++)await put('/parts/'+i,data.slice(i*N,(i+1)*N));
     await this._fb('PUT',id+'/board/library/'+aid,{name,kind,bytes,t:{'.sv':'timestamp'}});return aid;},   // shows in the board's "Files in this campaign"
   setLook(id,pk,v){return this._fb('PATCH',id+'/board/looks/'+this.key(pk),v);},
+  boardGet(id,p){return this.fb()?this._fb('GET',id+'/board/'+p):Promise.resolve(null);},   // 🎮 the move pad reads where tokens are…
+  boardPatch(id,p,v){return this.fb()?this._fb('PATCH',id+'/board/'+p,v):Promise.reject(new Error('needs the live (Firebase) server'));},   // …and moves one
   // 💾 The whole campaign + its uploaded files as one object (Firebase only). restore() writes it back one part at a time
   // (the database rules refuse replacing a whole campaign in one go) and each uploaded file piece by piece. Parts the
   // backup doesn't have are left as they are.
@@ -2155,7 +2213,8 @@ function copyCampaignId() {
 
 function persist(){
   let ok=false;
-  try{localStorage.setItem(SK,JSON.stringify(S));ok=true;}catch(e){console.warn('Save failed:',e);}
+  try{snapTake(localStorage.getItem(SK));}catch(e){}   // 🕘 the version before this change, at most every 30 minutes
+  try{localStorage.setItem(SK,JSON.stringify(S));ok=true;}catch(e){try{localStorage.removeItem('pokeDnD_snaps');localStorage.setItem(SK,JSON.stringify(S));ok=true;}catch(e2){console.warn('Save failed:',e2);}}
   if(ok){
     $i('saveDot').style.background='var(--grn)';
     $i('saveTxt').textContent='Saved';
@@ -2226,7 +2285,7 @@ function renderHeroCard(){
     <div class="hero-inner">
       <div class="hero-art-col">
         <button class="hero-art" onclick="pickPortrait()" title="${PORTRAIT?'Change':'Add'} your portrait">${PORTRAIT?`<img src="${esc(_portraitUrl)}" alt="Portrait of ${esc(name)}">`:`<span class="hero-ini">${esc(ini)}</span><span class="hero-art-add">＋ Portrait</span>`}</button>
-        <div class="hero-art-btns"><button onclick="pickPortrait()">${PORTRAIT?'Change':'Upload'}</button><button onclick="openPainter()" title="Paint a portrait from a description (online AI painter)">🎨 Paint</button>${PORTRAIT?'<button onclick="removePortrait()">Remove</button>':''}${boardDiffers?'<button onclick="usePortraitFrom(_boardImg,true)" title="Your board token shows a different portrait — use that one here">Use board’s</button>':''}</div>
+        <div class="hero-art-btns"><button onclick="pickPortrait()">${PORTRAIT?'Change':'Upload'}</button><button onclick="openPainter()" title="Paint a portrait from a description (online AI painter)">🎨 Paint</button><button onclick="printCard('h')" title="Your character as a printable trading card">📇 Card</button>${PORTRAIT?'<button onclick="removePortrait()">Remove</button>':''}${boardDiffers?'<button onclick="usePortraitFrom(_boardImg,true)" title="Your board token shows a different portrait — use that one here">Use board’s</button>':''}</div>
       </div>
       <div class="hero-id">
         <div class="hero-name">${esc(name)}</div>
@@ -2939,6 +2998,669 @@ function hoListOpen(){const ks=hoShown(),d=hoBox();
   d.innerHTML='<div style="'+HO_CARD+'"><div style="'+HO_TAG+'">📜 Handouts</div>'+(ks.length?ks.map(k=>'<div data-ho="'+hoEsc(k)+'" style="padding:9px 0;border-bottom:1px solid #d9c9a3;cursor:pointer"><b>'+hoEsc(HO.list[k].title||'Handout')+'</b>'+(HO.list[k].img?' 🖼':'')+'<div style="font:12px Inter,system-ui,sans-serif;color:#8a6d3b">'+new Date(HO.list[k].t||0).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'</div></div>').join(''):'<p>No handouts yet.</p>')
     +'<button data-hox="1" style="'+HO_BTN+'">Close</button></div>';}
 HO.onList=n=>{const b=$i('hoBtn');if(!b)return;b.style.display=n?'':'none';b.textContent='📜 Handouts from the DM ('+n+')';};
+// ── 🎭 Table extras: the SAME code in the sheet, the board and the dashboard (change all three together, like Sync) ──
+// What the DM (or a player) sends to everyone, shown the same way on every screen. All under the campaign's meta/:
+//  • say = {n, who, text, img, art, color, t}: an NPC's line in a game-style text box, typed out with little blips.
+//  • evolve = {n, from, to, a, b, who, pk, cid, t}: the evolution scene (a / b = Pokédex numbers of the old / new form).
+//  • music = {now:{k, v, l, at, t, on, loop, title}, list:{id:{u, v, l, title, tag}}}: the 🎵 jukebox (YouTube links).
+//    Each screen that listens plays the DM's pick from the same spot (at = seconds in when the DM pressed play, at time t).
+//  • world = {img, name, day, at:{x,y}, pins:{id:{x, y, n, d, ic, pn, vis, h}}, trip:{id:{d, text, t}}}: the 🗺 world map
+//    (x / y are fractions of the picture; d = the DM's note, pn = the party's notes, h = hidden from players).
+//  • dex/<num> = {n, num, ty, at, t, c, pn}: the 📒 party Pokédex (a board adds a Pokémon the first time players see it).
+//  • people/<id> = {n, img, art, color, where, att, d, pn, t, h}: 📇 people the party has met (the DM's 💬 adds them).
+//  • quiz = {id, num, h, on, rev, n, win, score, gen} + qbuzz/<push id> = {q, pk, n, ok, g, t}: ❓ Who's that Pokémon?
+//  • pause/<push id> = {k:'pause'|'skip', t}: ✋ the pause card (no name on it); secret/<push id>: 🤫 secret rolls (DM only).
+// Each app sets TB.host = {asset(id)→Promise<src>, set(path,val), push(path,val), me()→{pk,name,dm}, dexNum(name)→n|0,
+//   listen()→bool (play the music here?), upload(file)→Promise<id>, players()→{pk:{charName,companions}}}.
+// New things are shown once; what was already there when the screen opened isn't news (TB.seen).
+const TB={host:null,seen:{},people:{},quiz:null,sayQ:[],sayOn:false,music:null,world:null,dex:{},yt:null,ytP:null,jb:{k:'',err:'',blocked:false,open:false},wsel:'',wOpen:false,dOpen:false,dsel:'',dq:'',turnKey:''};
+const TB_ART='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+const tbEsc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function tbPrefs(){let p={};try{p=JSON.parse(localStorage.getItem('pokeDnD_tb')||'{}')||{};}catch(e){}return Object.assign({fx:true,vol:60,mute:false,here:false},p);}
+function tbSetPref(k,v){const p=tbPrefs();p[k]=v;try{localStorage.setItem('pokeDnD_tb',JSON.stringify(p));}catch(e){}return p;}
+function tbCss(){if(document.getElementById('tbCss'))return;const s=document.createElement('style');s.id='tbCss';s.textContent=
+  '.tb-say{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:2147481000;width:min(680px,calc(100vw - 20px));display:none;gap:12px;align-items:flex-start;background:#fbfbf7;color:#1d2230;border:4px solid #2b3245;border-radius:16px;padding:12px 16px 14px;box-shadow:0 0 0 3px #fbfbf7,0 12px 40px rgba(0,0,0,.55);font:600 16px/1.45 Inter,system-ui,sans-serif;cursor:pointer;animation:tbUp .25s ease-out}'
+  +'.tb-say .tb-pic{width:76px;height:76px;flex-shrink:0;border-radius:12px;border:3px solid var(--tbc,#2b3245);background:#dde3ee center/cover no-repeat;display:flex;align-items:center;justify-content:center;font:800 26px Inter,sans-serif;color:#fff}'
+  +'.tb-say .tb-nm{display:inline-block;font:800 12px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;background:var(--tbc,#2b3245);color:#fff;border-radius:8px;padding:2px 9px;margin-bottom:5px}'
+  +'.tb-say .tb-tx{white-space:pre-wrap;min-height:46px}.tb-say .tb-more{float:right;color:#e53935;animation:tbBob .8s infinite;font-size:13px}'
+  +'@keyframes tbUp{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}@keyframes tbBob{50%{transform:translateY(3px)}}'
+  +'.tb-evo{position:fixed;inset:0;z-index:2147482500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle at 50% 45%,#2a2f4a,#07080d 70%);color:#fff;font:700 20px Inter,system-ui,sans-serif;text-align:center;padding:20px;cursor:pointer;overflow:hidden}'
+  +'.tb-evo .tb-stage{position:relative;width:min(340px,70vw);height:min(340px,70vw)}.tb-evo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .5s,opacity .08s}'
+  +'.tb-evo img.sil{filter:brightness(0) invert(1) drop-shadow(0 0 18px #9fd8ff)}.tb-evo .tb-glow{position:absolute;inset:-30%;border-radius:50%;background:radial-gradient(circle,rgba(160,220,255,.55),transparent 60%);opacity:0;transition:opacity .6s}'
+  +'.tb-evo.go .tb-glow{opacity:1}.tb-evo .tb-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .35s}.tb-evo .tb-spk{position:absolute;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 10px #bfe6ff;animation:tbSpk 1.6s ease-out forwards}'
+  +'@keyframes tbSpk{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}.tb-evo small{font:600 12px Inter,sans-serif;color:#8a9bbb}'
+  +'.tb-jb{position:fixed;z-index:2147480000;left:12px;bottom:12px;background:#141a28;color:#e7edf8;border:1px solid #2a3550;border-radius:14px;box-shadow:0 8px 26px rgba(0,0,0,.5);font:600 12px Inter,system-ui,sans-serif;max-width:min(300px,calc(100vw - 24px))}'
+  +'.tb-jb .tb-jbh{display:flex;align-items:center;gap:7px;padding:7px 10px;cursor:pointer;white-space:nowrap}.tb-jb .tb-jbt{overflow:hidden;text-overflow:ellipsis;max-width:190px}'
+  +'.tb-jb .tb-jbb{padding:0 10px 10px}.tb-jb .tb-vid{width:224px;height:126px;border-radius:8px;overflow:hidden;background:#000;margin-bottom:7px}.tb-jb .tb-vid iframe{width:100%;height:100%;border:0}'
+  +'.tb-jb.min .tb-jbb{position:fixed;left:-9999px;top:0}.tb-jb input[type=range]{width:100%;accent-color:#ffce4d}.tb-jb button{background:#222b40;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:4px 9px;font:inherit;cursor:pointer}'
+  +'.tb-jb .tb-jbn{color:#ffce4d;font-size:11px;margin-top:5px;white-space:normal}.tb-eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}.tb-eq i{width:3px;background:#ffce4d;animation:tbEq .9s infinite ease-in-out}.tb-eq i:nth-child(2){animation-delay:.3s}.tb-eq i:nth-child(3){animation-delay:.6s}.tb-eq.off i{animation:none;height:3px}'
+  +'@keyframes tbEq{0%,100%{height:3px}50%{height:12px}}'
+  +'.tb-ov{position:fixed;inset:0;z-index:2147482000;background:rgba(5,6,10,.74);display:flex;align-items:center;justify-content:center;padding:12px}'
+  +'.tb-win{background:#141a28;color:#e7edf8;border:1px solid #2a3550;border-radius:14px;width:min(980px,100%);max-height:calc(100vh - 24px);display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);font:13.5px/1.5 Inter,system-ui,sans-serif;overflow:hidden}'
+  +'.tb-win h2{font:800 17px Inter,sans-serif;margin:0}.tb-wh{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #2a3550;flex-wrap:wrap}.tb-wh .tb-x{margin-left:auto}'
+  +'.tb-win button,.tb-win .tb-b{background:#222b40;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:5px 10px;font:600 12.5px Inter,sans-serif;cursor:pointer}.tb-win button.tb-p{background:#ffce4d;color:#1a1300;border-color:#ffce4d}'
+  +'.tb-win input,.tb-win textarea,.tb-win select{background:#0b0f18;color:#e7edf8;border:1px solid #33405e;border-radius:8px;padding:6px 8px;font:13px Inter,sans-serif;width:100%;box-sizing:border-box}'
+  +'.tb-wb{display:flex;min-height:0;flex:1;overflow:hidden}.tb-map{position:relative;flex:1;min-width:0;overflow:auto;background:#0b0f18}.tb-map .tb-mi{position:relative;display:inline-block;min-width:100%}.tb-map img.tb-mimg{display:block;width:100%;height:auto;user-select:none}'
+  +'.tb-win .tb-pin{position:absolute;transform:translate(-50%,-26px);display:flex;flex-direction:column;align-items:center;font-size:24px;line-height:1;cursor:pointer;filter:drop-shadow(0 2px 3px #000);background:none;border:0;padding:0;border-radius:0}.tb-pin span{display:block;font:700 11px Inter,sans-serif;color:#fff;background:rgba(10,12,20,.8);border-radius:6px;padding:1px 6px;margin-top:2px;white-space:nowrap}'
+  +'.tb-pin.sel span{background:#ffce4d;color:#1a1300}.tb-pin.hid{opacity:.5}.tb-pin.unv{filter:grayscale(.7) drop-shadow(0 2px 3px #000)}.tb-party{position:absolute;transform:translate(-50%,-50%);font-size:26px;filter:drop-shadow(0 0 6px #ffce4d);pointer-events:none;animation:tbBob 1.6s infinite}'
+  +'.tb-side{width:300px;flex-shrink:0;border-left:1px solid #2a3550;overflow-y:auto;padding:12px 14px}.tb-side h3{font:800 13px Inter,sans-serif;margin:12px 0 5px;color:#ffce4d;letter-spacing:.04em;text-transform:uppercase}.tb-side .tb-r{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center}'
+  +'.tb-trip{font-size:12.5px;border-bottom:1px solid #222b40;padding:5px 0}.tb-trip b{color:#ffce4d}.tb-mut{color:#8a9bbb;font-size:12px}'
+  +'.tb-dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;padding:12px;overflow-y:auto;align-content:start}.tb-dc{background:#1b2234;border:1px solid #2a3550;border-radius:10px;padding:6px;text-align:center;cursor:pointer}.tb-dc:hover{border-color:#ffce4d}'
+  +'.tb-dc img{width:100%;aspect-ratio:1;object-fit:contain}.tb-dc b{display:block;font:700 12.5px Inter,sans-serif}.tb-dc i{display:block;font-style:normal;font-size:10.5px;color:#8a9bbb}.tb-dc.own{border-color:#3ddf93}.tb-ty{display:inline-block;font:700 10px Inter,sans-serif;color:#fff;border-radius:6px;padding:1px 6px;margin:1px}'
+  +'.tb-pause{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:2147482600;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;background:#3a1418;color:#ffe9e9;border:2px solid #ff5d5d;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.55);font:600 13px Inter,system-ui,sans-serif;max-width:calc(100vw - 20px);animation:tbPulse 1.6s infinite}'
+  +'.tb-pause b{font-size:15px}.tb-pause span{opacity:.8}.tb-pause button{background:#ff5d5d;color:#fff;border:0;border-radius:8px;padding:6px 14px;font:700 13px Inter,sans-serif;cursor:pointer}@keyframes tbPulse{50%{box-shadow:0 0 0 5px rgba(255,93,93,.35),0 10px 30px rgba(0,0,0,.55)}}'
+  +'.tb-win .tb-pc{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px 14px;font-size:15px}.tb-pc small{font:500 12px Inter,sans-serif;color:#8a9bbb}'
+  +'.tb-quiz{background:radial-gradient(circle at 50% 40%,rgba(30,90,200,.92),rgba(5,8,20,.94) 72%)}.tb-qz{position:relative;width:min(520px,100%);text-align:center;color:#fff;font:600 14px Inter,system-ui,sans-serif}'
+  +'.tb-qz .tb-x{position:absolute;right:0;top:0;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:4px 9px;cursor:pointer;font:inherit}'
+  +'.tb-qt{font:900 30px Inter,system-ui,sans-serif;color:#ffce4d;-webkit-text-stroke:1.5px #2a5bd7;text-shadow:0 3px 0 #2a5bd7,0 0 18px rgba(0,0,0,.5);margin:6px 38px 4px}.tb-qt b{color:#fff}'
+  +'.tb-qs{width:min(300px,62vw);aspect-ratio:1;margin:0 auto;background:radial-gradient(circle,rgba(255,255,255,.4) 0,transparent 62%)}.tb-qs img{width:100%;height:100%;object-fit:contain;filter:brightness(0);user-select:none;pointer-events:none}.tb-qs.rev img{filter:none;animation:tbPop .5s}'
+  +'@keyframes tbPop{0%{transform:scale(.85)}60%{transform:scale(1.08)}100%{transform:scale(1)}}.tb-qg{display:flex;gap:6px;justify-content:center;margin:8px auto 4px;max-width:360px}'
+  +'.tb-qg input{flex:1;min-width:0;background:#0b0f18;color:#fff;border:2px solid #ffce4d;border-radius:10px;padding:8px 10px;font:600 15px Inter,sans-serif}.tb-qg button{background:#ffce4d;color:#1a1300;border:0;border-radius:10px;padding:8px 14px;font:800 14px Inter,sans-serif;cursor:pointer}'
+  +'.tb-qw{font:800 18px Inter,sans-serif;margin:8px 0}.tb-qz .tb-mut{color:#c7d3ea}.tb-qsc{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}.tb-qsc span{background:rgba(0,0,0,.35);border-radius:999px;padding:3px 10px;font-size:12.5px}'
+  +'.tb-pp{display:inline-flex;width:64px;height:64px;border-radius:50%;align-items:center;justify-content:center;background:var(--tbc,#3a4560) center/cover no-repeat;color:#fff;font:800 20px Inter,sans-serif;border:3px solid var(--tbc,#3a4560);margin:2px auto 4px;box-sizing:border-box}.tb-pp.big{display:flex;width:120px;height:120px;font-size:36px}.tb-dc.hid{opacity:.5}'
+  +'@media (max-width:760px){.tb-wb{flex-direction:column;overflow-y:auto}.tb-side{width:auto;border-left:0;border-top:1px solid #2a3550}.tb-map{overflow:visible}.tb-say{font-size:14.5px}.tb-say .tb-pic{width:56px;height:56px}}';
+  document.head.appendChild(s);}
+function tbEl(id,cls,parent){let d=document.getElementById(id);if(!d){tbCss();d=document.createElement('div');d.id=id;if(cls)d.className=cls;(parent||document.body).appendChild(d);}return d;}
+function tbNew(kind,n){if(n==null||n==='')return false;const was=TB.seen[kind];TB.seen[kind]=String(n);return TB.started&&was!==String(n);}   // what was there at the first update is old news
+// sounds (made in the browser, nothing downloaded; 🔇 in each app's settings turns them off via tbPrefs().fx)
+function tbCtx(){try{TB.ac=TB.ac||new (window.AudioContext||window.webkitAudioContext)();if(TB.ac.state==='suspended')TB.ac.resume();return TB.ac;}catch(e){return null;}}
+function tbTone(f0,f1,dur,type,vol,when){if(!tbPrefs().fx)return;const c=tbCtx();if(!c)return;try{const t=c.currentTime+(when||0),o=c.createOscillator(),g=c.createGain();o.type=type||'square';o.frequency.setValueAtTime(f0,t);
+  if(f1&&f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t+dur);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.05,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.03);}catch(e){}}   // a sound never stops anything else
+function tbBlip(){tbTone(560+Math.random()*90,0,.04,'square',.03);}
+function tbChime(){[660,880,1320].forEach((f,i)=>tbTone(f,f,.4,'sine',.08,i*.13));}
+function tbFanfare(){[523,659,784,1047,784,1047].forEach((f,i)=>tbTone(f,f,i>3?.5:.22,'triangle',.08,i*.16));}
+// 🔊 a short sound for each type when a move is used (made from tones and filtered noise, nothing downloaded)
+const TB_TC={Fire:'#FF6B35',Water:'#4A90D9',Ice:'#74CEC0',Grass:'#7AC74C',Electric:'#F7D02C',Bug:'#A6B91A',Fighting:'#C22E28',Psychic:'#F95587',Dark:'#705746',Ghost:'#735797',Poison:'#A33EA1',Rock:'#B6A136',Ground:'#E2BF65',Steel:'#B7B7CE',Dragon:'#6F35FC',Flying:'#A98FF3',Fairy:'#D685AD',Normal:'#A8A878'};
+function tbNoise(f0,f1,dur,vol,ft,q,when){if(!tbPrefs().fx)return;const c=tbCtx();if(!c)return;try{const t=c.currentTime+(when||0),n=Math.ceil(c.sampleRate*dur),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+  const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type=ft||'bandpass';f.Q.value=q||1;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+dur);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol||.12,t+Math.min(.05,dur*.25));g.gain.exponentialRampToValueAtTime(.0001,t+dur);s.connect(f);f.connect(g);g.connect(c.destination);s.start(t);s.stop(t+dur+.02);}catch(e){}}
+function tbTypeSound(ty){const T=tbTone,N=tbNoise;switch(ty){
+  case 'Fire':N(300,2400,.5,.16,'bandpass',.8);for(let i=0;i<5;i++)N(3500,1800,.05,.05,'highpass',1,.08+i*.07);break;   // a roar and crackles
+  case 'Water':N(2200,400,.55,.14,'lowpass',1);T(700,300,.18,'sine',.05,.3);break;
+  case 'Electric':for(let i=0;i<6;i++)T(900+Math.random()*900,200,.05,'square',.035,i*.05);break;
+  case 'Grass':[880,1175,1320].forEach((f,i)=>T(f,f*1.2,.12,'triangle',.05,i*.08));N(1500,3000,.3,.04,'highpass',1);break;
+  case 'Ice':[2093,2637,3136].forEach((f,i)=>T(f,f,.25,'sine',.04,i*.07));break;
+  case 'Psychic':T(440,880,.6,'sine',.05);T(446,892,.6,'sine',.04);break;
+  case 'Ghost':T(700,180,.8,'sine',.05);T(706,176,.8,'triangle',.03);break;
+  case 'Dark':T(110,70,.5,'sawtooth',.05);N(400,150,.4,.06,'lowpass',1);break;
+  case 'Rock':case 'Ground':N(300,60,.6,.2,'lowpass',.7);T(80,40,.4,'sine',.1);break;
+  case 'Flying':N(600,3000,.45,.12,'bandpass',.6);break;
+  case 'Poison':[0,1,2,3].forEach(i=>T(300+Math.random()*300,900,.07,'sine',.05,i*.09));break;
+  case 'Bug':T(220,240,.5,'sawtooth',.025);T(226,236,.5,'sawtooth',.025);break;
+  case 'Dragon':T(90,260,.7,'sawtooth',.06);N(200,800,.7,.07,'bandpass',.8);break;
+  case 'Steel':T(1500,1480,.6,'square',.02);T(2250,2240,.6,'sine',.035);break;
+  case 'Fairy':[1568,2093,2637,3136,4186].forEach((f,i)=>T(f,f,.18,'sine',.03,i*.06));break;
+  default:N(900,200,.12,.18,'lowpass',1);T(140,60,.18,'sine',.1);}}   // Normal, Fighting: a thump
+function tbToast(msg){const d=tbEl('tbToast');d.style.cssText='position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:2147483000;background:#141a28;color:#e7edf8;border:2px solid #ffce4d;border-radius:12px;padding:8px 14px;font:700 14px Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:90vw;text-align:center;transition:opacity .4s';
+  d.textContent=msg;d.style.opacity='1';clearTimeout(TB.toastT);TB.toastT=setTimeout(()=>{d.style.opacity='0';},3500);}
+// one call from each app's live-data handler: m = the campaign's meta (or the sheet's _say/_evolve/… keys gathered up)
+function tbUpdate(m){m=m||{};
+  const s=m.say;if(s&&tbNew('say',s.n))tbSayShow(s);
+  const ev=m.evolve;if(ev&&tbNew('evo',ev.n))tbEvoShow(ev);tbQuiz(m.quiz);tbPauseShow(m.pause);tbSecret(m.secret);TB.started=true;
+  const ms=JSON.stringify(m.music||null);if(ms!==TB.ms){TB.ms=ms;TB.music=m.music||null;tbJb();}   // redraw only what changed (the board calls this on every token move)
+  const ws=JSON.stringify(m.world||null);if(ws!==TB.ws){TB.ws=ws;TB.world=m.world||null;if(TB.wOpen)tbWorldRender();}
+  const ds=JSON.stringify(m.dex||null);if(ds!==TB.ds){TB.ds=ds;TB.dex=(m.dex&&typeof m.dex==='object')?m.dex:{};if(TB.dOpen)tbDexRender();}
+  const ps=JSON.stringify(m.people||null);if(ps!==TB.ps){TB.ps=ps;TB.people=(m.people&&typeof m.people==='object')?m.people:{};if(TB.pOpen)tbPeopleRender();}}
+// your turn: a chime, a buzz on phones, and the tab title blinks until you look. key = which turn (the sheet and the board
+// on one device both notice it, so whichever goes first tells the other through localStorage)
+function tbTurnAlert(key,label){
+  if(!key||TB.turnKey===key)return;TB.turnKey=key;let last='';try{last=localStorage.getItem('pokeDnD_turnPing')||'';}catch(e){}
+  const i=last.lastIndexOf('@');if(i>0&&last.slice(0,i)===key&&Date.now()-(+last.slice(i+1)||0)<10000)return;
+  try{localStorage.setItem('pokeDnD_turnPing',key+'@'+Date.now());}catch(e){}
+  tbToast('⚔ '+(label||'Your turn!'));tbChime();try{if(navigator.vibrate&&navigator.userActivation&&navigator.userActivation.hasBeenActive)navigator.vibrate([140,90,140]);}catch(e){}   // phones only buzz after a first tap on the page
+  if(document.hidden&&!TB.blink){const t0=document.title;let on=false;TB.blink=setInterval(()=>{on=!on;document.title=on?'⚔ Your turn!':t0;},900);
+    const stop=()=>{if(document.hidden)return;clearInterval(TB.blink);TB.blink=0;document.title=t0;document.removeEventListener('visibilitychange',stop);};document.addEventListener('visibilitychange',stop);}}
+// 💬 NPC lines
+function tbSayShow(s){if(!s||!s.text)return;TB.sayQ.push(s);if(!TB.sayOn)tbSayNext();}
+function tbPicSrc(img,art){if(art)return Promise.resolve(TB_ART+(+art)+'.png');if(!img)return Promise.resolve('');if(/^https?:|^data:|^blob:/.test(img))return Promise.resolve(img);
+  return TB.host&&TB.host.asset?Promise.resolve(TB.host.asset(img)).catch(()=>''):Promise.resolve('');}
+function tbSayNext(){
+  const d=tbEl('tbSay','tb-say'),s=TB.sayQ.shift();clearTimeout(TB.sayT);clearInterval(TB.sayI);
+  if(!s){d.style.display='none';TB.sayOn=false;return;}TB.sayOn=true;
+  const ini=String(s.who||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  d.style.setProperty('--tbc',s.color||'#2b3245');d.innerHTML='<div class="tb-pic">'+tbEsc(ini)+'</div><div style="flex:1;min-width:0"><div class="tb-nm">'+tbEsc(s.who||'???')+'</div><div class="tb-tx"></div></div>';
+  d.style.display='flex';if(+s.art)tbCry(+s.art);tbPicSrc(s.img,s.art).then(src=>{const p=d.querySelector('.tb-pic');if(src&&p){p.style.backgroundImage='url("'+src.replace(/"/g,'%22')+'")';p.textContent='';}});
+  const tx=d.querySelector('.tb-tx'),full=String(s.text).slice(0,600);let i=0;
+  const done=()=>{clearInterval(TB.sayI);tx.innerHTML=tbEsc(full)+'<span class="tb-more">▼</span>';TB.sayDone=true;TB.sayT=setTimeout(tbSayNext,5000+full.length*45);};
+  TB.sayDone=false;TB.sayI=setInterval(()=>{i+=2;tx.textContent=full.slice(0,i);if(i%4===0&&/\S/.test(full[i]||''))tbBlip();if(i>=full.length)done();},34);
+  d.onclick=()=>{if(TB.sayDone)tbSayNext();else done();};}
+// ✨ evolution scene
+function tbEvoShow(ev){
+  if(!ev||!ev.b)return;const d=tbEl('tbEvo','tb-evo');d.className='tb-evo';d.style.display='flex';
+  const A=ev.a?TB_ART+(+ev.a)+'.png':'',B=TB_ART+(+ev.b)+'.png';
+  d.innerHTML='<div class="tb-msg">What? '+tbEsc(ev.from||'?')+' is evolving!</div><div class="tb-stage"><div class="tb-glow"></div>'+(A?'<img class="ea" src="'+A+'" alt="">':'')+'<img class="eb" src="'+B+'" alt="" style="opacity:0"></div><small>'+tbEsc(ev.who?ev.who+'’s Pokémon · ':'')+'tap to close</small><div class="tb-flash"></div>';
+  const a=d.querySelector('.ea'),b=d.querySelector('.eb'),msg=d.querySelector('.tb-msg'),fl=d.querySelector('.tb-flash'),T=[];TB.evoT&&TB.evoT.forEach(clearTimeout);TB.evoT=T;
+  const at=(ms,f)=>T.push(setTimeout(f,ms));
+  at(1300,()=>{d.classList.add('go');if(a)a.classList.add('sil');b.classList.add('sil');});
+  let t=1900,gap=420,on=false,k=0;while(gap>55){const g=gap,show=on=!on,kk=k++;at(t,()=>{if(a)a.style.opacity=show?0:1;b.style.opacity=show?1:0;tbTone(300+kk*28,0,.07,'triangle',.04);});t+=g;gap*=.86;}
+  at(t,()=>{fl.style.opacity='1';tbTone(900,1800,.5,'sine',.06);});
+  at(t+500,()=>{if(a)a.remove();b.style.opacity=1;b.classList.remove('sil');d.classList.remove('go');fl.style.opacity='0';msg.innerHTML='Congratulations! '+tbEsc(ev.from||'?')+' evolved into <b style="color:#ffce4d">'+tbEsc(ev.to||'?')+'</b>!';tbFanfare();setTimeout(()=>tbCry(+ev.b),900);
+    const st=d.querySelector('.tb-stage');for(let i=0;i<26;i++){const p=document.createElement('i');p.className='tb-spk';const an=Math.random()*6.28,r=120+Math.random()*120;p.style.cssText='left:50%;top:50%;--dx:'+Math.cos(an)*r+'px;--dy:'+Math.sin(an)*r+'px;animation-delay:'+(Math.random()*.4)+'s';st.appendChild(p);}});
+  at(t+9000,()=>{d.style.display='none';});
+  d.onclick=()=>{T.forEach(clearTimeout);d.style.display='none';};}
+// 🎵 jukebox player (YouTube's own player, loaded only when music plays here)
+function tbYtParse(u){u=String(u||'').trim();if(!u)return null;let m=u.match(/[?&]list=([\w-]{10,})/);const l=m?m[1]:'';
+  m=u.match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/);const v=m?m[1]:(/^[\w-]{11}$/.test(u)?u:'');return (v||l)?{v,l}:null;}
+function tbYT(){if(TB.ytP)return TB.ytP;TB.ytP=new Promise((res,rej)=>{if(window.YT&&window.YT.Player)return res(window.YT);const prev=window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady=()=>{try{if(prev)prev();}catch(e){}res(window.YT);};const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=()=>{TB.ytP=null;rej(new Error('YouTube couldn’t load (no internet?)'));};document.head.appendChild(s);});return TB.ytP;}
+function tbJbPos(n){const el=n.on&&n.t?(Date.now()-n.t)/1000:0;return Math.max(0,(+n.at||0)+(el>4?el:0));}   // joined late: catch up (a few seconds of clock difference between computers is ignored)
+const TB_YTERR={2:'That link isn’t a valid video.',5:'This video can’t play in the browser player.',100:'That video was removed or is private.',101:'The video’s owner doesn’t allow it to play outside YouTube.',150:'The video’s owner doesn’t allow it to play outside YouTube.',153:'YouTube won’t play here: open the apps from the website (not a file on your computer).'};
+function tbJb(){
+  const n=TB.music&&TB.music.now,host=TB.host,here=!!(host&&host.listen&&host.listen()),P=tbPrefs(),el=tbEl('tbJb','tb-jb',host&&host.jbParent&&host.jbParent());   // the board keeps it inside the map area
+  const live=!!(n&&(n.v||n.l));if(!live&&!(host&&host.me&&host.me().dm&&TB.music)){el.style.display='none';if(TB.yt&&TB.yt.pauseVideo)try{TB.yt.pauseVideo();}catch(e){}return;}
+  el.style.display=live?'':'none';el.classList.toggle('min',!TB.jb.open);
+  const title=n&&n.title?n.title:(n&&n.l&&!n.v?'Playlist':'Music'),playing=!!(n&&n.on);
+  if(!el.dataset.built){el.dataset.built='1';el.innerHTML='<div class="tb-jbh"><span class="tb-eq"><i></i><i></i><i></i></span><span class="tb-jbt"></span><span class="tb-jbc" style="margin-left:auto;opacity:.7">▴</span></div>'
+    +'<div class="tb-jbb"><div class="tb-vid"><div id="tbYtBox"></div></div><div style="display:flex;gap:6px;align-items:center"><button data-jb="mute">🔊</button><input type="range" min="0" max="100" data-jb="vol"></div>'
+    +'<div class="tb-jbhere" style="margin-top:7px"></div><div class="tb-jbn"></div></div>';
+    el.addEventListener('click',e=>{const b=e.target.closest('[data-jb]');if(!b){if(e.target.closest('.tb-jbh')){TB.jb.open=!TB.jb.open;tbJb();}return;}const k=b.dataset.jb;
+      if(k==='mute'){tbSetPref('mute',!tbPrefs().mute);tbJbVol();tbJb();}else if(k==='here'){tbSetPref('here',!tbPrefs().here);TB.jb.k='';tbJb();}else if(k==='tap'){TB.jb.blocked=false;try{TB.yt.playVideo();}catch(e){}tbJb();}});
+    el.addEventListener('input',e=>{if(e.target.dataset.jb==='vol'){tbSetPref('vol',+e.target.value);tbJbVol();}});}
+  el.querySelector('.tb-jbt').textContent=(playing?'🎵 ':'⏸ ')+title;el.querySelector('.tb-eq').classList.toggle('off',!playing||!here||P.mute);
+  el.querySelector('.tb-jbc').textContent=TB.jb.open?'▾':'▴';el.querySelector('[data-jb="mute"]').textContent=P.mute?'🔇':'🔊';const vr=el.querySelector('[data-jb="vol"]');if(document.activeElement!==vr)vr.value=P.vol;
+  const hb=el.querySelector('.tb-jbhere');hb.innerHTML=host&&host.hereToggle?'<button data-jb="here">'+(P.here?'🔊 Playing here · stop':'🔈 Listen on this screen')+'</button>':'';
+  el.querySelector('.tb-jbn').textContent=TB.jb.err||(TB.jb.blocked&&here?'':(!here?'Not playing on this screen.':''));
+  if(TB.jb.blocked&&here&&playing&&!TB.jb.err){el.querySelector('.tb-jbn').innerHTML='<button data-jb="tap" style="background:#ffce4d;color:#1a1300">🔊 Tap to hear the music</button>';}
+  el.querySelector('.tb-vid').style.display=here?'':'none';
+  if(!here){if(TB.yt&&TB.yt.pauseVideo)try{TB.yt.pauseVideo();}catch(e){}TB.jb.k='';return;}
+  const key=n?[n.k,n.v,n.l,n.on].join('|'):'';if(key===TB.jb.k)return;TB.jb.k=key;TB.jb.err='';
+  tbYT().then(YT=>{
+    const go=()=>{const p=TB.yt;if(!p||!p.loadVideoById)return;tbJbVol();if(!n.on){try{p.pauseVideo();}catch(e){}return;}
+      const at=tbJbPos(n);if(n.v)p.loadVideoById({videoId:n.v,startSeconds:at});else p.loadPlaylist({list:n.l,listType:'playlist',index:0,startSeconds:at});
+      if(n.l)try{p.setLoop(true);}catch(e){}clearTimeout(TB.jb.chk);TB.jb.chk=setTimeout(()=>{try{const st=p.getPlayerState();if(st!==1&&st!==3&&n.on){TB.jb.blocked=true;tbJb();}}catch(e){}},3500);};
+    if(!TB.yt){TB.yt=new YT.Player('tbYtBox',{width:224,height:126,playerVars:{autoplay:1,playsinline:1,rel:0,modestbranding:1},
+      events:{onReady:()=>{TB.yt.ready=true;go();},onStateChange:e=>{if(e.data===1){TB.jb.blocked=false;const nm=TB.yt.getVideoData&&TB.yt.getVideoData().title;if(nm&&TB.host&&TB.host.me&&TB.host.me().dm&&TB.music&&TB.music.now&&!TB.music.now.title)TB.host.set('music/now/title',nm);tbJb();}
+        if(e.data===0){const m=TB.music&&TB.music.now;if(m&&m.loop&&m.v)try{TB.yt.seekTo(0);TB.yt.playVideo();}catch(er){}}},
+        onError:e=>{TB.jb.err=TB_YTERR[e.data]||'This video can’t play here.';tbJb();}}});}
+    else if(TB.yt.ready)go();
+  }).catch(e=>{TB.jb.err=e.message;TB.jb.k='';tbJb();});}
+function tbJbVol(){const p=TB.yt,P=tbPrefs();if(!p||!p.setVolume)return;try{p.setVolume(P.vol);if(P.mute)p.mute();else p.unMute();}catch(e){}}
+// 🗺 world map (everyone can read it and add party notes to a pin; the DM edits it)
+function tbWorldOpen(){TB.wOpen=true;tbWorldRender();}
+function tbWorldClose(){TB.wOpen=false;const d=document.getElementById('tbWorld');if(d)d.remove();}
+function tbWorldRender(){
+  const W=TB.world||{},dm=!!(TB.host&&TB.host.me().dm),pins=W.pins&&typeof W.pins==='object'?W.pins:{},d=tbEl('tbWorld','tb-ov');
+  if(d.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){TB.wLater=true;return;}
+  const ids=Object.keys(pins).filter(k=>pins[k]&&(dm||!pins[k].h)),sel=pins[TB.wsel]&&(dm||!pins[TB.wsel].h)?TB.wsel:'',p=sel?pins[sel]:null;
+  const trip=W.trip&&typeof W.trip==='object'?Object.values(W.trip).filter(Boolean).sort((a,b)=>(b.t||0)-(a.t||0)):[];
+  const sc=d.querySelector('.tb-map'),st=sc?[sc.scrollLeft,sc.scrollTop]:null;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>🗺 '+tbEsc(W.name||'World map')+'</h2><span class="tb-mut">Day '+(+W.day||1)+'</span>'
+    +(dm?'<label class="tb-b" style="cursor:pointer">⬆ Map picture<input type="file" accept="image/*" data-w="up" hidden></label><button data-w="day">＋1 day</button>':'')
+    +'<button class="tb-x" data-w="x">✕</button></div><div class="tb-wb"><div class="tb-map">'
+    +(W.img?'<div class="tb-mi"><img class="tb-mimg" alt="" data-w="map">'+ids.map(k=>{const q=pins[k];return '<button class="tb-pin'+(k===sel?' sel':'')+(q.h?' hid':'')+(q.vis?'':' unv')+'" data-pin="'+tbEsc(k)+'" style="left:'+(+q.x*100)+'%;top:'+(+q.y*100)+'%">'+tbEsc(q.ic||'📍')+'<span>'+tbEsc(q.n||'?')+'</span></button>';}).join('')
+      +(W.at?'<div class="tb-party" style="left:'+(+W.at.x*100)+'%;top:'+(+W.at.y*100)+'%" title="The party">🚩</div>':'')+'</div>'
+      :'<div style="padding:40px;text-align:center" class="tb-mut">'+(dm?'Upload a map picture of your world (⬆ Map picture), or paint one with 🎨 on the board and save it.':'The DM hasn’t added a world map yet.')+'</div>')
+    +'</div><div class="tb-side">'
+    +(dm&&W.img?'<div class="tb-mut">'+(TB.wPlace==='pin'?'<b style="color:#ffce4d">Click the map to drop a pin.</b>':TB.wPlace==='party'?'<b style="color:#ffce4d">Click the map where the party is.</b>':'Add places, then move the party marker as you travel.')+'</div><div class="tb-r"><button data-w="addpin">📍 Add a place</button><button data-w="party">🚩 Move the party</button></div>':'')
+    +(p?'<h3>'+tbEsc(p.ic||'📍')+' '+tbEsc(p.n||'?')+'</h3>'
+      +(dm?'<input data-wf="n" value="'+tbEsc(p.n||'')+'" placeholder="Name"><div class="tb-r"><select data-wf="ic" style="width:auto">'+['📍','🏘','🏰','⛰','🌲','🏞','🕳','⚓','🏛','⛩','⚔','💀','💎','❓'].map(e=>'<option'+(e===(p.ic||'📍')?' selected':'')+'>'+e+'</option>').join('')+'</select>'
+        +'<label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-wf="vis" style="width:auto"'+(p.vis?' checked':'')+'> visited</label><label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-wf="h" style="width:auto"'+(p.h?' checked':'')+'> hidden</label></div>'
+        +'<textarea data-wf="d" rows="3" placeholder="What the party knows about it" style="margin-top:6px">'+tbEsc(p.d||'')+'</textarea>':(p.d?'<div style="white-space:pre-wrap">'+tbEsc(p.d)+'</div>':'')+(p.vis?'':'<div class="tb-mut">Not visited yet.</div>'))
+      +'<h3>Party notes</h3><textarea data-wf="pn" rows="4" placeholder="Anyone in the party can write here">'+tbEsc(p.pn||'')+'</textarea>'
+      +(dm?'<div class="tb-r"><button data-w="delpin" style="color:#ff5d5d">Delete this place</button></div>':'')
+      :'<div class="tb-mut" style="margin-top:8px">'+(ids.length?'Click a place on the map to read about it.':'No places yet.')+'</div>')
+    +'<h3>Travel log</h3>'+(dm?'<div class="tb-r"><input data-w="tripin" placeholder="e.g. Crossed the Ashen Pass" style="flex:1"><button data-w="trip">Add</button></div>':'')
+    +(trip.length?trip.slice(0,40).map(t=>'<div class="tb-trip"><b>Day '+(+t.d||1)+'</b> · '+tbEsc(t.text||'')+'</div>').join(''):'<div class="tb-mut">Nothing yet.</div>')+'</div></div></div>';
+  const im=d.querySelector('img.tb-mimg');if(im&&W.img)tbPicSrc(W.img).then(src=>{if(src)im.src=src;});
+  const sc2=d.querySelector('.tb-map');if(sc2&&st){sc2.scrollLeft=st[0];sc2.scrollTop=st[1];}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{if(e.target===d){tbWorldClose();return;}const H=TB.host;const pin=e.target.closest('[data-pin]');if(pin){TB.wsel=pin.dataset.pin;TB.wPlace='';tbWorldRender();return;}
+      const b=e.target.closest('[data-w]'),k=b&&b.dataset.w;
+      if(k==='map'&&TB.wPlace){const r=b.getBoundingClientRect(),x=+((e.clientX-r.left)/r.width).toFixed(4),y=+((e.clientY-r.top)/r.height).toFixed(4);
+        if(TB.wPlace==='party')H.set('world/at',{x,y});else{const n=prompt('Name of this place?','');if(n){const id='p'+Date.now().toString(36);H.set('world/pins/'+id,{x,y,n:n.slice(0,60),ic:'📍'});TB.wsel=id;}}TB.wPlace='';tbWorldRender();return;}
+      if(k==='x')tbWorldClose();else if(k==='addpin'){TB.wPlace='pin';tbWorldRender();}else if(k==='party'){TB.wPlace='party';tbWorldRender();}
+      else if(k==='day'){const day=(+(TB.world||{}).day||1)+1;H.set('world/day',day);const t=prompt('Day '+day+'. Anything to add to the travel log? (optional)','');if(t)H.push('world/trip',{d:day,text:t.slice(0,200),t:Date.now()});}
+      else if(k==='trip'){const i=d.querySelector('[data-w="tripin"]'),t=(i&&i.value||'').trim();if(t){H.push('world/trip',{d:+(TB.world||{}).day||1,text:t.slice(0,200),t:Date.now()});i.value='';}}
+      else if(k==='delpin'&&TB.wsel&&confirm('Delete this place from the map?')){H.set('world/pins/'+TB.wsel,null);TB.wsel='';}});
+    d.addEventListener('change',e=>{const t=e.target,H=TB.host;
+      if(t.dataset.w==='up'&&t.files&&t.files[0]){const f=t.files[0];t.value='';tbToast('Uploading the map…');Promise.resolve(H.upload(f)).then(id=>{if(id){H.set('world/img',id);tbToast('✓ Map added');}}).catch(er=>tbToast('Upload failed: '+er.message));return;}
+      const f=t.dataset.wf;if(!f||!TB.wsel)return;const v=t.type==='checkbox'?(t.checked||null):String(t.value).slice(0,f==='n'?60:2000);H.set('world/pins/'+TB.wsel+'/'+f,v===''?null:v);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.wLater&&!d.contains(document.activeElement)){TB.wLater=false;tbWorldRender();}},0));}}
+// 📒 party Pokédex (boards add entries; anyone can read it and leave a party note)
+function tbDexOpen(){TB.dOpen=true;tbDexRender();}
+function tbDexClose(){TB.dOpen=false;const d=document.getElementById('tbDexW');if(d)d.remove();}
+function tbOwned(){const o={},H=TB.host;if(!H||!H.players)return o;const ps=H.players()||{};for(const pk in ps){const p=ps[pk];if(!p||typeof p!=='object')continue;
+  (Array.isArray(p.companions)?p.companions:Object.values(p.companions||{})).forEach(c=>{const nm=c&&(c.species||c.name),num=nm&&H.dexNum?H.dexNum(nm):0;if(num){(o[num]=o[num]||[]).push((c.name&&c.name!==c.species?c.name+' ('+(p.charName||pk)+')':(p.charName||pk)));o[num].sp=o[num].sp||nm;}});}return o;}
+function tbDexRender(){
+  const d=tbEl('tbDexW','tb-ov');if(d.contains(document.activeElement)&&/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&document.activeElement.dataset.dx!=='q'){TB.dLater=true;return;}
+  const own=tbOwned(),all={};for(const k in TB.dex){const e=TB.dex[k];if(e&&e.num)all[e.num]=e;}for(const num in own)if(!all[num])all[num]={num:+num,n:own[num].sp||'',own:1};
+  const q=TB.dq.toLowerCase(),list=Object.values(all).filter(e=>!q||String(e.n||'').toLowerCase().includes(q)).sort((a,b)=>a.num-b.num),e=TB.dsel&&all[TB.dsel];
+  const tc=t=>TB_TC[t]||'#A8A878';
+  const qi=d.querySelector('[data-dx="q"]'),hadQ=qi&&document.activeElement===qi,pos=qi?qi.selectionStart:0;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>📒 Party Pokédex</h2><span class="tb-mut">'+Object.values(all).filter(x=>x.n).length+' seen · '+Object.keys(own).length+' with the party</span><input data-dx="q" placeholder="Search…" value="'+tbEsc(TB.dq)+'" style="width:160px"><button class="tb-x" data-dx="x">✕</button></div>'
+    +'<div class="tb-wb"><div class="tb-dex" style="flex:1">'+(list.length?list.map(x=>'<div class="tb-dc'+(own[x.num]?' own':'')+'" data-dn="'+x.num+'"><img loading="lazy" src="'+TB_ART+x.num+'.png" alt=""><b>'+tbEsc(x.n||'#'+x.num)+'</b><i>#'+String(x.num).padStart(4,'0')+(own[x.num]?' · ✓ party':'')+'</i></div>').join('')
+      :'<div class="tb-mut" style="padding:30px">No Pokémon yet. When the party meets one on the live board, it’s added here.</div>')+'</div>'
+    +(e?'<div class="tb-side"><img src="'+TB_ART+e.num+'.png" alt="" style="width:100%;aspect-ratio:1;object-fit:contain"><h3 style="margin-top:4px">'+tbEsc(e.n||'#'+e.num)+' <span class="tb-mut">#'+e.num+'</span></h3>'
+      +'<div>'+(e.ty||[]).map(t=>'<span class="tb-ty" style="background:'+tc(t)+'">'+tbEsc(t)+'</span>').join('')+'</div>'
+      +'<div class="tb-r"><button data-dx="cry" title="Hear its cry">🔊 Cry</button></div>'
+      +(e.at||e.t?'<div class="tb-mut" style="margin-top:6px">First seen'+(e.at?' at <b>'+tbEsc(e.at)+'</b>':'')+(e.t?', '+new Date(e.t).toLocaleDateString([],{month:'short',day:'numeric'}):'')+(e.c>1?' · seen '+e.c+' times':'')+'</div>':'')
+      +(own[e.num]?'<div style="margin-top:6px">✓ With the party: '+tbEsc(own[e.num].join(', '))+'</div>':'')
+      +(e.n?'<h3>Party notes</h3><textarea data-dx="pn" rows="5" placeholder="Where it lives, what it’s weak to, what happened…">'+tbEsc(e.pn||'')+'</textarea>':'')+'</div>':'')+'</div></div>';
+  if(hadQ){const n=d.querySelector('[data-dx="q"]');n.focus();try{n.setSelectionRange(pos,pos);}catch(er){}}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',ev=>{if(ev.target===d||ev.target.closest('[data-dx="x"]')){tbDexClose();return;}if(ev.target.closest('[data-dx="cry"]')){if(TB.dsel)tbCry(+TB.dsel);return;}const c=ev.target.closest('[data-dn]');if(c){TB.dsel=c.dataset.dn;tbDexRender();}});
+    d.addEventListener('input',ev=>{if(ev.target.dataset.dx==='q'){TB.dq=ev.target.value;tbDexRender();}});
+    d.addEventListener('change',ev=>{if(ev.target.dataset.dx==='pn'&&TB.dsel&&TB.dex[TB.dsel])TB.host.set('dex/'+TB.dsel+'/pn',String(ev.target.value).slice(0,2000)||null);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.dLater&&!d.contains(document.activeElement)){TB.dLater=false;tbDexRender();}},0));}}
+// 🔊 Pokémon cries (Finn 2026-11-22): the real cry, from PokeAPI's free collection on GitHub (the same place as the artwork),
+// when a Pokémon arrives on the board, evolves, speaks, or is revealed in the quiz. n = a name or a Pokédex number.
+// Follows the sounds switch (tbPrefs().fx), and never two at once.
+const TB_CRY='https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/';
+function tbCry(n){if(!tbPrefs().fx)return;const num=+n>0?Math.floor(+n):(TB.host&&TB.host.dexNum?TB.host.dexNum(String(n||'')):0);if(!num||num>1025)return;
+  const now=Date.now();if(now-(TB.cryAt||0)<600)return;TB.cryAt=now;
+  try{const a=new Audio(TB_CRY+num+'.ogg');a.volume=.45;const p=a.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}}
+function tbPicC(img,art){const k=(img||'')+'|'+(+art||0);TB.pics=TB.pics||{};return TB.pics[k]||(TB.pics[k]=tbPicSrc(img,art));}   // each picture fetched once per screen
+// ✋ the pause card (a table safety tool): a player taps "can we move on?" or "I need a pause" (tbPauseAsk); it goes to
+// meta/pause with no name on it, and only the DM's screens show it (tbPauseShow) until the DM taps OK, which clears them.
+function tbPauseAsk(){const d=tbEl('tbPauseW','tb-ov');d.innerHTML='<div class="tb-win" style="max-width:440px"><div class="tb-wh"><h2>✋ Pause card</h2><button class="tb-x" data-pz="x">✕</button></div><div style="padding:14px">'
+  +'<div class="tb-mut" style="margin-bottom:12px">Something at the table not sitting right, or a scene going on too long? Tap one. The DM sees it <b>without your name</b>, and nobody else sees it.</div>'
+  +'<div style="display:grid;gap:8px"><button class="tb-pc" data-pz="skip">⏩ <b>Can we move on?</b><small>Wrap this scene up, please</small></button><button class="tb-pc" data-pz="pause">✋ <b>I need a pause</b><small>Stop for a moment</small></button></div>'
+  +'<div class="tb-mut tb-pzn" style="margin-top:10px"></div></div></div>';
+  d.onclick=e=>{const b=e.target.closest('[data-pz]');if(e.target===d||(b&&b.dataset.pz==='x')){d.remove();return;}if(!b||!TB.host)return;
+    TB.host.push('pause',{k:b.dataset.pz,t:Date.now()});d.querySelector('.tb-pzn').textContent='✓ Sent. The DM sees it without your name.';setTimeout(()=>d.remove(),1800);};}
+function tbPauseShow(p){const H=TB.host;if(!H||!H.me||!H.me().dm)return;const L=Object.values(p&&typeof p==='object'?p:{}).filter(v=>v&&v.k),el=document.getElementById('tbPause');
+  if(!L.length){if(el)el.remove();return;}const skip=L.filter(v=>v.k==='skip').length,stop=L.length-skip,sig=L.length+'|'+stop;if(el&&el.dataset.sig===sig)return;
+  const d=tbEl('tbPause','tb-pause');d.dataset.sig=sig;if(TB.started)tbChime();
+  d.innerHTML='<b>'+(stop?'✋ A player asked for a pause':'⏩ A player asked to move on')+'</b><span>'+(stop&&skip?'(and '+skip+' to move on) ':L.length>1?'('+L.length+' asks) ':'')+'No name on it, and only you see this.</span><button data-pz="ok">OK</button>';
+  d.onclick=e=>{if(e.target.closest('[data-pz="ok"]')){H.set('pause',null);d.remove();}};}
+// 🤫 secret rolls: meta/secret/<push id> = {pk, n, what, total, txt, nat, t}, sent from a player's sheet. Only the DM's
+// screens show them: a pop-up as each one comes in (the dashboard also lists them in its roll feed).
+function tbSecret(sc){const H=TB.host;if(!H||!H.me||!H.me().dm)return;const s=JSON.stringify(sc||null);if(s===TB.secS)return;TB.secS=s;
+  const L=Object.entries(sc&&typeof sc==='object'?sc:{}).filter(([,v])=>v&&v.n),ids=new Set(L.map(([k])=>k));
+  if(TB.secSeen)L.forEach(([k,v])=>{if(!TB.secSeen.has(k))tbToast('🤫 '+v.n+' · '+(v.what||'Secret roll')+': '+v.total+(v.txt?' ('+v.txt+')':''));});TB.secSeen=ids;}
+// ❓ Who's that Pokémon? The DM's dashboard runs it: meta/quiz = {id, num, h:[answer hashes], on, rev, n (the name, once
+// revealed), win:{pk,n}, score:{pk:{n,p}}, gen}. Players guess on their sheet or board: meta/qbuzz/<push id> = {q, pk, n, ok, g, t}.
+// Push ids sort by arrival, so the first right answer wins. Answers are checked as hashes, so the name isn't in the data until
+// the reveal (the picture's number still is: it's a party game, on the honour system like the DM's notes).
+const tbQNorm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+function tbHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);}
+function tbQuiz(q){q=q&&typeof q==='object'&&q.on&&q.num?q:null;const old=TB.quiz,H=TB.host;TB.quiz=q;
+  if(!q){const d=document.getElementById('tbQuiz');if(d)d.remove();TB.qShut='';return;}
+  const fresh=!old||old.id!==q.id,shown=!(old&&old.id===q.id&&old.rev)&&q.rev;
+  if(fresh){TB.qLeft=3;TB.qMine='';}
+  if(H&&H.noQuiz)return;   // the dashboard has its own panel
+  if(TB.started&&fresh&&!q.rev)[392,523,659,784].forEach((f,i)=>tbTone(f,f,.14,'triangle',.06,i*.09));
+  if(TB.started&&shown)tbCry(q.num);
+  if(TB.qShut===q.id+'|'+(q.rev?1:0))return;tbQuizRender();}
+function tbQuizRender(){const q=TB.quiz;if(!q)return;const H=TB.host,me=H&&H.me?H.me():{},can=!me.dm&&!!me.pk&&!q.rev,d=tbEl('tbQuiz','tb-ov tb-quiz');
+  const sc=Object.values(q.score&&typeof q.score==='object'?q.score:{}).filter(s=>s&&s.n).sort((a,b)=>(b.p||0)-(a.p||0)).slice(0,6);
+  const key=[q.id,q.rev?1:0,q.n,q.win&&q.win.n,JSON.stringify(sc),TB.qMine,TB.qLeft].join('|');if(d.dataset.k===key)return;d.dataset.k=key;
+  const inp=d.querySelector('input'),keep=inp?inp.value:'',foc=!!inp&&document.activeElement===inp;
+  d.innerHTML='<div class="tb-qz"><button class="tb-x" data-q="x" title="Close (it comes back with the next Pokémon)">✕</button><div class="tb-qt">'+(q.rev?'It’s <b>'+tbEsc(q.n||'?')+'</b>!':'Who’s that Pokémon?')+'</div>'
+    +'<div class="tb-qs'+(q.rev?' rev':'')+'"><img src="'+TB_ART+(+q.num)+'.png" alt="" draggable="false"></div>'
+    +(q.rev?'<div class="tb-qw">'+(q.win&&q.win.n?'🏆 '+tbEsc(q.win.n)+' got it first!':'Nobody got it this time.')+'</div>'
+      :can?(TB.qMine==='ok'?'<div class="tb-qw">✓ You got it! Waiting for the reveal…</div>'
+        :TB.qLeft>0?'<div class="tb-qg"><input data-q="g" maxlength="40" placeholder="Type your guess…" autocomplete="off" spellcheck="false"><button data-q="go">Guess</button></div><div class="tb-mut">'+(TB.qMine==='no'?'✗ Not that one. ':'')+TB.qLeft+' guess'+(TB.qLeft===1?'':'es')+' left</div>'
+        :'<div class="tb-qw">Out of guesses. Wait for the reveal!</div>')
+      :'<div class="tb-mut">'+(me.dm?'Players guess on their sheet or board.':'Players guess on their sheets.')+'</div>')
+    +(sc.length?'<div class="tb-qsc">'+sc.map((s,i)=>'<span>'+(i===0&&s.p?'👑 ':'')+tbEsc(s.n)+' <b>'+(s.p||0)+'</b></span>').join('')+'</div>':'')+'</div>';
+  const ni=d.querySelector('input');if(ni){ni.value=keep;if(foc)ni.focus();}
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(!b)return;if(b.dataset.q==='x'){const z=TB.quiz;TB.qShut=z?z.id+'|'+(z.rev?1:0):'';d.remove();}else if(b.dataset.q==='go')tbQuizGuess();});
+    d.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.q==='g')tbQuizGuess();});}}
+function tbQuizGuess(){const q=TB.quiz,H=TB.host,i=document.querySelector('#tbQuiz input');if(!q||q.rev||!i||!H||TB.qLeft<=0||TB.qMine==='ok')return;const g=i.value.trim();if(!g)return;
+  const ok=(Array.isArray(q.h)?q.h:Object.values(q.h||{})).includes(tbHash(tbQNorm(g))),me=H.me();i.value='';
+  H.push('qbuzz',{q:q.id,pk:me.pk,n:me.name||me.pk,ok,g:g.slice(0,40),t:Date.now()});
+  if(ok){TB.qMine='ok';tbFanfare();}else{TB.qLeft--;TB.qMine='no';tbTone(220,150,.25,'square',.04);}tbQuizRender();}
+// 📇 people the party has met: meta/people/<id> = {n, img, art, color, where, att, d (what the party knows: the DM writes it),
+// pn (party notes: anyone), t, h (hidden from players)}. The DM's 💬 Speak (dashboard, or a board token) adds whoever talks,
+// the first time (tbMeet; a plain Pokémon species is left to the Pokédex).
+const TB_ATT={unknown:['❔','Not sure yet','#8a9bbb'],friendly:['😊','Friendly','#3ddf93'],neutral:['😐','Neutral','#a9b4c6'],wary:['🤨','Wary','#ffce4d'],hostile:['😠','Hostile','#ff5d5d']};
+const tbPid=n=>String(n||'').toLowerCase().replace(/\s+\d+$/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'x';
+function tbMeet(s,where){const H=TB.host;if(!H||!s||!s.who||s.who==='???')return;const who=String(s.who).replace(/\s+\d+$/,'').trim(),id=tbPid(who);if(!who||TB.people[id]||(H.dexNum&&H.dexNum(who)))return;
+  const v={n:who.slice(0,60),img:s.img||'',art:+s.art||0,color:s.color||'',where:String(where||'').slice(0,80),att:'unknown',t:Date.now()};TB.people[id]=v;H.set('people/'+id,v);}
+function tbPeopleOpen(){TB.pOpen=true;tbPeopleRender();}
+function tbPeopleClose(){TB.pOpen=false;const d=document.getElementById('tbPeopleW');if(d)d.remove();}
+function tbPeopleRender(){
+  const d=tbEl('tbPeopleW','tb-ov'),H=TB.host,dm=!!(H&&H.me&&H.me().dm);if(d.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){TB.pLater=true;return;}
+  const P=TB.people||{},ids=Object.keys(P).filter(k=>P[k]&&P[k].n&&(dm||!P[k].h)).sort((a,b)=>(P[b].t||0)-(P[a].t||0)),sel=ids.includes(TB.psel)?TB.psel:'',p=sel?P[sel]:null;
+  const pic=(q,cls)=>'<span class="'+cls+'" data-pimg="'+tbEsc(q.img||'')+'" data-part="'+(+q.art||0)+'" style="--tbc:'+tbEsc(/^#[0-9a-f]{3,8}$/i.test(q.color||'')?q.color:'#3a4560')+'">'+tbEsc(String(q.n).trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase())+'</span>';
+  const att=q=>TB_ATT[q.att]||TB_ATT.unknown;
+  d.innerHTML='<div class="tb-win"><div class="tb-wh"><h2>📇 People we’ve met</h2><span class="tb-mut">'+ids.length+'</span>'+(dm?'<button data-pp="add">＋ Add someone</button>':'')+'<button class="tb-x" data-pp="x">✕</button></div><div class="tb-wb">'
+    +'<div class="tb-dex" style="flex:1">'+(ids.length?ids.map(k=>{const q=P[k],a=att(q);return '<div class="tb-dc'+(k===sel?' own':'')+(q.h?' hid':'')+'" data-pid="'+tbEsc(k)+'">'+pic(q,'tb-pp')+'<b>'+tbEsc(q.n)+'</b><i style="color:'+a[2]+'">'+a[0]+' '+a[1]+'</i>'+(q.where?'<i>'+tbEsc(q.where)+'</i>':'')+'</div>';}).join('')
+      :'<div class="tb-mut" style="padding:30px">Nobody yet. When the DM speaks as someone with 💬, they’re added here.</div>')+'</div>'
+    +(p?'<div class="tb-side">'+pic(p,'tb-pp big')+'<h3 style="margin-top:8px">'+tbEsc(p.n)+'</h3>'
+      +(dm?'<input data-pf="n" value="'+tbEsc(p.n)+'" placeholder="Name"><div class="tb-r"><select data-pf="att">'+Object.entries(TB_ATT).map(([k,a])=>'<option value="'+k+'"'+((p.att||'unknown')===k?' selected':'')+'>'+a[0]+' '+a[1]+'</option>').join('')+'</select></div>'
+        +'<div class="tb-r"><input data-pf="where" value="'+tbEsc(p.where||'')+'" placeholder="Where the party met them"></div><textarea data-pf="d" rows="3" placeholder="What the party knows about them" style="margin-top:6px">'+tbEsc(p.d||'')+'</textarea>'
+        +'<div class="tb-r"><label style="display:flex;gap:4px;align-items:center;width:auto"><input type="checkbox" data-pf="h" style="width:auto"'+(p.h?' checked':'')+'> hidden from players</label><button data-pp="del" style="color:#ff5d5d">Delete</button></div>'
+       :'<div style="color:'+att(p)[2]+'">'+att(p)[0]+' '+att(p)[1]+'</div>'+(p.where||p.t?'<div class="tb-mut">Met'+(p.where?' at '+tbEsc(p.where):'')+(p.t?', '+new Date(p.t).toLocaleDateString([],{month:'short',day:'numeric'}):'')+'</div>':'')+(p.d?'<div style="white-space:pre-wrap;margin-top:6px">'+tbEsc(p.d)+'</div>':''))
+      +'<h3>Party notes</h3><textarea data-pf="pn" rows="5" placeholder="What they want, what they told you, whether you trust them…">'+tbEsc(p.pn||'')+'</textarea></div>':'')+'</div></div>';
+  d.querySelectorAll('[data-pimg]').forEach(el=>{const img=el.dataset.pimg,art=+el.dataset.part;if(!img&&!art)return;tbPicC(img,art).then(src=>{if(src){el.style.backgroundImage='url("'+src.replace(/"/g,'%22')+'")';el.textContent='';}});});
+  if(!d.dataset.wired){d.dataset.wired='1';
+    d.addEventListener('click',e=>{if(e.target===d||e.target.closest('[data-pp="x"]')){tbPeopleClose();return;}const c=e.target.closest('[data-pid]');if(c){TB.psel=c.dataset.pid;tbPeopleRender();return;}
+      const b=e.target.closest('[data-pp]'),k=b&&b.dataset.pp,H2=TB.host;
+      if(k==='add'){const n=prompt('Who did the party meet?','');if(n&&n.trim()){const id=tbPid(n);TB.psel=id;const v={n:n.trim().slice(0,60),att:'unknown',t:Date.now()};TB.people[id]=v;H2.set('people/'+id,v);tbPeopleRender();}}
+      else if(k==='del'&&TB.psel&&confirm('Delete '+((TB.people[TB.psel]||{}).n||'them')+' from the list?')){H2.set('people/'+TB.psel,null);TB.psel='';}});
+    d.addEventListener('change',e=>{const t=e.target,f=t.dataset.pf;if(!f||!TB.psel)return;const v=t.type==='checkbox'?(t.checked||null):String(t.value).slice(0,f==='n'?60:f==='where'?80:2000);TB.host.set('people/'+TB.psel+'/'+f,v===''?null:v);});
+    d.addEventListener('focusout',()=>setTimeout(()=>{if(TB.pLater&&!d.contains(document.activeElement)){TB.pLater=false;tbPeopleRender();}},0));}}
+// ── 🎭 Table extras on the sheet (the shared block is just above) ──
+let CAMP_PLAYERS={};   // every player's synced sheet in the campaign (for the 📒 Pokédex's "with the party")
+TB.host={asset:aid=>Sync.asset(S.campaignId,aid),set:(p,v)=>Sync.setMeta(S.campaignId,p,v).catch(e=>tbToast('Couldn’t save: '+e.message)),push:(p,v)=>Sync.pushMeta(S.campaignId,p,v).catch(e=>tbToast('Couldn’t save: '+e.message)),
+  me:()=>({pk:Sync.key(S.playerKey||''),name:S.charName||S.playerKey||'',dm:false}),dexNum:n=>{const e=pokeFind(n);return e?e.num:0;},listen:()=>tbPrefs().here,hereToggle:true,
+  upload:()=>Promise.reject(new Error('only the DM changes the map')),players:()=>CAMP_PLAYERS};
+const inLive=()=>!!(S.campaignId&&S.playerKey&&Sync.fb());
+function myKey(){return Sync.key(S.playerKey||'');}
+// the row of campaign things under the header: 🔎 search (always), and in a live campaign the world map, the Pokédex,
+// whispers to the DM, an open shop, gifts and evolutions waiting for you
+function tbBarRender(){tbCss();const el=$i('tbBar');if(!el)return;   // tbCss: the pop-up windows' styles, needed even without a campaign
+
+  let h=(ccBlank()?'<button class="tb-chip hot" onclick="ccOpen()">🧭 New here? Make a character step by step</button>':'')+'<button class="tb-chip" onclick="qsOpen()" title="Look up any move, ability, item, condition or Pokémon (Ctrl+K)">🔎 Search</button>';
+  if(inLive()){const W=TB.world;
+    if(EVO)h+='<button class="tb-chip hot" onclick="evoOffer()">✨ '+escH(EVO.from)+' is evolving!</button>';
+    if(LOOT.length)h+='<button class="tb-chip hot" onclick="switchTab(\'bag\');setTimeout(()=>$i(\'lootBox\')?.scrollIntoView({block:\'center\',behavior:\'smooth\'}),60)">🎁 '+(LOOT.length>1?LOOT.length+' gifts':'A gift from '+escH(LOOT[0].from||'the DM'))+'</button>';
+    if(SHOP&&SHOP.open)h+='<button class="tb-chip hot" onclick="switchTab(\'bag\');setTimeout(()=>$i(\'shopBox\')?.scrollIntoView({block:\'center\',behavior:\'smooth\'}),60)">🏪 '+escH(SHOP.name||'A shop')+' is open</button>';
+    if(W&&(W.img||W.pins))h+='<button class="tb-chip" onclick="tbWorldOpen()">🗺 World map</button>';
+    if(Object.keys(TB.dex).length||(S.companions||[]).some(c=>pokeFind(c.species||'')))h+='<button class="tb-chip" onclick="tbDexOpen()">📒 Pokédex</button>';
+    h+='<button class="tb-chip'+(WH.unread?' hot':'')+'" onclick="whOpen()" title="A private note to the DM">🤫 Whisper'+(WH.unread?' ('+WH.unread+' new)':'')+'</button>';
+    h+='<button class="tb-chip" onclick="srOpen()" title="A check only the DM sees">🎲 Secret roll</button>';
+    if(Object.values(TB.people||{}).some(q=>q&&q.n&&!q.h))h+='<button class="tb-chip" onclick="tbPeopleOpen()" title="People the party has met">📇 People</button>';
+    h+='<button class="tb-chip" onclick="tbPauseAsk()" title="Ask the DM for a pause or to move on, without your name">✋ Pause card</button>';}
+  if(el.innerHTML!==h)el.innerHTML=h;el.style.display='flex';}
+// ✨ evolving a companion: the player presses ✨ Evolve on its card (or confirms one the DM started from the board). Its
+// species and types change; its stats and moves stay as they are (the rules don't say what evolving changes).
+let EVO=null;
+const EVO_DONE=()=>{try{return JSON.parse(localStorage.getItem('pokeDnD_evoDone')||'[]');}catch(e){return [];}};
+function evoMark(n){const a=EVO_DONE();a.push(n);try{localStorage.setItem('pokeDnD_evoDone',JSON.stringify(a.slice(-30)));}catch(e){}}
+function dexByNum(num){const I=pokeIdx();for(const k in I)if(I[k].num===num)return I[k];return null;}
+function evoCheck(ev){EVO=null;if(!ev||!ev.n||ev.pk!==myKey()||!ev.cid||EVO_DONE().includes(ev.n))return;
+  const c=(S.companions||[]).find(x=>x.id===ev.cid),e=c&&pokeFind(c.species||'');if(!c||!e||e.num!==ev.a)return;EVO=ev;}
+function evoApply(c,ne){const old=c.species;c.species=ne.n;c.type1=ne.types[0]||'';c.type2=ne.types[1]||'';if(!c.name||c.name===old)c.name='';persist();renderTeam();}
+function evoOffer(){const ev=EVO;if(!ev)return;const c=(S.companions||[]).find(x=>x.id===ev.cid),ne=dexByNum(ev.b);evoMark(ev.n);EVO=null;
+  if(c&&ne&&confirm(ev.from+' evolved into '+ne.n+'! Change your companion to '+ne.n+' ('+ne.types.join(' / ')+')?\n\nIts stats and moves stay as they are; ask the DM if anything else changes.'))evoApply(c,ne);tbBarRender();}
+function evolveComp(ci){const c=(S.companions||[])[ci];if(!c)return;const e=pokeFind(c.species||'');if(!e){alert('Set its species to a Pokémon first (e.g. Growlithe).');return;}
+  const nx=dexByNum(e.num+1),to=prompt('Evolve '+e.n+' into which Pokémon?',nx?nx.n:'');if(!to)return;const ne=pokeFind(to);if(!ne){alert('“'+to+'” isn’t in the Pokédex.');return;}
+  const n='v'+Date.now().toString(36);evoMark(n);
+  if(inLive())Sync.setMeta(S.campaignId,'evolve',{n,from:e.n,to:ne.n,a:e.num,b:ne.num,who:S.charName||'',pk:myKey(),cid:c.id,t:Date.now()}).catch(()=>{});else tbEvoShow({from:e.n,to:ne.n,a:e.num,b:ne.num});
+  evoApply(c,ne);}
+// 🏪 shops and 🎁 gifts from the DM. meta/shop = {open, name, items:{id:{n,d,fx,dice,cost,p (price),cur (coin),q (stock, empty = plenty)}}};
+// meta/loot/<id> = {to (player key), items:[…], money:{gimmis,…}, note}. Buying and accepting are always the player's tap.
+let SHOP=null,LOOT=[];
+function shopUpdate(sh){SHOP=sh&&typeof sh==='object'&&sh.open?sh:null;renderShop();}
+function lootUpdate(l){LOOT=Object.entries(l&&typeof l==='object'?l:{}).filter(([,v])=>v&&v.to===myKey()).map(([id,v])=>Object.assign({id},v));renderShop();}
+function coinName(k){return (COINS.find(c=>c[0]===k)||COINS[0])[1];}
+function renderShop(){
+  const sb=$i('shopBox'),lb=$i('lootBox');if(!sb||!lb)return;
+  lb.innerHTML=LOOT.map(g=>{const its=(Array.isArray(g.items)?g.items:Object.values(g.items||{})).filter(Boolean),mon=COINS.filter(([k])=>+((g.money||{})[k])>0).map(([k,n])=>(+g.money[k])+' '+n);
+    return '<div class="shop-card gift"><div class="shop-hd">'+(g.from?'🤝 '+(g.back?'Sent back by ':'From ')+escH(g.from):'🎁 A gift from the DM')+'</div>'+(g.note?'<div class="shop-note">'+escH(g.note)+'</div>':'')
+      +'<div class="shop-list">'+its.map(it=>'<div class="shop-it"><span>'+itemIcon(it)+' <b>'+escH(it.n)+'</b>'+(+it.q>1?' ×'+(+it.q):'')+'</span><small>'+escH(it.d||'')+'</small></div>').join('')+(mon.length?'<div class="shop-it"><span>🪙 <b>'+escH(mon.join(', '))+'</b></span></div>':'')+'</div>'
+      +'<div class="toolbar" style="margin:8px 0 0"><button class="btn-add" onclick="lootTake(\''+g.id+'\')">Put it in my Bag</button>'+(g.back?'':'<button class="btn-sm" onclick="lootDrop(\''+g.id+'\')">'+(g.from?'Send it back':'Turn it down')+'</button>')+'</div></div>';}).join('');
+  if(!SHOP){sb.innerHTML='';return;}
+  const items=Object.entries(SHOP.items||{}).filter(([,it])=>it&&it.n);S.money=S.money||{};
+  sb.innerHTML='<div class="shop-card"><div class="shop-hd">🏪 '+escH(SHOP.name||'Shop')+' <small>is open</small></div>'+(SHOP.note?'<div class="shop-note">'+escH(SHOP.note)+'</div>':'')
+    +'<div class="shop-list">'+(items.length?items.map(([id,it])=>{const cur=it.cur||'gimmis',p=Math.max(0,+it.p||0),out=it.q!=null&&it.q!==''&&+it.q<=0,poor=(parseInt(S.money[cur])||0)<p;
+      return '<div class="shop-it"><span>'+itemIcon(it)+' <b>'+escH(it.n)+'</b>'+(it.q!=null&&it.q!==''?' <small>('+Math.max(0,+it.q)+' left)</small>':'')+'</span><small>'+escH(it.d||'')+'</small>'
+        +'<span class="shop-buy"><b>'+p+' '+escH(coinName(cur))+'</b><button class="btn-add" '+(out||poor?'disabled ':'')+'onclick="shopBuy(\''+id+'\')">'+(out?'Sold out':poor?'Not enough':'Buy')+'</button></span></div>';}).join(''):'<div class="cm-fx">Nothing for sale yet.</div>')+'</div></div>';}
+function shopBuy(id){const it=SHOP&&(SHOP.items||{})[id];if(!it)return;const cur=it.cur||'gimmis',p=Math.max(0,+it.p||0);S.money=S.money||{};
+  if((parseInt(S.money[cur])||0)<p){bagMsg('Not enough '+coinName(cur)+'.',true);return;}if(it.q!=null&&it.q!==''&&+it.q<=0){bagMsg('Sold out.',true);return;}
+  if(!confirm('Buy '+it.n+' for '+p+' '+coinName(cur)+'?'))return;
+  S.money[cur]=(parseInt(S.money[cur])||0)-p;addItem({n:it.n,d:it.d||'',fx:ITEM_FX[it.fx]?it.fx:'none',dice:it.dice||'',cost:it.cost||'Object Interaction',q:1});
+  if(it.q!=null&&it.q!=='')Sync.setMeta(S.campaignId,'shop/items/'+id+'/q',Math.max(0,+it.q-1)).catch(()=>{});
+  pushRollLog('🛒 '+(S.charName||'')+' bought '+it.n+' for '+p+' '+coinName(cur));bagMsg('Bought '+it.n);renderWallet();}
+function lootTake(id){const g=LOOT.find(x=>x.id===id);if(!g)return;(Array.isArray(g.items)?g.items:Object.values(g.items||{})).filter(x=>x&&x.n).forEach(it=>addItem({n:String(it.n).slice(0,60),d:String(it.d||'').slice(0,300),fx:ITEM_FX[it.fx]?it.fx:'none',dice:it.dice||'',cost:it.cost||'Object Interaction',q:Math.max(1,parseInt(it.q)||1)}));
+  S.money=S.money||{};COINS.forEach(([k])=>{const v=parseInt((g.money||{})[k])||0;if(v>0)S.money[k]=(parseInt(S.money[k])||0)+v;});
+  LOOT=LOOT.filter(x=>x.id!==id);Sync.delMeta(S.campaignId,'loot/'+id).catch(()=>{});pushRollLog('🎁 '+(S.charName||'')+' took '+(g.from?g.from+'’s':'the DM’s')+' gift');persist();renderBag();renderShop();tbBarRender();}
+function lootDrop(id){const g=LOOT.find(x=>x.id===id);if(!g)return;if(!confirm(g.from?'Send this back to '+g.from+'?':'Turn down this gift? It goes away.'))return;
+  if(g.from&&g.fromPk)Sync.pushMeta(S.campaignId,'loot',{to:g.fromPk,from:S.charName||S.playerKey,fromPk:myKey(),items:g.items||[],money:g.money||{},note:'',back:1,t:Date.now()}).catch(()=>{});   // 🤝 back to whoever gave it
+  LOOT=LOOT.filter(x=>x.id!==id);Sync.delMeta(S.campaignId,'loot/'+id).catch(()=>{});renderShop();tbBarRender();}
+// 🤫 whispers: meta/whisper/<player>/<id> = {by:'p'|'dm', text, n (name), t}. Private by courtesy: anyone who digs into the
+// database could read it (like the DM's notes).
+const WH={list:[],unread:0,open:false};
+function whUpdate(all){const mine=all&&typeof all==='object'?all[myKey()]:null;WH.list=Object.values(mine&&typeof mine==='object'?mine:{}).filter(m=>m&&m.text).sort((a,b)=>(a.t||0)-(b.t||0));
+  const k='pokeDnD_whSeen_'+S.campaignId;let seen=0;try{seen=+localStorage.getItem(k)||0;}catch(e){}
+  const fresh=WH.list.filter(m=>m.by==='dm'&&(m.t||0)>seen);
+  if(WH.open){if(fresh.length)try{localStorage.setItem(k,String(fresh[fresh.length-1].t));}catch(e){}WH.unread=0;whRender();}
+  else{if(fresh.length>WH.unread&&WH.inited)tbToast('🤫 The DM whispered to you');WH.unread=fresh.length;}WH.inited=true;}
+function whOpen(){WH.open=true;const last=WH.list.filter(m=>m.by==='dm').pop();if(last)try{localStorage.setItem('pokeDnD_whSeen_'+S.campaignId,String(last.t));}catch(e){}WH.unread=0;whRender();tbBarRender();setTimeout(()=>$i('whIn')?.focus(),50);}
+function whClose(){WH.open=false;$i('whBox')?.remove();}
+function whRender(){let d=$i('whBox');if(!d){d=document.createElement('div');d.id='whBox';d.className='tb-ov';d.onclick=e=>{if(e.target===d)whClose();};document.body.appendChild(d);}
+  const keep=$i('whIn')?.value||'';
+  d.innerHTML='<div class="tb-win" style="max-width:520px"><div class="tb-wh"><h2>🤫 Whisper to the DM</h2><button class="tb-x" onclick="whClose()">✕</button></div><div style="padding:12px 14px;overflow-y:auto;flex:1">'
+    +'<div class="tb-mut" style="margin-bottom:8px">Only you and the DM see these in the apps (the other players could find them if they went digging in the database, like the DM’s notes).</div>'
+    +(WH.list.length?WH.list.map(m=>'<div class="wh-m '+(m.by==='dm'?'dm':'me')+'"><b>'+(m.by==='dm'?'DM':'You')+'</b> '+escH(m.text)+'<small>'+new Date(m.t||0).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'</small></div>').join(''):'<div class="tb-mut">No whispers yet. Sneaky plans, secret checks, questions you don’t want the table to hear…</div>')
+    +'</div><div style="display:flex;gap:6px;padding:10px 14px;border-top:1px solid #2a3550"><input id="whIn" maxlength="600" placeholder="Psst…" onkeydown="if(event.key===\'Enter\')whSend()"><button class="tb-p" onclick="whSend()">Send</button></div></div>';
+  const i=$i('whIn');if(i){i.value=keep;}const sc=d.querySelector('.tb-win > div:nth-child(2)');if(sc)sc.scrollTop=sc.scrollHeight;}
+function whSend(){const i=$i('whIn'),t=(i&&i.value||'').trim();if(!t||!inLive())return;i.value='';
+  Sync.pushMeta(S.campaignId,'whisper/'+myKey(),{by:'p',text:t.slice(0,600),n:S.charName||S.playerKey,t:Date.now()}).catch(e=>tbToast('Couldn’t send: '+e.message));
+  WH.list.push({by:'p',text:t,t:Date.now()});whRender();}
+// 🎲 secret rolls: a check only the DM sees (meta/secret/<push id> = {pk, n, what, total, txt, nat, t}). The table's roll feed just
+// says you rolled in secret, and you don't see the number either, so nobody acts on a bad Insight roll.
+const SR={adv:0,note:''};
+function srOpen(){let d=$i('srBox');if(!d){d=document.createElement('div');d.id='srBox';d.className='tb-ov';d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);}SR.note='';srRender();}
+function srList(){return SKILLS.map(k=>[k.n,mod(totalStat(k.a))+(S.skillProfs[k.n]?prof():0)]).concat(ABBR.map(a=>[FULL_STAT[a]+' save',mod(totalStat(a))+(S.saveProfs[a]?prof():0)]),ABBR.map(a=>[FULL_STAT[a]+' check',mod(totalStat(a))]),[['Plain d20',0]]);}
+function srRender(){const d=$i('srBox');if(!d)return;const L=srList(),n=SKILLS.length,b=(r,i)=>'<button class="sr-b" onclick="srRoll('+i+')"><span>'+escH(r[0])+'</span><b>'+fmt(r[1])+'</b></button>';
+  d.innerHTML='<div class="tb-win" style="max-width:640px"><div class="tb-wh"><h2>🎲 Secret roll</h2><button class="tb-x" onclick="$i(\'srBox\').remove()">✕</button></div><div style="padding:12px 14px;overflow-y:auto">'
+    +'<div class="tb-mut" style="margin-bottom:8px">The result goes <b>only to the DM</b>. You won’t see the number, and the table just sees that you rolled in secret. Use it when the DM asks for a hidden check (Stealth, Insight, Perception…).</div>'
+    +'<div class="sr-adv">'+[[0,'Normal'],[1,'Advantage'],[-1,'Disadvantage']].map(([v,t])=>'<button class="'+(SR.adv===v?'on':'')+'" onclick="SR.adv='+v+';srRender()">'+t+'</button>').join('')+'</div>'
+    +'<div class="sr-note">'+escH(SR.note)+'</div>'
+    +'<h3 class="sr-h">Skills</h3><div class="sr-g">'+L.slice(0,n).map((r,i)=>b(r,i)).join('')+'</div>'
+    +'<h3 class="sr-h">Saving throws</h3><div class="sr-g">'+L.slice(n,n+6).map((r,i)=>b(r,n+i)).join('')+'</div>'
+    +'<h3 class="sr-h">Ability checks</h3><div class="sr-g">'+L.slice(n+6).map((r,i)=>b(r,n+6+i)).join('')+'</div></div></div>';}
+function srRoll(i){const r=srList()[i];if(!r)return;if(!inLive()){SR.note='Secret rolls go to the DM through the live (Firebase) campaign. Join one first.';srRender();return;}
+  const [what,bon]=r,a=1+Math.floor(Math.random()*20),c=1+Math.floor(Math.random()*20),d20=SR.adv>0?Math.max(a,c):SR.adv<0?Math.min(a,c):a;
+  const txt=(SR.adv?(SR.adv>0?'advantage ':'disadvantage ')+'d20 '+a+'/'+c:'d20 '+d20)+(bon?' '+fmt(bon):'');
+  Sync.pushMeta(S.campaignId,'secret',{pk:myKey(),n:S.charName||S.playerKey,what,total:d20+bon,txt,nat:d20,t:Date.now()})
+    .then(()=>{SR.note='🤫 '+what+' sent to the DM. Only they see the result.';srRender();}).catch(e=>{SR.note='Couldn’t send it: '+e.message;srRender();});
+  pushRollLog('🤫 rolled in secret');if(SETTINGS.sfx)sfx('use');}
+// 🎮 move your token on the live board from Battle Mode (handy with the board on a TV and everyone on phones): each tap moves it
+// one square (5 ft) on the board's current map. In a fight it counts toward the turn's movement, on the board's 🦶 counter
+// and (for you) the tracker above. Reads where the token is first, so drags on the board are never undone.
+const PAD={open:false,who:'me',note:'',q:Promise.resolve(),sc:null};
+const PAD_ARROWS=['↖','↑','↗','←','','→','↙','↓','↘'];
+function padToggle(){PAD.open=!PAD.open;PAD.note='';renderBattle();}
+function padNote(t){PAD.note=t;const e=$i('padNote');if(e)e.textContent=t;}
+function padHTML(){const C=(S.companions||[]).filter(c=>c&&c.out&&c.id);if(PAD.who!=='me'&&!C.some(c=>c.id===PAD.who))PAD.who='me';
+  return '<div class="pad">'+(C.length?'<select class="pad-who" onchange="PAD.who=this.value"><option value="me">'+escH(S.charName||'Me')+'</option>'+C.map(c=>'<option value="'+escH(c.id)+'"'+(PAD.who===c.id?' selected':'')+'>'+escH(compName(c))+'</option>').join('')+'</select>':'')
+    +'<div class="pad-g">'+PAD_ARROWS.map((a,k)=>a?'<button onclick="padMove('+(k%3-1)+','+(Math.floor(k/3)-1)+')" aria-label="Move '+a+'">'+a+'</button>':'<span class="pad-c">1 tap<br>= 5 ft</span>').join('')+'</div>'
+    +'<div class="pad-n" id="padNote">'+escH(PAD.note||'Moves your token on the board’s current map.')+'</div></div>';}
+function padMyTurn(){const r=ENC&&Array.isArray(ENC.list)?ENC.list[ENC.turn||0]:null;return !!(r&&((r.pk&&r.pk===myKey())||(r.name||'').toLowerCase()===(S.charName||S.playerKey||'').toLowerCase()));}
+function padMove(dx,dy){if(!inLive()){padNote('This needs the live (Firebase) campaign.');return;}const who=PAD.who;
+  PAD.q=PAD.q.then(async()=>{const id=S.campaignId,sid=await Sync.boardGet(id,'active');if(!sid){padNote('The board has no map open yet.');return;}
+    const fresh=PAD.sc&&PAD.sc.id===sid&&Date.now()-PAD.sc.at<15000,[toks,sc]=await Promise.all([Sync.boardGet(id,'tokens/'+sid),fresh?PAD.sc.v:Sync.boardGet(id,'scenes/'+sid)]);PAD.sc={id:sid,v:sc,at:Date.now()};
+    const me=myKey(),ent=Object.entries(toks||{}).find(([,t])=>t&&Sync.key(t.pk||'')===me&&(who==='me'?t.kind==='pc':(t.kind==='comp'&&t.cid===who)));
+    if(!ent){padNote(who==='me'?'Your token isn’t on the board’s current map. Ask the DM to put it there.':'That companion isn’t on the board’s current map.');return;}
+    const [tid,t]=ent,cols=+(sc&&sc.cols)||20,rows=+(sc&&sc.rows)||14,h=(+t.size||1)/2,x0=+t.x||.5,y0=+t.y||.5,x=Math.min(cols-h,Math.max(h,x0+dx)),y=Math.min(rows-h,Math.max(h,y0+dy));
+    if(x===x0&&y===y0){padNote('That’s the edge of the map.');return;}
+    const mk=sc&&typeof sc.mask==='string'?sc.mask:'';if(mk&&mk[Math.floor(y)*cols+Math.floor(x)]==='0'){padNote('There’s no floor that way.');return;}
+    const v={x:+x.toFixed(3),y:+y.toFixed(3),rot:+Math.atan2(dx,dy).toFixed(3),by:me,t:{'.sv':'timestamp'}},arrow=PAD_ARROWS[(dy+1)*3+dx+1];let msg='Moved 5 ft '+arrow;
+    if(_battleActive&&ENC&&Array.isArray(ENC.list)){const k=(ENC.round||1)+'|'+(ENC.turn||0),m=t.mv&&t.mv.k===k?t.mv:{},c=who==='me'?null:(S.companions||[]).find(q=>q.id===who),spd=parseInt(c?c.speed:S.speed)||0,lim=m.dash?spd*2:spd;
+      v.mv={k,ft:(+m.ft||0)+5,dash:m.dash||null};msg='Moved '+v.mv.ft+(lim?' / '+lim:'')+' ft this turn '+arrow+(lim&&v.mv.ft>lim?' (past your speed)':'');
+      if(who==='me'&&padMyTurn()){const T=S.turn||(S.turn=freshTurn());T.mv=(parseInt(T.mv)||0)+5;sched();}}
+    await Sync.boardPatch(id,'tokens/'+sid+'/'+tid,v);PAD.note=msg;if(v.mv&&who==='me'&&padMyTurn())renderBattle();else padNote(msg);
+  }).catch(e=>padNote('Couldn’t move: '+e.message));}
+// 🤝 giving to a party member: it leaves your Bag when it's sent and waits in theirs as a gift (meta/loot/<id>, the same as the
+// DM's gifts, plus from / fromPk). They put it in their Bag, or send it back to you.
+const GV={i:-1,to:''};
+function giveMates(){const me=myKey();return Object.entries(CAMP_PLAYERS).filter(([k,v])=>k!==me&&v&&typeof v==='object').map(([k,v])=>[k,v.charName||k]);}
+function giveOpen(i){if(!inLive())return;GV.i=i;let d=$i('gvBox');if(!d){d=document.createElement('div');d.id='gvBox';d.className='tb-ov';d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);}giveRender();}
+function giveRender(){const d=$i('gvBox');if(!d)return;const it=GV.i>=0?(S.items||[])[GV.i]:null,M=giveMates();if(GV.i>=0&&!it){d.remove();return;}
+  if(!M.some(m=>m[0]===GV.to))GV.to=M.length?M[0][0]:'';
+  d.innerHTML='<div class="tb-win" style="max-width:440px"><div class="tb-wh"><h2>🤝 Give '+(it?escH(it.n):'coins')+'</h2><button class="tb-x" onclick="$i(\'gvBox\').remove()">✕</button></div><div style="padding:12px 14px">'
+    +(M.length?'<div class="tb-mut">To</div><div class="gv-to">'+M.map(([k,n])=>'<button class="'+(k===GV.to?'on':'')+'" data-k="'+escH(k)+'" onclick="GV.to=this.dataset.k;giveRender()">'+escH(n)+'</button>').join('')+'</div>'
+      +(it?'<div class="tb-mut" style="margin-top:10px">How many? (you have '+(parseInt(it.q)||0)+')</div><input id="gvQ" type="number" min="1" max="'+(parseInt(it.q)||1)+'" value="1">'
+        :'<div class="tb-mut" style="margin-top:10px">How much?</div><div class="gv-coins">'+COINS.map(([k,n])=>'<label>'+n+' <small>(you have '+(parseInt((S.money||{})[k])||0)+')</small><input type="number" min="0" data-gvc="'+k+'" value="0"></label>').join('')+'</div>')
+      +'<input id="gvNote" maxlength="200" placeholder="A note (optional)" style="margin-top:8px"><div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap"><button class="tb-p" onclick="giveSend()">🤝 Give</button><span class="tb-mut" id="gvMsg">It leaves your Bag now and waits for them to take it.</span></div>'
+      :'<div class="tb-mut">Nobody else has joined this campaign yet.</div>')+'</div></div>';}
+function giveSend(){const it=GV.i>=0?(S.items||[])[GV.i]:null,mate=giveMates().find(m=>m[0]===GV.to),msg=$i('gvMsg');if(!mate)return;
+  const note=($i('gvNote')?.value||'').trim().slice(0,200);let items=[],money={},what='',q=0;S.money=S.money||{};
+  if(it){const have=parseInt(it.q)||0;q=Math.min(have,Math.max(1,parseInt($i('gvQ')?.value)||1));if(!have){msg.textContent='You don’t have any left.';return;}items=[{n:it.n,d:it.d||'',fx:it.fx||'none',dice:it.dice||'',cost:it.cost||'',q}];what=(q>1?q+'× ':'')+it.n;}
+  else{COINS.forEach(([k])=>{const v=Math.min(parseInt(S.money[k])||0,Math.max(0,parseInt(document.querySelector('[data-gvc="'+k+'"]')?.value)||0));if(v>0)money[k]=v;});what=COINS.filter(([k])=>money[k]).map(([k,n])=>money[k]+' '+n).join(', ');if(!what){msg.textContent='Type how many coins to give.';return;}}
+  if(!confirm('Give '+what+' to '+mate[1]+'?'))return;msg.textContent='Sending…';
+  Sync.pushMeta(S.campaignId,'loot',{to:mate[0],from:S.charName||S.playerKey,fromPk:myKey(),items,money,note,t:Date.now()}).then(()=>{
+    if(it)it.q=Math.max(0,(parseInt(it.q)||0)-q);else COINS.forEach(([k])=>{if(money[k])S.money[k]=Math.max(0,(parseInt(S.money[k])||0)-money[k]);});
+    pushRollLog('🤝 '+(S.charName||'')+' gave '+what+' to '+mate[1]);persist();renderBag();$i('gvBox')?.remove();bagMsg('Gave '+what+' to '+mate[1]);
+  }).catch(e=>{msg.textContent='Couldn’t send it: '+e.message;});}
+function compCry(ci){const c=(S.companions||[])[ci],e=c&&pokeFind(c.species||'');if(e){TB.cryAt=0;tbCry(e.num);}}   // 🔊 its real cry
+// 🕘 older versions: a few snapshots of your character on this device (pokeDnD_snaps = [{t, s}], newest last). One is taken when
+// the sheet opens and at most every 30 minutes while you play, always of the copy saved BEFORE a change. Restoring keeps your
+// campaign connection and first saves the current version as a snapshot, so a restore can be undone too. Your character always
+// wins over snapshots: if the browser runs out of room, the snapshots are dropped, never the save.
+const SNAP_K='pokeDnD_snaps',SNAP_N=8;
+function snapList(){try{const a=JSON.parse(localStorage.getItem(SNAP_K)||'[]');return Array.isArray(a)?a.filter(x=>x&&x.s&&x.t):[];}catch(e){return [];}}
+function snapTake(json,force){if(!json||json.length<20)return;const L=snapList(),last=L[L.length-1];if(last&&last.s===json)return;if(!force&&last&&Date.now()-last.t<30*60000)return;
+  L.push({t:Date.now(),s:json});while(L.length>SNAP_N)L.shift();
+  for(;;){try{localStorage.setItem(SNAP_K,JSON.stringify(L));return;}catch(e){if(L.length<=1){try{localStorage.removeItem(SNAP_K);}catch(e2){}return;}L.shift();}}}
+function snapWhen(t){const d=new Date(t),now=new Date(),day=(a,b)=>a.toDateString()===b.toDateString(),y=new Date(now.getTime()-864e5),tm=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+  return day(d,now)?'Today '+tm:day(d,y)?'Yesterday '+tm:d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'})+' '+tm;}
+function snapSum(v){const pl=(n,w)=>n+' '+w+(n===1?'':'s');return [v.charName||'(no name)','Lv '+(v.level||1),pl((v.moves||[]).filter(m=>m&&!m.free).length,'move'),pl((v.abilities||[]).length,'ability').replace('abilitys','abilities'),pl((v.items||[]).reduce((a,i)=>a+(parseInt(i&&i.q)||0),0),'item'),'HP '+(v.hpCur===''||v.hpCur==null?'—':v.hpCur)+' / '+(v.hpMax||'—')].join(' · ');}
+function snapDiff(v){const o=[],names=a=>new Set((a||[]).filter(x=>x&&!x.free).map(x=>x.n).filter(Boolean)),   // the free starter moves come back by themselves
+cmp=(k,lbl)=>{const a=names(S[k]),b=names(v[k]),back=[...b].filter(n=>!a.has(n)),gone=[...a].filter(n=>!b.has(n));
+    if(back.length)o.push('brings back '+(lbl?lbl+' ':'')+back.slice(0,3).join(', ')+(back.length>3?'…':''));if(gone.length)o.push('drops '+(lbl?lbl+' ':'')+gone.slice(0,3).join(', ')+(gone.length>3?'…':''));};
+  cmp('moves','');cmp('abilities','');cmp('items','');cmp('companions','');
+  if(String(v.level||1)!==String(S.level||1))o.push('level '+(v.level||1)+' (now '+(S.level||1)+')');
+  [['notes','notes'],['backstory','backstory'],['personality','personality']].forEach(([k,l])=>{if((v[k]||'')!==(S[k]||''))o.push('different '+l);});
+  if((v.notecards||[]).length!==(S.notecards||[]).length)o.push((v.notecards||[]).length+' notecards (now '+(S.notecards||[]).length+')');
+  return o.length?o.join('; '):'only small changes (HP, Energy, coins…)';}
+function snapOpen(){let d=$i('snapBox');if(!d){d=document.createElement('div');d.id='snapBox';d.className='tb-ov';d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);}
+  const L=snapList().slice().reverse();
+  d.innerHTML='<div class="tb-win" style="max-width:600px"><div class="tb-wh"><h2>🕘 Older versions</h2><button class="tb-x" onclick="$i(\'snapBox\').remove()">✕</button></div><div style="padding:12px 14px;overflow-y:auto">'
+    +'<div class="tb-mut" style="margin-bottom:8px">This device keeps the last '+SNAP_N+' versions of your character (one when the sheet opens, then at most one every half hour). Going back saves the version you have now as well, so you can always return to it.</div>'
+    +(L.length?L.map(e=>{let v={};try{v=JSON.parse(e.s)||{};}catch(er){}return '<div class="snap-r"><div><b>'+escH(snapWhen(e.t))+'</b><div>'+escH(snapSum(v))+'</div><small>'+escH(snapDiff(v))+'</small></div><button class="tb-b" onclick="snapRestore('+e.t+')">↩ Go back</button></div>';}).join('')
+      :'<div class="tb-mut">No older versions yet. They’re saved as you play.</div>')+'</div></div>';}
+function snapRestore(t){const e=snapList().find(x=>x.t===t);if(!e)return;let v;try{v=JSON.parse(e.s);}catch(er){v=null;}if(!v||typeof v!=='object'){alert('That version is damaged and can’t be used.');return;}
+  if(!confirm('Go back to the version from '+snapWhen(e.t)+'?\n\n'+snapSum(v)+'\n\nThe version you have now is saved too, so you can come back to it.'))return;
+  snapTake(JSON.stringify(S),true);S=Object.assign({},S,v,{campaignId:S.campaignId,playerKey:S.playerKey});localStorage.setItem(SK,JSON.stringify(S));
+  Promise.race([Promise.resolve(cloudPush()).catch(()=>{}),new Promise(r=>setTimeout(r,2500))]).then(()=>location.reload());}
+// 📇 a printable trading card: your character (or a companion) drawn as a real-size TCG card (63 × 88 mm at 300 dpi)
+function loadImg(src,cors){return new Promise(res=>{if(!src)return res(null);const im=new Image();if(cors)im.crossOrigin='anonymous';im.onload=()=>res(im);im.onerror=()=>res(null);im.src=src;});}
+function cardRR(x,X,Y,W,H,R){x.beginPath();x.moveTo(X+R,Y);x.arcTo(X+W,Y,X+W,Y+H,R);x.arcTo(X+W,Y+H,X,Y+H,R);x.arcTo(X,Y+H,X,Y,R);x.arcTo(X,Y,X+W,Y,R);x.closePath();}
+function cardShade(hex,a){const n=parseInt(String(hex||'#999999').replace('#',''),16)||0x999999,t=a<0?0:255,p=Math.abs(a);const f=v=>Math.round(v+(t-v)*p);return 'rgb('+f(n>>16)+','+f(n>>8&255)+','+f(n&255)+')';}
+async function cardCanvas(kind,ci){
+  const W=744,H=1039,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');let d;
+  if(kind==='c'){const c=(S.companions||[])[ci];if(!c)return null;const e=pokeFind(c.species||'');
+    d={name:c.name||c.species||'Companion',sub:(c.species&&c.name?c.species+' · ':'')+'Lv '+(c.lvl||1)+' companion of '+(S.charName||'—'),hp:parseInt(c.hpMax)||0,t1:c.type1,t2:c.type2,img:e?await loadImg(TB_ART+e.num+'.png',true):null,
+      stats:COMP_ABS.map(ab=>[ab,(c.stats||{})[ab]??10]),moves:(c.moves||[]).slice(0,3),abil:[],flavor:c.notes||''};}
+  else{d={name:S.charName||'Your character',sub:'Lv '+lvl()+(S.style?' · '+S.style:'')+(S.sub1?' · '+S.sub1:''),hp:parseInt(S.hpMax)||0,t1:S.type1,t2:S.type2,img:PORTRAIT?await loadImg(_portraitUrl):null,
+      stats:['STR','DEX','CON','INT','WIS','CHA'].map(ab=>[ab,totalStat(ab)]),moves:(S.moves||[]).slice().sort((a,b)=>(a.free?1:0)-(b.free?1:0)||(b.equipped?1:0)-(a.equipped?1:0)).slice(0,3),abil:(S.abilities||[]).slice(0,2).map(a=>a.n),flavor:S.personality||S.backstory||''};}
+  const col=tc(d.t1)||'#A8A878',FD='Fredoka, Inter, sans-serif';
+  cardRR(x,0,0,W,H,36);x.fillStyle='#f3cf3a';x.fill();cardRR(x,8,8,W-16,H-16,30);x.lineWidth=6;x.strokeStyle='#b8961e';x.stroke();
+  cardRR(x,30,30,W-60,H-60,20);const g=x.createLinearGradient(0,30,0,H-30);g.addColorStop(0,cardShade(col,.5));g.addColorStop(1,cardShade(col,-.1));x.fillStyle=g;x.fill();
+  x.fillStyle='#14141c';x.textBaseline='middle';x.textAlign='left';let fs=60;x.font='700 '+fs+'px '+FD;while(fs>28&&x.measureText(d.name).width>W-110-(d.hp?150:0)){fs-=2;x.font='700 '+fs+'px '+FD;}x.fillText(d.name,60,90);
+  if(d.hp){x.textAlign='right';x.fillStyle='#b3202a';x.font='700 30px '+FD;x.fillText('HP',W-150,96);x.font='700 58px '+FD;x.fillText(String(d.hp),W-60,90);}
+  x.textAlign='left';x.fillStyle='rgba(0,0,0,.6)';x.font='600 22px Inter, sans-serif';x.fillText(d.sub.slice(0,60),62,138);
+  cardRR(x,58,160,W-116,430,10);x.fillStyle=cardShade(col,-.3);x.fill();x.save();cardRR(x,68,170,W-136,410,8);x.clip();
+  if(d.img){const s=kind==='c'?Math.min((W-136)/d.img.width,410/d.img.height)*.92:Math.max((W-136)/d.img.width,410/d.img.height),w=d.img.width*s,h=d.img.height*s;
+    if(kind==='c'){const gr=x.createRadialGradient(W/2,375,20,W/2,375,320);gr.addColorStop(0,cardShade(col,.65));gr.addColorStop(1,cardShade(col,-.2));x.fillStyle=gr;x.fillRect(68,170,W-136,410);}
+    x.drawImage(d.img,68+(W-136-w)/2,170+(410-h)/2,w,h);}
+  else{const gr=x.createRadialGradient(W*.4,300,10,W/2,375,380);gr.addColorStop(0,cardShade(col,.5));gr.addColorStop(1,cardShade(col,-.4));x.fillStyle=gr;x.fillRect(68,170,W-136,410);
+    const ini=d.name.trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();x.font='700 170px '+FD;x.textAlign='center';x.fillStyle='rgba(255,255,255,.92)';x.fillText(ini,W/2,385);}
+  x.restore();cardRR(x,58,160,W-116,430,10);x.lineWidth=10;x.strokeStyle='#d9b23a';x.stroke();
+  let px=60;x.font='700 26px '+FD;x.textAlign='left';[d.t1,d.t2].filter(Boolean).forEach(t=>{const w=x.measureText(t).width+40;cardRR(x,px,612,w,44,22);x.fillStyle=tc(t);x.fill();x.lineWidth=3;x.strokeStyle='rgba(255,255,255,.8)';x.stroke();x.fillStyle='#fff';x.fillText(t,px+20,635);px+=w+10;});
+  const sw=(W-120)/6;d.stats.forEach(([ab,v],i)=>{const cx=60+sw*i+sw/2;cardRR(x,60+sw*i+5,674,sw-10,74,12);x.fillStyle='rgba(255,255,255,.55)';x.fill();x.textAlign='center';x.fillStyle='#14141c';x.font='700 18px Inter, sans-serif';x.fillText(ab,cx,692);x.font='700 30px '+FD;x.fillText(String(v)+' ('+fmt(mod(v))+')',cx,728);});
+  let y=782;d.moves.forEach(m=>{x.textAlign='left';const mc=tc(m.type)||col;x.beginPath();x.arc(80,y,15,0,7);x.fillStyle=mc;x.fill();x.lineWidth=3;x.strokeStyle='#fff';x.stroke();
+    x.fillStyle='#14141c';x.font='700 30px '+FD;x.fillText(String(m.n||'').slice(0,26),108,y);x.textAlign='right';x.font='700 26px '+FD;
+    x.fillText([m.c!=null&&m.c!==''?'⚡'+m.c:'',m.d&&!isNone(m.d)?String(m.d).slice(0,12):''].filter(Boolean).join('  '),W-62,y);y+=48;});
+  if(d.abil.length){x.textAlign='left';x.fillStyle='#b3202a';x.font='700 22px Inter, sans-serif';x.fillText('ABILITY',62,y+2);x.fillStyle='#14141c';x.font='700 26px '+FD;x.fillText(d.abil.join(' · ').slice(0,44),170,y+2);y+=44;}
+  if(d.flavor&&y<H-120){x.fillStyle='rgba(0,0,0,.62)';x.font='italic 500 21px Georgia, serif';x.textAlign='left';const words=String(d.flavor).replace(/\s+/g,' ').split(' ');let line='',ly=y+10;
+    for(const w of words){const t=line?line+' '+w:w;if(x.measureText(t).width>W-130){x.fillText(line,64,ly);ly+=28;line=w;if(ly>H-80)break;}else line=t;}if(line&&ly<=H-80)x.fillText(line,64,ly);}
+  x.textAlign='right';x.fillStyle='rgba(0,0,0,.5)';x.font='600 18px Inter, sans-serif';x.fillText('Poké × D&D'+(S.player?' · '+S.player:''),W-56,H-52);
+  return cv;}
+async function printCard(kind,ci){
+  let cv;try{cv=await cardCanvas(kind,ci);}catch(e){cv=null;}if(!cv){alert('Couldn’t draw the card.');return;}
+  let url='';try{url=cv.toDataURL('image/png');}catch(e){alert('The picture can’t be put on a card (it came from another website). Try uploading it as your portrait instead.');return;}
+  const nm=(kind==='c'?((S.companions||[])[ci]||{}).name||((S.companions||[])[ci]||{}).species:S.charName)||'card';let d=$i('cardBox');if(!d){d=document.createElement('div');d.id='cardBox';d.className='tb-ov';d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);}
+  d.innerHTML='<div class="tb-win" style="max-width:420px"><div class="tb-wh"><h2>📇 '+escH(nm)+'’s card</h2><button class="tb-x" onclick="$i(\'cardBox\').remove()">✕</button></div><div style="padding:12px;text-align:center;overflow-y:auto">'
+    +'<img src="'+url+'" alt="" style="width:100%;max-width:360px;border-radius:14px;box-shadow:0 8px 26px rgba(0,0,0,.5)"><div class="tb-mut" style="margin:8px 0">Real trading-card size (63 × 88 mm) when printed at 100%.</div>'
+    +'<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><a class="tb-b" style="text-decoration:none" download="'+escH(String(nm).replace(/[^\w -]+/g,'').trim()||'card')+'.png" href="'+url+'">⬇ Save the picture</a><button class="tb-p" onclick="cardPrint()">🖨 Print it</button></div></div></div>';
+  d._url=url;}
+function cardPrint(){const d=$i('cardBox');if(!d||!d._url)return;const w=window.open('','_blank');if(!w){alert('Your browser blocked the print window. Save the picture and print that instead.');return;}
+  w.document.write('<!doctype html><title>Card</title><style>@page{margin:12mm}body{margin:0}img{width:63mm;height:88mm;margin:2mm;border-radius:3mm}</style><img src="'+d._url+'" onload="setTimeout(()=>print(),200)">');w.document.close();}
+// 🔎 quick search (Ctrl+K): every move, ability, condition, weather, item and Pokémon, from anywhere in the sheet
+let QS=null;
+function qsIndex(){if(QS)return QS;QS=[];
+  Object.entries(GD.movesByType||{}).forEach(([ty,ms])=>(ms||[]).forEach(m=>QS.push({k:'Move',n:m.n,ty,o:m})));(GD.normalMoves||[]).forEach(m=>QS.push({k:'Move',n:m.n,ty:'Normal',o:m}));
+  Object.entries(GD.abilities||{}).forEach(([cat,as])=>(as||[]).forEach(a=>QS.push({k:'Ability',n:a.n,ty:cat,o:a})));
+  CONDITIONS.forEach(c=>QS.push({k:'Condition',n:c.n,o:c}));(typeof WEATHER!=='undefined'?WEATHER:[]).forEach(w=>QS.push({k:'Weather',n:w.n,o:w}));(typeof TERRAIN!=='undefined'?TERRAIN:[]).forEach(w=>QS.push({k:'Terrain',n:w.n,o:w}));
+  ITEM_PRESETS.forEach(it=>QS.push({k:'Item',n:it.n,o:it}));Object.values(pokeIdx()).forEach(p=>QS.push({k:'Pokémon',n:p.n,ty:p.types[0],o:p}));
+  QS.forEach(r=>{r.l=String(r.n||'').toLowerCase();r.t=(r.l+' '+JSON.stringify(r.o)).toLowerCase();});return QS;}
+function qsOpen(){let d=$i('qsBox');if(!d){d=document.createElement('div');d.id='qsBox';d.className='tb-ov';d.style.alignItems='flex-start';d.onclick=e=>{if(e.target===d)qsClose();};document.body.appendChild(d);}
+  d.innerHTML='<div class="tb-win" style="max-width:720px;margin-top:6vh"><div class="tb-wh"><input id="qsIn" placeholder="Search moves, abilities, items, conditions, Pokémon…" autocomplete="off" style="flex:1;font-size:15px"><button class="tb-x" onclick="qsClose()">✕</button></div><div class="tb-wb"><div id="qsList" class="qs-list"></div><div id="qsOne" class="tb-side"></div></div></div>';
+  const i=$i('qsIn');i.oninput=()=>qsRun(i.value);i.onkeydown=e=>{if(e.key==='Escape')qsClose();else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();qsMove(e.key==='ArrowDown'?1:-1);}};i.focus();qsRun('');}
+function qsClose(){$i('qsBox')?.remove();}
+let QSR=[],QSI=0;
+function qsRun(q){q=q.trim().toLowerCase();const I=qsIndex();
+  QSR=!q?I.filter(r=>r.k==='Condition'||r.k==='Weather').slice(0,30):I.filter(r=>r.l.includes(q)).sort((a,b)=>(a.l.startsWith(q)?0:1)-(b.l.startsWith(q)?0:1)||a.l.length-b.l.length).concat(I.filter(r=>!r.l.includes(q)&&r.t.includes(q))).slice(0,40);
+  QSI=0;const l=$i('qsList');if(!l)return;l.innerHTML=QSR.length?QSR.map((r,i)=>'<button class="qs-r" data-i="'+i+'" onclick="qsShow('+i+')"><span class="qs-k">'+r.k+'</span>'+escH(r.n)+(r.ty?' <small style="color:'+tc(r.ty)+'">'+escH(r.ty)+'</small>':'')+'</button>').join(''):'<div class="tb-mut" style="padding:14px">Nothing matches.</div>';qsShow(0);}
+function qsMove(d){if(!QSR.length)return;qsShow(Math.max(0,Math.min(QSR.length-1,QSI+d)));$i('qsList')?.querySelector('[data-i="'+QSI+'"]')?.scrollIntoView({block:'nearest'});}
+function qsShow(i){QSI=i;document.querySelectorAll('#qsList .qs-r').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));const r=QSR[i],el=$i('qsOne');if(!el)return;if(!r){el.innerHTML='';return;}const o=r.o,row=(k,v)=>v!=null&&v!==''&&!isNone(v)?'<div><b>'+k+':</b> '+escH(v)+'</div>':'';let h='<h3 style="margin-top:0">'+escH(r.n)+'</h3><div class="tb-mut">'+r.k+(r.ty?' · '+escH(r.ty):'')+'</div>';
+  if(r.k==='Move')h+=row('Level',o.l)+row('Style',o.s)+row('Category',o.mt)+row('Energy',o.c)+row('Damage',o.d)+row('Targets',o.tg)+row('Range',o.r)+row('Attack',o.a)+row('In combat',o.fx)+row('Out of combat',o.oc)+row('+Moves',o.p);
+  else if(r.k==='Ability')h+=row('Level',o.l)+row('Bonus',o.b)+row('Effect',o.e);
+  else if(r.k==='Pokémon'){const sc=sbScores(o);h='<img src="'+TB_ART+o.num+'.png" alt="" style="width:100%;max-width:200px;display:block;margin:0 auto">'+h+'<div>'+o.types.map(t=>'<span class="tb-ty" style="background:'+tc(t)+'">'+t+'</span>').join('')+'</div>'+row('Pokédex','#'+o.num)
+    +row('Base stats','HP '+o.hp+' · Atk '+o.atk+' · Def '+o.def+' · SpA '+o.spa+' · SpD '+o.spd+' · Spe '+o.spe)+row('As a companion','STR '+sc.STR+' DEX '+sc.DEX+' CON '+sc.CON+' INT '+sc.INT+' WIS '+sc.WIS+' CHA '+sc.CHA+' · HP die d'+sbDie(o.hp)+' · '+sbSpeed(o.spe)+' ft');}
+  else h+=row('Effect',o.fx&&o.fx.length>12?o.fx:o.d)+row('Uses',o.cost)+row('Save',o.s);
+  el.innerHTML=h;}
+// ── 🎭 batch 4 on the sheet: condition reminders, the character creator, text size + colour-blind colours, foe HP ──
+// 🩹 conditions on your turn: at its start a reminder of what they do; when it ends, Burned / Poisoned / Frostbitten ask whether
+// to take their damage (a button you press: nothing comes off by itself).
+const COND_REM={mine:undefined,start:''};
+function condTurn(myTurn,key){
+  if(myTurn&&COND_REM.start!==key){COND_REM.start=key;const cs=(S.conditions||[]).map(n=>CONDITIONS.find(c=>c.n===n)).filter(Boolean);
+    if(cs.length)condCard('🩹 Your turn. Remember:',cs.map(c=>'<div><b>'+escH(c.n)+':</b> '+escH(c.fx)+'</div>').join(''),'');}
+  if(COND_REM.mine===true&&!myTurn){const hurt=(S.conditions||[]).filter(n=>{const c=CONDITIONS.find(x=>x.n===n);return c&&/take 1 damage/i.test(c.fx);});
+    if(hurt.length)condCard('🩹 Your turn is over.','You’re '+escH(hurt.join(' and '))+': take '+hurt.length+' damage?','<button class="btn-add" onclick="condHurt('+hurt.length+',\''+escH(hurt.join(' + '))+'\')">Take '+hurt.length+' damage</button><button class="btn-sm" onclick="condClose()">Not now</button>');}
+  COND_REM.mine=myTurn;}
+function condCard(title,body,btns){let d=$i('condRem');if(!d){d=ce('div');d.id='condRem';d.className='cond-rem';document.body.appendChild(d);}
+  d.innerHTML='<div class="cr-t">'+title+'</div><div class="cr-b">'+body+'</div><div class="cr-btns">'+(btns||'<button class="btn-sm" onclick="condClose()">Got it</button>')+'</div>';d.style.display='block';clearTimeout(d._t);d._t=setTimeout(condClose,btns?45000:15000);}
+function condClose(){const d=$i('condRem');if(d)d.style.display='none';}
+function condHurt(n,what){adjustHP(-n);persist();pushRollLog('🩹 '+(S.charName||'')+' takes '+n+' damage ('+what+')');condClose();}
+// 🧭 the character creator: step by step for a new player. Nothing changes until "Create my character"; then it fills in the
+// sheet (name, types, style, ability scores, subclass, Lv 1 moves and abilities, story, Energy) and reloads.
+let CC=null;
+const CC_STEPS=['Name','Types','Style','Ability scores','Subclass','Moves','Abilities','Story','Done'];
+function ccBlank(){return !S.charName&&!S.type1&&!(S.moves||[]).some(m=>!m.free);}
+function ccOpen(){if(!ccBlank()&&!confirm('Start the character creator? When you finish, it replaces this character’s name, types, style, scores, moves and abilities (your notes, bag and team stay).'))return;
+  CC={step:0,name:S.charName||'',player:S.player||'',t1:'',t2:'',style:'',how:'array',pool:[15,14,13,12,10,8],st:{},sub:'',mv:[],ab:[],bg:S.background||'',align:S.alignment||'',pers:S.personality||'',e1:'',e2:''};ccRender();}
+function ccClose(){$i('ccBox')?.remove();CC=null;}
+function ccMoves(){const out=[],mx=MV_UNLOCK[1]||1;[CC.t1,CC.t2].filter(Boolean).forEach(t=>(GD.movesByType[t]||[]).forEach(m=>{if((m.l||1)<=mx)out.push(Object.assign({},m,{type:t}));}));
+  (GD.normalMoves||[]).forEach(m=>{if((m.l||1)<=mx&&(!m.sub||/all/i.test(m.sub)||m.sub===CC.sub)&&!out.some(o=>o.n===m.n))out.push(Object.assign({},m,{type:'Normal'}));});
+  const free=new Set((S.moves||[]).filter(m=>m.free).map(m=>m.n));return out.filter(m=>!free.has(m.n)&&!/^(none|—)?$/i.test(m.n||''));}
+function ccAbils(){const out=[],cats=[CC.t1,CC.t2,CC.sub].filter(Boolean).concat(Object.keys(GD.abilities||{}).filter(k=>/^all/i.test(k)));
+  [...new Set(cats)].forEach(cat=>(GD.abilities[cat]||[]).forEach(a=>{if((a.l||1)<=1&&!out.some(o=>o.n===a.n))out.push(Object.assign({cat},a));}));return out;}
+function ccScore(ab){const v=CC.st[ab];return v==null||v===''?null:+v;}
+function ccOk(){const s=CC.step;if(s===0)return !!CC.name.trim();if(s===1)return !!CC.t1;if(s===2)return !!CC.style;if(s===3)return ['STR','DEX','CON','INT','WIS','CHA'].every(a=>ccScore(a)!=null);return true;}
+function ccRender(){if(!CC)return;let d=$i('ccBox');if(!d){d=ce('div');d.id='ccBox';d.className='tb-ov';document.body.appendChild(d);}
+  const s=CC.step,AB=['STR','DEX','CON','INT','WIS','CHA'],nMv=TOT_MV[1]||5,nAb=TOT_AB[1]||2;let b='';
+  if(s===0)b='<p class="tb-mut">Welcome! This walks you through making a character. You can change anything on the sheet afterwards.</p><label>Character name<input id="ccName" maxlength="40" value="'+escH(CC.name)+'" placeholder="e.g. Omen"></label><label style="display:block;margin-top:8px">Your name<input id="ccPlayer" maxlength="40" value="'+escH(CC.player)+'" placeholder="Optional"></label>';
+  else if(s===1)b='<p class="tb-mut">Your types decide which moves and abilities you can learn, and what you’re strong or weak against. Pick a main type, and a second one if you like.</p><div class="cc-h">Main type</div><div class="cc-types">'+TYPES.map(t=>'<button class="cc-ty'+(CC.t1===t?' on':'')+'" style="--t:'+tc(t)+'" onclick="CC.t1=\''+t+'\';if(CC.t2===\''+t+'\')CC.t2=\'\';ccRender()">'+t+'</button>').join('')+'</div>'
+    +'<div class="cc-h">Second type <span class="tb-mut">(optional)</span></div><div class="cc-types"><button class="cc-ty'+(!CC.t2?' on':'')+'" onclick="CC.t2=\'\';ccRender()">None</button>'+TYPES.filter(t=>t!==CC.t1).map(t=>'<button class="cc-ty'+(CC.t2===t?' on':'')+'" style="--t:'+tc(t)+'" onclick="CC.t2=\''+t+'\';ccRender()">'+t+'</button>').join('')+'</div>';
+  else if(s===2)b='<p class="tb-mut">Your style is how you fight. It sets your hit die (how much HP you gain).</p><div class="cc-cards">'+[['Physical','d10 hit die','Up close: strikes, claws and tackles.'],['Both','d8 hit die','A bit of each.'],['Special','d6 hit die','From a distance: beams, spells and elements.']].map(([n,h,x])=>'<button class="cc-card'+(CC.style===n?' on':'')+'" onclick="CC.style=\''+n+'\';ccRender()"><b>'+n+'</b><small>'+h+'</small><span>'+x+'</span></button>').join('')+'</div>';
+  else if(s===3){const used=v=>AB.filter(a=>ccScore(a)===v).length,cnt=v=>CC.pool.filter(x=>x===v).length;
+    b='<p class="tb-mut">Ask your DM which way your group makes ability scores.</p><div class="cc-how">'+[['array','Standard set (15, 14, 13, 12, 10, 8)'],['roll','Roll them (4d6, drop the lowest)'],['own','Type my own']].map(([k,n])=>'<label><input type="radio" name="ccHow" '+(CC.how===k?'checked':'')+' onchange="ccHow(\''+k+'\')" style="width:auto"> '+n+'</label>').join('')+'</div>'
+      +(CC.how==='roll'?'<div class="cc-r"><button class="tb-p" onclick="ccRoll()">🎲 Roll six scores</button><span class="tb-mut">'+(CC.pool.length?'Rolled: '+CC.pool.join(', '):'')+'</span></div>':'')
+      +'<div class="cc-stats">'+AB.map(a=>{const v=ccScore(a);return '<div class="cc-st"><b>'+a+'</b>'+(CC.how==='own'?'<input type="number" min="3" max="20" value="'+(v==null?'':v)+'" onchange="CC.st.'+a+'=this.value?Math.max(3,Math.min(20,+this.value)):null;ccRender()">'
+        :'<select onchange="CC.st.'+a+'=this.value===\'\'?null:+this.value;ccRender()"><option value="">—</option>'+[...new Set(CC.pool)].sort((x,y)=>y-x).map(p=>'<option value="'+p+'"'+(v===p?' selected':'')+(v!==p&&used(p)>=cnt(p)?' disabled':'')+'>'+p+'</option>').join('')+'</select>')
+        +'<i>'+(v==null?'':fmt(mod(v)))+'</i></div>';}).join('')+'</div>';}
+  else if(s===4)b='<p class="tb-mut">Your Normal subclass adds a bonus and some Normal moves. Ask your DM if you’re unsure.</p><div class="cc-cards cc-subs">'+SUBS.map(n=>'<button class="cc-card'+(CC.sub===n?' on':'')+'" onclick="CC.sub=\''+n+'\';ccRender()"><b>'+escH(n)+'</b><span>'+escH((GD.subclassBonuses||{})[n]||'')+'</span></button>').join('')+'<button class="cc-card'+(!CC.sub?' on':'')+'" onclick="CC.sub=\'\';ccRender()"><b>Decide later</b></button></div>';
+  else if(s===5){const L=ccMoves();b='<p class="tb-mut">Pick up to <b>'+nMv+'</b> level 1 moves ('+CC.mv.length+' picked). The free level-0 moves are added for you.</p><div class="cc-list">'+(L.length?L.map((m,i)=>{const on=CC.mv.includes(m.n);return '<label class="cc-it'+(on?' on':'')+'" style="--t:'+tc(m.type)+'"><input type="checkbox" style="width:auto" '+(on?'checked':'')+(!on&&CC.mv.length>=nMv?' disabled':'')+' onchange="ccPickI(\'mv\','+i+','+nMv+')"><span><b>'+escH(m.n)+'</b> <small>'+escH(m.type)+(m.c!=null&&m.c!==''?' · '+escH(String(m.c))+' E':'')+(m.d&&!isNone(m.d)?' · '+escH(m.d):'')+'</small><em>'+escH(String(m.fx||m.oc||'').slice(0,120))+'</em></span></label>';}).join(''):'<div class="tb-mut">No level 1 moves found for these types.</div>')+'</div>';}
+  else if(s===6){const L=ccAbils();b='<p class="tb-mut">Pick up to <b>'+nAb+'</b> abilities ('+CC.ab.length+' picked). Their bonuses (like +1 DEX) are added to your sheet by themselves.</p><div class="cc-list">'+(L.length?L.map((a,i)=>{const on=CC.ab.includes(a.n);return '<label class="cc-it'+(on?' on':'')+'" style="--t:'+tc(a.cat)+'"><input type="checkbox" style="width:auto" '+(on?'checked':'')+(!on&&CC.ab.length>=nAb?' disabled':'')+' onchange="ccPickI(\'ab\','+i+','+nAb+')"><span><b>'+escH(a.n)+'</b> <small>'+escH(a.cat)+(a.b?' · '+escH(a.b):'')+'</small><em>'+escH(String(a.e||'').slice(0,120))+'</em></span></label>';}).join(''):'<div class="tb-mut">No level 1 abilities found.</div>')+'</div>';}
+  else if(s===7)b='<p class="tb-mut">All optional: fill in what you know now.</p><label>Background / origin<input id="ccBg" value="'+escH(CC.bg)+'" placeholder="e.g. Grew up on the docks"></label><label style="display:block;margin-top:8px">Personality<input id="ccPers" value="'+escH(CC.pers)+'" placeholder="e.g. Slightly whimsical, loyal to a fault"></label>'
+    +'<div class="cc-h">Max Energy <span class="tb-mut">(your DM tells you; the rules table says '+(PP_TBL[1]||10)+' at level 1)</span></div><div class="cc-r"><label>'+escH(CC.t1||'Type 1')+' <input id="ccE1" type="number" min="0" value="'+escH(CC.e1)+'" style="width:80px"></label>'+(CC.t2?'<label>'+escH(CC.t2)+' <input id="ccE2" type="number" min="0" value="'+escH(CC.e2)+'" style="width:80px"></label>':'')+'</div>';
+  else{const die=CC.style==='Physical'?10:CC.style==='Special'?6:8,hp=Math.max(1,die+mod(ccScore('CON')||10));
+    b='<div class="cc-sum"><div><b style="font-size:20px">'+escH(CC.name)+'</b><div class="tb-mut">'+escH([CC.t1,CC.t2].filter(Boolean).join(' / '))+' · '+escH(CC.style)+(CC.sub?' · '+escH(CC.sub):'')+'</div></div>'
+      +'<div class="cc-stats">'+AB.map(a=>'<div class="cc-st"><b>'+a+'</b><span>'+ccScore(a)+'</span><i>'+fmt(mod(ccScore(a)))+'</i></div>').join('')+'</div>'
+      +'<div><b>HP:</b> '+hp+' (d'+die+' + CON) · <b>Moves:</b> '+(escH(CC.mv.join(', '))||'none yet')+' · <b>Abilities:</b> '+(escH(CC.ab.join(', '))||'none yet')+'</div>'
+      +'<div class="tb-mut">Next: add a portrait on your hero card (Upload or 🎨 Paint), and join your DM’s campaign.</div></div>';}
+  d.innerHTML='<div class="tb-win" style="max-width:760px"><div class="tb-wh"><h2>🧭 Make a character</h2><span class="tb-mut">'+(s+1)+' / '+CC_STEPS.length+' · '+CC_STEPS[s]+'</span><button class="tb-x" onclick="ccClose()">✕</button></div>'
+    +'<div class="cc-steps">'+CC_STEPS.map((n,i)=>'<span class="'+(i===s?'on':i<s?'done':'')+'">'+(i+1)+'</span>').join('')+'</div><div class="cc-body">'+b+'</div>'
+    +'<div class="tb-wh" style="border-top:1px solid #2a3550;border-bottom:0">'+(s?'<button onclick="ccGo(-1)">← Back</button>':'')+'<span style="flex:1"></span>'+(s<CC_STEPS.length-1?'<button class="tb-p" '+(ccOk()?'':'disabled ')+'onclick="ccGo(1)">Next →</button>':'<button class="tb-p" onclick="ccDone()">✓ Create my character</button>')+'</div></div>';
+  const n=$i('ccName');if(n){n.oninput=()=>{CC.name=n.value;const btn=d.querySelector('.tb-p');if(btn)btn.disabled=!CC.name.trim();};setTimeout(()=>n.focus(),30);}}
+function ccKeep(){const v=id=>{const e=$i(id);return e?e.value:null;};const p=v('ccPlayer');if(p!=null)CC.player=p;const bg=v('ccBg');if(bg!=null)CC.bg=bg;const pe=v('ccPers');if(pe!=null)CC.pers=pe;const e1=v('ccE1');if(e1!=null)CC.e1=e1;const e2=v('ccE2');if(e2!=null)CC.e2=e2;}
+function ccGo(d){ccKeep();if(d>0&&!ccOk())return;CC.step=Math.max(0,Math.min(CC_STEPS.length-1,CC.step+d));ccRender();}
+function ccHow(k){CC.how=k;CC.st={};CC.pool=k==='array'?[15,14,13,12,10,8]:k==='roll'?[]:[];ccRender();}
+function ccRoll(){CC.pool=Array.from({length:6},()=>{const r=Array.from({length:4},()=>1+Math.floor(Math.random()*6)).sort((a,b)=>a-b);return r[1]+r[2]+r[3];}).sort((a,b)=>b-a);CC.st={};ccRender();}
+function ccPickI(k,i,max){const it=(k==='mv'?ccMoves():ccAbils())[i];if(it)ccPick(k,it.n,max);}
+function ccPick(k,n,max){const a=CC[k],i=a.indexOf(n);if(i>=0)a.splice(i,1);else if(a.length<max)a.push(n);ccRender();}
+function ccDone(){ccKeep();const AB=['STR','DEX','CON','INT','WIS','CHA'],die=CC.style==='Physical'?10:CC.style==='Special'?6:8,st={};AB.forEach(a=>st[a]=ccScore(a)||10);
+  const mv=ccMoves().filter(m=>CC.mv.includes(m.n)).map(m=>Object.assign({},m,{plusCount:0,equipped:true})),ab=ccAbils().filter(a=>CC.ab.includes(a.n)).map(a=>({n:a.n,cat:a.cat,l:a.l,b:a.b,e:a.e,d:a.d}));
+  const hp=Math.max(1,die+mod(st.CON));
+  S=Object.assign({},S,{charName:CC.name.trim().slice(0,40),player:CC.player.trim().slice(0,40),type1:CC.t1,type2:CC.t2||'',style:CC.style,level:1,sub1:CC.sub,stats:st,moves:(S.moves||[]).filter(m=>m.free).concat(mv),abilities:ab,
+    background:CC.bg,personality:CC.pers,eMax1:CC.e1===''?'':+CC.e1,eMax2:CC.e2===''?'':+CC.e2,ppCur:'',pp2Cur:'',hpMax:hp,hpCur:hp,lvlLog:[]});
+  try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}if(typeof cloudPush==='function')try{cloudPush();}catch(e){}setTimeout(()=>location.reload(),300);}
+// 🔠 larger text and 🎨 colour-blind colours (this device only, in ⚙ Settings)
+function applyAccess(){document.body.style.zoom=SETTINGS.textSize&&SETTINGS.textSize!==1?String(SETTINGS.textSize):'';document.body.classList.toggle('cb',!!SETTINGS.cb);tbSetPref('cb',!!SETTINGS.cb);}
+// 🛡 how the DM lets players see a foe's HP (meta/foehp): exact, pct (default), vague, none
+let FOE_HP='pct';
+function foeHpText(r){if(!r.hpMax)return '';const p=Math.max(0,r.hp/r.hpMax);if(FOE_HP==='none')return '';if(FOE_HP==='exact')return '<i>'+Math.max(0,r.hp)+'/'+r.hpMax+'</i>';
+  if(FOE_HP==='vague')return '<i>'+(p<=0?'Down':p>.75?'Healthy':p>.5?'Wounded':p>.25?'Badly hurt':'Barely standing')+'</i>';return '<i>'+Math.round(p*100)+'%</i>';}
 document.addEventListener('focusout',()=>setTimeout(()=>{const h=$i('partyBoard');if(_partyLater&&h&&!h.contains(document.activeElement))renderParty();},0));
 
 // ── MOVE STRIP ────────────────────────────────────────
@@ -3574,6 +4296,7 @@ function bindAll(){
   $i('abilModal').addEventListener('click',e=>{if(e.target===$i('abilModal'))closeAbilPicker();});
   document.addEventListener('keydown',e=>{
     if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();persist();}
+    if((e.ctrlKey||e.metaKey)&&(e.key==='k'||e.key==='K')){e.preventDefault();qsOpen();}   // 🔎 quick search
     if(e.key==='Escape'){closeMovePicker();closeAbilPicker();closeCampaignModal();}
   });
 }
@@ -3600,10 +4323,10 @@ function loadSettings(){
   if(raw===null && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)SETTINGS.reduceMotion=true;
 }
 function saveSettings(){localStorage.setItem(SETKEY,JSON.stringify(SETTINGS));applySettings();}
-function applySettings(){document.body.classList.toggle('reduce-motion',!!SETTINGS.reduceMotion);}
+function applySettings(){document.body.classList.toggle('reduce-motion',!!SETTINGS.reduceMotion);applyAccess();}
 function openSettings(){renderSettings();$i('settingsModal').classList.remove('hidden');}
 function closeSettings(){$i('settingsModal').classList.add('hidden');}
-function renderSettings(){const mr=$i('setMoveRolling'),rm=$i('setReduceMotion'),sx=$i('setSfx');if(mr)mr.checked=!!SETTINGS.moveRolling;if(rm)rm.checked=!!SETTINGS.reduceMotion;if(sx)sx.checked=!!SETTINGS.sfx;}
+function renderSettings(){const tf=$i('setTbFx');if(tf)tf.checked=!!tbPrefs().fx;const ts=$i('setTextSize'),cbx=$i('setCb');if(ts)ts.value=String(SETTINGS.textSize||1);if(cbx)cbx.checked=!!SETTINGS.cb;const mr=$i('setMoveRolling'),rm=$i('setReduceMotion'),sx=$i('setSfx');if(mr)mr.checked=!!SETTINGS.moveRolling;if(rm)rm.checked=!!SETTINGS.reduceMotion;if(sx)sx.checked=!!SETTINGS.sfx;}
 function toggleSetting(key,val){SETTINGS[key]=val;saveSettings();if(key==='moveRolling')renderMyMoves();if(key==='reduceMotion')renderAmbience();if(key==='sfx'&&val)sfx('use');}
 
 /* ════════════════ EXPORT / IMPORT (#7) ════════════════ */
@@ -3645,7 +4368,7 @@ function itemIcon(it){const n=(it.n||'').toLowerCase();return /berry/.test(n)?'�
 function renderWallet(){
   const el=$i('wallet');if(!el)return;S.money=S.money||{};
   el.innerHTML=COINS.map(([k,n,c])=>'<div class="coin" style="--c:'+c+'"><span class="coin-face">'+n[0]+'</span><div class="coin-txt"><input type="number" min="0" class="coin-val" data-coin="'+k+'" value="'+(parseInt(S.money[k])||0)+'" aria-label="'+n+'"><span class="coin-lbl">'+n+'</span></div>'
-    +'<div class="coin-btns"><button onclick="addCoin(\''+k+'\',1)" title="+1">+</button><button onclick="addCoin(\''+k+'\',-1)" title="−1">−</button></div></div>').join('');
+    +'<div class="coin-btns"><button onclick="addCoin(\''+k+'\',1)" title="+1">+</button><button onclick="addCoin(\''+k+'\',-1)" title="−1">−</button></div></div>').join('')+(inLive()?'<button class="btn-sm coin-give" onclick="giveOpen(-1)" title="Give coins to a party member">🤝 Give coins</button>':'');
   el.querySelectorAll('.coin-val').forEach(inp=>inp.addEventListener('input',function(){S.money[this.dataset.coin]=Math.max(0,parseInt(this.value)||0);sched();}));
 }
 function addCoin(k,d){S.money=S.money||{};S.money[k]=Math.max(0,(parseInt(S.money[k])||0)+d);renderWallet();persist();}
@@ -3692,7 +4415,7 @@ function useItem(i,pool){
   if(inBattle())renderBattle();
 }
 function renderBag(){
-  renderWallet();
+  renderWallet();renderShop();
   const list=$i('myItems');if(!list)return;const all=S.items||[];
   const cnt=$i('itemCount');if(cnt)cnt.textContent=all.reduce((s,it)=>s+(parseInt(it.q)||0),0);
   const q=($i('bagSearch')?.value||'').toLowerCase().trim();
@@ -3713,7 +4436,7 @@ function renderBag(){
       +'<div class="tcg-cat">'+escH(it.cost||'Free')+'</div>'
       +(fx.l?'<div class="tcg-buff item-fx">'+fx.l+(it.dice?' '+escH(it.dice):'')+'</div>':'')
       +(it.d?'<div class="atk-fx">'+escH(it.d)+'</div>':'')
-      +'<div class="tcg-acts">'+use+'</div>'
+      +'<div class="tcg-acts">'+use+(inLive()&&qty?'<button class="tcg-use" onclick="giveOpen('+i+')" title="Give some to a party member">🤝</button>':'')+'</div>'
       +'<div class="tcg-plus"><span class="pl">Quantity</span><span class="pc"><button class="tcg-pbtn" onclick="setItemQty('+i+',-1)" title="One fewer">−</button><span class="tcg-pval">'+qty+'</span><button class="tcg-pbtn" onclick="setItemQty('+i+',1)" title="One more">+</button></span>'
       +'<button class="tcg-del" onclick="removeItem('+i+')" title="Throw away">✕</button></div></div>';
     tiltify(card);list.appendChild(card);
@@ -3794,7 +4517,7 @@ function rollCompMove(ci,mi){
   }
   const r=parseDamage(m.d);if(r){dmg=r.total+' <small>('+r.detail+')</small>';out.push('Dmg '+r.total+' ('+r.detail+')');}
   const txt='🎲 '+compName(c)+' · '+m.n+' — '+(out.join(' · ')||'no dice to roll');
-  pushRollLog(txt);boardPose(m,'cp_'+Sync.key(S.playerKey)+'_'+c.id);showRollPop(compName(c)+' · '+m.n,atk,dmg,crit,fumble,'',tc(m.type));sfx(crit?'crit':fumble?'fail':'use');
+  pushRollLog(txt);boardPose(m,'cp_'+Sync.key(S.playerKey)+'_'+c.id);showRollPop(compName(c)+' · '+m.n,atk,dmg,crit,fumble,'',tc(m.type));moveSfx(m,crit,fumble);
 }
 function rollCompCheck(ci,ab){
   const c=(S.companions||[])[ci];if(!c)return;const md=mod((c.stats||{})[ab]),sv=!!(c.saves||{})[ab],b=md+(sv?compProf(c):0),d20=1+Math.floor(Math.random()*20);
@@ -3827,7 +4550,7 @@ function compHTML(c,ci){
     +'<div class="comp-moves"><div class="cm-lbl">Moves</div>'+(moves||'<div class="cm-fx" style="padding:4px 0 6px">No moves yet.</div>')
     +'<select class="std-inp cm-add" onchange="addCompMove('+ci+',this.value)"><option value="">＋ Teach a move…</option>'+compMoveOpts(c)+'</select></div>'
     +'<textarea class="std-inp comp-notes" placeholder="Notes: personality, how you met, tricks it knows…" oninput="setComp('+ci+',\'notes\',this.value)">'+escH(c.notes)+'</textarea>'
-    +'<div class="comp-foot"><span>Proficiency '+fmt(compProf(c))+'</span><button class="tcg-del" onclick="removeCompanion('+ci+')">Release</button></div>'
+    +'<div class="comp-foot"><span>Proficiency '+fmt(compProf(c))+'</span>'+(pokeFind(c.species||'')?'<button class="tcg-del" onclick="compCry('+ci+')" title="Hear its cry">🔊</button>':'')+'<button class="tcg-del" onclick="evolveComp('+ci+')" title="It evolves: everyone in the campaign sees it happen">✨ Evolve</button><button class="tcg-del" onclick="printCard(\'c\','+ci+')" title="A printable trading card">📇 Card</button><button class="tcg-del" onclick="removeCompanion('+ci+')">Release</button></div>'
     +'</div></div>';
 }
 function renderTeam(){
@@ -3849,7 +4572,7 @@ function turnHTML(){
   return '<div class="bt-turn"><div class="tt-hd"><span>This turn</span><button class="tt-new" onclick="newTurn()">⟳ New turn</button></div>'
     +'<div class="tt-mv"><div class="tt-mv-top"><span>🏃 Movement</span><b>'+left+' ft</b><small>left of '+tot+'</small></div>'
     +'<div class="bt-hp-track tt-track"><div class="bt-hp-fill" style="width:'+pct+'%;background:var(--acc)"></div></div>'
-    +'<div class="tt-mv-btns"><button onclick="moveFt(5)">Moved 5 ft</button><button onclick="moveFt(10)">10 ft</button><button onclick="moveFt(-5)">Undo 5</button><button class="'+(T.dash?'on':'')+'" onclick="toggleDash()" title="Dash: extra movement equal to your Speed (uses your Action)">💨 Dash</button></div></div>'
+    +'<div class="tt-mv-btns"><button onclick="moveFt(5)">Moved 5 ft</button><button onclick="moveFt(10)">10 ft</button><button onclick="moveFt(-5)">Undo 5</button><button class="'+(T.dash?'on':'')+'" onclick="toggleDash()" title="Dash: extra movement equal to your Speed (uses your Action)">💨 Dash</button>'+(inLive()?'<button class="'+(PAD.open?'on':'')+'" onclick="padToggle()" title="Move your token on the live board from here, a square per tap">🎮 Move token</button>':'')+'</div>'+(PAD.open&&inLive()?padHTML():'')+'</div>'
     +'<div class="tt-slots">'+TURN_SLOTS.map(([k,ic,n])=>'<button class="tt-slot'+(T[k]?' used':'')+'" onclick="toggleSlot(\''+k+'\')"><span>'+ic+'</span>'+n+'<small>'+(T[k]?'used':'ready')+'</small></button>').join('')+'</div></div>';
 }
 function newTurn(){S.turn=freshTurn((S.turn||{}).key);sched();renderBattle();}
@@ -3914,7 +4637,7 @@ function rollMove(i,xv){
   const text='🎲 '+m.n+(ci&&ci.k==='x'?' (X = '+xv+')':'')+' — '+(out.join(' · ')||'no dice to roll')+ppNote;
   flashMoveMsg(i,text);pushRollLog(text);
   showRollPop(m.n, atkDisp, dmgDisp, crit, fumble, ppNote, tc(m.type));
-  sfx(crit?'crit':fumble?'fail':'use');
+  moveSfx(m,crit,fumble);
   sched();
 }
 
@@ -4076,7 +4799,8 @@ function poseFor(m){const n=(m.n||'').toLowerCase(),mt=(m.mt||'').toLowerCase(),
   if(/spell/.test(mt)||m.s==='Special'||(/skill/.test(mt)&&isNone(m.d)))return 'Cast';
   return 'Attack';}
 function boardPose(m,key){if(!S.campaignId||!S.playerKey||!Sync.fb())return;
-  Sync.boardFx(S.campaignId,key||('pc_'+Sync.key(S.playerKey)),{a:poseFor(m),m:m.n||'',n:Date.now().toString(36)+Math.random().toString(36).slice(2,6)}).catch(()=>{});}
+  Sync.boardFx(S.campaignId,key||('pc_'+Sync.key(S.playerKey)),{a:poseFor(m),m:m.n||'',ty:m.type||'',tg:(_battleActive&&_tgt)?_tgt:'',n:Date.now().toString(36)+Math.random().toString(36).slice(2,6)}).catch(()=>{});}   // ty/tg: the board's ✨ move animation
+function moveSfx(m,crit,fumble){if(crit||fumble||!SETTINGS.sfx)return sfx(crit?'crit':fumble?'fail':'use');tbTypeSound(m.type||'Normal');}   // 🔊 each type has its own sound (with Sound effects on)
 function pushRollLog(text){
   if(!S.campaignId||!S.playerKey||!Sync.ready())return;
   Sync.pushLog(S.campaignId,{who:S.charName||S.playerKey,text:text,t:Date.now()}).catch(()=>{});
@@ -4103,14 +4827,18 @@ function applyCampaign(d){
     renderEnvBanner(d._env);
     renderBroadcast(d._msg);
     hoUpdate(d._handouts,d._handoutNow,S.campaignId,aid=>Sync.asset(S.campaignId,aid));partyUpdate(d._cards);   // 📜 handouts, 🗂 party board
-    ENC=d._battle||d._init||null;
+    CAMP_PLAYERS={};for(const k in d)if(k[0]!=='_'&&d[k]&&typeof d[k]==='object')CAMP_PLAYERS[k]=d[k];
+    tbUpdate({say:d._say,evolve:d._evolve,music:d._music,world:d._world,dex:d._dex,people:d._people,quiz:d._quiz});evoCheck(d._evolve);shopUpdate(d._shop);lootUpdate(d._loot);whUpdate(d._whisper);tbBarRender();   // 🎭 table extras
+    ENC=d._battle||d._init||null;FOE_HP=['exact','pct','vague','none'].includes(d._foehp)?d._foehp:'pct';   // 🛡 the DM's choice
     renderInitStrip(ENC);
     const wasActive=_battleActive;
     _battleActive=!!(d._battle&&d._battle.active);
     // the encounter just reached me → start a fresh turn (movement, action, bonus, reaction, object)
     const curT=ENC&&Array.isArray(ENC.list)?ENC.list[ENC.turn||0]:null;
     if(_battleActive&&curT&&((curT.pk&&curT.pk===Sync.key(S.playerKey||''))||(curT.name||'').toLowerCase()===(S.charName||S.playerKey||'').toLowerCase())){
-      const k=(ENC.round||1)+'|'+(ENC.turn||0);if(!S.turn||S.turn.key!==k){S.turn=freshTurn(k);sched();}}
+      const k=(ENC.round||1)+'|'+(ENC.turn||0);if(!S.turn||S.turn.key!==k){S.turn=freshTurn(k);sched();}
+      tbTurnAlert((ENC.eid||0)+'|'+k,'Your turn, '+(S.charName||'')+'!');}   // 🔔 a chime, a buzz, a blinking tab (once per turn, even with the board open too)
+    condTurn(!!(_battleActive&&curT&&((curT.pk&&curT.pk===Sync.key(S.playerKey||''))||(curT.name||'').toLowerCase()===(S.charName||S.playerKey||'').toLowerCase())),ENC?(ENC.eid||0)+'|'+(ENC.round||1)+'|'+(ENC.turn||0):'');   // 🩹
     // adopt HP the DM changed on me, so damage shows live (without clobbering my own pending edit)
     const mine=d[S.playerKey]||d[Sync.key(S.playerKey)];
     if(mine && mine.hpCur!=null && String(mine.hpCur)!==String(S.hpCur) && String(mine.hpCur)!==String(_myPushedHp)){
@@ -4145,7 +4873,7 @@ function renderInitStrip(enc){
     +(myTurn?'<span class="is-yours">★ YOUR TURN</span>':'')
     +enc.list.map((r,i)=>{
       const on=i===(enc.turn||0), mine=(r.name||'').toLowerCase()===me, down=r.hpMax&&r.hp<=0;
-      const hp=(r.hpMax)?'<i>'+Math.max(0,Math.round((r.hp/r.hpMax)*100))+'%</i>':'';
+      const hp=r.kind==='npc'?foeHpText(r):(r.hpMax)?'<i>'+Math.max(0,Math.round((r.hp/r.hpMax)*100))+'%</i>':'';
       return '<span class="is-chip'+(on?' on':'')+(mine?' me':'')+(down?' down':'')+'">'+(r.init!=null?r.init+' ':'')+(r.name||'?')+hp+'</span>';
     }).join('<span class="is-arrow">›</span>');
   el.style.display='flex';
@@ -4296,6 +5024,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   loadState();
   migrateState();     // old subclass names, Animal→Pokémon Handling, level log
   ensureFreeMoves();  // everyone knows the level-0 Normal moves
+  try{snapTake(JSON.stringify(S));}catch(e){}   // 🕘 an older version to go back to
   _myPushedHp=String(S.hpCur);
   loadPortrait();     // the hero card's picture (its own localStorage key, not part of S)
   loadSettings();     // restore device preferences
@@ -4319,6 +5048,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   renderNotecards();
   renderBag();        // Bag tab: Gimmi coins + item cards
   renderTeam();       // Team tab: Pokémon companions
+  tbBarRender();      // 🔎 search + the campaign's world map, Pokédex, whispers, shop
   renderConditions(); // #4
   renderTypeChart();  // #2
   renderAmbience();   // living type background
