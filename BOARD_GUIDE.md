@@ -19,6 +19,25 @@ from the web, and the board only works online anyway. The character sheet still 
 It opens in its own tab, already signed in to the campaign. Put it on a second monitor, or split
 the screen with your sheet.
 
+## New in this update (for the DM)
+
+- **🎨 Paint a map:** in **✎ This scene**, click **🎨 Paint a map**, describe the place ("a forest road beside a river
+  with a wooden bridge") and paint. It's painted from above in the scene's shape; **✓ Use** makes it the map.
+- **📜 Handouts** (dashboard toolbar): write a letter, a wanted poster or a clue (with a picture if you like) and
+  **Show to everyone**: it pops up on every player's sheet and board.
+- **⚔ Moves for foes:** in a stat block, **＋ Add a move…** lists the rules' moves for its type. In the fight, each
+  move is a 🎲 button on the foe's row that rolls the attack and damage into everyone's roll feed.
+- **⏳ Condition timers:** ⏳ on any row in the fight ("Burned, 3 rounds") counts down at the start of that turn and
+  reminds you; nothing is applied by itself.
+- **🗂 Party board:** shared notecards (quests, clues) the players add from their sheet's Notes tab; you see and edit
+  them from the dashboard toolbar.
+- **💾 Backup:** downloads the whole campaign (players, board, notes, every uploaded picture and model) into one file,
+  and restores it. The dashboard also keeps automatic snapshots on your computer.
+- **🎯 Type hints:** players see "super effective / not very effective" against the foe they target; switch it off in
+  🎬 Scene if you'd rather they work it out.
+- **📱 Phones:** the board works on a phone now (the turn order and **✓ End my turn** stay on screen; tap a token for
+  its card at the bottom).
+
 ## DM: setting up a scene
 
 1. **＋ New scene.** The first scene goes live for players automatically.
@@ -64,8 +83,18 @@ picture from your words, for example "a grizzled old sailor with a white beard, 
 - The last few tries stay underneath; click one to go back to it.
 - **✓ Use this picture** saves it into the campaign, so everyone sees it, and it stays even if the painter changes.
 
-It uses Pollinations, a free online image service: one picture about every 45 seconds, with a small Pollinations logo
-in the corner, and your words are sent to them. DMs can paint any token; players can paint their own.
+It uses Pollinations, an online image service, and your words are sent to them. DMs can paint any token; players can
+paint their own. Three ways to use it:
+- **Free, no account (the default):** one picture about every 45 seconds, with a small Pollinations logo in the corner.
+- **🔗 Connect Pollinations (optional, sharper):** press it, sign in on the Pollinations page that opens (with GitHub),
+  and approve. You choose a spending cap there. Pictures then come out much sharper with no waiting, and a
+  **✏️ Change it** box appears under the picture: type "make the coat red" and it changes just that, on the same
+  picture. Each picture costs about half a cent from your own Pollinations balance; **Best** (Nano Banana) is about 4¢
+  and needs balance you bought. The sign-in stays in your browser only (never in the campaign), and **Disconnect**
+  forgets it.
+- **✨ Free in Gemini:** copies your description and opens Google's free Gemini app. Paste it there, refine it in plain
+  words, then copy the picture (right-click → Copy image) and press **Ctrl+V** in the painter, or save it and use
+  **📁 Add a picture**. Any picture you add this way can be used, or changed with ✏️ if you're connected.
 
 To bring back 3D models, tick **🧊 3D models for characters** under ♟ Tokens. It changes every screen,
 and unticking it goes back to standees. Scenery is always 3D.
@@ -389,7 +418,9 @@ AI image tools are handy too. Maps go in through **Upload map**, character art a
 
 | Do this | How |
 |---|---|
-| Move your token | Drag it. The yellow tag shows feet moved (red if over your speed). Arrow keys also work. |
+| Move your token | Drag it. The yellow tag shows feet moved (red if over your speed). In a fight it counts your **whole turn** ("25 / 30 ft this turn"); **💨 Dash** on your token's card doubles it. Arrow keys also work. |
+| See the rolls | Everyone's rolls (players' 🎲, the DM's NPC moves, initiative) pop up at the bottom left; **🎲 Rolls** in the top bar lists the recent ones. |
+| Read a handout | When the DM shows one, it pops up; **📜 Handouts** in the top bar keeps them. |
 | Pan / zoom | Drag empty space / mouse wheel or pinch |
 | Ping a spot | Double-click (or long-press on a phone), or the 📍 tool |
 | Measure | 📏 tool or `M`. 5 ft per square, and diagonals count as 5 ft (5e rule). |

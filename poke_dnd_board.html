@@ -83,9 +83,13 @@ button{cursor:pointer;border:none;background:none}
 .ping-l{font:700 12px var(--font-display);color:#fff;background:rgba(11,11,17,.85);padding:2px 9px;border-radius:9px;transform:translateY(-26px);animation:fadeUp 2.2s forwards}
 @keyframes fadeUp{0%{opacity:0}10%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
 .paint{border:1px solid var(--bg5);border-radius:10px;padding:2px 9px 9px;margin-top:9px;background:rgba(255,255,255,.02)}
-.paint-big{display:block;width:100%;max-width:260px;aspect-ratio:1;object-fit:cover;border-radius:9px;margin-top:8px;border:2px solid var(--gold)}
-.paint-tries{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}.paint-tries img{width:44px;height:44px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer;opacity:.75}
-.paint-tries img.on{border-color:var(--gold);opacity:1}
+.pz-conn{font-size:12px;line-height:1.5;color:var(--tx2);border:1px dashed var(--bdr2,rgba(255,255,255,.18));border-radius:8px;padding:6px 8px;margin:2px 0 7px}
+.pz-conn.on{border-style:solid;border-color:rgba(61,223,147,.45)}.pz-conn select{max-width:100%;margin-top:5px}.pz-conn a{color:var(--gold)}
+.pz-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}.pz-row input{flex:1 1 140px;width:auto;min-width:0}
+.pz-big{display:block;width:100%;max-width:300px;aspect-ratio:1;object-fit:cover;border-radius:9px;margin:8px auto 0;border:2px solid var(--gold)}
+.pz-tries{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}.pz-tries img{width:44px;height:44px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer;opacity:.75}.pz-tries img.on{border-color:var(--gold);opacity:1}
+.paint textarea{font:inherit;font-size:12.5px;resize:vertical;min-height:52px}
+.pz-msg{margin-top:6px}.pz-note{margin-top:4px;opacity:.7;font-size:11px}
 .aoe-bar{position:absolute;left:50%;bottom:80px;transform:translateX(-50%);display:none;gap:4px;padding:5px;border-radius:14px;z-index:5;background:rgba(18,20,30,.92);border:1px solid var(--bg5);flex-wrap:wrap;justify-content:center;max-width:calc(100% - 16px)}
 .aoe-bar button{padding:5px 9px;border-radius:9px;font-size:12px;font-weight:700;color:var(--tx2)}.aoe-bar button:hover{background:var(--bg4)}.aoe-bar button.on{background:var(--gold);color:#1a1300}
 .tpl-l{font:800 12px var(--font);color:#fff;background:rgba(0,0,0,.62);border:2px solid var(--c,#ffce4d);padding:2px 8px;border-radius:9px;white-space:nowrap;pointer-events:none}
@@ -226,6 +230,10 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
 .jbox h2{font:700 22px var(--font-display);margin:12px 0 2px}
 .jbox .tip{margin-top:12px}
 #jErr{color:var(--red);font-size:12px;margin-top:8px;min-height:16px}
+.roll-feed{position:absolute;left:12px;bottom:86px;z-index:6;display:flex;flex-direction:column;gap:6px;max-width:min(380px,calc(100% - 24px));pointer-events:none}
+.rf-item{background:rgba(20,26,40,.92);border:1px solid var(--gold);border-radius:10px;padding:7px 10px;font-size:12.5px;color:var(--tx);box-shadow:0 6px 20px rgba(0,0,0,.45);animation:rfIn .25s ease-out;transition:opacity .6s,transform .6s}.rf-item b{color:var(--gold)}
+.rf-item.out{opacity:0;transform:translateX(-12px)}@keyframes rfIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.c-mv{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--tx2);margin:6px 0}.c-mv b{color:var(--tx)}.c-mv.over b{color:var(--red)}.c-mv .btn{margin-left:auto}
 #toast{position:absolute;left:50%;top:14px;transform:translate(-50%,-20px);opacity:0;transition:all .25s;z-index:20;pointer-events:none;
   background:rgba(16,21,31,.96);border:2px solid var(--acc);border-radius:12px;padding:8px 14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:90%;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
@@ -237,7 +245,11 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
   .brand,.leds{display:none}
   .scene-t{max-width:34vw;font-size:14px}
   .tb-btn .tl-txt{display:none}
-  #card{left:10px;right:10px;width:auto;top:10px}
+  #card{left:8px;right:8px;width:auto;top:auto;bottom:72px;max-height:56vh}   /* phones: the token card is a sheet at the bottom, so the map stays visible */
+  .topbar{flex-wrap:wrap;row-gap:5px}.init{order:9;flex:1 1 100%;padding:1px 0 2px}   /* phones: the turn order gets its own row */
+  .ic,.ic-r{padding:6px 10px;font-size:12px}.ic-act{padding:7px 12px;font-size:12.5px;order:-1}.ic-r{order:-2}   /* turn buttons first, so they never scroll off */
+  .roll-feed{bottom:72px;max-width:calc(100% - 16px);left:8px}
+  .btn.sm{min-height:32px}   /* phones: easier to tap */
   .dock{bottom:10px;gap:3px;padding:5px}.dk{width:40px;height:42px}.dk small{font-size:7.5px}
 }
 </style>
@@ -251,6 +263,8 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
     <div class="scene-t" id="sceneT">—</div>
     <div class="init" id="init"></div>
     <div class="tb">
+      <button class="tb-btn" id="bRolls" title="Recent rolls" style="display:none">🎲<span class="tl-txt"> Rolls</span></button>
+      <button class="tb-btn" id="bHo" title="Handouts from the DM" style="display:none">📜<span class="tl-txt"> Handouts</span></button>
       <button class="tb-btn" id="bNames" title="Show names (N)">🏷<span class="tl-txt"> Names</span></button>
       <button class="tb-btn" id="bFollow" title="Camera follows whoever's turn it is (F)">🎯<span class="tl-txt"> Follow turn</span></button>
       <button class="tb-btn" id="bFull" title="Full screen">⛶</button>
@@ -258,6 +272,7 @@ details.ask{margin-top:6px}details.ask summary{cursor:pointer;font-size:12px;col
     </div>
   </header>
   <main id="stage">
+    <div id="rollFeed" class="roll-feed" aria-live="polite"></div>
     <div class="dock" id="dock">
       <button class="dk on" data-tool="select" title="Move tokens / pan the map (V)">🖐<small>Move</small></button>
       <button class="dk" data-tool="measure" title="Measure distance (M)">📏<small>Measure</small></button>
@@ -659,46 +674,160 @@ function renderPic(g,person){
   const cv=document.createElement('canvas');cv.width=cv.height=256;const x=cv.getContext('2d'),id=x.createImageData(256,256);
   for(let y=0;y<256;y++)for(let i=0;i<1024;i+=4){const s=(255-y)*1024+i,d=y*1024+i;id.data[d]=SRGB[px[s]];id.data[d+1]=SRGB[px[s+1]];id.data[d+2]=SRGB[px[s+2]];id.data[d+3]=px[s+3];}
   x.putImageData(id,0,0);return cv;}
-// ── 🎨 Paint a picture: an online AI image generator paints a character from words (Finn, 2026-11: "a good quality image
-// that can be refined a couple of times"). It's Pollinations' free, keyless endpoint: GET image.pollinations.ai/prompt/<words>
-// ?width&height&seed&safe. Same words + same seed = the same picture, so refining keeps the seed and changes the words;
-// 🎲 picks a new seed. Free use is one picture at a time, about 45 s apart per internet address, with a small logo.
-// Tries stay on this screen (blob links); the chosen one is uploaded into the campaign (uploadAsset 'art') as look.img.
-const PAINT={};const PAINT_GAP=45000;let paintNext=0;
-try{paintNext=+localStorage.getItem('pokeDnD_paintNext')||0;}catch(e){}
-const PAINT_STYLE=', fantasy RPG character portrait, medieval world with Pokémon, head and shoulders, painted trading card art, detailed, soft light, simple background';
-function paintState(lk,name){return PAINT[lk]||(PAINT[lk]={desc:name||'',seed:1+Math.floor(Math.random()*99999),tries:[],cur:-1,busy:false,msg:''});}
-async function paintIt(lk,fresh){
-  const P=PAINT[lk];if(!P||P.busy)return;const words=(P.desc||'').trim();if(!words){P.msg='Describe who to paint first.';renderCard();return;}
-  const wait=paintNext-Date.now();if(wait>0){P.msg='The free painter allows one picture about every 45 seconds: ready in '+Math.ceil(wait/1000)+' s.';renderCard();setTimeout(renderCard,wait+200);return;}
-  if(fresh)P.seed=1+Math.floor(Math.random()*99999);
-  P.busy=true;P.msg='Painting… (usually under half a minute)';renderCard();
-  const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(words+PAINT_STYLE)+'?width=512&height=512&safe=true&seed='+P.seed;
-  try{const r=await fetch(url);
-    if(!r.ok){const ra=parseInt(r.headers.get('Retry-After'))||45;paintNext=Date.now()+ra*1000;throw new Error(r.status===402||r.status===429?'the free painter is busy: try again in '+ra+' s':'the painter answered '+r.status);}
+// ── 🎨 Painter engine: the SAME code in the board and the sheet (change both together, like Sync) ─────────────────────
+// Paints a character picture from words. Each app hosts the panel (pzHTML) and says what "✓ Use" does.
+// • Free, no account (default): Pollinations' keyless endpoint. It has one older model, 768 px at most, about one picture
+//   per 45 s per internet address, small logo. Same words + same seed = the same picture, so "Paint again" refines and
+//   🎲 takes a new seed.
+// • 🔗 Connect Pollinations (optional, Finn 2026-11-21): the player signs in on Pollinations' own page (device sign-in:
+//   we show a code, they approve it there and set a spending cap). Then: sharper pictures (Z-Image Turbo, about ½¢) and
+//   ✏️ "Change it" (FLUX.2 klein edits the picture shown, about ½¢). "Best" uses Nano Banana (~4¢, bought balance only).
+//   The key stays only in this browser's localStorage (pokeDnD_polliKey), NEVER in Firebase (every player can read that).
+// • ✨ Free in Gemini copies the description and opens the Gemini app; a picture pasted (Ctrl+V) or added becomes a try,
+//   which can then be used, or changed with ✏️.
+const PZ_FREE_GAP=45000,PZ_LS='pokeDnD_polliKey',PZ_NEXT='pokeDnD_paintNext',PZ_GEN='https://gen.pollinations.ai',PZ_ENTER='https://enter.pollinations.ai';
+const PZ_STYLE=', fantasy RPG character portrait, medieval world with Pokémon, head and shoulders, painted trading card art, detailed, soft light, simple background';
+// Other things it paints: a painter's options (P.o) = {style, ar: width/height, crop: false keeps the whole picture, keep: how a
+// change should treat the rest, gem: how the Gemini prompt starts}. A portrait has no options (square, cropped).
+const PZ_MAP_O={style:', top-down battle map for a tabletop RPG, seen from directly above, medieval fantasy world with Pokémon, no grid lines, no text, detailed painted terrain, even daylight',crop:false,
+  keep:'Keep the same layout, the view from directly above and the art style; change only that.',gem:'Make a top-down battle map (seen from directly above, landscape, no grid): '};
+const PZ_ITEM_O={style:', a single item for a fantasy RPG trading card, centered, plain soft background, painted, detailed',keep:'Keep the same item and art style; change only that.',gem:'Make a square picture of an item: '};
+const PZ_Q={std:{gen:'tongyi-mai/z-image-turbo',edit:'black-forest-labs/flux.2-klein-4b',n:'Standard',cost:'about ½¢ a picture'},
+  best:{gen:'google/gemini-nano-banana-2.1',edit:'google/gemini-nano-banana-2.1',n:'Best (Nano Banana)',cost:'about 4¢, bought balance only'}};
+function pzEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+const Polli={flow:null,msg:'',bal:null,   // the optional Pollinations sign-in
+  key(){try{const k=JSON.parse(localStorage.getItem(PZ_LS)||'null');if(k&&k.k&&(!k.exp||k.exp>Date.now()))return k.k;}catch(e){}return '';},
+  save(k,sec){try{localStorage.setItem(PZ_LS,JSON.stringify({k,exp:sec?Date.now()+sec*1000:0,t:Date.now()}));}catch(e){}},
+  drop(why){try{localStorage.removeItem(PZ_LS);}catch(e){}this.bal=null;this.msg=why||'';},
+  async connect(redraw){   // device sign-in: get a code, open Pollinations' page, wait for the player to approve it there
+    if(this.flow)return;const win=window.open('','_blank');if(win)try{win.opener=null;}catch(e){}   // opened now: a later open would be blocked
+    this.msg='';let d;
+    try{const r=await fetch(PZ_ENTER+'/api/device/code',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});d=await r.json();if(!r.ok||!d.device_code)throw new Error(d.error_description||d.error||'answer '+r.status);}
+    catch(e){if(win)win.close();this.msg='Couldn’t reach Pollinations: '+e.message+'.';redraw();return;}
+    const f=this.flow={code:d.user_code,url:d.verification_uri_complete||d.verification_uri,until:Date.now()+(d.expires_in||1800)*1000,gap:(d.interval||5)*1000};
+    if(win)try{win.location.href=f.url;}catch(e){}redraw();
+    while(this.flow===f&&Date.now()<f.until){
+      await new Promise(r=>setTimeout(r,f.gap));if(this.flow!==f)return;
+      let j={};try{const r=await fetch(PZ_ENTER+'/api/device/token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({device_code:d.device_code})});j=await r.json();}catch(e){continue;}
+      if(j.access_token){this.flow=null;this.save(j.access_token,j.expires_in);this.msg='✓ Connected. Pictures are sharper now, and you can change a picture with words.';redraw();this.balance(redraw);return;}
+      if(j.error==='authorization_pending')continue;if(j.error==='slow_down'){f.gap+=5000;continue;}
+      this.flow=null;this.msg=j.error==='access_denied'?'Sign-in was cancelled.':'Sign-in stopped ('+(j.error_description||j.error||'no answer')+'). Try again.';redraw();return;}
+    if(this.flow===f){this.flow=null;this.msg='The sign-in code ran out. Press Connect again.';redraw();}},
+  cancel(){this.flow=null;this.msg='';},
+  async balance(redraw){const k=this.key();if(!k)return;
+    try{const r=await fetch(PZ_GEN+'/account/balance',{headers:{Authorization:'Bearer '+k}});
+      if(r.status===401){this.drop('Your Pollinations sign-in ended. Connect again for the sharper painter.');redraw();return;}
+      const j=await r.json();if(typeof j.balance==='number'){this.bal=j.balance;redraw();}}catch(e){}}
+};
+function pzState(desc,o){return {desc:desc||'',edit:'',seed:1+Math.floor(Math.random()*99999),tries:[],cur:-1,busy:false,msg:'',o:o||null};}
+function pzSize(P,key){if(!P.o||!P.o.ar)return key?[1024,1024]:[768,768];const ar=Math.max(.4,Math.min(2.5,P.o.ar)),L=key?1536:768,r=v=>Math.round(v/16)*16;return ar>=1?[L,r(L/ar)]:[r(L*ar),L];}   // width × height
+function pzShape(P,blob){return P.o&&P.o.crop===false?pzFit(blob,1536):pzSquare(blob,1024);}
+function pzQ(){let q='';try{q=localStorage.getItem('pokeDnD_paintQ')||'';}catch(e){}return PZ_Q[q]?q:'std';}
+function pzFreeNext(){try{return +localStorage.getItem(PZ_NEXT)||0;}catch(e){return 0;}}
+function pzAddTry(P,blob,desc,seed){P.tries.unshift({src:URL.createObjectURL(blob),blob,desc,seed});if(P.tries.length>8){const x=P.tries.pop();URL.revokeObjectURL(x.src);}P.cur=0;}
+function pzSquare(blob,max){return new Promise((res,rej)=>{   // centre square, at most max px, as a JPEG
+  const u=URL.createObjectURL(blob),im=new Image();
+  im.onload=()=>{const w=im.naturalWidth,h=im.naturalHeight,s=Math.min(w,h),n=Math.min(max,s),c=document.createElement('canvas');c.width=c.height=n;
+    c.getContext('2d').drawImage(im,(w-s)/2,(h-s)/2,s,s,0,0,n,n);URL.revokeObjectURL(u);c.toBlob(b=>b?res(b):rej(new Error('couldn’t read that picture')),'image/jpeg',.92);};
+  im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('that isn’t a picture the browser can open'));};im.src=u;});}
+function pzFit(blob,max){return new Promise((res,rej)=>{   // the whole picture, at most max px on its long side, as a JPEG
+  const u=URL.createObjectURL(blob),im=new Image();
+  im.onload=()=>{const s=Math.min(1,max/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*s);c.height=Math.round(im.naturalHeight*s);
+    c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?res(b):rej(new Error('couldn’t read that picture')),'image/jpeg',.9);};
+  im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('that isn’t a picture the browser can open'));};im.src=u;});}
+async function pzFail(r){   // a failed answer from the signed-in painter → plain words
+  let j={};try{j=await r.json();}catch(e){}const m=(j.error&&(j.error.message||j.error))||j.message||'';
+  if(r.status===401){Polli.drop();return 'your Pollinations sign-in ended: connect again, or use the free painter';}
+  if(r.status===402)return 'your Pollinations balance (or this sign-in’s spending cap) is used up'+(pzQ()==='best'?', and Best needs bought balance':'')+'. Top up on enter.pollinations.ai, switch to Standard, or disconnect to use the free painter';
+  if(r.status===429||r.status===503)return 'the painter is busy: try again in '+(parseInt(r.headers.get('Retry-After'))||30)+' s';
+  return 'the painter answered '+r.status+(m?' ('+String(m).slice(0,140)+')':'');}
+async function pzGo(P,fresh,redraw){   // 🎨 paint a new picture from the words
+  if(P.busy)return;const words=(P.desc||'').trim().slice(0,600);if(!words){P.msg='Describe who to paint first.';redraw();return;}
+  const key=Polli.key();Polli.msg='';
+  if(!key){const wait=pzFreeNext()-Date.now();if(wait>0){P.msg='The free painter allows one picture about every 45 seconds: ready in '+Math.ceil(wait/1000)+' s. (🔗 Connect Pollinations to skip the wait.)';redraw();setTimeout(redraw,wait+200);return;}}
+  if(fresh||P.tries.some(t=>t.desc===words&&t.seed===P.seed))P.seed=1+Math.floor(Math.random()*99999);   // same words again = a new take, not the same picture
+  P.busy=true;P.msg='Painting… (usually under half a minute)';redraw();let next=0;const ST=(P.o&&P.o.style)||PZ_STYLE,sz=pzSize(P,key);
+  try{const r=key?await fetch(PZ_GEN+'/image/'+encodeURIComponent(words+ST)+'?model='+encodeURIComponent(PZ_Q[pzQ()].gen)+'&width='+sz[0]+'&height='+sz[1]+'&safe=sexual&seed='+P.seed,{headers:{Authorization:'Bearer '+key}})
+      :await fetch('https://image.pollinations.ai/prompt/'+encodeURIComponent(words+ST)+'?width='+sz[0]+'&height='+sz[1]+'&safe=true&seed='+P.seed);
+    if(!r.ok){if(key)throw new Error(await pzFail(r));const ra=parseInt(r.headers.get('Retry-After'))||45;next=Date.now()+ra*1000;throw new Error(r.status===402||r.status===429?'the free painter is busy: try again in '+ra+' s':'the painter answered '+r.status);}
     const blob=await r.blob();if(!/^image\//.test(blob.type))throw new Error('no picture came back');
-    P.tries.unshift({src:URL.createObjectURL(blob),blob,desc:words,seed:P.seed});if(P.tries.length>6){const x=P.tries.pop();URL.revokeObjectURL(x.src);}
-    P.cur=0;P.msg='Like it? Use it. Not quite? Change the words and paint again (same pose and style), or 🎲 for a fresh take.';
+    pzAddTry(P,blob,words,P.seed);
+    P.msg=key?'Like it? Use it. To fix one thing, type it under the picture and press ✏️ Change it.':'Like it? Use it. Not quite? Change the words and paint again (same pose and style), or 🎲 for a fresh take.';
   }catch(e){P.msg='Couldn’t paint it: '+e.message+'.';}
-  paintNext=Math.max(paintNext,Date.now()+PAINT_GAP);try{localStorage.setItem('pokeDnD_paintNext',String(paintNext));}catch(e){}
-  P.busy=false;renderCard();setTimeout(renderCard,PAINT_GAP+200);
-}
+  if(key)Polli.balance(redraw);else{try{localStorage.setItem(PZ_NEXT,String(Math.max(next,Date.now()+PZ_FREE_GAP)));}catch(e){}setTimeout(redraw,PZ_FREE_GAP+200);}
+  P.busy=false;redraw();}
+async function pzEdit(P,redraw){   // ✏️ change the picture shown, in words (needs the sign-in)
+  const T=P.tries[P.cur],key=Polli.key(),ch=(P.edit||'').trim().slice(0,600);if(P.busy||!T)return;Polli.msg='';
+  if(!key){P.msg='Changing a picture needs 🔗 Connect Pollinations.';redraw();return;}
+  if(!ch){P.msg='Type what should change first, e.g. “make the coat red”.';redraw();return;}
+  P.busy=true;P.msg='Changing it… (usually under half a minute)';redraw();
+  try{const fd=new FormData(),src=await pzShape(P,T.blob);
+    fd.append('image',src,'picture.jpg');fd.append('prompt',ch+'. '+((P.o&&P.o.keep)||'Keep the same character, face, pose, art style and background; change only that.'));
+    fd.append('model',PZ_Q[pzQ()].edit);fd.append('size',pzSize(P,key).join('x'));fd.append('response_format','b64_json');fd.append('safe','sexual');
+    const r=await fetch(PZ_GEN+'/v1/images/edits',{method:'POST',headers:{Authorization:'Bearer '+key},body:fd});
+    if(!r.ok)throw new Error(await pzFail(r));
+    const j=await r.json(),d=j.data&&j.data[0];let blob=null;
+    if(d&&d.b64_json){const bin=atob(d.b64_json),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);blob=new Blob([u],{type:d.media_type||'image/png'});}
+    else if(d&&d.url)blob=await (await fetch(d.url)).blob();
+    if(!blob||!/^image\//.test(blob.type))throw new Error('no picture came back');
+    pzAddTry(P,blob,T.desc+' → '+ch,T.seed);P.edit='';P.msg='Changed. Keep going (each change builds on the picture shown), pick an earlier try below, or use it.';
+  }catch(e){P.msg='Couldn’t change it: '+e.message+'.';}
+  Polli.balance(redraw);P.busy=false;redraw();}
+async function pzAdd(P,file,how,redraw){   // a pasted or added picture becomes a try
+  if(!file)return;try{pzAddTry(P,await pzShape(P,file),'('+how+')',P.seed);P.msg=Polli.key()?'Added. Change it with ✏️, or use it.':'Added. Use it, or 🔗 connect Pollinations to change it with words.';}
+  catch(e){P.msg='Couldn’t add it: '+e.message+'.';}redraw();}
+function pzPick(P,redraw){const f=document.createElement('input');f.type='file';f.accept='image/*';f.onchange=()=>pzAdd(P,f.files&&f.files[0],'added picture',redraw);f.click();}
+function pzPasted(e){const it=[...((e.clipboardData&&e.clipboardData.items)||[])].find(x=>x.kind==='file'&&/^image\//.test(x.type));return it?it.getAsFile():null;}
+function pzCopy(t){const old=()=>{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;left:-9999px;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');}catch(e){}a.remove();};
+  try{if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).catch(old);return;}}catch(e){}old();}
+function pzGemini(P,redraw){   // ✨ free route: paint and refine in the Gemini app, then paste the picture back here
+  const words=(P.desc||'').trim();if(!words){P.msg='Describe who to paint first.';redraw();return;}
+  pzCopy(((P.o&&P.o.gem)||'Make a square picture: ')+words+((P.o&&P.o.style)||PZ_STYLE)+'.');window.open('https://gemini.google.com/app','_blank','noopener');Polli.msg='';
+  P.msg='Copied the description. In Gemini, paste it (Ctrl+V) and ask for changes in plain words (“make the coat red”). When you like it, right-click the picture → Copy image, come back and press Ctrl+V here (or save it and use 📁 Add a picture).';redraw();}
+function pzHTML(P,C){   // the painter panel; C = this app's classes {b, pri, inp, sel, tip} + placeholder (ph) + Use label (use)
+  const key=Polli.key(),T=P.tries[P.cur],dis=P.busy?' disabled':'',wait=key?0:Math.max(0,pzFreeNext()-Date.now()),q=pzQ(),F=Polli.flow,msg=[Polli.msg,P.msg].filter(Boolean);
+  const conn=key?'<div class="pz-conn on">🔗 Pollinations connected'+(Polli.bal!=null?' · $'+Polli.bal.toFixed(2)+' left':'')+' <button class="'+C.b+'" data-pa="disc">Disconnect</button><br><select class="'+C.sel+'" data-pz="q" title="Which painter to use">'+Object.keys(PZ_Q).map(k=>'<option value="'+k+'"'+(k===q?' selected':'')+'>'+PZ_Q[k].n+': '+PZ_Q[k].cost+'</option>').join('')+'</select></div>'
+    :F?'<div class="pz-conn">Waiting for you to approve on Pollinations’ page (code <b>'+pzEsc(F.code)+'</b>). <a href="'+pzEsc(F.url)+'" target="_blank" rel="noopener">Open it again</a> <button class="'+C.b+'" data-pa="cancel">Cancel</button></div>'
+    :'<div class="pz-conn">Free painter, no account. <button class="'+C.b+'" data-pa="connect">🔗 Connect Pollinations</button> for sharper pictures and changing a picture with words (about ½¢ each from your own Pollinations balance, with a spending cap you set).</div>';
+  return conn
+    +'<textarea class="'+C.inp+'" data-pz="desc" rows="2" placeholder="'+pzEsc(C.ph)+'">'+pzEsc(P.desc)+'</textarea>'
+    +'<div class="pz-row"><button class="'+C.pri+'" data-pa="go"'+dis+'>'+(P.tries.length?'🎨 Paint again':'🎨 Paint it')+'</button>'
+    +(P.tries.length?'<button class="'+C.b+'" data-pa="new" title="A fresh take (new pose and style)"'+dis+'>🎲</button>':'')
+    +(T?'<button class="'+C.b+'" data-pa="use"'+dis+'>✓ '+C.use+'</button>':'')+(wait>0&&!P.busy?'<span class="'+C.tip+'">ready in ~'+Math.ceil(wait/1000)+' s</span>':'')+'</div>'
+    +(T?'<img class="pz-big" src="'+T.src+'" alt="">':'')
+    +(T&&key?'<div class="pz-row"><input class="'+C.inp+'" data-pz="edit" maxlength="600" placeholder="What should change? e.g. make the coat red" value="'+pzEsc(P.edit)+'"><button class="'+C.b+'" data-pa="edit"'+dis+'>✏️ Change it</button></div>':'')
+    +(P.tries.length>1?'<div class="pz-tries">'+P.tries.map((x,k)=>'<img src="'+x.src+'" data-pa="pick" data-k="'+k+'" class="'+(k===P.cur?'on':'')+'" title="'+pzEsc(x.desc)+'">').join('')+'</div>':'')
+    +'<div class="pz-row"><button class="'+C.b+'" data-pa="gemini" title="Copies the description and opens the free Gemini app">✨ Free in Gemini</button><button class="'+C.b+'" data-pa="add" title="Or copy a picture and press Ctrl+V here">📁 Add a picture</button></div>'
+    +(msg.length?'<div class="'+C.tip+' pz-msg">'+msg.map(pzEsc).join('<br>')+'</div>':'')
+    +'<div class="'+C.tip+' pz-note">Your words (and a picture you change) go to Pollinations, an online image service.</div>';}
+function pzAct(P,el,H){   // a click on [data-pa]; H = {redraw, use}
+  const a=el.dataset.pa;if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+  if(a==='go'||a==='new')pzGo(P,a==='new',H.redraw);else if(a==='edit')pzEdit(P,H.redraw);else if(a==='use')H.use();
+  else if(a==='pick'){P.cur=+el.dataset.k;H.redraw();}else if(a==='gemini')pzGemini(P,H.redraw);else if(a==='add')pzPick(P,H.redraw);
+  else if(a==='connect')Polli.connect(H.redraw);else if(a==='cancel'){Polli.cancel();H.redraw();}
+  else if(a==='disc'){Polli.drop('Disconnected: the free painter is back. (The sign-in itself ends on its own, or remove it on enter.pollinations.ai.)');H.redraw();}}
+function pzInput(P,el){const f=el.dataset.pz;if(f==='desc')P.desc=el.value.slice(0,600);else if(f==='edit')P.edit=el.value.slice(0,600);
+  else if(f==='q'){try{localStorage.setItem('pokeDnD_paintQ',el.value);}catch(e){}}}
+// The board's side of the painter: one state per look key (this screen only). ✓ Use uploads the chosen try
+// (uploadAsset 'art' = 512 px JPEG) as look.img, so it's the standee picture on every screen.
+const PAINT={};
+const PZ_C={b:'btn sm',pri:'btn sm pri',inp:'inp',sel:'inp',tip:'tip',ph:'e.g. a grizzled old sailor with a white beard, a blue coat and a pipe',use:'Use this picture'};
+function paintState(lk,name){return PAINT[lk]||(PAINT[lk]=pzState(name));}
+let MAPPAINT=false;   // 🎨 Paint a map: open in the scene panel?
+const PZ_CM=Object.assign({},PZ_C,{ph:'e.g. a forest road beside a river, with a wooden bridge and big mossy rocks',use:'Use as this scene’s map'});
+function mapPaintState(){const sd=sceneData()||{},k='map:'+sceneId(),P=PAINT[k]||(PAINT[k]=pzState(sd.name||'',Object.assign({},PZ_MAP_O)));P.o.ar=num(sd.cols,24)/Math.max(1,num(sd.rows,16));return P;}
+async function mapPaintUse(){const P=mapPaintState(),T=P.tries[P.cur];if(!T)return;P.busy=true;P.msg='Saving it as the map…';renderPanel();
+  try{await uploadMap(new File([T.blob],'painted-map-'+slug(T.desc).slice(0,40)+'.jpg',{type:T.blob.type||'image/jpeg'}));P.msg='✓ It’s this scene’s map now, on every screen.';}catch(e){P.msg='Couldn’t save it: '+e.message;}
+  P.busy=false;renderPanel();}
+function paintHost(){const tk=selected&&TOK.get(selected);return tk&&tk.data.look&&canLook(tk.data.look)?tk:null;}   // the token whose painter is showing
 async function paintUse(lk){
   const P=PAINT[lk],T=P&&P.tries[P.cur];if(!T)return;P.busy=true;P.msg='Saving it to the campaign…';renderCard();
   try{const {aid}=await uploadAsset(new File([T.blob],'painted-'+slug(T.desc).slice(0,40)+'.jpg',{type:T.blob.type||'image/jpeg'}),'art');setLook(lk,{img:aid});P.msg='✓ It’s the picture now, on every screen.';}
   catch(e){P.msg='Couldn’t save it: '+e.message;}
   P.busy=false;renderCard();}
 function paintHTML(t,i){   // the token card's painter
-  const lk=t.look;if(!lk||!canLook(lk))return '';const P=paintState(lk,(i.name||'').replace(/\s+\d+$/,'')),T=P.tries[P.cur],wait=Math.max(0,paintNext-Date.now());
-  return '<div class="paint"><label class="lbl">🎨 Paint a picture <span class="tip">(online AI painter)</span></label>'
-    +'<textarea class="inp" data-paint="1" rows="2" placeholder="e.g. a grizzled old sailor with a white beard, a blue coat and a pipe">'+esc(P.desc)+'</textarea>'
-    +'<div class="row"><button class="btn sm pri" data-act="paint"'+(P.busy?' disabled':'')+'>'+(P.tries.length?'🎨 Paint again':'🎨 Paint it')+'</button>'
-    +(P.tries.length?'<button class="btn sm" data-act="paintNew" title="A fresh take (new pose and style)"'+(P.busy?' disabled':'')+'>🎲</button>':'')
-    +(T?'<button class="btn sm" data-act="paintUse"'+(P.busy?' disabled':'')+'>✓ Use this picture</button>':'')+(wait>0&&!P.busy?'<span class="tip">ready in ~'+Math.ceil(wait/1000)+' s</span>':'')+'</div>'
-    +(T?'<img class="paint-big" src="'+T.src+'" alt="">':'')
-    +(P.tries.length>1?'<div class="paint-tries">'+P.tries.map((x,k)=>'<img src="'+x.src+'" data-act="paintPick" data-k="'+k+'" class="'+(k===P.cur?'on':'')+'" title="'+esc(x.desc)+'">').join('')+'</div>':'')
-    +(P.msg?'<div class="tip" style="margin-top:5px">'+esc(P.msg)+'</div>':'')
-    +'<div class="tip" style="margin-top:4px;opacity:.75">Your words go to Pollinations, a free online image service.</div></div>';}
+  const lk=t.look;if(!lk||!canLook(lk))return '';const P=paintState(lk,(i.name||'').replace(/\s+\d+$/,''));
+  return '<div class="paint"><label class="lbl">🎨 Paint a picture <span class="tip">(online AI painter)</span></label>'+pzHTML(P,PZ_C)+'</div>';}
 function picHTML(t,i,look){   // the token card's picture options while characters are standees
   const art=!look.img&&autoArt(t,i),des=!look.img&&!art&&(look.npc||look.kit);
   return '<label class="lbl">Standee picture</label><div class="tip" style="margin-top:0">'+(look.img?'Showing your uploaded picture.':art?'Showing its official Pokémon art. Upload a picture below to use your own.':des?'Showing a picture of its design. Change it with ✨ above or 🧍 Design.':'No picture yet: describe it with ✨ above, design one, or upload a picture below.')+'</div>'
@@ -974,8 +1103,8 @@ addEventListener('pointermove',e=>{
   if(downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>6)downAt.moved=true;
   if(dragging){const g=groundAt(e);if(!g)return;const tk=dragging.tk,h=tk.size/2;
     tk.target.set(clamp(g.x+dragging.ox,h,MAP.cols-h),clamp(g.y+dragging.oy,h,MAP.rows-h));
-    const sp=snapTok(tk.target.x,tk.target.y,tk.size),ft=feet(dragging.start,sp),spd=tk.info&&tk.info.speed;
-    tk.dist=ft+(spd?' / '+spd:'')+' ft';tk.distOver=!!(spd&&ft>spd);tk.renderLabel();
+    const sp=snapTok(tk.target.x,tk.target.y,tk.size),ft=feet(dragging.start,sp),spd=tk.info&&tk.info.speed,u=mvUsed(tk.data),tot=u.k?u.ft+ft:ft,lim=spd?(u.dash?spd*2:spd):0;
+    tk.dist=tot+(lim?' / '+lim:'')+' ft'+(u.k?' this turn':'');tk.distOver=!!(lim&&tot>lim);tk.renderLabel();
     sendPos(tk,tk.target.x,tk.target.y,false);return;}
   if(shapeDrag){const g=groundAt(e);if(g){shapeDrag.b={x:Math.floor(g.x),y:Math.floor(g.y)};drawShapeBox();}return;}
   if(tplDraft&&tplDraft.live){const g=groundAt(e);if(g)tplMove(g);return;}
@@ -988,7 +1117,7 @@ addEventListener('pointermove',e=>{
 addEventListener('pointerup',e=>{
   clearTimeout(lpTimer);sceneryUp(e);
   if(dragging){const tk=dragging.tk,p=snapTok(tk.target.x,tk.target.y,tk.size);tk.target.set(p.x,p.y);dragLock.set(tk.id,performance.now()+900);
-    sendPos(tk,p.x,p.y,true);tk.dist='';dragging=null;tk.renderLabel();renderer.domElement.style.cursor='';}
+    const u=mvUsed(tk.data),ft=feet(dragging.start,p);sendPos(tk,p.x,p.y,true,u.k&&ft?{k:u.k,ft:u.ft+ft,dash:u.dash||null}:null);tk.dist='';dragging=null;tk.renderLabel();renderer.domElement.style.cursor='';}
   if(shapeDrag){applyShape(shapeDrag.a,shapeDrag.b,shapeMode==='add');shapeDrag=null;shapeBox.visible=false;}
   if(tplDraft&&tplDraft.live)tplCommit();
   if(measuring){measuring=null;clearTimeout(ruler.t);ruler.t=setTimeout(()=>{ruler.g.visible=false;},1800);}
@@ -999,11 +1128,12 @@ addEventListener('pointerup',e=>{
 renderer.domElement.addEventListener('dblclick',e=>{if(tool==='select'&&sceneData()&&!tokenAt(e)){const g=groundAt(e);if(g)sendPing(g);}});
 renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 // Position updates: live while dragging (a few per second, never two at once) and a final snapped one on drop.
-function sendPos(tk,x,y,final){
+function sendPos(tk,x,y,final,mv){
   const sid=sceneId();if(!sid)return;
   if(!final&&inflight.get(tk.id))return;
   const v={x:+x.toFixed(3),y:+y.toFixed(3),by:ME||'DM'};
-  if(final){v.rot=+tk.faceGoal.toFixed(3);v.t=TS;tree=fbSetAt(tree,'/board/tokens/'+sid+'/'+tk.id+'/x',v.x);tree=fbSetAt(tree,'/board/tokens/'+sid+'/'+tk.id+'/y',v.y);}
+  if(final){v.rot=+tk.faceGoal.toFixed(3);v.t=TS;tree=fbSetAt(tree,'/board/tokens/'+sid+'/'+tk.id+'/x',v.x);tree=fbSetAt(tree,'/board/tokens/'+sid+'/'+tk.id+'/y',v.y);
+    if(mv){v.mv=mv;tree=fbSetAt(tree,'/board/tokens/'+sid+'/'+tk.id+'/mv',mv);tk.data=Object.assign({},tk.data,{mv});}}   // 🦶 this turn's movement
   const prev=inflight.get(tk.id)||Promise.resolve();
   const p=prev.then(()=>fb('PATCH','campaigns/'+CID+'/board/tokens/'+sid+'/'+tk.id,v)).catch(()=>{if(final)toast('Couldn’t save that move — check your connection.');})
     .then(()=>new Promise(r=>setTimeout(r,final?0:90))).finally(()=>{if(inflight.get(tk.id)===p)inflight.delete(tk.id);});
@@ -1278,7 +1408,8 @@ function panelHTML(){
   if(tool==='scenery')h+=sceneryPanelHTML(sid);   // while building scenery its palette goes to the top
   h+='<div class="sec"><h3>✎ This scene</h3>'+(sd.out&&sc[sd.out]?'<div class="row" style="margin-top:0"><button class="btn sm" data-act="goOut">🚪 Back outside to “'+esc(sc[sd.out].name||'Scene')+'”</button></div>':'')
     +'<label class="lbl">Name</label><input class="inp" data-sf="name" value="'+esc(sd.name||'')+'">'
-    +'<label class="lbl">Map image</label><div class="row" style="margin-top:0"><label class="btn up">⬆ '+(sd.map?'Replace':'Upload')+' map<input type="file" accept="image/*" data-up="map"></label>'+(sd.map?'<button class="btn" data-act="clearMap">Remove</button>':'')+'</div>'
+    +'<label class="lbl">Map image</label><div class="row" style="margin-top:0"><label class="btn up">⬆ '+(sd.map?'Replace':'Upload')+' map<input type="file" accept="image/*" data-up="map"></label>'+(sd.map?'<button class="btn" data-act="clearMap">Remove</button>':'')+'<button class="btn" data-act="mapPaint">🎨 '+(MAPPAINT?'Hide the painter':'Paint a map')+'</button></div>'
+    +(MAPPAINT?'<div class="paint" data-pzh="map"><div class="tip" style="margin:0 0 4px">Describe the place; it’s painted from above, the shape of this scene. ✓ Use makes it the map (rows follow the picture).</div>'+pzHTML(mapPaintState(),PZ_CM)+'</div>':'')
     +'<label class="lbl">'+(sd.map?'Ground (shows while the map loads)':'Ground')+'</label><select class="inp" data-sf="ground">'+Object.keys(THEMES).map(k=>'<option value="'+k+'"'+((sd.ground||'grass')===k?' selected':'')+'>'+THEMES[k]+'</option>').join('')+'</select>'
     +'<div class="g2"><div><label class="lbl">Columns</label><input class="inp" type="number" min="4" max="120" data-sf="cols" value="'+MAP.cols+'"></div><div><label class="lbl">Rows</label><input class="inp" type="number" min="4" max="120" data-sf="rows" value="'+MAP.rows+'"></div></div>'
     +(sd.mapW?'<div class="row"><button class="btn sm" data-act="fitGrid">Fit rows to the map’s shape</button></div>':'')
@@ -1333,6 +1464,7 @@ function renderCard(){
   const t=tk.data,i=tk.info,lk=t.look||'',look=tk.look||{},lib=board().library||{};
   const exact=IS_DM||canMove(t),pct=i.hpMax&&i.hp!=null?clamp(i.hp/i.hpMax,0,1):null;
   let h='<div class="c-hd"><span class="c-dot"></span><div><div class="c-nm">'+esc(i.name)+'</div><div class="c-sub">'+(t.kind==='pc'?'Player character':t.kind==='comp'?'Companion of '+esc(i.owner||''):'NPC / foe')+(i.types.length?' · '+esc(i.types.join(' / ')):'')+(t.hidden?' · hidden':'')+'</div></div><button class="c-x" data-act="close" title="Close">✕</button></div>';
+  {const u=mvUsed(t),spd=i.speed;if(u.k&&spd&&canMove(t))h+='<div class="c-mv'+(u.ft>(u.dash?spd*2:spd)?' over':'')+'">🦶 Moved <b>'+u.ft+' / '+(u.dash?spd*2:spd)+' ft</b> this turn'+(u.dash?' (dashing)':'')+'<button class="btn sm'+(u.dash?' on':'')+'" data-act="dash" title="Dash: double your movement this turn">💨 Dash</button></div>';}
   if(pct!=null)h+='<div class="c-hp"><span>HP</span><span>'+(exact?i.hp+' / '+i.hpMax:Math.round(pct*100)+'%')+'</span></div><div class="hpbar"><i style="width:'+(pct*100)+'%;background:'+(pct>.5?'var(--grn)':pct>.25?'var(--gold)':'var(--red)')+'"></i></div>';
   if(i.conds.length)h+='<div class="chips">'+i.conds.map(c=>'<span class="chip">'+(COND_ICON[String(c).toLowerCase()]||'•')+' '+esc(c)+'</span>').join('')+'</div>';
   h+='<div class="row"><button class="btn sm" data-act="focus">🎯 Center</button>'+(canMove(t)?'<button class="btn sm" data-act="rot" data-v="-1" title="Turn left">⟲</button><button class="btn sm" data-act="rot" data-v="1" title="Turn right">⟳</button>':'')+'</div>';
@@ -1415,16 +1547,14 @@ function act(a,d){
     case 'placeMe':{const me=players()[ME]||{};const id=addToken({kind:'pc',pk:ME,name:me.charName||ME,look:ME});if(id)setTimeout(()=>select(id),50);break;}
     case 'placeComp':{const me=players()[ME]||{},c=(me.companions||[]).find(x=>x&&x.id===d.cid);if(c){const id=addToken(compToken(ME,c));if(id)setTimeout(()=>select(id),50);}break;}
     case 'pose':if(tk)write('board/fx/tok_'+tk.id,{a:d.v,n:uid('f'),by:ME||'DM'});break;
+    case 'mapPaint':MAPPAINT=!MAPPAINT;renderPanel();break;
+    case 'dash':if(tk){const u=mvUsed(tk.data);if(u.k){const mv={k:u.k,ft:u.ft,dash:u.dash?null:true};tk.data=Object.assign({},tk.data,{mv});patchToken(tk.id,{mv});renderCard();}}break;
     case 'close':select('');break;
     case 'focus':if(tk)focusOn(tk.pos.x,tk.pos.y);break;
     case 'rot':if(tk){tk.faceGoal+=Math.PI/4*(+d.v);patchToken(tk.id,{rot:+tk.faceGoal.toFixed(3)});}break;
     case 'hide':if(tk)patchToken(tk.id,{hidden:!tk.data.hidden});break;
     case 'remove':if(tk&&confirm('Remove '+tk.info.name+' from this scene?'))removeToken(tk.id);break;
     case 'clrModel':if(tk)setLook(tk.data.look,{model:null});break;
-    case 'paint':if(tk){document.activeElement&&document.activeElement.blur();const ta=document.querySelector('#card [data-paint]');if(ta)paintState(tk.data.look).desc=ta.value.slice(0,400);paintIt(tk.data.look,false);}break;
-    case 'paintNew':if(tk){document.activeElement&&document.activeElement.blur();const ta=document.querySelector('#card [data-paint]');if(ta)paintState(tk.data.look).desc=ta.value.slice(0,400);paintIt(tk.data.look,true);}break;
-    case 'paintUse':if(tk){document.activeElement&&document.activeElement.blur();paintUse(tk.data.look);}break;
-    case 'paintPick':if(tk){document.activeElement&&document.activeElement.blur();const P=PAINT[tk.data.look];if(P){P.cur=+d.k;renderCard();}}break;
     case 'shape':{const same=tool==='shape'&&shapeMode===d.v;shapeMode=d.v;setTool(same?'select':'shape');break;}
     case 'shapeReset':if(confirm('Make this map a full rectangle again?'))write('board/scenes/'+sceneId(),{mask:null},'PATCH');break;
     case 'aoe':aoe=d.v;renderAoeBar();break;
@@ -1491,12 +1621,16 @@ function act(a,d){
 }
 // One listener per area handles every button (data-act) and field (data-sf scene field, data-tf token field, data-up upload…).
 [$('#panel'),$('#card'),$('#empty'),$('#aoeBar')].forEach(root=>{
-  root.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&root.contains(b))act(b.dataset.act,b.dataset);});
+  root.addEventListener('click',e=>{
+    const pa=e.target.closest('[data-pa]');if(pa&&root.contains(pa)&&pa.closest('[data-pzh="map"]')){pzAct(mapPaintState(),pa,{redraw:renderPanel,use:mapPaintUse});return;}   // the map painter
+    if(pa&&root.contains(pa)){const tk=paintHost();if(tk)pzAct(paintState(tk.data.look),pa,{redraw:renderCard,use:()=>paintUse(tk.data.look)});return;}   // the painter
+    const b=e.target.closest('[data-act]');if(b&&root.contains(b))act(b.dataset.act,b.dataset);});
   root.addEventListener('change',e=>{
     const t=e.target,tk=selected&&TOK.get(selected);
     if(t.dataset.sf){setSceneField(t.dataset.sf,t.type==='checkbox'?t.checked:(t.type==='number'||t.type==='range')?+t.value:t.value);t.blur();}
     else if(t.dataset.opt){write('board/opts/'+t.dataset.opt,t.checked||null);t.blur();}   // campaign-wide board settings (DM)
-    else if(t.dataset.paint&&tk){paintState(tk.data.look).desc=t.value.slice(0,400);}
+    else if(t.dataset.pz&&t.closest('[data-pzh="map"]')){pzInput(mapPaintState(),t);if(t.dataset.pz==='q'){t.blur();renderPanel();renderCard();}}
+    else if(t.dataset.pz&&tk){pzInput(paintState(tk.data.look),t);if(t.dataset.pz==='q'){t.blur();renderCard();}}
     else if(t.dataset.note&&tk){setLook(tk.data.look,{notes:t.value.slice(0,3000)});}
     else if(t.id==='scFit')aiFit=t.checked;
     else if(t.dataset.up){const f=t.files&&t.files[0];t.value='';doUpload(t.dataset.up,f);}
@@ -1512,18 +1646,70 @@ function act(a,d){
     else if(t.dataset.pb&&selProp){bldField(t.dataset.pb,t);t.blur();}                      // a building's design (section 14)
     else if(t.dataset.pbx&&selProp&&t.value){bldSwap(t.dataset.pbx,t.value);t.blur();}
   });
-  root.addEventListener('input',e=>{const t=e.target,tk=selected&&TOK.get(selected);if(t.dataset.paint&&tk)paintState(tk.data.look).desc=t.value.slice(0,400);if(t.id==='scAi')aiSceneDesc=t.value;if(t.id==='adAi')adAiDesc=t.value;if(t.id==='bAi')bAiDesc=t.value;
+  root.addEventListener('input',e=>{const t=e.target,tk=selected&&TOK.get(selected);if(t.dataset.pz&&t.closest('[data-pzh="map"]'))pzInput(mapPaintState(),t);else if(t.dataset.pz&&tk)pzInput(paintState(tk.data.look),t);if(t.id==='scAi')aiSceneDesc=t.value;if(t.id==='adAi')adAiDesc=t.value;if(t.id==='bAi')bAiDesc=t.value;
     if(t.dataset.sf==='gridAlpha')gridMat.opacity=+t.value;
     if(t.dataset.look==='scale'&&tk&&tk.model){tk.look=Object.assign({},tk.look,{scale:+t.value});tk.fitModel();}});
 });
 [$('#panel'),$('#card')].forEach(root=>root.addEventListener('keydown',e=>{   // Enter in a ✨ box makes it
-  const a={adAi:'adAi',bAi:'bWord',tkAi:'tkAi',bInD:'bInNew'}[e.target.id];if(e.key==='Enter'&&a){e.preventDefault();act(a,{});}}));
+  const a={adAi:'adAi',bAi:'bWord',tkAi:'tkAi',bInD:'bInNew'}[e.target.id];if(e.key==='Enter'&&a){e.preventDefault();act(a,{});}
+  if(e.key==='Enter'&&e.target.dataset.pz==='edit'&&e.target.closest('[data-pzh="map"]')){e.preventDefault();const P=mapPaintState();pzInput(P,e.target);e.target.blur();pzEdit(P,renderPanel);return;}
+  if(e.key==='Enter'&&e.target.dataset.pz==='edit'){e.preventDefault();const tk=paintHost();if(tk){pzInput(paintState(tk.data.look),e.target);e.target.blur();pzEdit(paintState(tk.data.look),renderCard);}}}));
+document.addEventListener('paste',e=>{const f=pzPasted(e);if(f&&$('#panel [data-pzh="map"]')&&(!$('#card .paint')||$('#panel').contains(document.activeElement))){e.preventDefault();pzAdd(mapPaintState(),f,'pasted picture',renderPanel);return;}
+  const tk=f&&paintHost();if(!tk||!$('#card .paint'))return;e.preventDefault();pzAdd(paintState(tk.data.look),f,'pasted picture',renderCard);});   // a copied picture → a painter try
+$('#card').addEventListener('focusout',()=>setTimeout(()=>{if(!$('#card').contains(document.activeElement))renderCard();},0));   // catch up on redraws skipped while typing
 $('#card').addEventListener('toggle',e=>{if(e.target.id==='tkAnim')animOpen=e.target.open;},true);
 $('#panel').addEventListener('toggle',e=>{if(e.target.id==='scAiBox')aiSceneOpen=e.target.open;if(e.target.id==='scAsk')aiAskOpen=e.target.open;},true);   // keep them open across redraws
 $('#init').addEventListener('click',e=>{const t=e.target.closest('[data-turn]');if(t){turnAction(t.dataset.turn);return;}const b=e.target.closest('.ic');const bt=battle();if(!b||!bt)return;const tk=findTokenFor(bt.list[+b.dataset.i]);if(tk){select(tk.id);focusOn(tk.pos.x,tk.pos.y);}});
 document.querySelectorAll('.dk[data-tool]').forEach(b=>b.addEventListener('click',()=>setTool(b.dataset.tool)));
 $('#bTilt').addEventListener('click',()=>setTilt(!tiltOn));
 $('#bFit').addEventListener('click',()=>fitView());
+// ── 📜 Handouts from the DM: the SAME code in the sheet and the board (the dashboard makes them). In the campaign:
+// meta/handouts/{id} = {title, text, img (an uploaded picture's id, or ''), t, shown}; meta/handoutNow = {hid, t} pops
+// one up on every screen once (remembered per campaign in localStorage). The 📜 button lists the shown ones.
+const HO={list:{},cid:'',get:null,imgs:{},onList:null};
+function hoEsc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function hoShown(){return Object.keys(HO.list||{}).filter(k=>HO.list[k]&&HO.list[k].shown).sort((a,b)=>(HO.list[b].t||0)-(HO.list[a].t||0));}
+function hoUpdate(list,now,cid,getAsset){
+  HO.list=(list&&typeof list==='object')?list:{};HO.cid=cid||'';HO.get=getAsset;if(HO.onList)HO.onList(hoShown().length);
+  if(!now||!now.hid||!HO.list[now.hid]||!HO.list[now.hid].shown)return;
+  const k='pokeDnD_hoSeen_'+HO.cid;let seen=0;try{seen=+localStorage.getItem(k)||0;}catch(e){}
+  if(now.t>seen){try{localStorage.setItem(k,String(now.t));}catch(e){}hoOpen(now.hid);}}
+function hoBox(){let d=document.getElementById('hoBox');if(!d){d=document.createElement('div');d.id='hoBox';
+  d.style.cssText='position:fixed;inset:0;z-index:2147482000;background:rgba(5,6,10,.72);display:flex;align-items:center;justify-content:center;padding:16px';
+  d.addEventListener('click',e=>{const o=e.target.closest('[data-ho]');if(o)hoOpen(o.dataset.ho);else if(e.target===d||e.target.closest('[data-hox]'))d.remove();});document.body.appendChild(d);}return d;}
+const HO_CARD='background:#f4ecd8;color:#2b2418;max-width:560px;width:100%;max-height:90vh;overflow:auto;border-radius:12px;padding:18px 20px;box-shadow:0 20px 60px rgba(0,0,0,.6);font:15px/1.55 Georgia,serif;border:1px solid #c9b48a';
+const HO_TAG='font:700 11px Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8a6d3b';
+const HO_BTN='margin-top:14px;background:#2b2418;color:#f4ecd8;border:0;border-radius:8px;padding:8px 16px;font:600 13px Inter,system-ui,sans-serif;cursor:pointer';
+function hoOpen(hid){const h=HO.list[hid];if(!h)return;const d=hoBox();
+  d.innerHTML='<div style="'+HO_CARD+'"><div style="'+HO_TAG+'">📜 Handout from the DM</div><h2 style="margin:4px 0 10px;font:700 22px Georgia,serif">'+hoEsc(h.title||'Handout')+'</h2>'
+    +(h.img?'<div id="hoImg" style="text-align:center;margin:6px 0 10px;color:#8a6d3b;font:12px Inter,system-ui,sans-serif">Loading the picture…</div>':'')
+    +(h.text?'<div style="white-space:pre-wrap">'+hoEsc(h.text)+'</div>':'')+'<button data-hox="1" style="'+HO_BTN+'">Got it</button></div>';
+  if(h.img){const show=src=>{const el=document.getElementById('hoImg');if(el)el.innerHTML='<img src="'+hoEsc(src)+'" alt="" style="max-width:100%;max-height:60vh;border-radius:8px;border:1px solid #c9b48a">';};
+    if(HO.imgs[h.img])show(HO.imgs[h.img]);else if(HO.get)Promise.resolve(HO.get(h.img)).then(src=>{if(src){HO.imgs[h.img]=src;show(src);}}).catch(()=>{const el=document.getElementById('hoImg');if(el)el.textContent='(The picture couldn’t be loaded.)';});}}
+function hoListOpen(){const ks=hoShown(),d=hoBox();
+  d.innerHTML='<div style="'+HO_CARD+'"><div style="'+HO_TAG+'">📜 Handouts</div>'+(ks.length?ks.map(k=>'<div data-ho="'+hoEsc(k)+'" style="padding:9px 0;border-bottom:1px solid #d9c9a3;cursor:pointer"><b>'+hoEsc(HO.list[k].title||'Handout')+'</b>'+(HO.list[k].img?' 🖼':'')+'<div style="font:12px Inter,system-ui,sans-serif;color:#8a6d3b">'+new Date(HO.list[k].t||0).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'</div></div>').join(''):'<p>No handouts yet.</p>')
+    +'<button data-hox="1" style="'+HO_BTN+'">Close</button></div>';}
+// ── 🎲 Rolls on the board: new entries in the campaign's roll log (the sheet's 🎲 rolls, the DM's NPC moves, initiative)
+// pop up at the bottom left for a few seconds on every screen; 🎲 in the top bar lists the recent ones.
+const ROLLS={seen:null,list:[]};
+function syncRolls(){
+  const lg=(tree&&tree.log)||{},ks=Object.keys(lg).sort();ROLLS.list=ks.slice(-20).map(k=>lg[k]).filter(Boolean);$('#bRolls').style.display=ROLLS.list.length?'':'none';
+  if(ROLLS.seen===null||firstSync){ROLLS.seen=new Set(ks);return;}   // what was there before this screen opened isn't news
+  ks.filter(k=>!ROLLS.seen.has(k)).forEach(k=>{ROLLS.seen.add(k);if(lg[k])showRoll(lg[k]);});}
+function showRoll(e){const host=$('#rollFeed');if(!host)return;const d=document.createElement('div');d.className='rf-item';
+  d.innerHTML='<b>'+esc(e.who||'?')+'</b> '+esc(String(e.text||'').replace(/<[^>]*>/g,''));host.appendChild(d);while(host.children.length>4)host.firstChild.remove();
+  setTimeout(()=>{d.classList.add('out');setTimeout(()=>d.remove(),700);},12000);}
+function rollList(){const box=hoBox();
+  box.innerHTML='<div style="'+HO_CARD+';background:#141a28;color:#e7edf8;border-color:#2a3550;font:13.5px/1.5 Inter,system-ui,sans-serif"><div style="'+HO_TAG+';color:#ffce4d">🎲 Recent rolls</div>'
+    +(ROLLS.list.length?ROLLS.list.slice().reverse().map(e=>'<div style="padding:7px 0;border-bottom:1px solid #2a3550"><b>'+esc(e.who||'?')+'</b> '+esc(String(e.text||'').replace(/<[^>]*>/g,''))+'<div style="font-size:11px;color:#8a9bbb">'+(e.t?new Date(e.t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'')+'</div></div>').join(''):'<p>No rolls yet.</p>')
+    +'<button data-hox="1" style="'+HO_BTN+';background:#ffce4d;color:#1a1300">Close</button></div>';}
+$('#bRolls').addEventListener('click',rollList);
+// ── 🦶 Movement in a fight: while an encounter runs, a token remembers how far it moved this turn (tokens/…/mv =
+// {k:'round|turn', ft, dash}), so the drag label counts the whole turn ("25 / 30 ft this turn"); 💨 Dash on the token
+// card doubles the limit for that turn. It only counts and warns: nothing stops a token (the DM rules on it).
+function mvUsed(t){const b=battle(),k=b?(b.round||1)+'|'+(b.turn||0):'',m=t&&t.mv,on=!!(k&&m&&m.k===k);return {k,ft:on?(+m.ft||0):0,dash:on&&!!m.dash};}
+HO.onList=n=>{const b=$('#bHo');if(b)b.style.display=n?'':'none';};
+$('#bHo').addEventListener('click',hoListOpen);
 const syncBtns=()=>{$('#bNames').classList.toggle('on',!!PREFS.names);$('#bFollow').classList.toggle('on',!!PREFS.follow);};
 $('#bNames').addEventListener('click',()=>{PREFS.names=!PREFS.names;savePrefs();syncBtns();for(const tk of TOK.values())tk.renderLabel();});
 $('#bFollow').addEventListener('click',()=>{PREFS.follow=!PREFS.follow;savePrefs();syncBtns();toast(PREFS.follow?'Camera follows whoever’s turn it is.':'Camera stays where you put it.');});
@@ -4654,6 +4840,8 @@ function reconcile(){
   const b=board(),sid=sceneId(),sd=sid?b.scenes[sid]:null;
   setAcc(IS_DM?DM_COLOR:(TYPE_COLORS[(players()[ME]||{}).type1]||DM_COLOR));
   if(sid!==lastSid){lastSid=sid;if(selected)select('');}
+  {const mt=(tree&&tree.meta)||{};hoUpdate(mt.handouts,mt.handoutNow,CID,assetData);}   // 📜 handouts from the DM
+  syncRolls();   // 🎲 new rolls pop up
   applyScene(sid,sd);applyMood(sd);syncTokens(sid);syncProps(sid);syncTpl(sid);handleFx(b.fx);renderTop();renderPanel();renderCard();renderEmpty(sd);renderAoeBar();
   const pg=b.ping,pk=pg?pg.t+'|'+pg.by:'';
   if(pk!==lastPing){if(!firstSync&&pg&&pg.sid===sid)showPing(pg);lastPing=pk;}
@@ -4711,7 +4899,23 @@ $('#jGo').addEventListener('click',()=>{
 if(FB&&CID&&(ME||IS_DM))start();else showJoin();
 
 // A handle for automated tests and for poking around in the browser console.
-window.PB={get tree(){return tree;},TOK,PAINT,paintIt,paintUse,get paintNext(){return paintNext;},set paintNext(v){paintNext=v;},m3d,dexEntry,autoArt,designPic,applyShape,maskCells,tplIn,TPLOBJ,get aoe(){return aoe;},poseGuess,POSES,shrinkTex,camera,controls,MAP,renderer,fogMesh,fogCanvas,fogTex,act,setTilt,setTool,select,uploadAsset,setLook,addToken,patchToken,newScene,showToPlayers,setSceneField,sceneId,tokenInfo,fitView,get selected(){return selected;},
+// ── ✨ New-version notice (same code in all three apps). On the website only: every 5 minutes, ask the site when this
+// file last changed (a HEAD request, nothing downloaded). If it's newer than the copy that's open, offer a reload, so
+// players who keep a tab open for hours get updates. Opened from a folder (file://), it does nothing.
+const VER={off:false};
+async function verCheck(){
+  if(VER.off||location.protocol!=='https:'||document.getElementById('verBar'))return;
+  try{const r=await fetch(location.pathname,{method:'HEAD',cache:'no-store'}),lm=r.ok&&Date.parse(r.headers.get('Last-Modified')||''),mine=Date.parse(document.lastModified);
+    if(lm&&mine&&lm-mine>60000)verBar();}catch(e){}}
+function verBar(){
+  const d=document.createElement('div');d.id='verBar';
+  d.style.cssText='position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2147483000;background:#141a28;color:#e7edf8;border:1px solid #ffce4d;border-radius:12px;padding:9px 12px;font:600 13px Inter,system-ui,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.5);display:flex;gap:9px;align-items:center;flex-wrap:wrap;max-width:calc(100vw - 32px)';
+  d.innerHTML='<span>✨ A new version of this app is out.</span><button data-v="1">Reload</button><button data-v="0">Later</button>';
+  d.querySelectorAll('button').forEach(b=>{const y=b.dataset.v==='1';b.style.cssText='background:'+(y?'#ffce4d':'transparent')+';color:'+(y?'#1a1300':'#e7edf8')+';border:1px solid #ffce4d;border-radius:8px;padding:5px 11px;font:inherit;cursor:pointer';
+    b.onclick=()=>{if(y)location.reload();else{VER.off=true;d.remove();}};});
+  document.body.appendChild(d);}
+setTimeout(verCheck,4000);setInterval(verCheck,5*60000);
+window.PB={get tree(){return tree;},TOK,PAINT,paintState,paintUse,Polli,pzState,pzGo,pzEdit,pzAdd,m3d,dexEntry,autoArt,designPic,applyShape,maskCells,tplIn,TPLOBJ,get aoe(){return aoe;},poseGuess,POSES,shrinkTex,camera,controls,MAP,renderer,fogMesh,fogCanvas,fogTex,act,setTilt,setTool,select,uploadAsset,setLook,addToken,patchToken,newScene,showToPlayers,setSceneField,sceneId,tokenInfo,fitView,get selected(){return selected;},
   buildNpc,NPC_PRESETS,NPC_DEF,openDesigner,closeDesigner,ND,PROPS,TERRAIN,PROPOBJ,propsOf,makeProp,selectProp,get selProp(){return selProp;},
   TOWNS,BLD_PRESETS,bldRandom,bldDef,buildBld,genBlock,undo,UNDO,inBld,propsSet,get scDraft(){return scDraft;},
   WK,openWorkshop,closeWorkshop,kitsOf,prefabsOf,groundsOf,buildKitInto,sanPart,sanParts,sanBld,sanNpc,askClaude,aiSystem,selSet,setSel,savePrefab,KITROOTS,kitStamp,get scKit(){return scKit;},get scPrefab(){return scPrefab;},
